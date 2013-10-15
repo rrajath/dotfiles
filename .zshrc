@@ -57,5 +57,9 @@ alias ..='cd ..'
 export CLICOLOR=1
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 
+# Setting vi mode in shell
+bindkey -v
+bindkey '^R' history-incremental-search-backward
+
 # tmux
 function gi() { curl http://gitignore.io/api/$@ ;}
