@@ -40,7 +40,7 @@ ZSH_THEME="sorin"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git python tmux web-search colorize jump colored-man)
+plugins=(git python web-search tmux colorize jump colored-man)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -63,3 +63,5 @@ bindkey '^R' history-incremental-search-backward
 
 # tmux
 function gi() { curl http://gitignore.io/api/$@ ;}
+
+tmux
