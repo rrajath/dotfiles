@@ -51,6 +51,11 @@ PATH="/usr/local/share/python/:$PATH"
 
 # List of aliases
 alias ..='cd ..'
+# mkdir, cd into it
+mkcd () {
+mkdir -p "$*"
+cd "$*"
+}
 
 # . /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
 
