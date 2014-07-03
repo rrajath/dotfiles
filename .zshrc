@@ -40,7 +40,7 @@ ZSH_THEME="sorin"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git python web-search tmux colorize jump colored-man)
+plugins=(git gitignore python web-search tmux colorize jump colored-man)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -56,6 +56,8 @@ mkcd () {
 mkdir -p "$*"
 cd "$*"
 }
+alias pm='python manage.py'
+alias mig='pm syncdb && pm schemamigration coursereviewapp --initial && pm migrate coursereviewapp --fake && pm schemamigration coursereviewapp --auto && pm migrate coursereviewapp'
 
 # . /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
 
@@ -70,3 +72,9 @@ bindkey '^R' history-incremental-search-backward
 function gi() { curl http://gitignore.io/api/$@ ;}
 
 tmux
+
+export JAVA_HOME=$(/usr/libexec/java_home)
+
+# source ~/.bin/tmuxinator.zsh
+
+export EDITOR="vi"
