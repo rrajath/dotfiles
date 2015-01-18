@@ -47,7 +47,7 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 export PATH=$PATH:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
 
-PATH="/usr/local/share/python/:$PATH"
+PATH="/usr/local/share/python/:~/android/android-sdk-macosx/tools/:$PATH"
 
 # List of aliases
 alias ..='cd ..'
