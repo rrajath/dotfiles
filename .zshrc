@@ -45,16 +45,18 @@ plugins=(git gitignore python web-search tmux colorize jump colored-man)
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-export PATH=$PATH:/opt/local/bin:/opt/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin
-
-PATH="/usr/local/share/python/:~/android/android-sdk-macosx/tools/:$PATH"
+PATH=/usr/bin:/bin:/usr/sbin:/sbin
+PATH=/usr/local/bin:/usr/local/sbin:"$PATH"
+PATH=/usr/local/share/python/:"$PATH"
+PATH=~/android/android-sdk-macosx/platform-tools/:~/bin/gradle-2.3/bin:"$PATH"
+export PATH
 
 # List of aliases
 alias ..='cd ..'
 # mkdir, cd into it
 mkcd () {
-mkdir -p "$*"
-cd "$*"
+    mkdir -p "$*"
+    cd "$*"
 }
 alias pm='python manage.py'
 alias mig='pm syncdb && pm schemamigration coursereviewapp --initial && pm migrate coursereviewapp --fake && pm schemamigration coursereviewapp --auto && pm migrate coursereviewapp'
@@ -68,10 +70,9 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 bindkey -v
 bindkey '^R' history-incremental-search-backward
 
-# tmux
-function gi() { curl http://gitignore.io/api/$@ ;}
-
 tmux
+
+function gi() { curl http://gitignore.io/api/$@ ;}
 
 export JAVA_HOME=$(/usr/libexec/java_home)
 
