@@ -43,10 +43,11 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(git gitignore python web-search tmux colorize jump colored-man)
 
 # Customize to your needs...
-PATH=/usr/bin:/bin:/usr/sbin:/sbin
-PATH=/usr/local/bin:/usr/local/sbin:"$PATH"
-PATH=/usr/local/share/python/:"$PATH"
-PATH=~/android/android-sdk-macosx/platform-tools/:~/bin/gradle-2.3/bin:"$PATH"
+PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+PATH="/usr/local/bin:/usr/local/sbin":$PATH
+PATH="/usr/local/share/python/":$PATH
+PATH="/Users/rrajath/android/android-sdk-macosx/platform-tools/:~/bin/gradle-2.3/bin":$PATH
+PATH="~/android/android-sdk-macosx/tools/":$PATH
 export PATH
 
 export CLICOLOR=1
@@ -85,5 +86,13 @@ setopt AUTO_NAME_DIRS
 
 source $ZSH/oh-my-zsh.sh
 
+. `brew --prefix`/etc/profile.d/z.sh
+
 # Add aliases
 [[ -f $HOME/.zsh_aliases ]] && source $HOME/.zsh_aliases
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+function iterm2_print_user_vars() {
+  iterm2_set_user_var gitBranch $((git branch 2> /dev/null) | grep \* | cut -c3-)
+}
