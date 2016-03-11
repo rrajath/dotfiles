@@ -60,13 +60,9 @@ bindkey '^P' up-line-or-search
 bindkey '^N' down-line-or-search
 bindkey '^R' history-incremental-search-backward
 
-# tmux
-
 function gi() { curl http://gitignore.io/api/$@ ;}
 
 export JAVA_HOME=$(/usr/libexec/java_home)
-
-# source ~/.bin/tmuxinator.zsh
 
 # If we have a glob this will expand it
 setopt GLOB_COMPLETE
