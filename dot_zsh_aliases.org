@@ -1,0 +1,24 @@
+#+TITLE:    zsh_aliases
+#+AUTHOR:   Rajath Ramakrishna
+#+PROPERTY: header-args :tangle ~/.zsh_aliases
+
+* Introduction
+This contains aliases that are more like utilities and not project or team specific.
+
+* Utilities
+
+#+begin_src bash
+alias ..='cd ..'
+alias l='ls -lrt'
+alias lh='ls -lh'
+alias sz='source ~/.zshrc'
+alias ez='vi ~/.zshrc'
+alias saf='defaults write com.apple.finder AppleShowAllFiles -bool YES'
+alias haf='defaults write com.apple.finder AppleShowAllFiles -bool NO'
+alias e='/usr/local/Cellar/emacs-plus@27/27.1/bin/emacs '
+alias mkcd='_(){ mkdir $1; cd $1; }; _'
+alias fzfp="fzf --preview 'bat --style=numbers --color=always --line-range :500 {}"
+alias emacs='/usr/local/Cellar/emacs-plus@27/27.1/bin/emacs '
+alias gbuom='git branch -u origin/mainline'
+alias resem='emacsclient -e "(kill-emacs)" && doom sync && /usr/local/bin/emacs --daemon && emacsclient -nc'
+#+end_src

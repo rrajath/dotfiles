@@ -1,0 +1,15 @@
+* Dotfiles
+** Introduction
+This repository contains dotfiles for all my applications - emacs, vim, zshrc, etc.
+
+I use the literate programming paradigm to manage my dotfiles in a way that it encapsulates both code and documentation in the same file. People reading this config, or even my future self can pull out parts of the config as needed and apply it to theirs. This repository is organized in terms of several README files. Each README file will be for a specific app.
+
+Since these are configuration files and just a list of settings with sparsely interspersed comments would not be very helpful to anyone (including me sometime in the future), I have decided to use [[https://en.wikipedia.org/wiki/Literate_programming][literate programming]]
+to create a file that serves as good documentation with interspersed code blocks that get evaluated to generate the config. Since the files will be written as documentation, the configs will be separated into sections with enough explanation about it so that parts of configs can be easily copy pasted.
+
+The config files will be in .org format which GitHub natively supports and renders like how it renders Markdown. Each file will contain pre-requisites that must be installed before continuing to copy the configs. This is to make sure that the right tools/applications are installed beforehand.
+
+** Pre-requisites
+For those intending to clone this repo and use the org files into their dotfiles, there is one pre-requisite which is Emacs. After installing it, the org-mode files can be tangled (using =org-babel-tangle= command) after specifying the tangle location at the top of each org file.
+
+For a more detailed vim configuration, please visit [my fork](https://github.com/rrajath/vimrc) of [amix/vimrc](https://github.com/amix/vimrc)
