@@ -1,0 +1,63 @@
+#+TITLE:    Doom YASnippets
+#+AUTHOR:   Rajath Ramakrishna
+#+PROPERTY: header-args
+
+* Introduction
+This config generates all the YASnippets for Doom Emacs in the following directory: =~/.doom.d/snippets/org-mode=
+Each block generates a separate file. Tangling this file is same as others: =C-c C-c=, =C-c C-v t=
+
+* Insert current time in org files
+Just type ct and hit TAB. It will insert current time like [13:53]
+
+#+begin_src text :tangle ~/.doom.d/snippets/org-mode/current_time
+# -*- mode: snippet -*-
+# name: current_time
+# key: ct
+# --
+`(format-time-string "[%H:%M]")`
+#+end_src
+
+* Insert journal date
+Creating a journal entry in my journal.org is easy using a capture template. But sometimes, using my phone to fill up the journal entry would mean writing to refile.org instead of journal.org directly. This snippet helps with journal date entry
+
+#+begin_src text :tangle ~/.doom.d/snippets/org-mode/journal_date
+# -*- mode: snippet -*-
+# name: journal date
+# key: ddd
+# --
+`(format-time-string "[%H:%M]")`
+
+#+end_src
+
+* Insert Journal Action Items
+After each weekly review, this template makes it easier to add action items in my journal
+#+begin_src text :tangle ~/.doom.d/snippets/org-mode/journal_action_items
+# -*- mode: snippet -*-
+# name: journal action items
+# key: jwa
+# condition: t
+# --
+ *** --- `(format-time-string "W%W")` ---
+AI:
+#+end_src
+
+* Insert Journal Weekly review
+
+#+begin_src text :tangle ~/.doom.d/snippets/org-mode/journal_weekly_review
+# -*- mode: snippet -*-
+# name: weekly review
+# key: jwr
+# condition: t
+# --
+ *** Week `(format-time-string "(W%W)")` Review
+ **** What went well this week?
+ -
+ **** What didn't go well this week?
+ -
+ **** What did you learn?
+ -
+ **** What could have been better?
+ -
+ **** Action items for next week?
+ -
+#+end_src

@@ -1,0 +1,96 @@
+#+TITLE: vimrc configuration
+#+AUTHOR: Rajath Ramakrishna
+#+PROPERTY: header-args :tangle ~/.vim_runtime/my_configs.vim
+
+* Introduction
+This file contains configuration for vim. I am already using my version of vimrc, but couple more things are added on top of that.
+
+** Pre-requisites
+Follow instructions on amix/vimrc on GitHub: https://github.com/amix/vimrc
+
+* Vim Plug Setup
+No clue where I got this from.
+
+**TODO**: Figure out if this is really needed. Else, remove it.
+
+#+begin_src vim
+" vim-plug setup
+call plug#begin('~/.vim/plugged')
+
+Plug 'davidosomething/vim-colors-meh'
+
+call plug#end()
+
+#+end_src
+
+* Set line numbers
+Also set cursorline and ruler
+
+#+begin_src vim
+" Set line numbers
+set nu
+set cursorline
+set ruler
+
+#+end_src
+
+* Pathogen
+#+begin_src vim
+" Pathogen
+execute pathogen#infect()
+
+#+end_src
+
+* Use leader key while saving/quitting a file in vim
+Instead of hitting =:q= or =:wq=, use leader key =,=.
+
+#+begin_src vim
+nmap <leader>wq :wq<cr>
+nmap <leader>q :q!<cr>
+
+#+end_src
+
+* Set cursor shape
+**TODO**: Check if this still works and if it's still needed. Else, remove it.
+
+#+begin_src vim
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+#+end_src
+
+* Set theme
+#+begin_src vim
+" colo ThemerVim
+let g:lightline = { 'colorscheme': 'ThemerVimLightline' }
+
+set t_Co=256
+set background=dark
+colorscheme peaksea
+
+#+end_src
+
+* Get infinite undos
+#+begin_src vim
+" Get infinite undo in your files even after closing and reopening the terminal
+set undofile
+set undodir=~/.vim/undodir
+
+#+end_src
+
+* Set up .virmc script
+This will be used for sourcing all vim configs that are part of [[https://github.com/amix/vimrc][amix/vimrc config]].
+#+begin_src vim
+set runtimepath+=~/.vim_runtime
+
+source ~/.vim_runtime/vimrcs/basic.vim
+source ~/.vim_runtime/vimrcs/filetypes.vim
+source ~/.vim_runtime/vimrcs/plugins_config.vim
+source ~/.vim_runtime/vimrcs/extended.vim
+
+try
+source ~/.vim_runtime/my_configs.vim
+catch
+endtry
+#+end_src
