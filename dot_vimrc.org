@@ -81,7 +81,7 @@ set undodir=~/.vim/undodir
 
 * Set up .virmc script
 This will be used for sourcing all vim configs that are part of [[https://github.com/amix/vimrc][amix/vimrc config]].
-#+begin_src vim
+#+begin_src vim :tangle ~/.vimrc
 set runtimepath+=~/.vim_runtime
 
 source ~/.vim_runtime/vimrcs/basic.vim
