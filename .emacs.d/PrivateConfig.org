@@ -4,7 +4,7 @@
 #+OPTIONS: toc:2
 
 * Introduction
-This config is built by copying parts from [[https://github.com/daviwil/dotfiles/blob/master/Emacs.org][System Crafters dotfiles repo]], what I found on the internet (Reddit, Discord, Stack Overflow, etc.) and some of my own config. Some *bold*, some /italics/, let's see how this goes!
+This config is built by copying parts from [[https://github.com/daviwil/dotfiles/blob/master/Emacs.org][System Crafters dotfiles repo]], what I found on the internet (Reddit, Discord, Stack Overflow, etc.) and some of my own config. This configuration is based on the [[https://en.wikipedia.org/wiki/Literate_programming][literate programming]] paradigm which makes the config be self-documenting. This means, the file is basically a fully explained documentation of my config and also contains code blocks in between that can be evaluated and tangled into a config file.
 ** Personal Information
 It's useful to set up personal information. Some packages tend to use it.
 #+begin_src emacs-lisp
@@ -15,14 +15,13 @@ It's useful to set up personal information. Some packages tend to use it.
 I've been using Emacs since Aug 2020. I used Spacemacs briefly for about a month and it was slow, clunky and I didn't have a good workflow for editing org files on my phone. I decided to give Emacs another go and used Doom Emacs since it looked prettier and I instantly fell in love with it. I used Doom Emacs for about a year and some time late August 2021 is when I started building my own config.
 
 If this is the first time you are looking at my configuration, feel free to jump around and look at any code blocks. Headings that are marked with =TODO= need some work. They either have configs that are not completely set up or have tangling disabled, or just need some text.
-** TODO Why literate config?
+** Why literate config?
+Literate config has a few benefits:
+- Easy to understand. Thanks to the documentation surrounding the code snippets
+- Easy to share. People you share this with need no explanation as to what's in your config, your documentation takes care of that
+- Easy to maintain. You never touch the actual config, you only update this .org file and make it generate the actual source file
+- Easy to publish. If you want to publish your config online, it's super easy. GitHub, for example, natively supports org the same way it supports Markdown. So, these org files are rendered nicely, just as regular documentation.
 * Current Issues
-** DONE Warning message on startup
-CLOSED: [2021-09-01 Wed 21:05]
-This message shows up at Emacs startup for some reason:
-#+begin_src
-Warning (package): Unnecessary call to ‘package-initialize’ in init file
-#+end_src
 ** TODO Capture templates point to default org directory
 Instead of my custom org directory. Pretty sure this is happening because of out-of-order variables setup in my org config
 ** TODO Hitting TAB on a drawer doesn't expand/collapse the drawer
