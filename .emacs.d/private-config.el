@@ -266,6 +266,12 @@
  ;; org-mode / links
  "o l" '(:ignore t :which-key "links")
  "o l l" '(org-insert-link :which-key "org-insert-link")
+ ;; projectile
+ "p"   '(:ignore t :which-key "projectile")
+ "p f" '(projectile-find-file :which-key "projectile-find-file")
+ "p /" '(counsel-projectile-rg :which-key "counsel-projectile-rg")
+ "p r" '(projectile-recentf :which-key "projectile-recentf")
+ "p s" '(counsel-projectile-switch-project :which-key "projectile-switch-project")
  ;; files
  "f"   '(:ignore t :which-key "files")
  "f f" '(counsel-find-file :which-key "find file")
