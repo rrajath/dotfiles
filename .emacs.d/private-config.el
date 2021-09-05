@@ -114,6 +114,8 @@
   (set-face-attribute 'show-paren-match-expression nil :background "#363e4a")
   (show-paren-mode 1))
 
+(server-start)
+
 (use-package super-save
   :defer 1
   :diminish super-save-mode
