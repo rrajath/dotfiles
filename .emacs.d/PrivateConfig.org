@@ -22,8 +22,6 @@ Literate config has a few benefits:
 - Easy to maintain. You never touch the actual config, you only update this .org file and make it generate the actual source file
 - Easy to publish. If you want to publish your config online, it's super easy. GitHub, for example, natively supports org the same way it supports Markdown. So, these org files are rendered nicely, just as regular documentation.
 * Current Issues
-** TODO Capture templates point to default org directory
-Instead of my custom org directory. Pretty sure this is happening because of out-of-order variables setup in my org config
 ** TODO Hitting TAB on a drawer doesn't expand/collapse the drawer
 This is because the TAB in org-mode is mapped to =org-only-cycle-subtree-h=
 Workaround: Use =z a= which maps to =evil-toggle-fold=
@@ -284,7 +282,6 @@ Package: [[https://github.com/xiongtx/eros][eros]]
     :defer 0
     :diminish which-key-mode
     :config
-    (message "Whick key loaded")
     (which-key-mode)
     (setq which-key-idle-delay 0.3))
 #+end_src
@@ -731,6 +728,31 @@ This is to display buffers under their respective perspectives
   (add-hook 'kill-emacs-hook #'persp-state-save)
 #+end_src
 * OrgMode
+** Capture Templates
+#+begin_src emacs-lisp
+  (defun rr/set-org-capture-templates ()
+    `(("o" "Organize")
+      ("ot" "Task" entry (file+olp, (rr/org-path "organize.org") "Tasks")
+       "* TODO %?\n %U\n %a\n %i" :kill-buffer t)
+      ("oe" "Event" entry (file+olp, (rr/org-path "organize.org") "Events")
+       "* TODO %?\n %U\n %a\n %i")
+      ("w" "Work")
+      ("wt" "Work Task" entry (file+olp, (rr/org-path "work-tasks.org") "All Tasks")
+       "* TODO %?\n %U\n %a\n %i" :kill-buffer t)
+      ("j" "Journal" entry (file+datetree, (rr/org-path "journal.org"))
+       "* %?\n")
+      ("n" "Notes")
+      ("nr" "Resource" entry (file+olp, (rr/org-path "refile.org") "Resources")
+       "* %?\n %U\n %a\n %i")
+      ("nc" "Curiosity" entry (file+olp, (rr/org-path "refile.org") "Curiosities")
+       "* %?\n %U\n %a\n %i")
+      ("no" "Other" entry (file+olp, (rr/org-path "refile.org") "Notes")
+       "* %?\n %U\n %a\n %i")
+      ("nw" "Work" entry (file+olp, (rr/org-path "work-tasks.org") "Inbox")
+       "* %?\n %U\n %a\n %i")
+      )
+    )
+#+end_src
 ** Basic setup
 #+begin_src emacs-lisp
   (defun rr/org-path (path)
@@ -738,11 +760,11 @@ This is to display buffers under their respective perspectives
 
   (defun rr/org-mode-setup ()
     (org-indent-mode)
-    ;;  (variable-pitch-mode 1)
     (auto-fill-mode 0)
     (visual-line-mode 1)
     (setq org-directory "~/Dropbox/org-mode/")
     (setq org-agenda-files (list org-directory))
+    (setq org-capture-templates (rr/set-org-capture-templates))
     (setq org-todo-keywords
           '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "|" "DONE(d!)" "KILL(k!)")
             ))
@@ -752,7 +774,6 @@ This is to display buffers under their respective perspectives
     :hook (org-mode . rr/org-mode-setup)
     :commands (org-capture org-agenda)
     :config
-    (message "Org Mode loaded!")
     (setq org-ellipsis " ▾"
           org-hide-emphasis-markers t
           org-log-done 'time
@@ -772,32 +793,7 @@ This is to display buffers under their respective perspectives
     (advice-add 'org-refile :after 'org-save-all-org-buffers))
 
   (require 'org-indent)
-#+end_src
-** Capture Templates
-#+begin_src emacs-lisp
-  (setq org-capture-templates
-        `(("o" "Organize")
-          ("ot" "Task" entry (file+olp, (rr/org-path "organize.org") "Tasks")
-           "* TODO %?\n %U\n %a\n %i" :kill-buffer t)
-          ("oe" "Event" entry (file+olp, (rr/org-path "organize.org") "Events")
-           "* TODO %?\n %U\n %a\n %i")
-          ("w" "Work")
-          ("wt" "Work Task" entry (file+olp, (rr/org-path "work-tasks.org") "All Tasks")
-           "* TODO %?\n %U\n %a\n %i" :kill-buffer t)
-          ("j" "Journal" entry (file+datetree, (rr/org-path "journal.org"))
-           "* %?\n")
-          ("n" "Notes")
-          ("nr" "Resource" entry (file+olp, (rr/org-path "refile.org") "Resources")
-           "* %?\n %U\n %a\n %i")
-          ("nc" "Curiosity" entry (file+olp, (rr/org-path "refile.org") "Curiosities")
-           "* %?\n %U\n %a\n %i")
-          ("no" "Other" entry (file+olp, (rr/org-path "refile.org") "Notes")
-           "* %?\n %U\n %a\n %i")
-          ("nw" "Work" entry (file+olp, (rr/org-path "work-tasks.org") "Inbox")
-           "* %?\n %U\n %a\n %i")
-          )
-        )
-#+end_src
+    #+end_src
 ** Org Appear
 This is to make emphasis markers like bold or italics show up when cursor is on the words that contain said markers.
 Package: [[https://github.com/awth13/org-appear][org-appear]]

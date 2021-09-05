@@ -163,7 +163,6 @@
   :defer 0
   :diminish which-key-mode
   :config
-  (message "Whick key loaded")
   (which-key-mode)
   (setq which-key-idle-delay 0.3))
 
@@ -517,16 +516,39 @@
 (setq persp-state-default-file "~/dotfiles/.emacs.d/persp-auto-save")
 (add-hook 'kill-emacs-hook #'persp-state-save)
 
+(defun rr/set-org-capture-templates ()
+  `(("o" "Organize")
+    ("ot" "Task" entry (file+olp, (rr/org-path "organize.org") "Tasks")
+     "* TODO %?\n %U\n %a\n %i" :kill-buffer t)
+    ("oe" "Event" entry (file+olp, (rr/org-path "organize.org") "Events")
+     "* TODO %?\n %U\n %a\n %i")
+    ("w" "Work")
+    ("wt" "Work Task" entry (file+olp, (rr/org-path "work-tasks.org") "All Tasks")
+     "* TODO %?\n %U\n %a\n %i" :kill-buffer t)
+    ("j" "Journal" entry (file+datetree, (rr/org-path "journal.org"))
+     "* %?\n")
+    ("n" "Notes")
+    ("nr" "Resource" entry (file+olp, (rr/org-path "refile.org") "Resources")
+     "* %?\n %U\n %a\n %i")
+    ("nc" "Curiosity" entry (file+olp, (rr/org-path "refile.org") "Curiosities")
+     "* %?\n %U\n %a\n %i")
+    ("no" "Other" entry (file+olp, (rr/org-path "refile.org") "Notes")
+     "* %?\n %U\n %a\n %i")
+    ("nw" "Work" entry (file+olp, (rr/org-path "work-tasks.org") "Inbox")
+     "* %?\n %U\n %a\n %i")
+    )
+  )
+
 (defun rr/org-path (path)
   (expand-file-name path org-directory))
 
 (defun rr/org-mode-setup ()
   (org-indent-mode)
-  ;;  (variable-pitch-mode 1)
   (auto-fill-mode 0)
   (visual-line-mode 1)
   (setq org-directory "~/Dropbox/org-mode/")
   (setq org-agenda-files (list org-directory))
+  (setq org-capture-templates (rr/set-org-capture-templates))
   (setq org-todo-keywords
         '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "|" "DONE(d!)" "KILL(k!)")
           ))
@@ -536,7 +558,6 @@
   :hook (org-mode . rr/org-mode-setup)
   :commands (org-capture org-agenda)
   :config
-  (message "Org Mode loaded!")
   (setq org-ellipsis " ▾"
         org-hide-emphasis-markers t
         org-log-done 'time
@@ -556,29 +577,6 @@
   (advice-add 'org-refile :after 'org-save-all-org-buffers))
 
 (require 'org-indent)
-
-(setq org-capture-templates
-      `(("o" "Organize")
-        ("ot" "Task" entry (file+olp, (rr/org-path "organize.org") "Tasks")
-         "* TODO %?\n %U\n %a\n %i" :kill-buffer t)
-        ("oe" "Event" entry (file+olp, (rr/org-path "organize.org") "Events")
-         "* TODO %?\n %U\n %a\n %i")
-        ("w" "Work")
-        ("wt" "Work Task" entry (file+olp, (rr/org-path "work-tasks.org") "All Tasks")
-         "* TODO %?\n %U\n %a\n %i" :kill-buffer t)
-        ("j" "Journal" entry (file+datetree, (rr/org-path "journal.org"))
-         "* %?\n")
-        ("n" "Notes")
-        ("nr" "Resource" entry (file+olp, (rr/org-path "refile.org") "Resources")
-         "* %?\n %U\n %a\n %i")
-        ("nc" "Curiosity" entry (file+olp, (rr/org-path "refile.org") "Curiosities")
-         "* %?\n %U\n %a\n %i")
-        ("no" "Other" entry (file+olp, (rr/org-path "refile.org") "Notes")
-         "* %?\n %U\n %a\n %i")
-        ("nw" "Work" entry (file+olp, (rr/org-path "work-tasks.org") "Inbox")
-         "* %?\n %U\n %a\n %i")
-        )
-      )
 
 (use-package org-appear)
 (add-hook 'org-mode-hook 'org-appear-mode)
