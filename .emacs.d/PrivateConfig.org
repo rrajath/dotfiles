@@ -195,6 +195,11 @@ This is super helpful, especially in lisp
     (show-paren-mode 1))
 #+end_src
 * Usability
+** Server Mode
+Make this instance of emacs start server so that other client instances can connect to this.
+#+begin_src emacs-lisp
+(server-start)
+#+end_src
 ** Auto-saving changed files
 This removes the need to hit Save all the time.
 #+begin_src emacs-lisp
