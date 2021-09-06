@@ -73,6 +73,9 @@
  evil-want-fine-undo t
  auto-save-default t)
 
+(setq-default tab-width 2)
+(setq-default evil-shift-width tab-width)
+
 (global-subword-mode 1)
 
 (setq inhibit-startup-message t)
