@@ -226,8 +226,10 @@
  "RET" '(counsel-bookmark :which-key "bookmarks")
  "t"   '(vterm-toggle :which-key "vterm-popup")
  ;; commands
- "'"   '(:ignore t :which-key "commands")
- "' e" '(eros-eval-last-sexp :which-key "eros-eval-last-sexp")
+ "e"   '(:ignore t :which-key "eval")
+ "e e" '(eros-eval-last-sexp :which-key "eros-eval-last-sexp")
+ "e r" '(eval-region :which-key "eval-region")
+ "e b" '(eval-buffer :which-key "eval-buffer")
  ;; buffer management
  "b"   '(:ignore t :which-key "buffers")
  "b i" '(ibuffer :which-key "ibuffer")
