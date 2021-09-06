@@ -10,6 +10,22 @@
            gcs-done))
 (add-hook 'emacs-startup-hook #'rr/display-startup-time)
 
+(message "Trying to maximize frame")
+(setq pixel-width (display-pixel-width))
+(setq pixel-height (display-pixel-height))
+
+(if (= pixel-width 1792)
+    (add-to-list 'default-frame-alist '(fullscreen . maximized))
+  (progn
+    (add-to-list 'default-frame-alist
+                 (cons 'left (/ pixel-width 2)))
+    (add-to-list 'default-frame-alist
+                 (cons 'width 111))
+    (add-to-list 'default-frame-alist
+                 (cons 'height 62))
+    )
+  )
+
 ;; Initialize package sources
 (require 'package)
 
@@ -463,6 +479,7 @@
   :init
   (setq lsp-keymap-prefix "C-c l")
   :config
+  (setq lsp-ui-sideline-show-code-actions t)
   (lsp-enable-which-key-integration t))
 
 (use-package lsp-ui
