@@ -222,6 +222,9 @@
  "`"   '(evil-switch-to-windows-last-buffer :which-key "last window")
  "RET" '(counsel-bookmark :which-key "bookmarks")
  "t"   '(vterm-toggle :which-key "vterm-popup")
+ ;; commands
+ "'"   '(:ignore t :which-key "commands")
+ "' e" '(eros-eval-last-sexp :which-key "eros-eval-last-sexp")
  ;; buffer management
  "b"   '(:ignore t :which-key "buffers")
  "b i" '(ibuffer :which-key "ibuffer")
