@@ -683,34 +683,34 @@ File management with dired
 This sets up language server configuration with some pretty cool defaults.
 Make sure to run =lsp-install-server es-lint= to enable eslint configuration.
 #+begin_src emacs-lisp
-    (defun rr/lsp-mode-setup ()
-      (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-      (setq lsp-restart 'auto-restart)
-      (lsp-headerline-breadcrumb-mode))
+  (defun rr/lsp-mode-setup ()
+    (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+    (setq lsp-restart 'auto-restart)
+    (lsp-headerline-breadcrumb-mode))
 
-    (use-package lsp-mode
-      :commands (lsp lsp-deferred)
-      :hook (lsp-mode . rr/lsp-mode-setup)
-      :init
-      (setq lsp-keymap-prefix "C-c l")
-      :config
-      (setq lsp-ui-sideline-show-code-actions t)
-      (lsp-enable-which-key-integration t))
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred)
+    :hook (lsp-mode . rr/lsp-mode-setup)
+    :init
+    (setq lsp-keymap-prefix "C-c l")
+    :config
+    (setq lsp-ui-sideline-show-code-actions t)
+    (lsp-enable-which-key-integration t))
 
-    (use-package lsp-ui
-      :hook (lsp-mode . lsp-ui-mode)
-      :custom
-      (setq lsp-ui-doc-position 'bottom))
+  (use-package lsp-ui
+    :hook (lsp-mode . lsp-ui-mode)
+    :custom
+    (setq lsp-ui-doc-position 'bottom))
 
-    (use-package lsp-treemacs
-      :after lsp)
+  (use-package lsp-treemacs
+    :after lsp)
 
-    (use-package lsp-ivy
-      :after lsp)
+  (use-package lsp-ivy
+    :after lsp)
 
-    (use-package prettier
-      :after lsp)
-    (setq global-prettier-mode t)
+  (use-package prettier
+    :after lsp)
+  (setq global-prettier-mode t)
 #+end_src
 *** TypeScript
 This sets up typescript mode with defaults for eslint.
@@ -1224,6 +1224,13 @@ I really liked Doom style org cycling. It just goes through folded and children 
    :states '(normal insert)
    :keymaps 'org-mode-map
    "<C-S-return>" '+org/insert-item-above)
+#+end_src
+* Blogging
+** ox-hugo
+This is the emacs package I use to publish to my Hugo website using org files
+#+begin_src emacs-lisp
+  (use-package ox-hugo
+    :after ox)
 #+end_src
 * Ideas
 Some ideas for customizing emacs. I keep thinking about different ways to customize emacs and I'd like to have them all in one place so that whenever I have some time, I can pick one up and work on it.

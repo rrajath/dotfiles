@@ -943,4 +943,7 @@ If on a:
  :keymaps 'org-mode-map
  "<C-S-return>" '+org/insert-item-above)
 
+(use-package ox-hugo
+  :after ox)
+
 (setq gc-cons-threshold (* 2 1000 1000))
