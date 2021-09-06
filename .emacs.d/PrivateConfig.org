@@ -44,6 +44,7 @@ I want Emacs to take up full screen if I'm on my laptop and take up half of the 
 =1792= in the code block below is the pixel width of my laptop.
 =5232= is the pixel width of my monitor.
 If =display-pixel-width= is neither of these, then the frame will not be moved or resized.
+[[https://emacs.stackexchange.com/questions/16961/how-to-set-emacs-frame-size-by-pixels/17354#17354][A stack overflow post]] has another way to set this; something I want to try in the future.
 #+begin_src emacs-lisp
   (message "Trying to maximize frame")
   (setq pixel-width (display-pixel-width))
