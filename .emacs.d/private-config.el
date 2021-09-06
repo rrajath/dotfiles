@@ -14,17 +14,18 @@
 (setq pixel-width (display-pixel-width))
 (setq pixel-height (display-pixel-height))
 
-(if (= pixel-width 1792)
-    (add-to-list 'default-frame-alist '(fullscreen . maximized))
+(cond
+ ((= pixel-width 1792)
+  (add-to-list 'default-frame-alist '(fullscreen . maximized)))
+ ((= pixel-width 5232)
   (progn
     (add-to-list 'default-frame-alist
-                 (cons 'left (/ pixel-width 2)))
+                 (cons 'left 1720))
     (add-to-list 'default-frame-alist
-                 (cons 'width 111))
+                 (cons 'width 214))
     (add-to-list 'default-frame-alist
-                 (cons 'height 62))
-    )
-  )
+                 (cons 'height 81))
+    )))
 
 ;; Initialize package sources
 (require 'package)
@@ -501,7 +502,8 @@
   :mode "\\.ts\\'"
   :hook (typescript-mode . lsp-deferred)
   :config
-  (setq typescript-indent-level 2))
+  (setq typescript-indent-level 2
+        lsp-eslint-auto-fix-on-save t))
 
 (use-package company
   :after lsp-mode
@@ -584,7 +586,7 @@
         org-agenda-skip-deadline-if-done t
         org-agenda-include-deadlines t
         org-agenda-block-separator nil
-        org-agenda-tags-column 80
+        org-agenda-tags-column 100
         org-agenda-compact-blocks t
         org-catch-invisible-edits t
         org-refile-targets

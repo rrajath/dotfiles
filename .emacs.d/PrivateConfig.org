@@ -25,6 +25,8 @@ Literate config has a few benefits:
 ** TODO Hitting TAB on a drawer doesn't expand/collapse the drawer
 This is because the TAB in org-mode is mapped to =org-only-cycle-subtree-h=
 Workaround: Use =z a= which maps to =evil-toggle-fold=
+** TODO Smart modeline is cutting off the git branch name
+The git branch name appears at the right end of the mode line and smart-mode-line is displaying only the last 3 characters.
 * First things first
 ** Startup Performance
 #+begin_src emacs-lisp
@@ -39,23 +41,26 @@ Workaround: Use =z a= which maps to =evil-toggle-fold=
 #+end_src
 ** Frame Management
 I want Emacs to take up full screen if I'm on my laptop and take up half of the right screen if I'm on a bigger monitor. This is not the best way of implementing it, but since I'm still learning and it gets the job done, I'm happy with it for now. I'll come back and optimize this once I learn elisp better.
-=1792= in the code block below is the pixel width of my laptop
+=1792= in the code block below is the pixel width of my laptop.
+=5232= is the pixel width of my monitor.
+If =display-pixel-width= is neither of these, then the frame will not be moved or resized.
 #+begin_src emacs-lisp
   (message "Trying to maximize frame")
   (setq pixel-width (display-pixel-width))
   (setq pixel-height (display-pixel-height))
 
-  (if (= pixel-width 1792)
-      (add-to-list 'default-frame-alist '(fullscreen . maximized))
+  (cond
+   ((= pixel-width 1792)
+    (add-to-list 'default-frame-alist '(fullscreen . maximized)))
+   ((= pixel-width 5232)
     (progn
       (add-to-list 'default-frame-alist
-                   (cons 'left (/ pixel-width 2)))
+                   (cons 'left 1720))
       (add-to-list 'default-frame-alist
-                   (cons 'width 111))
+                   (cons 'width 214))
       (add-to-list 'default-frame-alist
-                   (cons 'height 62))
-      )
-    )
+                   (cons 'height 81))
+      )))
 #+end_src
 ** Package Management
 Adding package sources and setting =use-package-always-ensure= to =t=. This setting will eliminate the need to specify =:ensure t= while running writing =use-package= commands.
@@ -141,7 +146,6 @@ Maximize the goodness
 #+end_src
 ** Set up fonts
 This font face will be used everywhere in Emacs, not just in source code
-
 #+begin_src emacs-lisp
   (set-face-attribute 'default nil :font "JetBrains Mono" :height 125)
 #+end_src
@@ -666,44 +670,47 @@ File management with dired
 #+end_src
 ** Languages
 *** Language Servers
+This sets up language server configuration with some pretty cool defaults.
+Make sure to run =lsp-install-server es-lint= to enable eslint configuration.
 #+begin_src emacs-lisp
-  (defun rr/lsp-mode-setup ()
-    (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-    (setq lsp-restart 'auto-restart)
-    (lsp-headerline-breadcrumb-mode))
+    (defun rr/lsp-mode-setup ()
+      (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+      (setq lsp-restart 'auto-restart)
+      (lsp-headerline-breadcrumb-mode))
 
-  (use-package lsp-mode
-    :commands (lsp lsp-deferred)
-    :hook (lsp-mode . rr/lsp-mode-setup)
-    :init
-    (setq lsp-keymap-prefix "C-c l")
-    :config
-    (setq lsp-ui-sideline-show-code-actions t)
-    (lsp-enable-which-key-integration t))
+    (use-package lsp-mode
+      :commands (lsp lsp-deferred)
+      :hook (lsp-mode . rr/lsp-mode-setup)
+      :init
+      (setq lsp-keymap-prefix "C-c l")
+      :config
+      (setq lsp-ui-sideline-show-code-actions t)
+      (lsp-enable-which-key-integration t))
 
-  (use-package lsp-ui
-    :hook (lsp-mode . lsp-ui-mode)
-    :custom
-    (setq lsp-ui-doc-position 'bottom))
+    (use-package lsp-ui
+      :hook (lsp-mode . lsp-ui-mode)
+      :custom
+      (setq lsp-ui-doc-position 'bottom))
 
-  (use-package lsp-treemacs
-    :after lsp)
+    (use-package lsp-treemacs
+      :after lsp)
 
-  (use-package lsp-ivy
-    :after lsp)
+    (use-package lsp-ivy
+      :after lsp)
 
-  (use-package prettier
-    :after lsp)
-  (setq global-prettier-mode t)
-
+    (use-package prettier
+      :after lsp)
+    (setq global-prettier-mode t)
 #+end_src
 *** TypeScript
+This sets up typescript mode with defaults for eslint.
 #+begin_src emacs-lisp
   (use-package typescript-mode
     :mode "\\.ts\\'"
     :hook (typescript-mode . lsp-deferred)
     :config
-    (setq typescript-indent-level 2))
+    (setq typescript-indent-level 2
+          lsp-eslint-auto-fix-on-save t))
 #+end_src
 *** Completions with Company-mode
 #+begin_src emacs-lisp
@@ -804,7 +811,7 @@ This is to display buffers under their respective perspectives
           org-agenda-skip-deadline-if-done t
           org-agenda-include-deadlines t
           org-agenda-block-separator nil
-          org-agenda-tags-column 80
+          org-agenda-tags-column 100
           org-agenda-compact-blocks t
           org-catch-invisible-edits t
           org-refile-targets
