@@ -1235,7 +1235,15 @@ This is the emacs package I use to publish to my Hugo website using org files
   (use-package ox-hugo
     :after ox)
 #+end_src
-** TODO Enable ox-hugo-auto-export-mode to be turned on when you visit blog.org
+** Turn on org-hugo-auto-export-mode when you visit blog.org
+The minor mode =org-hugo-auto-export-mode= enables auto export hugo posts on saving. However, this minor mode is disabled by default. It doesn't make sense to have this turned on globally. So, the following piece of code enables the minor mode only when the buffer is =blog.org=.
+#+begin_src emacs-lisp
+  (defun rr/enable-hugo-auto-export-mode ()
+    (if (equal (buffer-name) "blog.org")
+        (org-hugo-auto-export-mode)))
+
+  (add-hook 'find-file-hook 'rr/enable-hugo-auto-export-mode)
+#+end_src
 * Ideas
 Some ideas for customizing emacs. I keep thinking about different ways to customize emacs and I'd like to have them all in one place so that whenever I have some time, I can pick one up and work on it.
 ** DONE Make org-cycle only expand up to children and not subtree
