@@ -22,11 +22,9 @@ Literate config has a few benefits:
 - Easy to maintain. You never touch the actual config, you only update this .org file and make it generate the actual source file
 - Easy to publish. If you want to publish your config online, it's super easy. GitHub, for example, natively supports org the same way it supports Markdown. So, these org files are rendered nicely, just as regular documentation.
 * Current Issues
-** TODO Hitting TAB on a drawer doesn't expand/collapse the drawer
-This is because the TAB in org-mode is mapped to =org-only-cycle-subtree-h=
-Workaround: Use =z a= which maps to =evil-toggle-fold=
 ** TODO Smart modeline is cutting off the git branch name
 The git branch name appears at the right end of the mode line and smart-mode-line is displaying only the last 3 characters.
+[[https://github.com/Malabarba/smart-mode-line/issues/255][An issue has been filed]]
 * First things first
 ** Startup Performance
 #+begin_src emacs-lisp
@@ -1142,9 +1140,10 @@ This function binds RET to =+org/dwim-at-point= to make RET contextual.
    "RET" '+org/dwim-at-point)
 #+end_src
 *** Org cycle behavior
-I really liked Doom style org cycling. It just goes through folded and children modes and doesn't enter subtree. As my note structure grows, there will invariably be lot of nested headings and looking at all the notes at once adds no value. So, just cycling between FOLDED and CHILDREN works perfectly for me. The below code is copied over from Doom's config
-**** Set up function for custom cycling
-#+begin_src emacs-lisp
+I really liked Doom style org cycling. It just goes through folded and children modes and doesn't enter subtree. As my note structure grows, there will invariably be lot of nested headings and looking at all the notes at once adds no value. So, just cycling between FOLDED and CHILDREN works perfectly for me. The below code is copied over from Doom's config.
+**** Set up function for custom cycling (unused)
+Realized the existing =evil-toggle-fold= function does the job for me and also solves the problem of expanding drawers. I'll be disabling this function for now and instead use =evil-toggle-fold= for a while. If it works as expected for all my use cases, I'll delete this section entirely.
+#+begin_src emacs-lisp :tangle no
   (defun +org-cycle-only-current-subtree-h (&optional arg)
     "Toggle the local fold at the point, and no deeper.
          `org-cycle's standard behavior is to cycle between three levels: collapsed,
@@ -1174,8 +1173,7 @@ I really liked Doom style org cycling. It just goes through folded and children 
   (general-define-key
    :states 'normal
    :keymaps 'org-mode-map
-   "<tab>" '+org-cycle-only-current-subtree-h)
-
+   "<tab>" 'evil-toggle-fold)
 #+end_src
 *** Org insert behavior
 **** Insert item
