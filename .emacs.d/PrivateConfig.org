@@ -221,6 +221,11 @@ This is super helpful, especially in lisp
     (set-face-attribute 'show-paren-match-expression nil :background "#363e4a")
     (show-paren-mode 1))
 #+end_src
+** Highlight current line
+I want to be able to easily see the line my cursor is currently on
+#+begin_src emacs-lisp
+  (global-hl-line-mode)
+#+end_src
 * Usability
 ** Server Mode
 Make this instance of emacs start server so that other client instances can connect to this.
@@ -363,7 +368,7 @@ Package: [[https://github.com/emacs-evil/evil][Evil]]
     :config
     (evil-collection-init))
 #+end_src
-*** Custom keybindings
+*** Custom keybindings (unused)
 Deleting words or lines make the deleted text end up in kill ring. This prevents me from pasting what I initially had in the clipboard. The following functions rewrite delete-word and delete-line functionalities without adding them to the kill-ring.
 Currently, this is disabled. Will enable it once it's thoroughly tested.
 #+begin_src emacs-lisp :tangle no
@@ -641,8 +646,8 @@ Package: [[https://github.com/larstvei/Focus][focus]]
 Collection of Really Useful eXtensions
 Package: [[https://github.com/bbatsov/crux][crux]]
 #+begin_src emacs-lisp
-    (use-package crux
-      :defer 2)
+  (use-package crux
+    :defer 2)
 #+end_src
 * Dired
 File management with dired
