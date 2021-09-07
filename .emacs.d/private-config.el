@@ -541,7 +541,7 @@
             (unless (eq ibuffer-sorting-mode 'alphabetic)
               (ibuffer-do-sort-by-alphabetic))))
 
-(setq persp-state-default-file "~/dotfiles/.emacs.d/persp-auto-save")
+(setq persp-state-default-file (concat user-emacs-directory "var/persp-auto-save"))
 (add-hook 'kill-emacs-hook #'persp-state-save)
 
 (defun rr/set-org-capture-templates ()

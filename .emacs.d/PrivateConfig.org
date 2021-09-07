@@ -299,15 +299,19 @@ Package: [[https://github.com/xiongtx/eros][eros]]
 #+end_src
 * Keybindings
 ** Make ESC work better
+Making =ESC= work like how it works in other programs - cancelling the operation
 #+begin_src emacs-lisp
   ;; Making ESC key work like an ESC key by exiting/canceling stuff
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+end_src
 ** Switch buffers easily
+=counsel-switch-buffer= lets you preview buffers as you scroll through them. It is not set to the keybinding =C-M-j= for easy access. Also, these buffers are aggregated across workspaces (or perspectives).
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
 #+end_src
 ** Which key
+This package shows up a mini help section kinda thing at the bottom that tells what commands are available for a given prefix. Great way to learn new commands and keybindings.
+Package: [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 #+begin_src emacs-lisp
   (use-package which-key
     :defer 0
@@ -318,6 +322,8 @@ Package: [[https://github.com/xiongtx/eros][eros]]
 #+end_src
 ** Evil
 *** Basic Setup
+This turns on evil mode with some specific customizations (that are self explanatory).
+Package: [[https://github.com/emacs-evil/evil][Evil]]
 #+begin_src emacs-lisp
   (use-package evil
     :init
@@ -362,6 +368,8 @@ Currently, this is disabled. Will enable it once it's thoroughly tested.
    "C-;" 'my-delete-word)
 #+end_src
 ** General
+General is a great package for adding custom keybindings not just globally, but for very specific modes (like org-mode-map, evil-mode-map, etc.). The following configuration is for global keybinding with =SPC= as the leader key.
+Package: [[https://github.com/noctuid/general.el][General]]
 #+begin_src emacs-lisp
   (use-package general
     :config
@@ -477,6 +485,7 @@ Default keybinding for =prefix-argument= is =C-u=, but since this is now mapped 
 ** Hydra
 *** Package Setup
 With a prefix set, Hydra helps you run similar commands in succession without having to run them with the prefix each time. For example, resizing windows or text scaling become much easier with this.
+Package: [[https://github.com/abo-abo/hydra][Hydra]]
 #+begin_src emacs-lisp
   (use-package hydra
     :defer t)
@@ -490,6 +499,10 @@ With a prefix set, Hydra helps you run similar commands in succession without ha
 #+end_src
 * Completion Frameworks
 ** Ivy
+Great completion framework. Ivy-rich mode gives more information on each line
+Packages:
+- [[https://github.com/abo-abo/swiper#ivy][ivy]]
+- [[https://github.com/Yevgnen/ivy-rich][ivy-rich]]
 #+begin_src emacs-lisp
   (use-package ivy
     :diminish
@@ -516,6 +529,7 @@ With a prefix set, Hydra helps you run similar commands in succession without ha
     (ivy-rich-mode 1))
 #+end_src
 ** Counsel
+Package: [[https://github.com/abo-abo/swiper#counsel][Counsel]]
 #+begin_src emacs-lisp
   (use-package counsel
     :bind (("M-x" . counsel-M-x)
@@ -549,6 +563,7 @@ With a prefix set, Hydra helps you run similar commands in succession without ha
     (marginalia-mode))
 #+end_src
 ** Orderless
+Package: [[https://github.com/oantolin/orderless][orderless]]
 #+begin_src emacs-lisp
   (use-package orderless
     :after counsel
@@ -558,6 +573,7 @@ With a prefix set, Hydra helps you run similar commands in succession without ha
           completion-category-overrides '((file (styles . (partial-completion))))))
 #+end_src
 ** Prescient
+Package: [[https://github.com/raxod502/prescient.el][prescient]]
 #+begin_src emacs-lisp
   (use-package prescient
     :after counsel
@@ -579,6 +595,9 @@ With a prefix set, Hydra helps you run similar commands in succession without ha
 #+end_src
 * Utilities
 ** Helpful package for better documentation formatting
+This gives better links and formatting inside emacs documentation. This is particularly helpful while looking up documentation for functions, variables, etc.
+I have remapped existing describe function to the =helpful= versions so that I don't have to specifically invoke =helpful= commands.
+Package: [[https://github.com/Wilfred/helpful][helpful]]
 #+begin_src emacs-lisp
   (use-package helpful
     :commands (helpful-callable helpful-variable helpful-command helpful-key helpful-function)
@@ -592,6 +611,8 @@ With a prefix set, Hydra helps you run similar commands in succession without ha
     ([remap describe-key] . helpful-key))
 #+end_src
 ** Expand Region
+This is to mark/select regions that are nested. With repeated invocations of these commands, the selections expand outward level by level.
+Package: [[https://github.com/magnars/expand-region.el][expand-region.el]]
 #+begin_src emacs-lisp
   (use-package expand-region
     :bind (("M-[" . er/expand-region)
@@ -643,6 +664,8 @@ File management with dired
 #+end_src
 * Development
 ** Projectile
+This is great for managing projects. It is good at finding project roots and provides many other functions.
+Package: [[https://github.com/bbatsov/projectile][projectile]]
 #+begin_src emacs-lisp
   (use-package projectile
     :diminish projectile-mode
@@ -660,6 +683,8 @@ File management with dired
     :config (counsel-projectile-mode))
 #+end_src
 ** Git Gutter
+Highlight addition, changes or deletion of lines on the left margin of each file that's inside a git repository. This helps in quickly identifying the changes in a file.
+Package: [[https://github.com/dgutov/diff-hl][diff-hl]]
 #+begin_src emacs-lisp
   (use-package diff-hl)
   (global-diff-hl-mode)
@@ -668,6 +693,8 @@ File management with dired
   (diff-hl-margin-mode 1)
 #+end_src
 ** Magit
+The best git client ever!
+Package: [[https://magit.vc/][magit]]
 #+begin_src emacs-lisp
   (use-package magit
     :commands magit-status
@@ -675,6 +702,10 @@ File management with dired
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 #+end_src
 ** Terminal
+Terminal emulation in emacs. This is the closest terminal emulation that Emacs can give that resembles what you see in, say, iTerm. Vterm Toggle is great for bringing up the terminal in any buffer as a popup from the bottom and dismissing it when it's not needed.
+Packages:
+- [[https://github.com/akermu/emacs-libvterm][vterm]]
+- [[https://github.com/jixiuf/vterm-toggle][vterm-toggle]]
 #+begin_src emacs-lisp
   (use-package vterm
     :commands vterm)
@@ -685,6 +716,12 @@ File management with dired
 *** Language Servers
 This sets up language server configuration with some pretty cool defaults.
 Make sure to run =lsp-install-server es-lint= to enable eslint configuration.
+Packages:
+- [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]]
+- [[https://github.com/emacs-lsp/lsp-ui][lsp-ui]]
+- [[https://github.com/emacs-lsp/lsp-treemacs][lsp-treemacs]]
+- [[https://github.com/emacs-lsp/lsp-ivy][lsp-ivy]]
+- [[https://github.com/jscheid/prettier.el][prettier]]
 #+begin_src emacs-lisp
   (defun rr/lsp-mode-setup ()
     (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
@@ -717,6 +754,7 @@ Make sure to run =lsp-install-server es-lint= to enable eslint configuration.
 #+end_src
 *** TypeScript
 This sets up typescript mode with defaults for eslint.
+Package: [[https://github.com/emacs-typescript/typescript.el][typescript]]
 #+begin_src emacs-lisp
   (use-package typescript-mode
     :mode "\\.ts\\'"
@@ -726,6 +764,8 @@ This sets up typescript mode with defaults for eslint.
           lsp-eslint-auto-fix-on-save t))
 #+end_src
 *** Completions with Company-mode
+This is necessary for relevant code completions
+Package: [[http://company-mode.github.io/][company-mode]]
 #+begin_src emacs-lisp
   (use-package company
     :after lsp-mode
@@ -765,7 +805,7 @@ This is to display buffers under their respective perspectives
 #+end_src
 *** Saving Sessions
 #+begin_src emacs-lisp
-  (setq persp-state-default-file "~/dotfiles/.emacs.d/persp-auto-save")
+  (setq persp-state-default-file (concat user-emacs-directory "var/persp-auto-save"))
   (add-hook 'kill-emacs-hook #'persp-state-save)
 #+end_src
 * OrgMode
@@ -1237,6 +1277,7 @@ This is the emacs package I use to publish to my Hugo website using org files
 #+end_src
 ** Turn on org-hugo-auto-export-mode when you visit blog.org
 The minor mode =org-hugo-auto-export-mode= enables auto export hugo posts on saving. However, this minor mode is disabled by default. It doesn't make sense to have this turned on globally. So, the following piece of code enables the minor mode only when the buffer is =blog.org=.
+Found the code in a [[https://stackoverflow.com/a/39652226][stack overflow post]].
 #+begin_src emacs-lisp
   (defun rr/enable-hugo-auto-export-mode ()
     (if (equal (buffer-name) "blog.org")
