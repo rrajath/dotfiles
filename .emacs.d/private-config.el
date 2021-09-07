@@ -949,4 +949,10 @@ If on a:
 (use-package ox-hugo
   :after ox)
 
+(defun rr/enable-hugo-auto-export-mode ()
+  (if (equal (buffer-name) "blog.org")
+      (org-hugo-auto-export-mode)))
+
+(add-hook 'find-file-hook 'rr/enable-hugo-auto-export-mode)
+
 (setq gc-cons-threshold (* 2 1000 1000))
