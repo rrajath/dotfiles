@@ -299,8 +299,15 @@ Package: [[https://github.com/xiongtx/eros][eros]]
 If there are multiple consecutive whitespaces, I don't want to repeatedly hit delete to remove all the whitespaces. Instead, I just want to hit it once.
 Package: [[https://github.com/nflath/hungry-delete][hungry-delete]]
 #+begin_src emacs-lisp
-  (use-package hungry-delete)
+  (use-package hungry-delete
+    :defer 2)
   (global-hungry-delete-mode)
+#+end_src
+** Go to last change
+As I make edits in different parts of the file, I want to go to last change and by default emacs gives the ability to do this only by explicitly setting a mark and then jumping to that mark. This is too tedious. This package takes care of going to last change with the keybinding =g ;=
+Package: [[https://github.com/camdez/goto-last-change.el][goto-last-change]]
+#+begin_src emacs-lisp
+  (use-package goto-last-change)
 #+end_src
 * Keybindings
 ** Make ESC work better
@@ -622,6 +629,20 @@ Package: [[https://github.com/magnars/expand-region.el][expand-region.el]]
   (use-package expand-region
     :bind (("M-[" . er/expand-region)
            ("C-(" . er/mark-outside-pairs)))
+#+end_src
+** Focus mode
+This will highlight the current region and fade the region surrounding the point. It depends on =thing-at-point=, so what's highlight could be a word, a sentence, a code block, a paragraph, etc.
+Package: [[https://github.com/larstvei/Focus][focus]]
+#+begin_src emacs-lisp
+  (use-package focus
+    :defer 2)
+#+end_src
+** Crux
+Collection of Really Useful eXtensions
+Package: [[https://github.com/bbatsov/crux][crux]]
+#+begin_src emacs-lisp
+    (use-package crux
+      :defer 2)
 #+end_src
 * Dired
 File management with dired

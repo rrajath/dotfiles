@@ -174,8 +174,11 @@
 (use-package eros)
 (eros-mode 1)
 
-(use-package hungry-delete)
+(use-package hungry-delete
+  :defer 2)
 (global-hungry-delete-mode)
+
+(use-package goto-last-change)
 
 ;; Making ESC key work like an ESC key by exiting/canceling stuff
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -408,6 +411,12 @@
 (use-package expand-region
   :bind (("M-[" . er/expand-region)
          ("C-(" . er/mark-outside-pairs)))
+
+(use-package focus
+  :defer 2)
+
+(use-package crux
+  :defer 2)
 
 (use-package dired
   :ensure nil
