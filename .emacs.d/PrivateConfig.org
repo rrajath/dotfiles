@@ -425,6 +425,7 @@ Currently, this is disabled. Will enable it once it's thoroughly tested.
    "o"   '(:ignore t :which-key "org-mode")
    ;; org-mode
    "o a" '(org-agenda :which-key "org-agenda")
+   "o e" '(org-export-dispatch :which-key "org-export-dispatch")
    "o t" '(org-todo :which-key "org-todo")
    "o x" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
    "o r" '(:ignore t :which-key "refile")
@@ -1234,6 +1235,7 @@ This is the emacs package I use to publish to my Hugo website using org files
   (use-package ox-hugo
     :after ox)
 #+end_src
+** TODO Enable ox-hugo-auto-export-mode to be turned on when you visit blog.org
 * Ideas
 Some ideas for customizing emacs. I keep thinking about different ways to customize emacs and I'd like to have them all in one place so that whenever I have some time, I can pick one up and work on it.
 ** DONE Make org-cycle only expand up to children and not subtree
@@ -1309,8 +1311,10 @@ CLOSED: [2021-09-01 Wed 16:01]
 *** TODO yasnippets
 *** TODO Edwina?
 * Tips & Tricks
-There are some actions that need to be performed for which there are no keybindings. These are just general tips [CHANGE THIS!!]
+What's described in this section is general (and lesser known) tips on existing features. These require no customization.
 ** Insert timestamp with current time
 =org-time-stamp-inactive= (bound to =SPC o d T=) inserts only the current date by default. But sometimes we need the current time as well, so having a =universal-=argument= (bound to =C-S-u=) as a prefix before running =org-time-stamp-inactive= helps add the current time as well.
 
 So, hitting =C-S-u SPC o d T= inserts a timestamp like [2021-09-03 Fri 09:37]
+** Use M-m to go to the first non-whitespace in a line
+I'm used to hitting =C-a= to go to the beginning of the line. Some lines are indented and have spaces at the beginning. =M-m= is a nice keybinding to use to get to the first non-whitespace character on any line.

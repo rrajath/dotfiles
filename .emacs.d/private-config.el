@@ -274,6 +274,7 @@
  "o"   '(:ignore t :which-key "org-mode")
  ;; org-mode
  "o a" '(org-agenda :which-key "org-agenda")
+ "o e" '(org-export-dispatch :which-key "org-export-dispatch")
  "o t" '(org-todo :which-key "org-todo")
  "o x" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
  "o r" '(:ignore t :which-key "refile")
