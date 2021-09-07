@@ -134,6 +134,8 @@
   (set-face-attribute 'show-paren-match-expression nil :background "#363e4a")
   (show-paren-mode 1))
 
+(global-hl-line-mode)
+
 (server-start)
 
 (use-package super-save
