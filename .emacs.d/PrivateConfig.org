@@ -295,6 +295,13 @@ Package: [[https://github.com/xiongtx/eros][eros]]
   (use-package eros)
   (eros-mode 1)
 #+end_src
+** Hungry Delete
+If there are multiple consecutive whitespaces, I don't want to repeatedly hit delete to remove all the whitespaces. Instead, I just want to hit it once.
+Package: [[https://github.com/nflath/hungry-delete][hungry-delete]]
+#+begin_src emacs-lisp
+  (use-package hungry-delete)
+  (global-hungry-delete-mode)
+#+end_src
 * Keybindings
 ** Make ESC work better
 Making =ESC= work like how it works in other programs - cancelling the operation

@@ -174,6 +174,9 @@
 (use-package eros)
 (eros-mode 1)
 
+(use-package hungry-delete)
+(global-hungry-delete-mode)
+
 ;; Making ESC key work like an ESC key by exiting/canceling stuff
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
