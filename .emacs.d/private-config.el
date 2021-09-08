@@ -499,12 +499,16 @@
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook (lsp-mode . rr/lsp-mode-setup)
+  :hook ((typescript-mode js2-mode web-mode) . lsp)
   :init
   (setq lsp-keymap-prefix "C-c l")
   :config
   (setq lsp-ui-sideline-show-code-actions t)
-  (lsp-enable-which-key-integration t))
+  (lsp-enable-which-key-integration t)
+  :custom
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (setq lsp-restart 'auto-restart)
+  (lsp-headerline-breadcrumb-mode))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
@@ -517,16 +521,31 @@
 (use-package lsp-ivy
   :after lsp)
 
-(use-package prettier
-  :after lsp)
-(setq global-prettier-mode t)
-
 (use-package typescript-mode
   :mode "\\.ts\\'"
-  :hook (typescript-mode . lsp-deferred)
   :config
   (setq typescript-indent-level 2
         lsp-eslint-auto-fix-on-save t))
+
+(defun rr/set-js-indentation ()
+  (setq js-indent-level 2)
+  (setq evil-shift-width js-indent-level)
+  (setq-default tab-width 2))
+
+(use-package js2-mode
+  :mode "\\.jsx?\\'"
+  :config
+  ;; Use js2-mode for Node scripts
+  (add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode)))
+
+(add-hook 'js2-mode-hook #'rr/set-js-indentation)
+(add-hook 'json-mode-hook #'rr/set-js-indentation)
+
+(use-package prettier-js
+  :hook ((js2-mode . prettier-js-mode)
+         (typescript-mode . prettier-js-mode))
+  :config
+  (setq prettier-js-show-errors nil))
 
 (use-package company
   :after lsp-mode
