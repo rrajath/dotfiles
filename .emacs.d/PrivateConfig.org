@@ -1339,15 +1339,15 @@ Realized the existing =evil-toggle-fold= function does the job for me and also s
 *** Org refile to current file
 Copied over from doom emacs. Helps make refiling easier when it must be done within the current file.
 #+begin_src emacs-lisp
-(defun +org/refile-to-current-file (arg &optional file)
-  "Refile current heading to elsewhere in the current buffer.
-If prefix ARG, copy instead of move."
-  (interactive "P")
-  (let ((org-refile-targets `((,file :maxlevel . 10)))
-        (org-refile-use-outline-path nil)
-        (org-refile-keep arg)
-        current-prefix-arg)
-    (call-interactively #'org-refile)))
+  (defun +org/refile-to-current-file (arg &optional file)
+    "Refile current heading to elsewhere in the current buffer.
+  If prefix ARG, copy instead of move."
+    (interactive "P")
+    (let ((org-refile-targets `((,file :maxlevel . 10)))
+          (org-refile-use-outline-path nil)
+          (org-refile-keep arg)
+          current-prefix-arg)
+      (call-interactively #'org-refile)))
 #+end_src
 * Blogging
 ** ox-hugo
