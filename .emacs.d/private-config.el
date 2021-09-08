@@ -3,12 +3,14 @@
 
 (setq gc-cons-threshold (* 50 1000 1000))
 
-(defun rr/display-startup-time ()
-  (message "Emacs loaded in %s with %d garbage collections."
-           (format "%.2f seconds"
-                   (float-time (time-subtract after-init-time before-init-time)))
-           gcs-done))
-(add-hook 'emacs-startup-hook #'rr/display-startup-time)
+  (defun rr/display-startup-time ()
+    "Displays startup time in the echo buffer and Messages buffer as
+soon as Emacs loads."
+    (message "Emacs loaded in %s with %d garbage collections."
+             (format "%.2f seconds"
+                     (float-time (time-subtract after-init-time before-init-time)))
+             gcs-done))
+  (add-hook 'emacs-startup-hook #'rr/display-startup-time)
 
 (message "Trying to maximize frame")
 (setq pixel-width (display-pixel-width))
@@ -154,14 +156,15 @@
 (use-package evil-nerd-commenter
   :after evil)
 
-(defun rr/comment-and-newline ()
+(defun rr/comment-and-nextline ()
+  "Comment the current line and move the point to the next line"
   (interactive)
   (evilnc-comment-or-uncomment-lines 1)
   (evil-next-line))
 
 (general-define-key
  :states '(normal insert)
- "s-/" 'rr/comment-and-newline)
+ "s-/" 'rr/comment-and-nextline)
 
 (use-package ws-butler
   :hook ((text-mode . ws-butler-mode)
@@ -498,11 +501,6 @@
 (use-package vterm-toggle
   :commands vterm-toggle)
 
-(defun rr/lsp-mode-setup ()
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (setq lsp-restart 'auto-restart)
-  (lsp-headerline-breadcrumb-mode))
-
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :hook ((typescript-mode js2-mode web-mode) . lsp)
@@ -534,6 +532,7 @@
         lsp-eslint-auto-fix-on-save t))
 
 (defun rr/set-js-indentation ()
+  "Set javascript indentation to 2"
   (setq js-indent-level 2)
   (setq evil-shift-width js-indent-level)
   (setq-default tab-width 2))
