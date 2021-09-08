@@ -88,6 +88,9 @@ soon as Emacs loads."
 (set-fringe-mode 0)
 (menu-bar-mode -1)
 
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist '(ns-appearance . dark))
+
 (set-face-attribute 'default nil :font "JetBrains Mono" :height 125)
 
 (use-package doom-modeline
@@ -572,6 +575,7 @@ soon as Emacs loads."
   :bind (("C-x k" . persp-kill-buffer*))
   :custom
   (persp-initial-frame-name "main")
+  (persp-sort 'created)
   :init
   (persp-mode))
 

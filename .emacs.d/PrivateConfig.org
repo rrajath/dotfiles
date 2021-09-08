@@ -151,6 +151,12 @@ Maximize the goodness
   (set-fringe-mode 0)
   (menu-bar-mode -1)
 #+end_src
+** Make titlebar the same color as background
+I don't like Mac's default titlebar and I'd rather have the titlebar blend with the background
+#+begin_src emacs-lisp
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
+#+end_src
 ** Set up fonts
 This font face will be used everywhere in Emacs, not just in source code
 #+begin_src emacs-lisp
@@ -851,6 +857,7 @@ Package: [[https://github.com/nex3/perspective-el][perspective.el]]
     :bind (("C-x k" . persp-kill-buffer*))
     :custom
     (persp-initial-frame-name "main")
+    (persp-sort 'created)
     :init
     (persp-mode))
 #+end_src
