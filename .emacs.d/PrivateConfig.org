@@ -31,6 +31,8 @@ The git branch name appears at the right end of the mode line and smart-mode-lin
   (setq gc-cons-threshold (* 50 1000 1000))
 
   (defun rr/display-startup-time ()
+    "Displays startup time in the echo buffer and Messages buffer as
+soon as Emacs loads."
     (message "Emacs loaded in %s with %d garbage collections."
              (format "%.2f seconds"
                      (float-time (time-subtract after-init-time before-init-time)))
@@ -259,17 +261,18 @@ Package: [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-comment
   (use-package evil-nerd-commenter
     :after evil)
 #+end_src
-*** Comment and Newline
+*** Comment and Nextline
 When I comment a line, I'd like that line to be commented and the cursor to be moved to the next line. This way, I can keep hitting the comment line keybinding repeatedly without having to manually move to the next line. This custom function will help me do that. It is also bound to =s-/=
 #+begin_src emacs-lisp
-  (defun rr/comment-and-newline ()
+  (defun rr/comment-and-nextline ()
+    "Comment the current line and move the point to the next line"
     (interactive)
     (evilnc-comment-or-uncomment-lines 1)
     (evil-next-line))
 
   (general-define-key
    :states '(normal insert)
-   "s-/" 'rr/comment-and-newline)
+   "s-/" 'rr/comment-and-nextline)
 #+end_src
 ** Automatically clean whitespaces
 Trim whitespace at the end of the line. This happens when the buffer is saved and is unobtrusive. This means the user is not aware of the trimming that has happened. So, the point is not moved, but when the buffer is reverted this can be seen.
@@ -763,11 +766,6 @@ Packages:
 - [[https://github.com/emacs-lsp/lsp-ivy][lsp-ivy]]
 - [[https://github.com/jscheid/prettier.el][prettier]]
 #+begin_src emacs-lisp
-  (defun rr/lsp-mode-setup ()
-    (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-    (setq lsp-restart 'auto-restart)
-    (lsp-headerline-breadcrumb-mode))
-
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
     :hook ((typescript-mode js2-mode web-mode) . lsp)
@@ -803,6 +801,7 @@ Package: [[https://github.com/emacs-typescript/typescript.el][typescript]]
           lsp-eslint-auto-fix-on-save t))
 
   (defun rr/set-js-indentation ()
+    "Set javascript indentation to 2"
     (setq js-indent-level 2)
     (setq evil-shift-width js-indent-level)
     (setq-default tab-width 2))
