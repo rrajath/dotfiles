@@ -314,6 +314,14 @@ Package: [[https://github.com/camdez/goto-last-change.el][goto-last-change]]
 #+begin_src emacs-lisp
   (use-package goto-last-change)
 #+end_src
+** Revert buffer NOCONFIRM
+I keep having to revert buffer for different reasons and when I hit the command, it asks me for confirmation. I don't want to say =yes= every single time.
+#+begin_src emacs-lisp
+  (defun rr/revert-buffer-no-confirm ()
+    "Revert the buffer, but don't ask for confirmation"
+    (interactive)
+    (revert-buffer nil t nil))
+#+end_src
 * Keybindings
 ** Make ESC work better
 Making =ESC= work like how it works in other programs - cancelling the operation
@@ -409,7 +417,8 @@ Package: [[https://github.com/noctuid/general.el][General]]
    ;; buffer management
    "b"   '(:ignore t :which-key "buffers")
    "b i" '(ibuffer :which-key "ibuffer")
-   "b r" '(revert-buffer :which-key "revert-buffer")
+   "b r" '(rr/revert-buffer-no-confirm :which-key "rr/revert-buffer-no-confirm")
+   "b R" '(revert-buffer :which-key "revert-buffer")
    "b k" '(kill-buffer :which-key "kill-buffer")
    ;; perspectives
    "s"   '(:ignore t :which-key "perspectives")
@@ -811,7 +820,7 @@ Package: [[https://github.com/emacs-typescript/typescript.el][typescript]]
     :hook ((js2-mode . prettier-js-mode)
            (typescript-mode . prettier-js-mode))
     :config
-    (setq prettier-js-show-errors nil))
+    (setq prettier-js-show-errors 'echo))
 #+end_src
 *** Completions with Company-mode
 This is necessary for relevant code completions
