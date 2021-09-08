@@ -12,7 +12,7 @@ soon as Emacs loads."
              gcs-done))
   (add-hook 'emacs-startup-hook #'rr/display-startup-time)
 
-(message "Trying to maximize frame")
+(message "Setting frame size and position based on display size")
 (setq pixel-width (display-pixel-width))
 (setq pixel-height (display-pixel-height))
 
@@ -114,6 +114,7 @@ soon as Emacs loads."
 ;; disable line numbers for some modes
 (dolist (mode '(org-mode-hook
                 term-mode-hook
+                vterm-mode-hook
                 shell-mode-hook
                 treemacs-mode-hook
                 eshell-mode-hook))
@@ -260,6 +261,7 @@ soon as Emacs loads."
  "s A" '(persp-set-buffer :which-key "set-buffer")
  "s s" '(persp-switch :which-key "persp-switch")
  "s r" '(persp-rename :which-key "persp-rename")
+ "s k" '(persp-kill :which-key "persp-kill")
  ;; dired
  "d"   '(:ignore t :which-key "dired")
  "d j" '(dired-jump :which-key "dired-jump")

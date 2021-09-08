@@ -46,7 +46,7 @@ I want Emacs to take up full screen if I'm on my laptop and take up half of the 
 If =display-pixel-width= is neither of these, then the frame will not be moved or resized.
 [[https://emacs.stackexchange.com/questions/16961/how-to-set-emacs-frame-size-by-pixels/17354#17354][A stack overflow post]] has another way to set this; something I want to try in the future.
 #+begin_src emacs-lisp
-  (message "Trying to maximize frame")
+  (message "Setting frame size and position based on display size")
   (setq pixel-width (display-pixel-width))
   (setq pixel-height (display-pixel-height))
 
@@ -190,6 +190,7 @@ I want to see line numbers and column numbers in most modes execpt a few.
   ;; disable line numbers for some modes
   (dolist (mode '(org-mode-hook
                   term-mode-hook
+                  vterm-mode-hook
                   shell-mode-hook
                   treemacs-mode-hook
                   eshell-mode-hook))
@@ -431,6 +432,7 @@ Package: [[https://github.com/noctuid/general.el][General]]
    "s A" '(persp-set-buffer :which-key "set-buffer")
    "s s" '(persp-switch :which-key "persp-switch")
    "s r" '(persp-rename :which-key "persp-rename")
+   "s k" '(persp-kill :which-key "persp-kill")
    ;; dired
    "d"   '(:ignore t :which-key "dired")
    "d j" '(dired-jump :which-key "dired-jump")
@@ -1345,11 +1347,6 @@ Found the code in a [[https://stackoverflow.com/a/39652226][stack overflow post]
 #+end_src
 * Ideas
 Some ideas for customizing emacs. I keep thinking about different ways to customize emacs and I'd like to have them all in one place so that whenever I have some time, I can pick one up and work on it.
-** DONE Make org-cycle only expand up to children and not subtree
-CLOSED: [2021-08-30 Mon 21:20]
-:LOGBOOK:
-- State "DONE"       from "TODO"       [2021-08-30 Mon 21:20]
-:END:
 * Packages I want to experiment with
 - [[https://awesomeopensource.com/project/dandavison/magit-delta?mode=desktop&ref_=m_ft_dsk][Magit Delta]]
 - Deft
