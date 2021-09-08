@@ -301,6 +301,7 @@ soon as Emacs loads."
  "o x" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
  "o r" '(:ignore t :which-key "refile")
  "o r r" '(org-refile :which-key "org-refile")
+ "o r ." '(+org/refile-to-current-file :which-key "+org/refile-to-current-file")
  "o r A" '(org-archive-subtree :which-key "org-archive-subtree")
  "o h" '(org-toggle-heading :which-key "heading")
  "o i" '(org-toggle-item :which-key "item")
@@ -965,6 +966,16 @@ If on a:
  :states '(normal insert)
  :keymaps 'org-mode-map
  "<C-S-return>" '+org/insert-item-above)
+
+(defun +org/refile-to-current-file (arg &optional file)
+  "Refile current heading to elsewhere in the current buffer.
+If prefix ARG, copy instead of move."
+  (interactive "P")
+  (let ((org-refile-targets `((,file :maxlevel . 10)))
+        (org-refile-use-outline-path nil)
+        (org-refile-keep arg)
+        current-prefix-arg)
+    (call-interactively #'org-refile)))
 
 (use-package ox-hugo
   :after ox)
