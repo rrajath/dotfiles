@@ -182,6 +182,11 @@
 
 (use-package goto-last-change)
 
+(defun rr/revert-buffer-no-confirm ()
+  "Revert the buffer, but don't ask for confirmation"
+  (interactive)
+  (revert-buffer nil t nil))
+
 ;; Making ESC key work like an ESC key by exiting/canceling stuff
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
@@ -241,7 +246,8 @@
  ;; buffer management
  "b"   '(:ignore t :which-key "buffers")
  "b i" '(ibuffer :which-key "ibuffer")
- "b r" '(revert-buffer :which-key "revert-buffer")
+ "b r" '(rr/revert-buffer-no-confirm :which-key "rr/revert-buffer-no-confirm")
+ "b R" '(revert-buffer :which-key "revert-buffer")
  "b k" '(kill-buffer :which-key "kill-buffer")
  ;; perspectives
  "s"   '(:ignore t :which-key "perspectives")
@@ -545,7 +551,7 @@
   :hook ((js2-mode . prettier-js-mode)
          (typescript-mode . prettier-js-mode))
   :config
-  (setq prettier-js-show-errors nil))
+  (setq prettier-js-show-errors 'echo))
 
 (use-package company
   :after lsp-mode
