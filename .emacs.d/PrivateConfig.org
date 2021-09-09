@@ -251,11 +251,11 @@ Package: [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
     :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
-** Smart Modeline
+** Smart Modeline (unused)
 Make the mode line pretty
 Package: [[https://github.com/Malabarba/smart-mode-line][smart-mode-line]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package smart-mode-line
     :config
     (setq
