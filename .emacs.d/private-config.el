@@ -643,6 +643,7 @@ soon as Emacs loads."
         org-agenda-tags-column 100
         org-agenda-compact-blocks t
         org-catch-invisible-edits t
+        org-fontify-whole-heading-line t
         org-refile-targets
         '((nil :maxlevel . 3)
           (org-agenda-files :maxlevel . 3)))
