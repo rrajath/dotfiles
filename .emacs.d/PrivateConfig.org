@@ -27,6 +27,7 @@ The git branch name appears at the right end of the mode line and smart-mode-lin
 [[https://github.com/Malabarba/smart-mode-line/issues/255][An issue has been filed]]
 * First things first
 ** Startup Performance
+
 #+begin_src emacs-lisp
   (setq gc-cons-threshold (* 50 1000 1000))
 
@@ -39,12 +40,14 @@ soon as Emacs loads."
              gcs-done))
   (add-hook 'emacs-startup-hook #'rr/display-startup-time)
 #+end_src
+
 ** Frame Management
 I want Emacs to take up full screen if I'm on my laptop and take up half of the right screen if I'm on a bigger monitor. This is not the best way of implementing it, but since I'm still learning and it gets the job done, I'm happy with it for now. I'll come back and optimize this once I learn elisp better.
 =1792= in the code block below is the pixel width of my laptop.
 =5232= is the pixel width of my monitor.
 If =display-pixel-width= is neither of these, then the frame will not be moved or resized.
 [[https://emacs.stackexchange.com/questions/16961/how-to-set-emacs-frame-size-by-pixels/17354#17354][A stack overflow post]] has another way to set this; something I want to try in the future.
+
 #+begin_src emacs-lisp
   (message "Setting frame size and position based on display size")
   (setq pixel-width (display-pixel-width))
@@ -63,8 +66,10 @@ If =display-pixel-width= is neither of these, then the frame will not be moved o
                    (cons 'height 81))
       )))
 #+end_src
+
 ** Package Management
 Adding package sources and setting =use-package-always-ensure= to =t=. This setting will eliminate the need to specify =:ensure t= while running writing =use-package= commands.
+
 #+begin_src emacs-lisp
   ;; Initialize package sources
   (require 'package)
@@ -91,9 +96,11 @@ Adding package sources and setting =use-package-always-ensure= to =t=. This sett
   (setq use-package-always-ensure t)
   (setq use-package-verbose t)
 #+end_src
+
 ** Keep .emacs.d clean
 This is to avoid emacs from creating temporary files:
 Package: [[https://github.com/emacscollective/no-littering][no-littering]]
+
 #+begin_src emacs-lisp
   (use-package no-littering)
 
@@ -102,9 +109,11 @@ Package: [[https://github.com/emacscollective/no-littering][no-littering]]
 
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 #+end_src
+
 ** Auto update packages
 Automatically update packages. Nothing more to it.
 Package: [[https://github.com/rranelli/auto-package-update.el][auto-package-update]]
+
 #+begin_src emacs-lisp
   (use-package auto-package-update
     :custom
@@ -115,26 +124,33 @@ Package: [[https://github.com/rranelli/auto-package-update.el][auto-package-upda
     (auto-package-update-maybe)
     (auto-package-update-at-time "09:00"))
 #+end_src
+
 ** Basic Setup
 *** Some defaults
 I want files to move to trash when I delete them in Emacs. I want better undo unlike vim where entire block is considered giant undo step. This settting changes the undo structure into finer steps. I also want to auto save files by default.
+
 #+begin_src emacs-lisp
   (setq-default
    delete-by-moving-to-trash t
    evil-want-fine-undo t
    auto-save-default t)
 #+end_src
+
 *** Tab widths
 I mostly use typescript and I want to have tab width to 2
+
 #+begin_src emacs-lisp
   (setq-default tab-width 2)
   (setq-default evil-shift-width tab-width)
 #+end_src
+
 *** Enable Global Subword Mode
 Subword mode is great when you have to deal with camel case (or pascal case) strings. For example, if you have a word like EmacsIsAwesome, you can move between Emacs, Is and Awesome.
+
 #+begin_src emacs-lisp
   (global-subword-mode 1)
 #+end_src
+
 * UI Configuration
 ** Get rid of the startup message
 This is to remove the ugly annoying startup message on a white screen that you get when you load emacs (without any custom configs)
@@ -142,8 +158,10 @@ This is to remove the ugly annoying startup message on a white screen that you g
 #+begin_src emacs-lisp
   (setq inhibit-startup-message t)
 #+end_src
+
 ** Remove menubar, toolbar, scrollbars, etc.
 Maximize the goodness
+
 #+begin_src emacs-lisp
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
@@ -151,17 +169,22 @@ Maximize the goodness
   (set-fringe-mode 0)
   (menu-bar-mode -1)
 #+end_src
+
 ** Make titlebar the same color as background
 I don't like Mac's default titlebar and I'd rather have the titlebar blend with the background
+
 #+begin_src emacs-lisp
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
   (add-to-list 'default-frame-alist '(ns-appearance . dark))
 #+end_src
+
 ** Set up fonts
 This font face will be used everywhere in Emacs, not just in source code
+
 #+begin_src emacs-lisp
   (set-face-attribute 'default nil :font "JetBrains Mono" :height 125)
 #+end_src
+
 ** Set up theme
 I use the Doom-One theme with a Doom modeline and also use all-the-icons for pretty icons. The following code block sets them up
 Packages:
@@ -189,6 +212,7 @@ Packages:
 #+end_src
 ** Show line and column numbers
 I want to see line numbers and column numbers in most modes execpt a few.
+
 #+begin_src emacs-lisp
   (column-number-mode)
   (global-display-line-numbers-mode t)
@@ -202,16 +226,20 @@ I want to see line numbers and column numbers in most modes execpt a few.
                   eshell-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 #+end_src
+
 ** Rainbow Delimiters
 Lisp stands for Lots of Irritating Superfluous Parentheses. Let's make them colorful at least.
 Package: [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
+
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
+
 ** Smart Modeline
 Make the mode line pretty
 Package: [[https://github.com/Malabarba/smart-mode-line][smart-mode-line]]
+
 #+begin_src emacs-lisp
   (use-package smart-mode-line
     :config
@@ -222,27 +250,35 @@ Package: [[https://github.com/Malabarba/smart-mode-line][smart-mode-line]]
      sml/name-width 60)
     (sml/setup))
 #+end_src
+
 ** Highlight Matching Braces
 This is super helpful, especially in lisp
+
 #+begin_src emacs-lisp
   (use-package paren
     :config
     (set-face-attribute 'show-paren-match-expression nil :background "#363e4a")
     (show-paren-mode 1))
 #+end_src
+
 ** Highlight current line
 I want to be able to easily see the line my cursor is currently on
+
 #+begin_src emacs-lisp
   (global-hl-line-mode)
 #+end_src
+
 * Usability
 ** Server Mode
 Make this instance of emacs start server so that other client instances can connect to this.
+
 #+begin_src emacs-lisp
   (server-start)
 #+end_src
+
 ** Auto-saving changed files
 This removes the need to hit Save all the time.
+
 #+begin_src emacs-lisp
   (use-package super-save
     :defer 1
@@ -251,8 +287,10 @@ This removes the need to hit Save all the time.
     (super-save-mode +1)
     (setq super-save-auto-save-when-idle t))
 #+end_src
+
 ** Auto-reverting changed files
 This is to make sure regular files are reloaded when they're changed outside Emacs. For example, a file may have changed from another device (via Dropbox). Having the file open already and just going to that buffer will auto revert the file so that there are no overwrites.
+
 #+begin_src emacs-lisp
   ;; Revert Dired and other buffers
   (setq global-auto-revert-non-file-buffers t)
@@ -260,16 +298,20 @@ This is to make sure regular files are reloaded when they're changed outside Ema
   ;; Revert buffers when the underlying file has changed
   (global-auto-revert-mode 1)
 #+end_src
+
 ** Commenting Lines
 *** Basic setup
 Commenting lines is now easy and works across languages.
 Package: [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
+
 #+begin_src emacs-lisp
   (use-package evil-nerd-commenter
     :after evil)
 #+end_src
+
 *** Comment and Nextline
 When I comment a line, I'd like that line to be commented and the cursor to be moved to the next line. This way, I can keep hitting the comment line keybinding repeatedly without having to manually move to the next line. This custom function will help me do that. It is also bound to =s-/=
+
 #+begin_src emacs-lisp
   (defun rr/comment-and-nextline ()
     "Comment the current line and move the point to the next line"
@@ -281,72 +323,92 @@ When I comment a line, I'd like that line to be commented and the cursor to be m
    :states '(normal insert)
    "s-/" 'rr/comment-and-nextline)
 #+end_src
+
 ** Automatically clean whitespaces
 Trim whitespace at the end of the line. This happens when the buffer is saved and is unobtrusive. This means the user is not aware of the trimming that has happened. So, the point is not moved, but when the buffer is reverted this can be seen.
 Package: [[https://github.com/lewang/ws-butler][ws-butler]]
+
 #+begin_src emacs-lisp
   (use-package ws-butler
     :hook ((text-mode . ws-butler-mode)
            (prog-mode . ws-butler-mode)))
 #+end_src
+
 ** Smart Parenthesis
 Add closing parenthesis whenever you open parenthesis.
 Package: [[https://github.com/Fuco1/smartparens][smartparens]]
+
 #+begin_src emacs-lisp
   (use-package smartparens)
   (smartparens-global-mode)
 #+end_src
+
 ** Jumping around with Avy
 Jump to any character, word or line in the visible region. Keybindings for this are described under Keybindings/General configuration.
 Package: [[https://github.com/abo-abo/avy][avy]]
+
 #+begin_src emacs-lisp
   (use-package avy
     :commands (avy-goto-char avy-goto-word-0 avy-goto-line))
 #+end_src
+
 ** Eros Mode
 While evaluating elisp expressions in a buffer, the eval results will be displayed as an overlay next to the expression instead of the echo area
 Package: [[https://github.com/xiongtx/eros][eros]]
+
 #+begin_src emacs-lisp
   (use-package eros)
   (eros-mode 1)
 #+end_src
+
 ** Hungry Delete
 If there are multiple consecutive whitespaces, I don't want to repeatedly hit delete to remove all the whitespaces. Instead, I just want to hit it once.
 Package: [[https://github.com/nflath/hungry-delete][hungry-delete]]
+
 #+begin_src emacs-lisp
   (use-package hungry-delete
     :defer 2)
   (global-hungry-delete-mode)
 #+end_src
+
 ** Go to last change
 As I make edits in different parts of the file, I want to go to last change and by default emacs gives the ability to do this only by explicitly setting a mark and then jumping to that mark. This is too tedious. This package takes care of going to last change with the keybinding =g ;=
 Package: [[https://github.com/camdez/goto-last-change.el][goto-last-change]]
+
 #+begin_src emacs-lisp
   (use-package goto-last-change)
 #+end_src
+
 ** Revert buffer NOCONFIRM
 I keep having to revert buffer for different reasons and when I hit the command, it asks me for confirmation. I don't want to say =yes= every single time.
+
 #+begin_src emacs-lisp
   (defun rr/revert-buffer-no-confirm ()
     "Revert the buffer, but don't ask for confirmation"
     (interactive)
     (revert-buffer nil t nil))
 #+end_src
+
 * Keybindings
 ** Make ESC work better
 Making =ESC= work like how it works in other programs - cancelling the operation
+
 #+begin_src emacs-lisp
   ;; Making ESC key work like an ESC key by exiting/canceling stuff
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+end_src
+
 ** Switch buffers easily
 =counsel-switch-buffer= lets you preview buffers as you scroll through them. It is not set to the keybinding =C-M-j= for easy access. Also, these buffers are aggregated across workspaces (or perspectives).
+
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
 #+end_src
+
 ** Which key
 This package shows up a mini help section kinda thing at the bottom that tells what commands are available for a given prefix. Great way to learn new commands and keybindings.
 Package: [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
+
 #+begin_src emacs-lisp
   (use-package which-key
     :defer 0
@@ -355,10 +417,12 @@ Package: [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
     (which-key-mode)
     (setq which-key-idle-delay 0.3))
 #+end_src
+
 ** Evil
 *** Basic Setup
 This turns on evil mode with some specific customizations (that are self explanatory).
 Package: [[https://github.com/emacs-evil/evil][Evil]]
+
 #+begin_src emacs-lisp
   (use-package evil
     :init
@@ -386,9 +450,11 @@ Package: [[https://github.com/emacs-evil/evil][Evil]]
     :config
     (evil-collection-init))
 #+end_src
+
 *** Custom keybindings (unused)
 Deleting words or lines make the deleted text end up in kill ring. This prevents me from pasting what I initially had in the clipboard. The following functions rewrite delete-word and delete-line functionalities without adding them to the kill-ring.
 Currently, this is disabled. Will enable it once it's thoroughly tested.
+
 #+begin_src emacs-lisp :tangle no
   (defun rr/delete-word (arg)
     (interactive "p")
@@ -402,9 +468,11 @@ Currently, this is disabled. Will enable it once it's thoroughly tested.
    :states 'normal
    "C-;" 'my-delete-word)
 #+end_src
+
 ** General
 General is a great package for adding custom keybindings not just globally, but for very specific modes (like org-mode-map, evil-mode-map, etc.). The following configuration is for global keybinding with =SPC= as the leader key.
 Package: [[https://github.com/noctuid/general.el][General]]
+
 #+begin_src emacs-lisp
   (use-package general
     :config
@@ -513,21 +581,30 @@ Package: [[https://github.com/noctuid/general.el][General]]
    "s-]" 'persp-next
    "s-[" 'persp-prev)
 #+end_src
+
 ** Remap universal argument
 Default keybinding for =prefix-argument= is =C-u=, but since this is now mapped to scrolling up half a page, it needs a new keybinding. The following code block remaps it to =C-S-u=.
+
 #+begin_src emacs-lisp
   (general-define-key
    :states 'normal
    "C-S-u" 'universal-argument)
 #+end_src
+
 ** Hydra
 *** Package Setup
 With a prefix set, Hydra helps you run similar commands in succession without having to run them with the prefix each time. For example, resizing windows or text scaling become much easier with this.
 Package: [[https://github.com/abo-abo/hydra][Hydra]]
+
 #+begin_src emacs-lisp
   (use-package hydra
     :defer t)
+#+end_src
 
+*** Handle Window Resize
+This keybinding is to easily resize windows - horizontal or vertical
+
+#+begin_src emacs-lisp
   (defhydra hydra-window-resize (global-map "C->")
     "resize"
     ("l" enlarge-window-horizontally "enlarge-horizontal")
@@ -535,6 +612,7 @@ Package: [[https://github.com/abo-abo/hydra][Hydra]]
     ("j" enlarge-window "enlarge-vertical")
     ("k" shrink-window "shrink-vertical"))
 #+end_src
+
 * Completion Frameworks
 ** Ivy
 Great completion framework. Ivy-rich mode gives more information on each line
@@ -672,6 +750,7 @@ Package: [[https://github.com/bbatsov/crux][crux]]
 #+end_src
 * Dired
 File management with dired
+
 #+begin_src emacs-lisp
   (use-package dired
     :ensure nil
@@ -714,10 +793,12 @@ File management with dired
       "l" 'dired-single-buffer
       "H" 'dired-omit-mode))
 #+end_src
+
 * Development
 ** Projectile
 This is great for managing projects. It is good at finding project roots and provides many other functions.
 Package: [[https://github.com/bbatsov/projectile][projectile]]
+
 #+begin_src emacs-lisp
   (use-package projectile
     :diminish projectile-mode
@@ -734,9 +815,11 @@ Package: [[https://github.com/bbatsov/projectile][projectile]]
     :after projectile
     :config (counsel-projectile-mode))
 #+end_src
+
 ** Git Gutter
 Highlight addition, changes or deletion of lines on the left margin of each file that's inside a git repository. This helps in quickly identifying the changes in a file.
 Package: [[https://github.com/dgutov/diff-hl][diff-hl]]
+
 #+begin_src emacs-lisp
   (use-package diff-hl)
   (global-diff-hl-mode)
@@ -744,26 +827,31 @@ Package: [[https://github.com/dgutov/diff-hl][diff-hl]]
   (diff-hl-dired-mode 1)
   (diff-hl-margin-mode 1)
 #+end_src
+
 ** Magit
 The best git client ever!
 Package: [[https://magit.vc/][magit]]
+
 #+begin_src emacs-lisp
   (use-package magit
     :commands magit-status
     :custom
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 #+end_src
+
 ** Terminal
 Terminal emulation in emacs. This is the closest terminal emulation that Emacs can give that resembles what you see in, say, iTerm. Vterm Toggle is great for bringing up the terminal in any buffer as a popup from the bottom and dismissing it when it's not needed.
 Packages:
 - [[https://github.com/akermu/emacs-libvterm][vterm]]
 - [[https://github.com/jixiuf/vterm-toggle][vterm-toggle]]
+
 #+begin_src emacs-lisp
   (use-package vterm
     :commands vterm)
   (use-package vterm-toggle
     :commands vterm-toggle)
 #+end_src
+
 ** Languages
 *** Language Servers
 This sets up language server configuration with some pretty cool defaults.
@@ -774,6 +862,7 @@ Packages:
 - [[https://github.com/emacs-lsp/lsp-treemacs][lsp-treemacs]]
 - [[https://github.com/emacs-lsp/lsp-ivy][lsp-ivy]]
 - [[https://github.com/jscheid/prettier.el][prettier]]
+
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
@@ -799,9 +888,11 @@ Packages:
   (use-package lsp-ivy
     :after lsp)
 #+end_src
+
 *** TypeScript
 This sets up typescript mode with defaults for eslint.
 Package: [[https://github.com/emacs-typescript/typescript.el][typescript]]
+
 #+begin_src emacs-lisp
   (use-package typescript-mode
     :mode "\\.ts\\'"
@@ -830,9 +921,11 @@ Package: [[https://github.com/emacs-typescript/typescript.el][typescript]]
     :config
     (setq prettier-js-show-errors 'echo))
 #+end_src
+
 *** Completions with Company-mode
 This is necessary for relevant code completions
 Package: [[http://company-mode.github.io/][company-mode]]
+
 #+begin_src emacs-lisp
   (use-package company
     :after lsp-mode
@@ -848,11 +941,13 @@ Package: [[http://company-mode.github.io/][company-mode]]
   (use-package company-box
     :hook (company-mode . company-box-mode))
 #+end_src
+
 * Buffers
 ** Perspectives
 *** Basic Setup
 This provides multiple "workspaces" for better management of buffers.
 Package: [[https://github.com/nex3/perspective-el][perspective.el]]
+
 #+begin_src emacs-lisp
   (use-package perspective
     :bind (("C-x k" . persp-kill-buffer*))
@@ -862,8 +957,10 @@ Package: [[https://github.com/nex3/perspective-el][perspective.el]]
     :init
     (persp-mode))
 #+end_src
+
 *** IBuffer hook
 This is to display buffers under their respective perspectives
+
 #+begin_src emacs-lisp
   (add-hook 'ibuffer-hook
             (lambda ()
@@ -871,13 +968,18 @@ This is to display buffers under their respective perspectives
               (unless (eq ibuffer-sorting-mode 'alphabetic)
                 (ibuffer-do-sort-by-alphabetic))))
 #+end_src
+
 *** Saving Sessions
+Set the directory for auto saving persp sessions
+
 #+begin_src emacs-lisp
   (setq persp-state-default-file (concat user-emacs-directory "var/persp-auto-save"))
   (add-hook 'kill-emacs-hook #'persp-state-save)
 #+end_src
+
 * OrgMode
 ** Capture Templates
+
 #+begin_src emacs-lisp
   (defun rr/set-org-capture-templates ()
     `(("o" "Organize")
@@ -902,7 +1004,9 @@ This is to display buffers under their respective perspectives
       )
     )
 #+end_src
+
 ** Basic setup
+
 #+begin_src emacs-lisp
   (defun rr/org-path (path)
     (expand-file-name path org-directory))
@@ -935,6 +1039,7 @@ This is to display buffers under their respective perspectives
           org-agenda-tags-column 100
           org-agenda-compact-blocks t
           org-catch-invisible-edits t
+          org-fontify-whole-heading-line t
           org-refile-targets
           '((nil :maxlevel . 3)
             (org-agenda-files :maxlevel . 3)))
@@ -943,21 +1048,27 @@ This is to display buffers under their respective perspectives
 
   (require 'org-indent)
 #+end_src
+
 ** Org Appear
 This is to make emphasis markers like bold or italics show up when cursor is on the words that contain said markers.
 Package: [[https://github.com/awth13/org-appear][org-appear]]
+
 #+begin_src emacs-lisp
   (use-package org-appear)
   (add-hook 'org-mode-hook 'org-appear-mode)
 #+end_src
+
 ** Prettier bullets
+
 #+begin_src emacs-lisp
   (use-package org-bullets
     :hook (org-mode . org-bullets-mode)
     :custom
     (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 #+end_src
+
 ** Visual Fill Column
+
 #+begin_src emacs-lisp
   (defun rr/org-mode-visual-fill ()
     (setq visual-fill-column-width 100
@@ -967,7 +1078,9 @@ Package: [[https://github.com/awth13/org-appear][org-appear]]
   (use-package visual-fill-column
     :hook (org-mode . rr/org-mode-visual-fill))
 #+end_src
+
 ** Evil-Org-Mode
+
 #+begin_src emacs-lisp
   (use-package evil-org
     :after org
@@ -976,8 +1089,10 @@ Package: [[https://github.com/awth13/org-appear][org-appear]]
     (require 'evil-org-agenda)
     (evil-org-agenda-set-keys))
 #+end_src
+
 ** TODO Agenda Configs
 This needs a lot more work, but this is a good start
+
 #+begin_src emacs-lisp
   (setq org-agenda-span 'day)
 
@@ -998,8 +1113,10 @@ This needs a lot more work, but this is a good start
             ))
           ))
 #+end_src
+
 ** Babel Configuration
 *** Configure Babel Languages
+
 #+begin_src emacs-lisp
   (with-eval-after-load 'org
     (org-babel-do-load-languages
@@ -1013,13 +1130,17 @@ This needs a lot more work, but this is a good start
     (require 'org-tempo)
     (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp")))
 #+end_src
+
 *** Source Language Modes
 This is for emacs to recognize and provide syntax highlighting for config files that have a similar format in unix based systems (key-value pairs)
+
 #+begin_src emacs-lisp
   ;; This may not be needed
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
 #+end_src
+
 *** Auto-tangle Configuration Files
+
 #+begin_src emacs-lisp
   ;; Automatically tangle PrivateConfig.org config file when we save it
   (defun rr/org-babel-tangle-config ()
@@ -1031,11 +1152,13 @@ This is for emacs to recognize and provide syntax highlighting for config files 
 
   (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'rr/org-babel-tangle-config)))
 #+end_src
+
 *** TODO Use =:noweb yes= to pull work related configs
 The way this should work is, if this config is installed on a personal machine, it should tangle all the blocks. However, if it's installed on a work machine, it should look for specific org files (that can tangle themselves) and bring it in here. Or it could be the reverse - look for a specific location to see if it contains org files. If so,
 
 Use [[https://youtu.be/kkqVTDbfYp4?t=2400][System Crafters Emacs From Scratch]] as an example for this.
 ** Org todo keyword faces
+
 #+begin_src emacs-lisp
   (setq org-todo-keyword-faces
         '(("WAIT" . (:foreground "#e6bf85" :weight bold))
@@ -1046,11 +1169,13 @@ Use [[https://youtu.be/kkqVTDbfYp4?t=2400][System Crafters Emacs From Scratch]] 
           ("DONE" . (:foreground "#5c6267" :weight bold))
           ("KILL" . (:foreground "#ee7570" :weight bold))))
 #+end_src
+
 ** Org Behaviors
 *** Org RET key behavior
 RET can be used in variety of places - toggling TODO items, toggling checkboxes, opening links, etc. The following fuctions are copied over from Doom and help make RET more intuitive in org-mode.
 **** Org get todo keywords for
 This function is called by +org/dwim-at-point
+
 #+begin_src emacs-lisp
   (defun +org-get-todo-keywords-for (&optional keyword)
     "Returns the list of todo keywords that KEYWORD belongs to."
@@ -1066,8 +1191,10 @@ This function is called by +org/dwim-at-point
                if (member keyword keywords)
                return keywords)))
 #+end_src
+
 **** Org dwim-at-point
 This is copied over from Doom Emacs. This function basically interprets RET as one of several things based on the context. On a checkbox, it toggles the checkbox, on a TODO heading it toggles that, on a link it opens the link in a browser, etc. Makes everything very intuitive.
+
 #+begin_src emacs-lisp
   (defun +org/dwim-at-point (&optional arg)
     "Do-what-I-mean at point.
@@ -1201,18 +1328,22 @@ This is copied over from Doom Emacs. This function basically interprets RET as o
               (org-element-property :begin context)
               (org-element-property :end context))))))))
 #+end_src
+
 **** Bind RET to +org/dwim-at-point
 This function binds RET to =+org/dwim-at-point= to make RET contextual.
+
 #+begin_src emacs-lisp
   (general-define-key
    :states 'normal
    :keymaps 'org-mode-map
    "RET" '+org/dwim-at-point)
 #+end_src
+
 *** Org cycle behavior
 I really liked Doom style org cycling. It just goes through folded and children modes and doesn't enter subtree. As my note structure grows, there will invariably be lot of nested headings and looking at all the notes at once adds no value. So, just cycling between FOLDED and CHILDREN works perfectly for me. The below code is copied over from Doom's config.
 **** Set up function for custom cycling (unused)
 Realized the existing =evil-toggle-fold= function does the job for me and also solves the problem of expanding drawers. I'll be disabling this function for now and instead use =evil-toggle-fold= for a while. If it works as expected for all my use cases, I'll delete this section entirely.
+
 #+begin_src emacs-lisp :tangle no
   (defun +org-cycle-only-current-subtree-h (&optional arg)
     "Toggle the local fold at the point, and no deeper.
@@ -1238,15 +1369,19 @@ Realized the existing =evil-toggle-fold= function does the job for me and also s
             (org-cycle-internal-local)
             t)))))
 #+end_src
+
 **** Bind TAB to +org-cycle-only-current-subtree-h
+
 #+begin_src emacs-lisp
   (general-define-key
    :states 'normal
    :keymaps 'org-mode-map
    "<tab>" 'evil-toggle-fold)
 #+end_src
+
 *** Org insert behavior
 **** Insert item
+
 #+begin_src emacs-lisp
   (defun +org--insert-item (direction)
     (let ((context (org-element-lineage
@@ -1312,7 +1447,9 @@ Realized the existing =evil-toggle-fold= function does the job for me and also s
                  (not (evil-emacs-state-p)))
         (evil-insert 1))))
 #+end_src
+
 **** Insert item below
+
 #+begin_src emacs-lisp
   (defun +org/insert-item-below (count)
     "Inserts a new heading, table cell or item below the current one."
@@ -1324,7 +1461,9 @@ Realized the existing =evil-toggle-fold= function does the job for me and also s
    :keymaps 'org-mode-map
    "<C-return>" '+org/insert-item-below)
 #+end_src
+
 **** Insert item above
+
 #+begin_src emacs-lisp
   (defun +org/insert-item-above (count)
     "Inserts a new heading, table cell or item above the current one."
@@ -1336,8 +1475,10 @@ Realized the existing =evil-toggle-fold= function does the job for me and also s
    :keymaps 'org-mode-map
    "<C-S-return>" '+org/insert-item-above)
 #+end_src
+
 *** Org refile to current file
 Copied over from doom emacs. Helps make refiling easier when it must be done within the current file.
+
 #+begin_src emacs-lisp
   (defun +org/refile-to-current-file (arg &optional file)
     "Refile current heading to elsewhere in the current buffer.
@@ -1349,16 +1490,20 @@ Copied over from doom emacs. Helps make refiling easier when it must be done wit
           current-prefix-arg)
       (call-interactively #'org-refile)))
 #+end_src
+
 * Blogging
 ** ox-hugo
 This is the emacs package I use to publish to my Hugo website using org files
+
 #+begin_src emacs-lisp
   (use-package ox-hugo
     :after ox)
 #+end_src
+
 ** Turn on org-hugo-auto-export-mode when you visit blog.org
 The minor mode =org-hugo-auto-export-mode= enables auto export hugo posts on saving. However, this minor mode is disabled by default. It doesn't make sense to have this turned on globally. So, the following piece of code enables the minor mode only when the buffer is =blog.org=.
 Found the code in a [[https://stackoverflow.com/a/39652226][stack overflow post]].
+
 #+begin_src emacs-lisp
   (defun rr/enable-hugo-auto-export-mode ()
     (if (equal (buffer-name) "blog.org")
@@ -1366,6 +1511,7 @@ Found the code in a [[https://stackoverflow.com/a/39652226][stack overflow post]
 
   (add-hook 'find-file-hook 'rr/enable-hugo-auto-export-mode)
 #+end_src
+
 * Ideas
 Some ideas for customizing emacs. I keep thinking about different ways to customize emacs and I'd like to have them all in one place so that whenever I have some time, I can pick one up and work on it.
 * Packages I want to experiment with
@@ -1373,11 +1519,14 @@ Some ideas for customizing emacs. I keep thinking about different ways to custom
 - Deft
 * Runtime Performance
 Dial the GC threshold back down so that garbage collection happens more frequently but in less time.
+
 #+begin_src emacs-lisp
   (setq gc-cons-threshold (* 2 1000 1000))
 #+end_src
+
 * Pending Customizations
 ** TODO Custom killring
+
 #+begin_src emacs-lisp :tangle no
   (defun my-delete-word (arg)
     "Delete characters forward until encountering the end of a word.
@@ -1416,6 +1565,7 @@ Dial the GC threshold back down so that garbage collection happens more frequent
       (setq p2 (point))
       (delete-region p1 p2)))
 #+end_src
+
 ** Install packages
 *** DONE vterm
 CLOSED: [2021-08-30 Mon 20:43]
