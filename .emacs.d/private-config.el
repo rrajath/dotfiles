@@ -135,15 +135,6 @@ soon as Emacs loads."
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
-(use-package smart-mode-line
-  :config
-  (setq
-   sml/theme 'atom-one-dark
-   sml/no-confirm-load-theme t
-   sml/mode-width 'right
-   sml/name-width 60)
-  (sml/setup))
-
 (use-package paren
   :config
   (set-face-attribute 'show-paren-match-expression nil :background "#363e4a")
@@ -995,5 +986,12 @@ If prefix ARG, copy instead of move."
       (org-hugo-auto-export-mode)))
 
 (add-hook 'find-file-hook 'rr/enable-hugo-auto-export-mode)
+
+(use-package excorporate
+  :config
+  (setq excorporate-diary-today-file
+        (concat user-emacs-directory "var/excorporate/diary-excorporate-today")
+        excorporate-diary-transient-file
+        (concat user-emacs-directory "var/excorporate/diary-excorporate-transient")))
 
 (setq gc-cons-threshold (* 2 1000 1000))

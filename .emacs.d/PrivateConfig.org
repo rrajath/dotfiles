@@ -1526,6 +1526,18 @@ Found the code in a [[https://stackoverflow.com/a/39652226][stack overflow post]
 
   (add-hook 'find-file-hook 'rr/enable-hugo-auto-export-mode)
 #+end_src
+* Work
+** Excorporate
+Configure work calendar
+
+#+begin_src emacs-lisp
+  (use-package excorporate
+    :config
+    (setq excorporate-diary-today-file
+          (concat user-emacs-directory "var/excorporate/diary-excorporate-today")
+          excorporate-diary-transient-file
+          (concat user-emacs-directory "var/excorporate/diary-excorporate-transient")))
+#+end_src
 
 * Ideas
 Some ideas for customizing emacs. I keep thinking about different ways to customize emacs and I'd like to have them all in one place so that whenever I have some time, I can pick one up and work on it.
