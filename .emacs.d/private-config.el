@@ -12,14 +12,23 @@ soon as Emacs loads."
              gcs-done))
   (add-hook 'emacs-startup-hook #'rr/display-startup-time)
 
-(message "Setting frame size and position based on display size")
 (setq pixel-width (display-pixel-width))
 (setq pixel-height (display-pixel-height))
+(setq display-mode "")
 
 (cond
  ((= pixel-width 1792)
-  (add-to-list 'default-frame-alist '(fullscreen . maximized)))
+  (setq display-mode "laptop"))
  ((= pixel-width 5232)
+  (setq display-mode "desktop")))
+(message "Display Mode: %s" display-mode)
+
+(message "Setting frame size and position based on display size")
+
+(cond
+ ((equal display-mode "laptop")
+  (add-to-list 'default-frame-alist '(fullscreen . maximized)))
+ ((equal display-mode "desktop")
   (progn
     (add-to-list 'default-frame-alist
                  (cons 'left 1720))
