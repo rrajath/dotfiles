@@ -283,6 +283,15 @@ I want to be able to easily see the line my cursor is currently on
   (global-hl-line-mode)
 #+end_src
 
+** Beacon
+Highlight line temporarily to show where your cursor is
+
+#+begin_src emacs-lisp
+  (use-package beacon
+    :init
+    (beacon-mode))
+#+end_src
+
 * Usability
 ** Server Mode
 Make this instance of emacs start server so that other client instances can connect to this.

@@ -142,6 +142,10 @@ soon as Emacs loads."
 
 (global-hl-line-mode)
 
+(use-package beacon
+  :init
+  (beacon-mode))
+
 (server-start)
 
 (use-package super-save
