@@ -1075,6 +1075,14 @@ Set the directory for auto saving persp sessions
 
   (require 'org-indent)
 #+end_src
+** Org Export Git Flavored Markdown
+Export buffers/subtrees to git flavored markdown
+Package: [[https://github.com/larstvei/ox-gfm][ox-gfm]]
+
+#+begin_src emacs-lisp
+  (use-package ox-gfm
+    :after org)
+#+end_src
 
 ** Org Appear
 This is to make emphasis markers like bold or italics show up when cursor is on the words that contain said markers.
