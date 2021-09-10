@@ -1002,7 +1002,6 @@ If prefix ARG, copy instead of move."
 (defun rr/show-work-cal-for-current-day ()
 "Show meetings for current day."
   (interactive)
-	(progn
 		(exco-org-show-day
 		 (nth 0 (calendar-current-date))
 		 (nth 1 (calendar-current-date))
@@ -1010,6 +1009,6 @@ If prefix ARG, copy instead of move."
 		(other-window 1)
 		(sleep-for 1)
 		(org-shifttab)
-		(evil-toggle-fold)))
+		(evil-toggle-fold))
 
 (setq gc-cons-threshold (* 2 1000 1000))
