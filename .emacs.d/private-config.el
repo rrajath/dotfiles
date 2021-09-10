@@ -996,20 +996,14 @@ If prefix ARG, copy instead of move."
         excorporate-diary-transient-file
         (concat user-emacs-directory "var/excorporate/diary-excorporate-transient")))
 
-(defun rr/get-number (str)
-	(string-to-number str))
-
-(defun rr/parse-time-string (ts)
-	(string-to-number (format-time-string ts)))
-
 (defun rr/show-work-cal-for-current-day ()
 "Show meetings for current day."
   (interactive)
 	(progn
 		(exco-org-show-day
-		 (rr/parse-time-string "%m")
-		 (rr/parse-time-string "%d")
-		 (rr/parse-time-string "%Y"))
+		 (nth 0 (calendar-current-date))
+		 (nth 1 (calendar-current-date))
+		 (nth 2 (calendar-current-date)))
 		(other-window 1)
 		(sleep-for 1)
 		(org-shifttab)

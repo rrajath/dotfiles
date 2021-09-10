@@ -1546,20 +1546,14 @@ Package: [[https://github.com/emacsmirror/excorporate][excorporate]]
 A call to =exco-org-show-day= will display the meetings for what is passed in the arguments (MONTH, DAY, YEAR). This needs some tweaking since there is no function to display meetings for current day. Upon invoking the function, a new read-only org buffer is opened and switched to that contains all the meetings for the current day.
 
 #+begin_src emacs-lisp
-(defun rr/get-number (str)
-	(string-to-number str))
-
-(defun rr/parse-time-string (ts)
-	(string-to-number (format-time-string ts)))
-
 (defun rr/show-work-cal-for-current-day ()
 "Show meetings for current day."
   (interactive)
 	(progn
 		(exco-org-show-day
-		 (rr/parse-time-string "%m")
-		 (rr/parse-time-string "%d")
-		 (rr/parse-time-string "%Y"))
+		 (nth 0 (calendar-current-date))
+		 (nth 1 (calendar-current-date))
+		 (nth 2 (calendar-current-date)))
 		(other-window 1)
 		(sleep-for 1)
 		(org-shifttab)
