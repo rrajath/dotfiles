@@ -1530,7 +1530,9 @@ Found the code in a [[https://stackoverflow.com/a/39652226][stack overflow post]
 #+end_src
 * Work
 ** Excorporate
-Configure work calendar
+*** Setup
+This needs initial setup of work account so that it can access the calendar. This can be done using =M-x excorporate=.
+Package: [[https://github.com/emacsmirror/excorporate][excorporate]]
 
 #+begin_src emacs-lisp
   (use-package excorporate
@@ -1539,6 +1541,28 @@ Configure work calendar
           (concat user-emacs-directory "var/excorporate/diary-excorporate-today")
           excorporate-diary-transient-file
           (concat user-emacs-directory "var/excorporate/diary-excorporate-transient")))
+#+end_src
+*** Show today's meetings
+A call to =exco-org-show-day= will display the meetings for what is passed in the arguments (MONTH, DAY, YEAR). This needs some tweaking since there is no function to display meetings for current day. Upon invoking the function, a new read-only org buffer is opened and switched to that contains all the meetings for the current day.
+
+#+begin_src emacs-lisp
+(defun rr/get-number (str)
+	(string-to-number str))
+
+(defun rr/parse-time-string (ts)
+	(string-to-number (format-time-string ts)))
+
+(defun rr/show-work-cal-for-current-day ()
+"Show meetings for current day."
+	(progn
+		(exco-org-show-day
+		 (rr/parse-time-string "%m")
+		 (rr/parse-time-string "%d")
+		 (rr/parse-time-string "%Y"))
+		(other-window 1)
+		(sleep-for 1)
+		(org-shifttab)
+		(evil-toggle-fold)))
 #+end_src
 
 * Ideas
