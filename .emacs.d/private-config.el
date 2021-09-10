@@ -659,6 +659,9 @@ soon as Emacs loads."
 
 (require 'org-indent)
 
+(use-package ox-gfm
+  :after org)
+
 (use-package org-appear)
 (add-hook 'org-mode-hook 'org-appear-mode)
 
