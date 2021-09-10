@@ -644,6 +644,7 @@ soon as Emacs loads."
         org-agenda-block-separator nil
         org-agenda-tags-column 100
         org-agenda-compact-blocks t
+        org-agenda-include-diary t
         org-catch-invisible-edits t
         org-fontify-whole-heading-line t
         org-refile-targets
@@ -990,11 +991,13 @@ If prefix ARG, copy instead of move."
 (add-hook 'find-file-hook 'rr/enable-hugo-auto-export-mode)
 
 (use-package excorporate
+  :defer t
   :config
   (setq excorporate-diary-today-file
         (concat user-emacs-directory "var/excorporate/diary-excorporate-today")
         excorporate-diary-transient-file
         (concat user-emacs-directory "var/excorporate/diary-excorporate-transient")))
+(excorporate-diary-enable)
 
 (defun rr/show-work-cal-for-current-day ()
 "Show meetings for current day."

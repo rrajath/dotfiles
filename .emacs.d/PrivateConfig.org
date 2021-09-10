@@ -1055,6 +1055,7 @@ Set the directory for auto saving persp sessions
           org-agenda-block-separator nil
           org-agenda-tags-column 100
           org-agenda-compact-blocks t
+          org-agenda-include-diary t
           org-catch-invisible-edits t
           org-fontify-whole-heading-line t
           org-refile-targets
@@ -1536,12 +1537,15 @@ Package: [[https://github.com/emacsmirror/excorporate][excorporate]]
 
 #+begin_src emacs-lisp
   (use-package excorporate
+    :defer t
     :config
     (setq excorporate-diary-today-file
           (concat user-emacs-directory "var/excorporate/diary-excorporate-today")
           excorporate-diary-transient-file
           (concat user-emacs-directory "var/excorporate/diary-excorporate-transient")))
+  (excorporate-diary-enable)
 #+end_src
+
 *** Show today's meetings
 A call to =exco-org-show-day= will display the meetings for what is passed in the arguments (MONTH, DAY, YEAR). This needs some tweaking since there is no function to display meetings for current day. Upon invoking the function, a new read-only org buffer is opened and switched to that contains all the meetings for the current day.
 
