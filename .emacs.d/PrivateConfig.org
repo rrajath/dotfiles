@@ -284,10 +284,14 @@ I want to be able to easily see the line my cursor is currently on
 #+end_src
 
 ** Beacon
-Highlight line temporarily to show where your cursor is
+Highlight line temporarily to show where your cursor is.
+Disable =beacon= in term-mode.
+Package: [[https://github.com/Malabarba/beacon][beacon]]
 
 #+begin_src emacs-lisp
   (use-package beacon
+    :config
+    (push 'vterm-mode beacon-dont-blink-major-modes)
     :init
     (beacon-mode))
 #+end_src
