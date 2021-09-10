@@ -143,6 +143,8 @@ soon as Emacs loads."
 (global-hl-line-mode)
 
 (use-package beacon
+  :config
+  (push 'vterm-mode beacon-dont-blink-major-modes)
   :init
   (beacon-mode))
 
