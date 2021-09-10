@@ -1004,6 +1004,7 @@ If prefix ARG, copy instead of move."
 
 (defun rr/show-work-cal-for-current-day ()
 "Show meetings for current day."
+  (interactive)
 	(progn
 		(exco-org-show-day
 		 (rr/parse-time-string "%m")

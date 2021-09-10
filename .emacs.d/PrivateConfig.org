@@ -1554,6 +1554,7 @@ A call to =exco-org-show-day= will display the meetings for what is passed in th
 
 (defun rr/show-work-cal-for-current-day ()
 "Show meetings for current day."
+  (interactive)
 	(progn
 		(exco-org-show-day
 		 (rr/parse-time-string "%m")
