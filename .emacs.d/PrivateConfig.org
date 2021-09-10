@@ -1553,7 +1553,6 @@ A call to =exco-org-show-day= will display the meetings for what is passed in th
 (defun rr/show-work-cal-for-current-day ()
 "Show meetings for current day."
   (interactive)
-	(progn
 		(exco-org-show-day
 		 (nth 0 (calendar-current-date))
 		 (nth 1 (calendar-current-date))
@@ -1561,14 +1560,21 @@ A call to =exco-org-show-day= will display the meetings for what is passed in th
 		(other-window 1)
 		(sleep-for 1)
 		(org-shifttab)
-		(evil-toggle-fold)))
+		(evil-toggle-fold))
 #+end_src
 
 * Ideas
 Some ideas for customizing emacs. I keep thinking about different ways to customize emacs and I'd like to have them all in one place so that whenever I have some time, I can pick one up and work on it.
-* Packages I want to experiment with
+* Packages I want to try
 - [[https://awesomeopensource.com/project/dandavison/magit-delta?mode=desktop&ref_=m_ft_dsk][Magit Delta]]
 - Deft
+- devdocs
+- org-special-block-extras
+- beacon
+- fancy-narrow
+- emacs-dwim
+- org-web-tools
+- popper - use this for excorporate, help-mode, compilation-mode, messages, output buffers, vterm (check 1h24m in to the video)
 * Runtime Performance
 Dial the GC threshold back down so that garbage collection happens more frequently but in less time.
 
