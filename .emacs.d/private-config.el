@@ -404,7 +404,9 @@ soon as Emacs loads."
          ("C-k" . ivy-previous-line)
          ("C-d" . ivy-reverse-i-search-kill))
   :init
-  (ivy-mode 1))
+  (ivy-mode 1)
+  :config
+  (setq ivy-wrap t))
 
 (use-package ivy-rich
   :after ivy

@@ -702,7 +702,9 @@ Packages:
            ("C-k" . ivy-previous-line)
            ("C-d" . ivy-reverse-i-search-kill))
     :init
-    (ivy-mode 1))
+    (ivy-mode 1)
+    :config
+    (setq ivy-wrap t))
 
   (use-package ivy-rich
     :after ivy
@@ -1646,11 +1648,8 @@ Some ideas for customizing emacs. I keep thinking about different ways to custom
 - Deft
 - devdocs
 - org-special-block-extras
-- beacon
 - fancy-narrow
-- emacs-dwim
-- org-web-tools
-- popper - use this for excorporate, help-mode, compilation-mode, messages, output buffers, vterm (check 1h24m in to the video)
+- package-lint - for linting when you write packages
 * Runtime Performance
 Dial the GC threshold back down so that garbage collection happens more frequently but in less time.
 
