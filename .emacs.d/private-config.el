@@ -545,7 +545,9 @@ soon as Emacs loads."
   "Invoke `vterm' in the project's root."
 
   (interactive)
-  (cond ((equal nil (projectile-project-root))
+  (cond ((and
+          (equal nil (projectile-project-root))
+          (equal t (projectile-mode)))
          (vterm-toggle))
         (t (projectile-with-default-dir (projectile-acquire-root)
              (vterm-toggle)))))
