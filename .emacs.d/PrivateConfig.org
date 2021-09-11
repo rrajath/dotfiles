@@ -628,6 +628,7 @@ Package: [[https://github.com/noctuid/general.el][General]]
    "p /" '(counsel-projectile-rg :which-key "counsel-projectile-rg")
    "p r" '(projectile-recentf :which-key "projectile-recentf")
    "p s" '(counsel-projectile-switch-project :which-key "projectile-switch-project")
+   "p t" '(rr/projectile-run-vterm :which-key "rr/projectile-run-vterm")
    ;; files
    "f"   '(:ignore t :which-key "files")
    "f f" '(counsel-find-file :which-key "find file")
@@ -904,6 +905,7 @@ Package: [[https://magit.vc/][magit]]
 #+end_src
 
 ** Terminal
+*** Vterm setup
 Terminal emulation in emacs. This is the closest terminal emulation that Emacs can give that resembles what you see in, say, iTerm. Vterm Toggle is great for bringing up the terminal in any buffer as a popup from the bottom and dismissing it when it's not needed.
 Packages:
 - [[https://github.com/akermu/emacs-libvterm][vterm]]
@@ -914,6 +916,20 @@ Packages:
     :commands vterm)
   (use-package vterm-toggle
     :commands vterm-toggle)
+#+end_src
+
+*** Invoke terminal in project's root (as popup)
+Projectile's function to invoke terminal in project root only opens it in full screen mode. This is a modification to that function that opens vterm as a popup.
+
+#+begin_src emacs-lisp
+  (defun rr/projectile-run-vterm ()
+    "Invoke `vterm' in the project's root."
+
+    (interactive)
+    (cond ((equal nil (projectile-project-root))
+           (vterm-toggle))
+          (t (projectile-with-default-dir (projectile-acquire-root)
+               (vterm-toggle)))))
 #+end_src
 
 ** Languages
@@ -1589,7 +1605,7 @@ Found the code in a [[https://stackoverflow.com/a/39652226][stack overflow post]
 * Work
 ** Excorporate
 *** Setup
-This needs initial setup of work account so that it can access the calendar. This can be done using =M-x excorporate=.
+This needs initial setup of work account so that it can access the calendar. This can be done using =M-x excorporate=. More configuration can be found in [[https://emacs.stackexchange.com/a/46022][this stack overflow post]].
 Package: [[https://github.com/emacsmirror/excorporate][excorporate]]
 
 #+begin_src emacs-lisp
