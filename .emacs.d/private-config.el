@@ -1048,15 +1048,15 @@ If prefix ARG, copy instead of move."
 (excorporate-diary-enable)
 
 (defun rr/show-work-cal-for-current-day ()
-"Show meetings for current day."
+  "Show meetings for current day."
   (interactive)
-		(exco-org-show-day
-		 (nth 0 (calendar-current-date))
-		 (nth 1 (calendar-current-date))
-		 (nth 2 (calendar-current-date)))
-		(other-window 1)
-		(sleep-for 1)
-		(org-shifttab)
-		(evil-toggle-fold))
+  (exco-org-show-day
+   (nth 0 (calendar-current-date))
+   (nth 1 (calendar-current-date))
+   (nth 2 (calendar-current-date)))
+  (other-window 1)
+  (sleep-for 1)
+  (org-shifttab)
+  (evil-toggle-fold))
 
 (setq gc-cons-threshold (* 2 1000 1000))
