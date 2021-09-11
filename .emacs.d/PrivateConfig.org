@@ -416,6 +416,42 @@ I keep having to revert buffer for different reasons and when I hit the command,
     (interactive)
     (revert-buffer nil t nil))
 #+end_src
+** Popper
+Manage pop up windows with ease. Make specific major modes open as popups.
+Package: [[https://github.com/karthink/popper][popper]]
+
+#+begin_src emacs-lisp
+  (use-package popper
+    :defer t
+    :config
+    (setq popper-reference-buffers
+          '("\\*Messages\\*"
+            "^\\*Warnings\\*"
+            "^\\*Compile-Log\\*"
+            "^\\*Backtrace\\*"
+            "[Oo]utput\\*$"
+            "\\*Help\\*"
+            "\\*helpful\\*"
+            "\\*vterm\\*"
+            "\\*Excorporate\\*"
+            help-mode
+            helpful-mode
+            compilation-mode
+            term-mode
+            vterm-mode)
+          popper-group-function #'popper-group-by-projectile)
+    :init
+    (popper-mode +1))
+#+end_src
+
+*** Keybindings
+
+#+begin_src emacs-lisp
+  (general-define-key
+   :keymaps 'normal
+   "C-;" 'popper-toggle-latest
+   "C-:" 'popper-cycle)
+#+end_src
 
 * Keybindings
 ** Make ESC work better

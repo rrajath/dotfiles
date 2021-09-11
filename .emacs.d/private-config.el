@@ -200,6 +200,33 @@ soon as Emacs loads."
   (interactive)
   (revert-buffer nil t nil))
 
+(use-package popper
+  :defer t
+  :config
+  (setq popper-reference-buffers
+        '("\\*Messages\\*"
+          "^\\*Warnings\\*"
+          "^\\*Compile-Log\\*"
+          "^\\*Backtrace\\*"
+          "[Oo]utput\\*$"
+          "\\*Help\\*"
+          "\\*helpful\\*"
+          "\\*vterm\\*"
+          "\\*Excorporate\\*"
+          help-mode
+          helpful-mode
+          compilation-mode
+          term-mode
+          vterm-mode)
+        popper-group-function #'popper-group-by-projectile)
+  :init
+  (popper-mode +1))
+
+(general-define-key
+ :keymaps 'normal
+ "C-;" 'popper-toggle-latest
+ "C-:" 'popper-cycle)
+
 ;; Making ESC key work like an ESC key by exiting/canceling stuff
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
