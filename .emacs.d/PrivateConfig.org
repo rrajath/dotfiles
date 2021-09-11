@@ -743,6 +743,7 @@ Package: [[https://github.com/abo-abo/swiper#counsel][Counsel]]
     :init
     (marginalia-mode))
 #+end_src
+
 ** Orderless
 Package: [[https://github.com/oantolin/orderless][orderless]]
 #+begin_src emacs-lisp
@@ -926,7 +927,9 @@ Projectile's function to invoke terminal in project root only opens it in full s
     "Invoke `vterm' in the project's root."
 
     (interactive)
-    (cond ((equal nil (projectile-project-root))
+    (cond ((and
+            (equal nil (projectile-project-root))
+            (equal t (projectile-mode)))
            (vterm-toggle))
           (t (projectile-with-default-dir (projectile-acquire-root)
                (vterm-toggle)))))
