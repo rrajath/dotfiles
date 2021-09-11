@@ -355,6 +355,7 @@ soon as Emacs loads."
  "p /" '(counsel-projectile-rg :which-key "counsel-projectile-rg")
  "p r" '(projectile-recentf :which-key "projectile-recentf")
  "p s" '(counsel-projectile-switch-project :which-key "projectile-switch-project")
+ "p t" '(rr/projectile-run-vterm :which-key "rr/projectile-run-vterm")
  ;; files
  "f"   '(:ignore t :which-key "files")
  "f f" '(counsel-find-file :which-key "find file")
@@ -539,6 +540,15 @@ soon as Emacs loads."
   :commands vterm)
 (use-package vterm-toggle
   :commands vterm-toggle)
+
+(defun rr/projectile-run-vterm ()
+  "Invoke `vterm' in the project's root."
+
+  (interactive)
+  (cond ((equal nil (projectile-project-root))
+         (vterm-toggle))
+        (t (projectile-with-default-dir (projectile-acquire-root)
+             (vterm-toggle)))))
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
