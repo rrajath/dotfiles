@@ -684,6 +684,7 @@ Great completion framework. Ivy-rich mode gives more information on each line
 Packages:
 - [[https://github.com/abo-abo/swiper#ivy][ivy]]
 - [[https://github.com/Yevgnen/ivy-rich][ivy-rich]]
+
 #+begin_src emacs-lisp
   (use-package ivy
     :diminish
@@ -711,8 +712,10 @@ Packages:
     :init
     (ivy-rich-mode 1))
 #+end_src
+
 ** Counsel
 Package: [[https://github.com/abo-abo/swiper#counsel][Counsel]]
+
 #+begin_src emacs-lisp
   (use-package counsel
     :bind (("M-x" . counsel-M-x)
@@ -726,7 +729,9 @@ Package: [[https://github.com/abo-abo/swiper#counsel][Counsel]]
 
   (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
 #+end_src
+
 ** Vertico (unused)
+
 #+begin_src emacs-lisp :tangle no
   (use-package vertico
     :custom
@@ -748,6 +753,7 @@ Package: [[https://github.com/abo-abo/swiper#counsel][Counsel]]
 
 ** Orderless
 Package: [[https://github.com/oantolin/orderless][orderless]]
+
 #+begin_src emacs-lisp
   (use-package orderless
     :after counsel
@@ -756,8 +762,10 @@ Package: [[https://github.com/oantolin/orderless][orderless]]
           completion-category-defaults nil
           completion-category-overrides '((file (styles . (partial-completion))))))
 #+end_src
+
 ** Prescient
 Package: [[https://github.com/raxod502/prescient.el][prescient]]
+
 #+begin_src emacs-lisp
   (use-package prescient
     :after counsel
@@ -777,11 +785,13 @@ Package: [[https://github.com/raxod502/prescient.el][prescient]]
     :config
     (company-prescient-mode 1))
 #+end_src
+
 * Utilities
 ** Helpful package for better documentation formatting
 This gives better links and formatting inside emacs documentation. This is particularly helpful while looking up documentation for functions, variables, etc.
 I have remapped existing describe function to the =helpful= versions so that I don't have to specifically invoke =helpful= commands.
 Package: [[https://github.com/Wilfred/helpful][helpful]]
+
 #+begin_src emacs-lisp
   (use-package helpful
     :commands (helpful-callable helpful-variable helpful-command helpful-key helpful-function)
@@ -794,28 +804,35 @@ Package: [[https://github.com/Wilfred/helpful][helpful]]
     ([remap describe-variable] . counsel-describe-variable)
     ([remap describe-key] . helpful-key))
 #+end_src
+
 ** Expand Region
 This is to mark/select regions that are nested. With repeated invocations of these commands, the selections expand outward level by level.
 Package: [[https://github.com/magnars/expand-region.el][expand-region.el]]
+
 #+begin_src emacs-lisp
   (use-package expand-region
     :bind (("M-[" . er/expand-region)
            ("C-(" . er/mark-outside-pairs)))
 #+end_src
+
 ** Focus mode
 This will highlight the current region and fade the region surrounding the point. It depends on =thing-at-point=, so what's highlight could be a word, a sentence, a code block, a paragraph, etc.
 Package: [[https://github.com/larstvei/Focus][focus]]
+
 #+begin_src emacs-lisp
   (use-package focus
     :defer 2)
 #+end_src
+
 ** Crux
 Collection of Really Useful eXtensions
 Package: [[https://github.com/bbatsov/crux][crux]]
+
 #+begin_src emacs-lisp
   (use-package crux
     :defer 2)
 #+end_src
+
 * Dired
 File management with dired
 
@@ -1069,25 +1086,25 @@ Set the directory for auto saving persp sessions
   (defun rr/set-org-capture-templates ()
     `(("o" "Organize")
       ("ot" "Task" entry (file+olp, (rr/org-path "organize.org") "Tasks")
-       "* TODO %?\n%U\n\n%a\n %i" :kill-buffer t)
+       "* TODO %?\n%U\n %i" :kill-buffer t)
       ("oe" "Event" entry (file+olp, (rr/org-path "organize.org") "Events")
-       "* TODO %?\n%U\n\n%a\n %i")
+       "* TODO %?\n%U\n %i")
       ("w" "Work")
       ("wt" "Work Task" entry (file+olp, (rr/org-path "work-tasks.org") "All Tasks")
-       "* TODO %?\n%U\n\n%a\n %i" :kill-buffer t)
+       "* TODO %?\n%U\n %i" :kill-buffer t)
       ("wi" "Work Inbox" entry (file+olp, (rr/org-path "work-tasks.org") "Inbox")
-       "* %?\n%U\n\n%a\n %i")
+       "* %?\n%U\n %i")
       ("wm" "Work Meeting" entry (file+headline, (rr/org-path "work-tasks.org") "Meeting Notes")
-       "* %?\n%U\n\n%a\n %i")
+       "* %?\n%U\n %i")
       ("j" "Journal" entry (file+datetree, (rr/org-path "journal.org"))
        "* %?\n")
       ("n" "Notes")
       ("nr" "Resource" entry (file+olp, (rr/org-path "refile.org") "Resources")
-       "* %?\n%U\n\n%a\n %i")
+       "* %?\n%U\n %i")
       ("nc" "Curiosity" entry (file+olp, (rr/org-path "refile.org") "Curiosities")
-       "* %?\n%U\n\n%a\n %i")
+       "* %?\n%U\n %i")
       ("no" "Other" entry (file+olp, (rr/org-path "refile.org") "Notes")
-       "* %?\n%U\n\n%a\n %i")
+       "* %?\n%U\n %i")
       )
     )
 #+end_src
@@ -1136,6 +1153,7 @@ Set the directory for auto saving persp sessions
 
   (require 'org-indent)
 #+end_src
+
 ** Org Export Git Flavored Markdown
 Export buffers/subtrees to git flavored markdown
 Package: [[https://github.com/larstvei/ox-gfm][ox-gfm]]
@@ -1607,6 +1625,7 @@ Found the code in a [[https://stackoverflow.com/a/39652226][stack overflow post]
 
   (add-hook 'find-file-hook 'rr/enable-hugo-auto-export-mode)
 #+end_src
+
 * Work
 ** Excorporate
 *** Setup
