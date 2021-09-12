@@ -206,6 +206,7 @@ Packages:
 - [[https://github.com/seagle0128/doom-modeline][doom-modeline]]
 - [[https://github.com/hlissner/emacs-doom-themes][doom-themes]]
 - [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
+
 #+begin_src emacs-lisp
   (use-package doom-modeline
     :ensure t
@@ -225,6 +226,7 @@ Packages:
 
   (use-package all-the-icons)
 #+end_src
+
 ** Show line and column numbers
 I want to see line numbers and column numbers in most modes execpt a few.
 
