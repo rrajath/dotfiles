@@ -429,6 +429,7 @@ Package: [[https://github.com/karthink/popper][popper]]
     (setq popper-reference-buffers
           '("\\*Messages\\*"
             "^\\*Warnings\\*"
+            "^\\*IBuffer\\*"
             "^\\*Compile-Log\\*"
             "^\\*Backtrace\\*"
             "[Oo]utput\\*$"
