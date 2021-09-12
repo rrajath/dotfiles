@@ -1179,6 +1179,7 @@ Package: [[https://github.com/awth13/org-appear][org-appear]]
 #+end_src
 
 ** Prettier bullets
+Package: [[https://github.com/sabof/org-bullets][org-bullets]]
 
 #+begin_src emacs-lisp
   (use-package org-bullets
@@ -1188,6 +1189,8 @@ Package: [[https://github.com/awth13/org-appear][org-appear]]
 #+end_src
 
 ** Visual Fill Column
+Make the fill column 100 characters long and enable visual-line-mode in it.
+Package: [[https://github.com/joostkremers/visual-fill-column][visual-fill-column]]
 
 #+begin_src emacs-lisp
   (defun rr/org-mode-visual-fill ()
@@ -1200,6 +1203,7 @@ Package: [[https://github.com/awth13/org-appear][org-appear]]
 #+end_src
 
 ** Evil-Org-Mode
+Package: [[https://github.com/Somelauw/evil-org-mode][evil-org-mode]]
 
 #+begin_src emacs-lisp
   (use-package evil-org
@@ -1614,6 +1618,7 @@ Copied over from doom emacs. Helps make refiling easier when it must be done wit
 * Blogging
 ** ox-hugo
 This is the emacs package I use to publish to my Hugo website using org files
+Package: [[https://github.com/kaushalmodi/ox-hugo][ox-hugo]]
 
 #+begin_src emacs-lisp
   (use-package ox-hugo
