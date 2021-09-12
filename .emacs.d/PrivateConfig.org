@@ -1,7 +1,6 @@
 #+TITLE: Custom Emacs Configuration
 #+PROPERTY: header-args:emacs-lisp :tangle ./private-config.el
 #+STARTUP: overview indent hidestars
-#+OPTIONS: toc:nil
 
 * Table of Contents
 :PROPERTIES:
