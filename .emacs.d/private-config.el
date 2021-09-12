@@ -3,14 +3,14 @@
 
 (setq gc-cons-threshold (* 50 1000 1000))
 
-  (defun rr/display-startup-time ()
-    "Displays startup time in the echo buffer and Messages buffer as
+(defun rr/display-startup-time ()
+  "Displays startup time in the echo buffer and Messages buffer as
 soon as Emacs loads."
-    (message "Emacs loaded in %s with %d garbage collections."
-             (format "%.2f seconds"
-                     (float-time (time-subtract after-init-time before-init-time)))
-             gcs-done))
-  (add-hook 'emacs-startup-hook #'rr/display-startup-time)
+  (message "Emacs loaded in %s with %d garbage collections."
+           (format "%.2f seconds"
+                   (float-time (time-subtract after-init-time before-init-time)))
+           gcs-done))
+(add-hook 'emacs-startup-hook #'rr/display-startup-time)
 
 (setq pixel-width (display-pixel-width))
 (setq pixel-height (display-pixel-height))
@@ -775,6 +775,9 @@ soon as Emacs loads."
       (org-babel-tangle))))
 
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'rr/org-babel-tangle-config)))
+
+(use-package org-make-toc
+  :hook (org-mode . org-make-toc-mode))
 
 (setq org-todo-keyword-faces
       '(("WAIT" . (:foreground "#e6bf85" :weight bold))

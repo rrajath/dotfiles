@@ -2,7 +2,149 @@
 #+PROPERTY: header-args:emacs-lisp :tangle ./private-config.el
 #+STARTUP: overview indent hidestars
 #+OPTIONS: toc:nil
-#+TOC: headlines 2
+
+* Table of Contents
+:PROPERTIES:
+:TOC:      :include all :ignore this
+:END:
+:CONTENTS:
+- [[#introduction][Introduction]]
+  - [[#personal-information][Personal Information]]
+  - [[#why-literate-config][Why literate config?]]
+- [[#current-issues][Current Issues]]
+  - [[#smart-modeline-is-cutting-off-the-git-branch-name][Smart modeline is cutting off the git branch name]]
+- [[#first-things-first][First things first]]
+  - [[#startup-performance][Startup Performance]]
+  - [[#frame-management][Frame Management]]
+    - [[#detect-display-size][Detect display size]]
+    - [[#set-frame-size-and-position][Set frame size and position]]
+  - [[#package-management][Package Management]]
+  - [[#keep-emacsd-clean][Keep .emacs.d clean]]
+  - [[#auto-update-packages][Auto update packages]]
+  - [[#basic-setup][Basic Setup]]
+    - [[#some-defaults][Some defaults]]
+    - [[#tab-widths][Tab widths]]
+    - [[#enable-global-subword-mode][Enable Global Subword Mode]]
+- [[#ui-configuration][UI Configuration]]
+  - [[#get-rid-of-the-startup-message][Get rid of the startup message]]
+  - [[#remove-menubar-toolbar-scrollbars-etc][Remove menubar, toolbar, scrollbars, etc.]]
+  - [[#make-titlebar-the-same-color-as-background][Make titlebar the same color as background]]
+  - [[#set-up-fonts][Set up fonts]]
+  - [[#set-up-theme][Set up theme]]
+  - [[#show-line-and-column-numbers][Show line and column numbers]]
+  - [[#rainbow-delimiters][Rainbow Delimiters]]
+  - [[#smart-modeline-unused][Smart Modeline (unused)]]
+  - [[#highlight-matching-braces][Highlight Matching Braces]]
+  - [[#highlight-current-line][Highlight current line]]
+  - [[#beacon][Beacon]]
+- [[#usability][Usability]]
+  - [[#server-mode][Server Mode]]
+  - [[#auto-saving-changed-files][Auto-saving changed files]]
+  - [[#auto-reverting-changed-files][Auto-reverting changed files]]
+  - [[#commenting-lines][Commenting Lines]]
+    - [[#basic-setup][Basic setup]]
+  - [[#automatically-clean-whitespaces][Automatically clean whitespaces]]
+  - [[#smart-parenthesis][Smart Parenthesis]]
+  - [[#jumping-around-with-avy][Jumping around with Avy]]
+  - [[#eros-mode][Eros Mode]]
+  - [[#hungry-delete][Hungry Delete]]
+  - [[#go-to-last-change][Go to last change]]
+  - [[#revert-buffer-noconfirm][Revert buffer NOCONFIRM]]
+  - [[#popper][Popper]]
+    - [[#keybindings][Keybindings]]
+- [[#keybindings][Keybindings]]
+  - [[#make-esc-work-better][Make ESC work better]]
+  - [[#switch-buffers-easily][Switch buffers easily]]
+  - [[#which-key][Which key]]
+  - [[#evil][Evil]]
+    - [[#basic-setup][Basic Setup]]
+    - [[#custom-keybindings-unused][Custom keybindings (unused)]]
+  - [[#general][General]]
+  - [[#remap-universal-argument][Remap universal argument]]
+  - [[#hydra][Hydra]]
+    - [[#package-setup][Package Setup]]
+    - [[#handle-window-resize][Handle Window Resize]]
+- [[#completion-frameworks][Completion Frameworks]]
+  - [[#ivy][Ivy]]
+  - [[#counsel][Counsel]]
+  - [[#vertico-unused][Vertico (unused)]]
+  - [[#orderless][Orderless]]
+  - [[#prescient][Prescient]]
+- [[#utilities][Utilities]]
+  - [[#helpful-package-for-better-documentation-formatting][Helpful package for better documentation formatting]]
+  - [[#expand-region][Expand Region]]
+  - [[#focus-mode][Focus mode]]
+  - [[#crux][Crux]]
+- [[#dired][Dired]]
+- [[#development][Development]]
+  - [[#projectile][Projectile]]
+  - [[#git-gutter][Git Gutter]]
+  - [[#magit][Magit]]
+  - [[#terminal][Terminal]]
+    - [[#vterm-setup][Vterm setup]]
+    - [[#invoke-terminal-in-projects-root-as-popup][Invoke terminal in project's root (as popup)]]
+  - [[#languages][Languages]]
+    - [[#language-servers][Language Servers]]
+    - [[#typescript][TypeScript]]
+    - [[#completions-with-company-mode][Completions with Company-mode]]
+- [[#buffers][Buffers]]
+  - [[#perspectives][Perspectives]]
+    - [[#basic-setup][Basic Setup]]
+    - [[#ibuffer-hook][IBuffer hook]]
+    - [[#saving-sessions][Saving Sessions]]
+- [[#orgmode][OrgMode]]
+  - [[#capture-templates][Capture Templates]]
+  - [[#basic-setup][Basic setup]]
+  - [[#org-export-git-flavored-markdown][Org Export Git Flavored Markdown]]
+  - [[#org-appear][Org Appear]]
+  - [[#prettier-bullets][Prettier bullets]]
+  - [[#visual-fill-column][Visual Fill Column]]
+  - [[#evil-org-mode][Evil-Org-Mode]]
+  - [[#agenda-configs][Agenda Configs]]
+  - [[#babel-configuration][Babel Configuration]]
+    - [[#configure-babel-languages][Configure Babel Languages]]
+    - [[#source-language-modes][Source Language Modes]]
+    - [[#auto-tangle-configuration-files][Auto-tangle Configuration Files]]
+    - [[#use-noweb-yes-to-pull-work-related-configs][Use :noweb yes to pull work related configs]]
+  - [[#generate-table-of-contents][Generate Table of Contents]]
+  - [[#org-todo-keyword-faces][Org todo keyword faces]]
+  - [[#org-behaviors][Org Behaviors]]
+    - [[#org-ret-key-behavior][Org RET key behavior]]
+      - [[#org-get-todo-keywords-for][Org get todo keywords for]]
+      - [[#org-dwim-at-point][Org dwim-at-point]]
+      - [[#bind-ret-to-orgdwim-at-point][Bind RET to +org/dwim-at-point]]
+    - [[#org-cycle-behavior][Org cycle behavior]]
+      - [[#set-up-function-for-custom-cycling-unused][Set up function for custom cycling (unused)]]
+      - [[#bind-tab-to-org-cycle-only-current-subtree-h][Bind TAB to +org-cycle-only-current-subtree-h]]
+    - [[#org-insert-behavior][Org insert behavior]]
+      - [[#insert-item][Insert item]]
+      - [[#insert-item-below][Insert item below]]
+      - [[#insert-item-above][Insert item above]]
+    - [[#org-refile-to-current-file][Org refile to current file]]
+- [[#blogging][Blogging]]
+  - [[#ox-hugo][ox-hugo]]
+  - [[#turn-on-org-hugo-auto-export-mode-when-you-visit-blogorg][Turn on org-hugo-auto-export-mode when you visit blog.org]]
+- [[#work][Work]]
+  - [[#excorporate][Excorporate]]
+    - [[#setup][Setup]]
+    - [[#show-todays-meetings][Show today's meetings]]
+- [[#ideas][Ideas]]
+- [[#packages-i-want-to-try][Packages I want to try]]
+- [[#runtime-performance][Runtime Performance]]
+- [[#pending-customizations][Pending Customizations]]
+  - [[#custom-killring][Custom killring]]
+  - [[#install-packages][Install packages]]
+    - [[#vterm][vterm]]
+    - [[#vertico][vertico]]
+    - [[#lsp][lsp]]
+    - [[#auto-update-packages][auto update packages]]
+    - [[#git-gutter-or-diff-hl-mode][git gutter (or diff-hl-mode)]]
+    - [[#yasnippets][yasnippets]]
+    - [[#edwina][Edwina?]]
+- [[#tips--tricks][Tips & Tricks]]
+  - [[#insert-timestamp-with-current-time][Insert timestamp with current time]]
+  - [[#use-m-m-to-go-to-the-first-non-whitespace-in-a-line][Use M-m to go to the first non-whitespace in a line]]
+:END:
 
 * Introduction
 This config is built by copying parts from [[https://github.com/daviwil/dotfiles/blob/master/Emacs.org][System Crafters dotfiles repo]], what I found on the internet (Reddit, Discord, Stack Overflow, etc.) and some of my own config. This configuration is based on the [[https://en.wikipedia.org/wiki/Literate_programming][literate programming]] paradigm which makes the config be self-documenting. This means, the file is basically a fully explained documentation of my config and also contains code blocks in between that can be evaluated and tangled into a config file.
@@ -34,7 +176,7 @@ The git branch name appears at the right end of the mode line and smart-mode-lin
 
   (defun rr/display-startup-time ()
     "Displays startup time in the echo buffer and Messages buffer as
-soon as Emacs loads."
+  soon as Emacs loads."
     (message "Emacs loaded in %s with %d garbage collections."
              (format "%.2f seconds"
                      (float-time (time-subtract after-init-time before-init-time)))
@@ -1282,6 +1424,15 @@ This is for emacs to recognize and provide syntax highlighting for config files 
 The way this should work is, if this config is installed on a personal machine, it should tangle all the blocks. However, if it's installed on a work machine, it should look for specific org files (that can tangle themselves) and bring it in here. Or it could be the reverse - look for a specific location to see if it contains org files. If so,
 
 Use [[https://youtu.be/kkqVTDbfYp4?t=2400][System Crafters Emacs From Scratch]] as an example for this.
+** Generate Table of Contents
+It's nice to generate table of contents at the top of the org file for easy navigation.
+Package: [[https://github.com/alphapapa/org-make-toc][org-make-toc]]
+
+#+begin_src emacs-lisp
+  (use-package org-make-toc
+    :hook (org-mode . org-make-toc-mode))
+#+end_src
+
 ** Org todo keyword faces
 
 #+begin_src emacs-lisp
