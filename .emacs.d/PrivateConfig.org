@@ -891,8 +891,6 @@ Package: [[https://github.com/bbatsov/projectile][projectile]]
     :diminish projectile-mode
     :config (projectile-mode)
     :custom ((projectile-completion-system 'ivy))
-    :bind-keymap
-    ("C-c p" . projectile-command-map)
     :init
     (when (file-directory-p "~/code")
       (setq projectile-project-search-path '("~/code")))
@@ -901,6 +899,11 @@ Package: [[https://github.com/bbatsov/projectile][projectile]]
   (use-package counsel-projectile
     :after projectile
     :config (counsel-projectile-mode))
+
+  (general-define-key
+   :states 'normal
+   :prefix "C-c"
+   "p" 'projectile-command-map)
 #+end_src
 
 ** Git Gutter
