@@ -516,8 +516,6 @@ soon as Emacs loads."
   :diminish projectile-mode
   :config (projectile-mode)
   :custom ((projectile-completion-system 'ivy))
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
   :init
   (when (file-directory-p "~/code")
     (setq projectile-project-search-path '("~/code")))
@@ -526,6 +524,11 @@ soon as Emacs loads."
 (use-package counsel-projectile
   :after projectile
   :config (counsel-projectile-mode))
+
+(general-define-key
+ :states 'normal
+ :prefix "C-c"
+ "p" 'projectile-command-map)
 
 (use-package diff-hl)
 (global-diff-hl-mode)
