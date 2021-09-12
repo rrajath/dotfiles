@@ -206,6 +206,7 @@ soon as Emacs loads."
   (setq popper-reference-buffers
         '("\\*Messages\\*"
           "^\\*Warnings\\*"
+          "^\\*IBuffer\\*"
           "^\\*Compile-Log\\*"
           "^\\*Backtrace\\*"
           "[Oo]utput\\*$"
