@@ -1,7 +1,8 @@
 #+TITLE: Custom Emacs Configuration
 #+PROPERTY: header-args:emacs-lisp :tangle ./private-config.el
 #+STARTUP: overview indent hidestars
-#+OPTIONS: toc:2
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
 
 * Introduction
 This config is built by copying parts from [[https://github.com/daviwil/dotfiles/blob/master/Emacs.org][System Crafters dotfiles repo]], what I found on the internet (Reddit, Discord, Stack Overflow, etc.) and some of my own config. This configuration is based on the [[https://en.wikipedia.org/wiki/Literate_programming][literate programming]] paradigm which makes the config be self-documenting. This means, the file is basically a fully explained documentation of my config and also contains code blocks in between that can be evaluated and tangled into a config file.
