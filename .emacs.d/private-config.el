@@ -893,10 +893,10 @@ If on a:
                 (image-overlays
                  (cl-find-if (lambda (o) (overlay-get o 'org-image-overlay))
                              overlays)))
-           ;; (+org--toggle-inline-images-in-subtree beg end)
-           ;;(if (or image-overlays latex-overlays)
-           ;;   (org-clear-latex-preview beg end)
-           ;;(org--latex-preview-region beg end))
+           (+org--toggle-inline-images-in-subtree beg end)
+           (if (or image-overlays latex-overlays)
+             (org-clear-latex-preview beg end)
+           (org--latex-preview-region beg end))
            ))
 
         (`clock (org-clock-update-time-maybe))
