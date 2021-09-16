@@ -58,6 +58,7 @@
   - [[#evil][Evil]]
     - [[#basic-setup][Basic Setup]]
     - [[#custom-keybindings-unused][Custom keybindings (unused)]]
+    - [[#speedkeys][Speedkeys]]
   - [[#general][General]]
   - [[#remap-universal-argument][Remap universal argument]]
   - [[#hydra][Hydra]]
@@ -677,6 +678,15 @@ Currently, this is disabled. Will enable it once it's thoroughly tested.
   (general-define-key
    :states 'normal
    "C-;" 'my-delete-word)
+#+end_src
+*** Speedkeys
+Spacemacs has a cool feature where if you're on an org-mode heading and you press =t=, it invokes =org-todo= and you can quickly set the state of the heading to one of the many todo states. The following code is implementing that feature.
+
+#+begin_src emacs-lisp :tangle no
+  (general-define-key
+   :states 'normal
+   :keymaps 'org-mode-map
+   "t" 'org-todo)
 #+end_src
 
 ** General
