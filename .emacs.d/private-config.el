@@ -373,6 +373,7 @@ soon as Emacs loads."
  "p r" '(projectile-recentf :which-key "projectile-recentf")
  "p s" '(counsel-projectile-switch-project :which-key "projectile-switch-project")
  "p t" '(rr/projectile-run-vterm :which-key "rr/projectile-run-vterm")
+ "p k" '(projectile-kill-buffers :which-key "projectile-kill-buffers")
  ;; files
  "f"   '(:ignore t :which-key "files")
  "f f" '(counsel-find-file :which-key "find file")
