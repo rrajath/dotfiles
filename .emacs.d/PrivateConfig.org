@@ -581,6 +581,7 @@ Package: [[https://github.com/karthink/popper][popper]]
             "\\*helpful\\*"
             "\\*vterm\\*"
             "\\*Excorporate\\*"
+            "\\*xref\\*"
             help-mode
             helpful-mode
             compilation-mode
