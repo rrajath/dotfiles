@@ -788,7 +788,13 @@ soon as Emacs loads."
 (add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'rr/org-babel-tangle-config)))
 
 (use-package org-make-toc
-  :hook (org-mode . org-make-toc-mode))
+  :after org)
+
+(defun rr/enable-org-make-toc-mode ()
+  (if (equal (buffer-name) "PrivateConfig.org")
+      (org-make-toc-mode)))
+
+(add-hook 'find-file-hook 'rr/enable-org-make-toc-mode)
 
 (setq org-todo-keyword-faces
       '(("WAIT" . (:foreground "#e6bf85" :weight bold))

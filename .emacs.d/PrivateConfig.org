@@ -1451,7 +1451,13 @@ Package: [[https://github.com/alphapapa/org-make-toc][org-make-toc]]
 
 #+begin_src emacs-lisp
   (use-package org-make-toc
-    :hook (org-mode . org-make-toc-mode))
+    :after org)
+
+  (defun rr/enable-org-make-toc-mode ()
+    (if (equal (buffer-name) "PrivateConfig.org")
+        (org-make-toc-mode)))
+
+  (add-hook 'find-file-hook 'rr/enable-org-make-toc-mode)
 #+end_src
 
 ** Org todo keyword faces
