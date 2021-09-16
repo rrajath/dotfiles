@@ -504,7 +504,8 @@ soon as Emacs loads."
               (interactive)
               (dired-omit-mode 1)
               (hl-line-mode 1)
-              (diredfl-mode 1)))
+              (diredfl-mode 1)
+              (diff-hl-dired-mode 1)))
 
   (use-package dired-single
     :defer t)
