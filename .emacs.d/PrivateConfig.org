@@ -123,6 +123,7 @@
 - [[#blogging][Blogging]]
   - [[#ox-hugo][ox-hugo]]
   - [[#turn-on-org-hugo-auto-export-mode-when-you-visit-blogorg][Turn on org-hugo-auto-export-mode when you visit blog.org]]
+  - [[#generate-a-filename-given-a-blog-post-title][Generate a filename given a blog post title]]
 - [[#work][Work]]
   - [[#excorporate][Excorporate]]
     - [[#setup][Setup]]
@@ -1795,6 +1796,28 @@ Found the code in a [[https://stackoverflow.com/a/39652226][stack overflow post]
         (org-hugo-auto-export-mode)))
 
   (add-hook 'find-file-hook 'rr/enable-hugo-auto-export-mode)
+#+end_src
+** Generate a filename given a blog post title
+This is a nice little helper function I wrote for myself to generate a filename from a blog post's title. ox-hugo needs a property called =EXPORT_FILE_NAME= which must be set under the heading that contains the blog post. This function generates the file name and sets the property based on the org heading the point is on.
+
+#+begin_src emacs-lisp
+  (defun rr/extract-hugo-post-file-name ()
+    "Create a filename out of blog post's title.
+
+This method is expected to be executed on a TODO heading on a an
+org file containing blog posts that would be exported using
+ox-hugo. Running this interactive command would set an org
+property called EXPORT_FILE_NAME that is required by ox-hugo to
+generate a Hugo-friendly markdown file in the location specified
+in HUGO_BASE_DIR property."
+    (interactive)
+    (setq-local title-line (thing-at-point 'line t))
+    (unless (not (string-match "TODO " title-line))
+      (let* ((lines (split-string title-line "TODO "))
+             (blog-post-title (nth 1 lines))
+             (file-name (replace-regexp-in-string "_+" "-" (replace-regexp-in-string "\\W" "_" (string-trim (downcase blog-post-title)))))
+             (blog-post-file-name (concat file-name ".md")))
+        (org-set-property "EXPORT_FILE_NAME" blog-post-file-name))))
 #+end_src
 
 * Work

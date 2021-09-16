@@ -1056,6 +1056,24 @@ If prefix ARG, copy instead of move."
 
 (add-hook 'find-file-hook 'rr/enable-hugo-auto-export-mode)
 
+(defun rr/extract-hugo-post-file-name ()
+    "Create a filename out of blog post's title.
+
+This method is expected to be executed on a TODO heading on a an
+org file containing blog posts that would be exported using
+ox-hugo. Running this interactive command would set an org
+property called EXPORT_FILE_NAME that is required by ox-hugo to
+generate a Hugo-friendly markdown file in the location specified
+in HUGO_BASE_DIR property."
+    (interactive)
+    (setq-local title-line (thing-at-point 'line t))
+    (unless (not (string-match "TODO " title-line))
+      (let* ((lines (split-string title-line "TODO "))
+             (blog-post-title (nth 1 lines))
+             (file-name (replace-regexp-in-string "_+" "-" (replace-regexp-in-string "\\W" "_" (string-trim (downcase blog-post-title)))))
+             (blog-post-file-name (concat file-name ".md")))
+        (org-set-property "EXPORT_FILE_NAME" blog-post-file-name))))
+
 (use-package excorporate
   :defer t
   :config
