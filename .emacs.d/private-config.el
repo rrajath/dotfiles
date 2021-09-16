@@ -214,6 +214,7 @@ soon as Emacs loads."
           "\\*helpful\\*"
           "\\*vterm\\*"
           "\\*Excorporate\\*"
+          "\\*xref\\*"
           help-mode
           helpful-mode
           compilation-mode
