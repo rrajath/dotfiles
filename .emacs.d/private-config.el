@@ -593,6 +593,15 @@ soon as Emacs loads."
 (use-package lsp-ivy
   :after lsp)
 
+;; (use-package flycheck
+;;   :defer t
+;;   :hook (lsp-mode . flycheck-mode))
+
+(general-define-key
+ :keymaps 'lsp-mode-map
+ :prefix "C-c l"
+ "a f" 'lsp-eslint-apply-all-fixes)
+
 (use-package typescript-mode
   :mode "\\.ts\\'"
   :config
