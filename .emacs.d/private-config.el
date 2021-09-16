@@ -267,6 +267,11 @@ soon as Emacs loads."
   :config
   (evil-collection-init))
 
+(general-define-key
+ :states 'normal
+ :keymaps 'org-mode-map
+ "t" 'org-todo)
+
 (use-package general
   :config
   (general-evil-setup t))

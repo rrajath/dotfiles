@@ -683,7 +683,7 @@ Currently, this is disabled. Will enable it once it's thoroughly tested.
 *** Speedkeys
 Spacemacs has a cool feature where if you're on an org-mode heading and you press =t=, it invokes =org-todo= and you can quickly set the state of the heading to one of the many todo states. The following code is implementing that feature.
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (general-define-key
    :states 'normal
    :keymaps 'org-mode-map
