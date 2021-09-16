@@ -344,6 +344,7 @@ soon as Emacs loads."
  "o i" '(org-toggle-item :which-key "item")
  "o o" '(counsel-outline :which-key "counsel-outline")
  "o S" '(org-show-todo-tree :which-key "org-show-todo-tree")
+ "o q" '(org-set-tags-command :which-key "org-set-tags-command")
  ;; org-mode / narrow
  "o n" '(:ignore t :which-key "narrow")
  "o n s" '(org-narrow-to-subtree :which-key "org-narrow-to-subtree")
