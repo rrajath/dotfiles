@@ -9,10 +9,7 @@ The config files will be in .org format which GitHub natively supports and rende
 ** Pre-requisites
 For those intending to clone this repo and use the org files into their dotfiles, there is one pre-requisite which is Emacs. After installing it, the org-mode files can be tangled (using =org-babel-tangle= command) after specifying the tangle location at the top of each org file.
 
-For a more detailed vim configuration, please visit [[https://github.com/rrajath/vimrc][my fork]] of [[https://github.com/amix/vimrc][amix/vimrc]]
+** Have a look around
+Here are some links to my configs which are written like documentation with code blocks in between.
 
-** Coming Soon
-Configs for:
-- Zshrc
-- tmux
-- other apps like Alfred, BetterTouchTool, etc.
+- [[./dot_zshrc.org][zshrc]]
