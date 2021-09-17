@@ -1,0 +1,231 @@
+#+TITLE:     zshrc configuration
+#+AUTHOR:    Rajath Ramakrishna
+#+PROPERTY:  header-args :tangle ~/.zshrc
+#+STARTUP:   overview hidestars indent
+
+* Table of Contents
+:PROPERTIES:
+:TOC:      :include all :force (nothing) :ignore (this) :local (nothing)
+:END:
+
+:CONTENTS:
+- [[#introduction][Introduction]]
+- [[#prerequisites][Prerequisites]]
+- [[#export-the-path-to-oh-my-zsh-installation][Export the path to oh-my-zsh installation]]
+- [[#theme-selection][Theme Selection]]
+- [[#updating-oh-my-zsh][Updating oh-my-zsh]]
+- [[#utilities][Utilities]]
+- [[#plugins][Plugins]]
+- [[#user-configuration][User Configuration]]
+- [[#aliases][Aliases]]
+- [[#shell-integration][Shell Integration]]
+- [[#setting-the-main-path-variable][Setting the main PATH variable]]
+- [[#extras][Extras]]
+- [[#starship][Starship]]
+- [[#work-stuff][Work Stuff]]
+:END:
+
+* Introduction
+This is a literate config for zshrc. It is divided into sections explaining what each line in the config means. The actual config file must not be touched. Only this file must be edited. Once this file is edited, it must be tangled using org-babel to generate the actual source file.
+
+This can be done by doing the following:
+- Going to the top of the file (=g g=)
+- Refreshing the local setup (=C-c C-c=)
+- Tangling all the code blocks in this file (=C-c C-v t=)
+  
+* Prerequisites
+- First download oh-my-zsh from github: https://ohmyz.sh
+- Tangle [[./dot_zsh_aliases.org][dot_zsh_aliases]]
+- Tangle [[./dot_zsh_aliases_amazon.org][dot_zsh_aliases_amazon]]
+
+* Export the path to oh-my-zsh installation
+#+begin_src bash
+# Path to your oh-my-zsh installation.
+export ZSH=/Users/rajath/.oh-my-zsh
+
+#+end_src
+
+* Theme Selection
+#+begin_src bash
+# Set name of the theme to load.
+# Look in ~/.oh-my-zsh/themes/
+# Optionally, if you set this to "random", it'll load a random theme each
+# time that oh-my-zsh is loaded.
+ZSH_THEME="sorin"
+
+#+end_src
+
+* Updating oh-my-zsh
+#+begin_src bash
+# Uncomment the following line to disable bi-weekly auto-update checks.
+DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+export UPDATE_ZSH_DAYS=20
+
+#+end_src
+
+* Utilities
+#+begin_src bash
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+#+end_src
+
+* Plugins
+#+begin_src bash
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(zsh-z git colorize zsh-autosuggestions zsh-syntax-highlighting)
+
+#+end_src
+
+* User Configuration
+#+begin_src bash
+# If we have a glob this will expand it
+setopt GLOB_COMPLETE
+setopt PUSHD_MINUS
+
+# Make cd=pushd
+setopt AUTO_PUSHD
+
+# No more annoying pushd messages
+setopt PUSHD_SILENT
+
+# allow tab completion in the middle of a word
+setopt COMPLETE_IN_WORD
+
+# This will use named dirs when possible
+setopt AUTO_NAME_DIRS
+
+export EDITOR="vi"
+
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_211.jdk/Contents/Home/"
+export EMACS="/usr/local/Cellar/emacs-plus@27/27.2/bin/emacs"
+
+source $ZSH/oh-my-zsh.sh
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/dsa_id"
+
+# . `brew --prefix`/etc/profile.d/z.sh
+
+#+end_src
+
+* Aliases
+There are some global aliases and there are some amazon specific aliases. Both are stored in separate files. And these files are loaded in this section
+
+#+begin_src bash
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+#
+# Add aliases
+[[ -f $HOME/.zsh_aliases ]] && source $HOME/.zsh_aliases
+
+#+end_src
+
+* Shell Integration
+iTerm has Shell Integration which gives us some nifty tools to make our lives easier.
+
+#+begin_src bash
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+#+end_src
+
+* Setting the main PATH variable
+Following is a nicer implementation of the PATH variable wherein adding new paths doesn't involve appending to a long list of paths on the same line. Instead new paths are added on new lines for better readability.
+
+#+begin_src bash
+function path() {
+  if [[ -d "$1" ]] ; then
+    if [[ -z "$PATH" ]] ; then
+      export PATH=$1
+    else
+      export PATH=$PATH:$1
+    fi
+  fi
+}
+
+export PATH=''
+path /usr/bin
+path /bin
+path /usr/sbin
+path /sbin
+path /usr/local/bin
+path /usr/local/sbin
+path ~/bin
+path ~/.emacs.d/bin
+path ~/development/flutter/bin
+path /usr/local/Cellar/emacs-plus@27/27.2/bin
+
+#+end_src
+
+* Extras
+Things like fzf, autojump, etc. are currently not working as intended, but I have to get around to fixing it sometime. So, leaving them here.
+
+#+begin_src bash
+[[ -s /Users/rajath/.autojump/etc/profile.d/autojump.sh ]] && source /Users/rajath/.autojump/etc/profile.d/autojump.sh
+
+fpath=(~/.zsh/completion $fpath)
+
+autoload -Uz compinit && compinit -ui
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+#+end_src
+* Starship
+#+begin_src bash
+eval "$(starship init zsh)"
+#+end_src
+* Work Stuff
+If there is a =.zshrc_work= available in the home folder, source it. Else, ignore. The work-specific configuration can be found in =dot_zshrc_work.org=.
+
+#+begin_src bash
+[[ -f $HOME/.zshrc_work ]] && source $HOME/.zshrc_work
+#+end_src
