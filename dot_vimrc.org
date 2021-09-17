@@ -2,6 +2,23 @@
 #+AUTHOR: Rajath Ramakrishna
 #+PROPERTY: header-args :tangle ~/.vim_runtime/my_configs.vim
 
+* Table of Contents
+:PROPERTIES:
+:TOC:      :include all :force (nothing) :ignore (this) :local (nothing)
+:END:
+:CONTENTS:
+- [[#introduction][Introduction]]
+  - [[#pre-requisites][Pre-requisites]]
+- [[#vim-plug-setup][Vim Plug Setup]]
+- [[#set-line-numbers][Set line numbers]]
+- [[#pathogen][Pathogen]]
+- [[#use-leader-key-while-savingquitting-a-file-in-vim][Use leader key while saving/quitting a file in vim]]
+- [[#set-cursor-shape][Set cursor shape]]
+- [[#set-theme][Set theme]]
+- [[#get-infinite-undos][Get infinite undos]]
+- [[#set-up-virmc-script][Set up .virmc script]]
+:END:
+
 * Introduction
 This file contains configuration for vim. I am already using my version of vimrc, but couple more things are added on top of that.
 
