@@ -1,3 +1,7 @@
+#+TITLE:   README
+#+AUTHOR:  Rajath Ramakrishna
+#+STARTUP: hidestars indent
+
 * Dotfiles
 ** Introduction
 This repository contains dotfiles for all my applications - emacs, vim, zshrc, etc.
@@ -12,4 +16,6 @@ For those intending to clone this repo and use the org files into their dotfiles
 ** Have a look around
 Here are some links to my configs which are written like documentation with code blocks in between.
 
-- [[./dot_zshrc.org][zshrc]]
+- [[./.emacs.d/PrivateConfig.org][Emacs Config]]
+- [[./dot_zshrc.org][Zsh Config]]
+- [[./dot_vimrc.org][Vim Config]]
