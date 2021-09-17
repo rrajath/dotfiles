@@ -1,6 +1,7 @@
-#+TITLE: vimrc configuration
-#+AUTHOR: Rajath Ramakrishna
+#+TITLE:    vimrc configuration
+#+AUTHOR:   Rajath Ramakrishna
 #+PROPERTY: header-args :tangle ~/.vim_runtime/my_configs.vim
+#+STARTUP:  overview hidestars indent
 
 * Table of Contents
 :PROPERTIES:
