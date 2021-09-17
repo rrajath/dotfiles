@@ -1,19 +1,18 @@
-#+TITLE:   README
+#+TITLE:   Dotfiles
 #+AUTHOR:  Rajath Ramakrishna
 #+STARTUP: hidestars indent
 
-* Dotfiles
-** Introduction
+* Introduction
 This repository contains dotfiles for all my applications - emacs, vim, zshrc, etc.
 
 I use the [[https://en.wikipedia.org/wiki/Literate_programming][literate programming]] paradigm to manage my dotfiles in a way that it encapsulates both code and documentation in the same file. People reading this config, or even my future self can pull out parts of the config as needed and apply it to theirs. This repository is organized in terms of several README files. Each README file will be for a specific app.
 
 The config files will be in .org format which GitHub natively supports and renders like how it renders Markdown. Each file will contain pre-requisites that must be installed before continuing to copy the configs. This is to make sure that the right tools/applications are installed beforehand.
 
-** Pre-requisites
+* Pre-requisites
 For those intending to clone this repo and use the org files into their dotfiles, there is one pre-requisite which is Emacs. After installing it, the org-mode files can be tangled (using =org-babel-tangle= command) after specifying the tangle location at the top of each org file.
 
-** Have a look around
+* Have a look around
 Here are some links to my configs which are written like documentation with code blocks in between.
 
 - [[./.emacs.d/PrivateConfig.org][Emacs Config]]
