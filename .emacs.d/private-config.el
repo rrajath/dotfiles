@@ -383,10 +383,12 @@ soon as Emacs loads."
  "C-e" 'evil-org-end-of-line
  "C-a" 'evil-org-beginning-of-line
  "C-n" 'evil-next-line
- "C-p" 'evil-previous-line)
+ "C-p" 'evil-previous-line
+ "C-S-o" 'evil-jump-forward
+ "C-o" 'evil-jump-backward)
 
 (general-define-key
- :keymaps 'normal
+ :keymaps '(normal insert)
  "s-]" 'persp-next
  "s-[" 'persp-prev)
 
