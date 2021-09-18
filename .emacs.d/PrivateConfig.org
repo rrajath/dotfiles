@@ -568,8 +568,8 @@ Package: [[https://github.com/karthink/popper][popper]]
 
 #+begin_src emacs-lisp
   (use-package popper
-    :defer t
-    :config
+    :after projectile
+    :init
     (setq popper-reference-buffers
           '("\\*Messages\\*"
             "^\\*Warnings\\*"
@@ -588,7 +588,6 @@ Package: [[https://github.com/karthink/popper][popper]]
             term-mode
             vterm-mode)
           popper-group-function #'popper-group-by-projectile)
-    :init
     (popper-mode +1))
 #+end_src
 

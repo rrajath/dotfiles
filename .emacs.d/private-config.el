@@ -201,8 +201,8 @@ soon as Emacs loads."
   (revert-buffer nil t nil))
 
 (use-package popper
-  :defer t
-  :config
+  :after projectile
+  :init
   (setq popper-reference-buffers
         '("\\*Messages\\*"
           "^\\*Warnings\\*"
@@ -221,7 +221,6 @@ soon as Emacs loads."
           term-mode
           vterm-mode)
         popper-group-function #'popper-group-by-projectile)
-  :init
   (popper-mode +1))
 
 (general-define-key
