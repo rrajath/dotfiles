@@ -1,6 +1,7 @@
-#+TITLE: Custom Emacs Configuration
-#+PROPERTY: header-args:emacs-lisp :tangle ./private-config.el
-#+STARTUP: overview indent hidestars
+#+TITLE:      Custom Emacs Configuration
+#+AUTHOR:     Rajath Ramakrishna
+#+PROPERTY:   header-args:emacs-lisp :tangle ./private-config.el
+#+STARTUP:    overview indent hidestars
 
 * Table of Contents
 :PROPERTIES:
