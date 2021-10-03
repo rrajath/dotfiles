@@ -120,6 +120,10 @@ soon as Emacs loads."
 
 (use-package all-the-icons)
 
+;; Set modeline's background to something lighter
+(set-face-attribute 'mode-line nil
+                    :background "#2c323b")
+
 (column-number-mode)
 (global-display-line-numbers-mode t)
 

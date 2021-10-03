@@ -370,6 +370,10 @@ Packages:
     (doom-themes-org-config))
 
   (use-package all-the-icons)
+
+  ;; Set modeline's background to something lighter
+  (set-face-attribute 'mode-line nil
+                      :background "#2c323b")
 #+end_src
 
 ** Show line and column numbers
