@@ -12,7 +12,7 @@
   - [[#personal-information][Personal Information]]
   - [[#why-literate-config][Why literate config?]]
 - [[#current-issues][Current Issues]]
-  - [[#smart-modeline-is-cutting-off-the-git-branch-name][Smart modeline is cutting off the git branch name]]
+  - [[#prettierjs-runs-in-the-middle-of-typing-something-in-typescript-mode][PrettierJs runs in the middle of typing something in typescript mode]]
 - [[#first-things-first][First things first]]
   - [[#startup-performance][Startup Performance]]
   - [[#frame-management][Frame Management]]
@@ -168,9 +168,8 @@ Literate config has a few benefits:
 - Easy to maintain. You never touch the actual config, you only update this .org file and make it generate the actual source file
 - Easy to publish. If you want to publish your config online, it's super easy. GitHub, for example, natively supports org the same way it supports Markdown. So, these org files are rendered nicely, just as regular documentation.
 * Current Issues
-** TODO Smart modeline is cutting off the git branch name
-The git branch name appears at the right end of the mode line and smart-mode-line is displaying only the last 3 characters.
-[[https://github.com/Malabarba/smart-mode-line/issues/255][An issue has been filed]]
+** TODO PrettierJs runs in the middle of typing something in typescript mode
+Prettier (and ESLint) should run on save to fix formatting in the code. However, due to some setting (or lack of) it runs while typing code and messes up the cursor position, indentation, formatting, etc. This happens when I type parenthesis. For example, while typing =console.log("prettier runs before I get to type this")=, before I hit ="= prettier runs and messes everything up.
 * First things first
 ** Startup Performance
 
