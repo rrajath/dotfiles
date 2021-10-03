@@ -88,6 +88,7 @@
     - [[#language-servers][Language Servers]]
     - [[#typescript][TypeScript]]
     - [[#completions-with-company-mode][Completions with Company-mode]]
+    - [[#graphql][GraphQL]]
 - [[#buffers][Buffers]]
   - [[#perspectives][Perspectives]]
     - [[#basic-setup][Basic Setup]]
@@ -1225,6 +1226,14 @@ Package: [[http://company-mode.github.io/][company-mode]]
 
   (use-package company-box
     :hook (company-mode . company-box-mode))
+#+end_src
+*** GraphQL
+This is to get syntax highlighting and indentation support for graphql files.
+Package: [[https://github.com/davazp/graphql-mode][graphql-mode]]
+
+#+begin_src emacs-lisp
+  (use-package graphql-mode
+    :defer t)
 #+end_src
 
 * Buffers

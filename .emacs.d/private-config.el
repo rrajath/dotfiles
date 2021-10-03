@@ -651,6 +651,9 @@ soon as Emacs loads."
 (use-package company-box
   :hook (company-mode . company-box-mode))
 
+(use-package graphql-mode
+  :defer t)
+
 (use-package perspective
   :bind (("C-x k" . persp-kill-buffer*))
   :custom
