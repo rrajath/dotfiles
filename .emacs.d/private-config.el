@@ -911,8 +911,8 @@ If on a:
                              overlays)))
            (+org--toggle-inline-images-in-subtree beg end)
            (if (or image-overlays latex-overlays)
-             (org-clear-latex-preview beg end)
-           (org--latex-preview-region beg end))
+               (org-clear-latex-preview beg end)
+             (org--latex-preview-region beg end))
            ))
 
         (`clock (org-clock-update-time-maybe))
