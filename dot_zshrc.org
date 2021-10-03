@@ -201,7 +201,6 @@ path /usr/local/bin
 path /usr/local/sbin
 path ~/bin
 path ~/.emacs.d/bin
-path ~/development/flutter/bin
 path /usr/local/Cellar/emacs-plus@27/27.2/bin
 
 #+end_src
