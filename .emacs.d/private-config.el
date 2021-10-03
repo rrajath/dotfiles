@@ -349,6 +349,13 @@ soon as Emacs loads."
  "o S" '(org-show-todo-tree :which-key "org-show-todo-tree")
  "o q" '(org-set-tags-command :which-key "org-set-tags-command")
  "o N" '(org-add-note :which-key "org-add-note")
+ ;; org-mode / clock
+ "o c" '(:ignore t :which-key "clock")
+ "o c i" '("org-clock-in" :which-key "org-clock-in")
+ "o c o" '("org-clock-out" :which-key "org-clock-out")
+ "o c c" '("org-clock-cancel" :which-key "org-clock-cancel")
+ "o c d" '("org-clock-display" :which-key "org-clock-display")
+ "o c g" '("org-clock-goto" :which-key "org-clock-goto")
  ;; org-mode / narrow
  "o n" '(:ignore t :which-key "narrow")
  "o n s" '(org-narrow-to-subtree :which-key "org-narrow-to-subtree")
