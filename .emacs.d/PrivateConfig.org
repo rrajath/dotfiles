@@ -422,6 +422,7 @@ This is super helpful, especially in lisp
 
 #+begin_src emacs-lisp
   (use-package paren
+    :defer t
     :config
     (set-face-attribute 'show-paren-match-expression nil :background "#363e4a")
     (show-paren-mode 1))
@@ -441,6 +442,7 @@ Package: [[https://github.com/Malabarba/beacon][beacon]]
 
 #+begin_src emacs-lisp
   (use-package beacon
+    :defer t
     :config
     (push 'vterm-mode beacon-dont-blink-major-modes)
     :init
@@ -536,7 +538,8 @@ While evaluating elisp expressions in a buffer, the eval results will be display
 Package: [[https://github.com/xiongtx/eros][eros]]
 
 #+begin_src emacs-lisp
-  (use-package eros)
+  (use-package eros
+    :defer t)
   (eros-mode 1)
 #+end_src
 

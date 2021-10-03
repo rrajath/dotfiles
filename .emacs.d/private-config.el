@@ -140,6 +140,7 @@ soon as Emacs loads."
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package paren
+  :defer t
   :config
   (set-face-attribute 'show-paren-match-expression nil :background "#363e4a")
   (show-paren-mode 1))
@@ -147,6 +148,7 @@ soon as Emacs loads."
 (global-hl-line-mode)
 
 (use-package beacon
+  :defer t
   :config
   (push 'vterm-mode beacon-dont-blink-major-modes)
   :init
@@ -184,13 +186,11 @@ soon as Emacs loads."
   :hook ((text-mode . ws-butler-mode)
          (prog-mode . ws-butler-mode)))
 
-(use-package smartparens)
-(smartparens-global-mode)
-
 (use-package avy
   :commands (avy-goto-char avy-goto-word-0 avy-goto-line))
 
-(use-package eros)
+(use-package eros
+  :defer t)
 (eros-mode 1)
 
 (use-package hungry-delete
