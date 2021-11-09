@@ -571,6 +571,7 @@ I keep having to revert buffer for different reasons and when I hit the command,
     (interactive)
     (revert-buffer nil t nil))
 #+end_src
+
 ** Popper
 Manage pop up windows with ease. Make specific major modes open as popups.
 Package: [[https://github.com/karthink/popper][popper]]
@@ -604,7 +605,7 @@ Package: [[https://github.com/karthink/popper][popper]]
 
 #+begin_src emacs-lisp
   (general-define-key
-   :keymaps 'normal
+   :keymaps '(normal insert)
    "C-;" 'popper-toggle-latest
    "C-:" 'popper-cycle)
 #+end_src
