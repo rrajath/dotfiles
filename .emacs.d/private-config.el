@@ -228,7 +228,7 @@ soon as Emacs loads."
   (popper-mode +1))
 
 (general-define-key
- :keymaps 'normal
+ :keymaps '(normal insert)
  "C-;" 'popper-toggle-latest
  "C-:" 'popper-cycle)
 
