@@ -81,6 +81,7 @@
   - [[#projectile][Projectile]]
   - [[#git-gutter][Git Gutter]]
   - [[#magit][Magit]]
+  - [[#blamer][Blamer]]
   - [[#terminal][Terminal]]
     - [[#vterm-setup][Vterm setup]]
     - [[#invoke-terminal-in-projects-root-as-popup][Invoke terminal in project's root (as popup)]]
@@ -1113,6 +1114,24 @@ Package: [[https://magit.vc/][magit]]
     :commands magit-status
     :custom
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+#+end_src
+
+** Blamer
+This is a git blame plugin inspired by VSCode's GitLens feature
+Package: [[https://github.com/Artawower/blamer.el][blamer]]
+
+#+begin_src emacs-lisp
+  (use-package blamer
+    :hook ((js2-mode . blamer-mode)
+           (typescript-mode . blamer-mode))
+    :custom
+    (blamer-idle-time 0.1)
+    (blamer-min-offset 70)
+    :custom-face
+    (blamer-face ((t :foreground "#7a88cf"
+                     :background nil
+                     :height 140
+                     :italic t))))
 #+end_src
 
 ** Terminal
