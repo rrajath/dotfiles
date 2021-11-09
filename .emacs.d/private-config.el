@@ -573,6 +573,18 @@ soon as Emacs loads."
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
+(use-package blamer
+  :hook ((js2-mode . blamer-mode)
+         (typescript-mode . blamer-mode))
+  :custom
+  (blamer-idle-time 0.1)
+  (blamer-min-offset 70)
+  :custom-face
+  (blamer-face ((t :foreground "#7a88cf"
+                   :background nil
+                   :height 140
+                   :italic t))))
+
 (use-package vterm
   :commands vterm)
 (use-package vterm-toggle
