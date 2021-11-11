@@ -48,9 +48,9 @@ soon as Emacs loads."
 
 ;; Fix an issue accessing the ELPA archive in Termux
 
-;; (package-initialize)
-;; (unless package-archive-contents
-;;   (package-refresh-contents))
+(package-initialize)
+(unless package-archive-contents
+  (package-refresh-contents))
 
 ;; Initialize use-package on non-Linux platforms
 (package-install 'use-package)
@@ -779,6 +779,12 @@ soon as Emacs loads."
 
 (use-package visual-fill-column
   :hook (org-mode . rr/org-mode-visual-fill))
+
+(fset 'evil-redirect-digit-argument 'ignore) ; before evil-org loaded
+
+(add-to-list 'evil-digit-bound-motions 'evil-org-beginning-of-line)
+(evil-define-key 'motion 'evil-org-mode
+    (kbd "0") 'evil-org-beginning-of-line)
 
 (use-package evil-org
   :after org
