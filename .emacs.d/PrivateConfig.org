@@ -242,9 +242,9 @@ Adding package sources and setting =use-package-always-ensure= to =t=. This sett
 
   ;; Fix an issue accessing the ELPA archive in Termux
 
-  ;; (package-initialize)
-  ;; (unless package-archive-contents
-  ;;   (package-refresh-contents))
+  (package-initialize)
+  (unless package-archive-contents
+    (package-refresh-contents))
 
   ;; Initialize use-package on non-Linux platforms
   (package-install 'use-package)
@@ -1425,6 +1425,17 @@ Package: [[https://github.com/joostkremers/visual-fill-column][visual-fill-colum
 
 ** Evil-Org-Mode
 Package: [[https://github.com/Somelauw/evil-org-mode][evil-org-mode]]
+
+There's currently [[https://github.com/Somelauw/evil-org-mode/issues/93][an issue]] with =evil-org= where Emacs gives this error on startup: =(void-function evil-redirect-digit-argument)=
+The following snippet is a work around:
+
+#+begin_src emacs-lisp
+(fset 'evil-redirect-digit-argument 'ignore) ; before evil-org loaded
+
+(add-to-list 'evil-digit-bound-motions 'evil-org-beginning-of-line)
+(evil-define-key 'motion 'evil-org-mode
+    (kbd "0") 'evil-org-beginning-of-line)
+#+end_src
 
 #+begin_src emacs-lisp
   (use-package evil-org
