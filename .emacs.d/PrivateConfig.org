@@ -44,7 +44,7 @@
   - [[#auto-reverting-changed-files][Auto-reverting changed files]]
   - [[#commenting-lines][Commenting Lines]]
     - [[#basic-setup][Basic setup]]
-  - [[#automatically-clean-whitespaces][Automatically clean whitespaces]]
+  - [[#automatically-clean-whitespaces-unused][Automatically clean whitespaces (unused)]]
   - [[#smart-parenthesis-unused][Smart Parenthesis (unused)]]
   - [[#jumping-around-with-avy][Jumping around with Avy]]
   - [[#eros-mode][Eros Mode]]
@@ -510,11 +510,11 @@ When I comment a line, I'd like that line to be commented and the cursor to be m
    "s-/" 'rr/comment-and-nextline)
 #+end_src
 
-** Automatically clean whitespaces
+** Automatically clean whitespaces (unused)
 Trim whitespace at the end of the line. This happens when the buffer is saved and is unobtrusive. This means the user is not aware of the trimming that has happened. So, the point is not moved, but when the buffer is reverted this can be seen.
 Package: [[https://github.com/lewang/ws-butler][ws-butler]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package ws-butler
     :hook ((text-mode . ws-butler-mode)
            (prog-mode . ws-butler-mode)))
