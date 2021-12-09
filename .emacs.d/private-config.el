@@ -727,7 +727,7 @@ soon as Emacs loads."
   (setq org-agenda-files (list org-directory))
   (setq org-capture-templates (rr/set-org-capture-templates))
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "|" "DONE(d!)" "KILL(k!)")
+        '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "CODE(c)" "FDBK(f)" "|" "DONE(d!)" "KILL(k!)")
           ))
   (setq evil-auto-indent nil))
 
@@ -847,6 +847,8 @@ soon as Emacs loads."
         ("TODO" . (:foreground "#a0bc70" :weight bold))
         ("STRT" . (:foreground "#a7a2dc" :weight bold))
         ("HOLD" . (:foreground "#e6bf85" :weight bold))
+        ("CODE" . (:foreground "#e6bf85" :weight bold))
+        ("FDBK" . (:foreground "#e6bf85" :weight bold))
         ("IDEA" . (:foreground "#fdac37" :weight bold))
         ("DONE" . (:foreground "#5c6267" :weight bold))
         ("KILL" . (:foreground "#ee7570" :weight bold))))
