@@ -182,10 +182,6 @@ soon as Emacs loads."
  :states '(normal insert)
  "s-/" 'rr/comment-and-nextline)
 
-(use-package ws-butler
-  :hook ((text-mode . ws-butler-mode)
-         (prog-mode . ws-butler-mode)))
-
 (use-package avy
   :commands (avy-goto-char avy-goto-word-0 avy-goto-line))
 
