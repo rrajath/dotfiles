@@ -388,8 +388,8 @@ soon as Emacs loads."
 
 (general-define-key
  :states '(normal insert)
- "C-e" 'evil-org-end-of-line
- "C-a" 'evil-org-beginning-of-line
+ "C-e" 'end-of-line
+ "C-a" 'beginning-of-line
  "C-n" 'evil-next-line
  "C-p" 'evil-previous-line
  "C-S-o" 'evil-jump-forward
