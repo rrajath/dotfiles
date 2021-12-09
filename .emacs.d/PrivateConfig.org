@@ -315,7 +315,6 @@ Subword mode is great when you have to deal with camel case (or pascal case) str
   (global-subword-mode 1)
 #+end_src
 
-
 * UI Configuration
 ** Get rid of the startup message
 This is to remove the ugly annoying startup message on a white screen that you get when you load emacs (without any custom configs)
@@ -1433,7 +1432,7 @@ Package: [[https://github.com/Somelauw/evil-org-mode][evil-org-mode]]
 There's currently [[https://github.com/Somelauw/evil-org-mode/issues/93][an issue]] with =evil-org= where Emacs gives this error on startup: =(void-function evil-redirect-digit-argument)=
 The following snippet is a work around:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (fset 'evil-redirect-digit-argument 'ignore) ; before evil-org loaded
 
 (add-to-list 'evil-digit-bound-motions 'evil-org-beginning-of-line)
@@ -1441,7 +1440,7 @@ The following snippet is a work around:
     (kbd "0") 'evil-org-beginning-of-line)
 #+end_src
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package evil-org
     :after org
     :hook (org-mode . (lambda () evil-org-mode))
