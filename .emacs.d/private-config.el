@@ -776,19 +776,6 @@ soon as Emacs loads."
 (use-package visual-fill-column
   :hook (org-mode . rr/org-mode-visual-fill))
 
-(fset 'evil-redirect-digit-argument 'ignore) ; before evil-org loaded
-
-(add-to-list 'evil-digit-bound-motions 'evil-org-beginning-of-line)
-(evil-define-key 'motion 'evil-org-mode
-    (kbd "0") 'evil-org-beginning-of-line)
-
-(use-package evil-org
-  :after org
-  :hook (org-mode . (lambda () evil-org-mode))
-  :config
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
-
 (setq org-agenda-span 'day)
 
 (setq org-agenda-custom-commands
