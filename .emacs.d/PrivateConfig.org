@@ -27,7 +27,7 @@
     - [[#enable-global-subword-mode][Enable Global Subword Mode]]
 - [[#ui-configuration][UI Configuration]]
   - [[#get-rid-of-the-startup-message][Get rid of the startup message]]
-  - [[#remove-menubar-toolbar-scrollbars-etc][Remove menubar, toolbar, scrollbars, etc.]]
+  - [[#remove-toolbar-scrollbars-etc][Remove toolbar, scrollbars, etc.]]
   - [[#make-titlebar-the-same-color-as-background][Make titlebar the same color as background]]
   - [[#set-up-fonts][Set up fonts]]
   - [[#set-up-theme][Set up theme]]
@@ -321,7 +321,7 @@ This is to remove the ugly annoying startup message on a white screen that you g
   (setq inhibit-startup-message t)
 #+end_src
 
-** Remove menubar, toolbar, scrollbars, etc.
+** Remove toolbar, scrollbars, etc.
 Maximize the goodness
 
 #+begin_src emacs-lisp
@@ -329,7 +329,6 @@ Maximize the goodness
   (tool-bar-mode -1)
   (tooltip-mode -1)
   (set-fringe-mode 0)
-  (menu-bar-mode -1)
 #+end_src
 
 ** Make titlebar the same color as background
