@@ -228,6 +228,8 @@ soon as Emacs loads."
  "C-;" 'popper-toggle-latest
  "C-:" 'popper-cycle)
 
+(use-package undo-tree)
+
 ;; Making ESC key work like an ESC key by exiting/canceling stuff
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
