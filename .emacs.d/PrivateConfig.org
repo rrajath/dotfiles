@@ -13,7 +13,6 @@
   - [[#why-literate-config][Why literate config?]]
 - [[#current-issues][Current Issues]]
   - [[#hitting-x-in-evil-mode-deletes-alternate-characters-instead-of-the-one-just-behind-the-cursor][Hitting X in evil mode deletes alternate characters instead of the one just behind the cursor]]
-  - [[#redo-doesnt-work][Redo doesn't work]]
 - [[#first-things-first][First things first]]
   - [[#startup-performance][Startup Performance]]
   - [[#frame-management][Frame Management]]
@@ -53,6 +52,7 @@
   - [[#revert-buffer-noconfirm][Revert buffer NOCONFIRM]]
   - [[#popper][Popper]]
     - [[#keybindings][Keybindings]]
+  - [[#undo-tree][Undo Tree]]
 - [[#keybindings][Keybindings]]
   - [[#make-esc-work-better][Make ESC work better]]
   - [[#switch-buffers-easily][Switch buffers easily]]
@@ -172,8 +172,6 @@ Literate config has a few benefits:
 * Current Issues
 ** TODO Hitting =X= in evil mode deletes alternate characters instead of the one just behind the cursor
 In vim normal mode, hitting =x= would delete the character right in front of the cursor whereas hitting =X= /should/ delete the character just before the cursor, but it doesn't. For example, if there is a word called "emacs" and the cursor was right after the letter 's', hitting =X= twice would delete the letters 'c' and 'm'.
-** TODO Redo doesn't work
-I can only undo, but I have to set something up for redo. Packages to explore - undo-tree
 * First things first
 ** Startup Performance
 
@@ -612,6 +610,13 @@ Package: [[https://github.com/karthink/popper][popper]]
    :keymaps '(normal insert)
    "C-;" 'popper-toggle-latest
    "C-:" 'popper-cycle)
+#+end_src
+** Undo Tree
+Undo and redo actions are linear and quite frustrating in emacs. Undo tree helps visualize the tree of changes and revert to any of them
+Package: [[https://github.com/apchamberlain/undo-tree.el][undo-tree]] 
+
+#+begin_src emacs-lisp
+  (use-package undo-tree)
 #+end_src
 
 * Keybindings
