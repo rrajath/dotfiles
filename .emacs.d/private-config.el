@@ -700,6 +700,8 @@ soon as Emacs loads."
      "* TODO %?\n%U\n %i" :kill-buffer t)
     ("oe" "Event" entry (file+olp, (rr/org-path "organize.org") "Events")
      "* TODO %?\n%U\n %i")
+    ("og" "Guitar" entry (file+olp, (rr/org-path "organize.org") "Goals" "Guitar" "Practice Log")
+     "* %u\n%?")
     ("w" "Work")
     ("wt" "Work Task" entry (file+olp, (rr/org-path "work-tasks.org") "All Tasks")
      "* TODO %?\n%U\n %i" :kill-buffer t)
