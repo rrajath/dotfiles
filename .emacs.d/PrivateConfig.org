@@ -616,6 +616,8 @@ Package: [[https://github.com/apchamberlain/undo-tree.el][undo-tree]]
 
 #+begin_src emacs-lisp
   (use-package undo-tree)
+
+  (global-undo-tree-mode)
 #+end_src
 
 * Keybindings

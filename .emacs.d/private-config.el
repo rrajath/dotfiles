@@ -229,6 +229,8 @@ soon as Emacs loads."
 
 (use-package undo-tree)
 
+(global-undo-tree-mode)
+
 ;; Making ESC key work like an ESC key by exiting/canceling stuff
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
