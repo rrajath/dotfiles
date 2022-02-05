@@ -1129,10 +1129,12 @@ Package: [[https://magit.vc/][magit]]
 This is a git blame plugin inspired by VSCode's GitLens feature
 Package: [[https://github.com/Artawower/blamer.el][blamer]]
 
+Note: This is disabled for now. It slows down scrolling. But it can be enabled anytime.
+
 #+begin_src emacs-lisp
   (use-package blamer
-    :hook ((js2-mode . blamer-mode)
-           (typescript-mode . blamer-mode))
+;;    :hook ((js2-mode . blamer-mode)
+;;           (typescript-mode . blamer-mode))
     :custom
     (blamer-idle-time 0.1)
     (blamer-min-offset 70)
