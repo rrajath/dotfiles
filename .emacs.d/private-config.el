@@ -1127,4 +1127,25 @@ in HUGO_BASE_DIR property."
              (blog-post-file-name (concat file-name ".md")))
         (org-set-property "EXPORT_FILE_NAME" blog-post-file-name))))
 
+(use-package excorporate
+  :defer t
+  :config
+  (setq excorporate-diary-today-file
+        (concat user-emacs-directory "var/excorporate/diary-excorporate-today")
+        excorporate-diary-transient-file
+        (concat user-emacs-directory "var/excorporate/diary-excorporate-transient")))
+(excorporate-diary-enable)
+
+(defun rr/show-work-cal-for-current-day ()
+  "Show meetings for current day."
+  (interactive)
+  (exco-org-show-day
+   (nth 0 (calendar-current-date))
+   (nth 1 (calendar-current-date))
+   (nth 2 (calendar-current-date)))
+  (other-window 1)
+  (sleep-for 1)
+  (org-shifttab)
+  (evil-toggle-fold))
+
 (setq gc-cons-threshold (* 2 1000 1000))
