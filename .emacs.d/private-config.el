@@ -501,6 +501,11 @@ soon as Emacs loads."
 (use-package crux
   :defer 2)
 
+(use-package all-the-icons-ivy
+	:after ivy
+	:config
+	(all-the-icons-ivy-setup))
+
 (use-package dired
   :ensure nil
   :commands (dired dired-jump)
