@@ -53,6 +53,7 @@
   - [[#popper][Popper]]
     - [[#keybindings][Keybindings]]
   - [[#undo-tree][Undo Tree]]
+  - [[#recentf-mode][Recentf Mode]]
 - [[#keybindings][Keybindings]]
   - [[#make-esc-work-better][Make ESC work better]]
   - [[#switch-buffers-easily][Switch buffers easily]]
@@ -61,26 +62,30 @@
     - [[#basic-setup][Basic Setup]]
     - [[#custom-keybindings-unused][Custom keybindings (unused)]]
     - [[#speedkeys][Speedkeys]]
-  - [[#general][General]]
   - [[#remap-universal-argument][Remap universal argument]]
+  - [[#general][General]]
   - [[#hydra][Hydra]]
     - [[#package-setup][Package Setup]]
     - [[#handle-window-resize][Handle Window Resize]]
 - [[#completion-frameworks][Completion Frameworks]]
-  - [[#ivy][Ivy]]
-  - [[#counsel][Counsel]]
-  - [[#vertico-unused][Vertico (unused)]]
+  - [[#ivy-unused][Ivy (unused)]]
+  - [[#counsel-unused][Counsel (unused)]]
+  - [[#vertico][Vertico]]
   - [[#orderless][Orderless]]
   - [[#prescient][Prescient]]
+  - [[#consult][Consult]]
+    - [[#consult-package-setup][Consult package setup]]
+    - [[#projectile-related][Projectile related]]
 - [[#utilities][Utilities]]
   - [[#helpful-package-for-better-documentation-formatting][Helpful package for better documentation formatting]]
   - [[#expand-region][Expand Region]]
   - [[#focus-mode][Focus mode]]
   - [[#crux][Crux]]
-  - [[#all-the-icons-ivy][All the icons ivy]]
+  - [[#all-the-icons-ivy-unused][All the icons ivy (unused)]]
 - [[#dired][Dired]]
 - [[#development][Development]]
   - [[#projectile][Projectile]]
+  - [[#flymake][Flymake]]
   - [[#git-gutter][Git Gutter]]
   - [[#magit][Magit]]
   - [[#blamer][Blamer]]
@@ -113,6 +118,7 @@
     - [[#use-noweb-yes-to-pull-work-related-configs][Use :noweb yes to pull work related configs]]
   - [[#generate-table-of-contents][Generate Table of Contents]]
   - [[#org-todo-keyword-faces][Org todo keyword faces]]
+  - [[#org-faces][Org faces]]
   - [[#org-behaviors][Org Behaviors]]
     - [[#org-ret-key-behavior][Org RET key behavior]]
       - [[#org-get-todo-keywords-for][Org get todo keywords for]]
@@ -621,6 +627,12 @@ Package: [[https://github.com/apchamberlain/undo-tree.el][undo-tree]]
   (global-undo-tree-mode)
 #+end_src
 
+** Recentf Mode
+Enable =recentf= for usefulness.
+
+#+begin_src emacs-lisp
+  (recentf-mode)
+#+end_src
 * Keybindings
 ** Make ESC work better
 Making =ESC= work like how it works in other programs - cancelling the operation
@@ -631,10 +643,10 @@ Making =ESC= work like how it works in other programs - cancelling the operation
 #+end_src
 
 ** Switch buffers easily
-=counsel-switch-buffer= lets you preview buffers as you scroll through them. It is not set to the keybinding =C-M-j= for easy access. Also, these buffers are aggregated across workspaces (or perspectives).
+=consult-buffer= lets you preview buffers as you scroll through them. It is not set to the keybinding =C-M-j= for easy access. Also, these buffers are aggregated across workspaces (or perspectives).
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
+  (global-set-key (kbd "C-M-j") 'consult-buffer)
 #+end_src
 
 ** Which key
@@ -710,6 +722,15 @@ Spacemacs has a cool feature where if you're on an org-mode heading and you pres
    "t" 'org-todo)
 #+end_src
 
+** Remap universal argument
+Default keybinding for =prefix-argument= is =C-u=, but since this is now mapped to scrolling up half a page, it needs a new keybinding. The following code block remaps it to =C-S-u=.
+
+#+begin_src emacs-lisp
+  (general-define-key
+   :states 'normal
+   "C-S-u" 'universal-argument)
+#+end_src
+
 ** General
 General is a great package for adding custom keybindings not just globally, but for very specific modes (like org-mode-map, evil-mode-map, etc.). The following configuration is for global keybinding with =SPC= as the leader key.
 Package: [[https://github.com/noctuid/general.el][General]]
@@ -726,7 +747,7 @@ Package: [[https://github.com/noctuid/general.el][General]]
    "SPC" '(counsel-M-x :which-key "M-x")
    "X"   '(org-capture :which-key "org-capture")
    "`"   '(evil-switch-to-windows-last-buffer :which-key "last window")
-   "RET" '(counsel-bookmark :which-key "bookmarks")
+   "RET" '(consult-bookmark :which-key "bookmarks")
    "t"   '(vterm-toggle :which-key "vterm-popup")
    ;; commands
    "e"   '(:ignore t :which-key "eval")
@@ -762,7 +783,7 @@ Package: [[https://github.com/noctuid/general.el][General]]
    "w w" '(next-window-any-frame :which-key "next window")
    ;; help for variables, functions, keybindings, etc.
    "h"   '(:ignore t :which-key "help")
-   "h a" '(counsel-apropos :which-key "apropos")
+   "h a" '(consult-apropos :which-key "apropos")
    "h v" '(counsel-describe-variable :which-key "variable")
    "h f" '(counsel-describe-function :which-key "function")
    "h k" '(helpful-key :which-key "key")
@@ -785,7 +806,7 @@ Package: [[https://github.com/noctuid/general.el][General]]
    "o x" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
    "o h" '(org-toggle-heading :which-key "heading")
    "o i" '(org-toggle-item :which-key "item")
-   "o o" '(counsel-outline :which-key "counsel-outline")
+   "o o" '(consult-outline :which-key "consult-outline")
    "o S" '(org-show-todo-tree :which-key "org-show-todo-tree")
    "o q" '(org-set-tags-command :which-key "org-set-tags-command")
    "o N" '(org-add-note :which-key "org-add-note")
@@ -820,15 +841,20 @@ Package: [[https://github.com/noctuid/general.el][General]]
    ;; projectile
    "p"   '(:ignore t :which-key "projectile")
    "p f" '(projectile-find-file :which-key "projectile-find-file")
-   "p /" '(counsel-projectile-rg :which-key "counsel-projectile-rg")
+   "p /" '(consult-ripgrep :which-key "consult-ripgrep")
    "p r" '(projectile-recentf :which-key "projectile-recentf")
    "p s" '(counsel-projectile-switch-project :which-key "projectile-switch-project")
    "p t" '(rr/projectile-run-vterm :which-key "rr/projectile-run-vterm")
    "p k" '(projectile-kill-buffers :which-key "projectile-kill-buffers")
    ;; files
    "f"   '(:ignore t :which-key "files")
-   "f f" '(counsel-find-file :which-key "find file")
-   "f r" '(counsel-recentf :which-key "recent files"))
+   "f f" '(find-file :which-key "find-file")
+   "f r" '(consult-recent-file :which-key "recent files")
+   ;; consult
+   "c"   '(:ignore t :which-key "consult")
+   "c m" '(consult-mark :which-key "consult-mark")
+   "c M" '(consult-global-mark :which-key "consult-global-mark")
+   )
 
   (general-define-key
    :states '(normal insert)
@@ -837,22 +863,14 @@ Package: [[https://github.com/noctuid/general.el][General]]
    "C-n" 'evil-next-line
    "C-p" 'evil-previous-line
    "C-S-o" 'evil-jump-forward
-   "C-o" 'evil-jump-backward)
+   "C-o" 'evil-jump-backward
+   "C-s" 'consult-line)
 
   (general-define-key
    :keymaps '(normal insert)
    "s-]" 'persp-next
    "s-[" 'persp-prev)
-#+end_src
-
-** Remap universal argument
-Default keybinding for =prefix-argument= is =C-u=, but since this is now mapped to scrolling up half a page, it needs a new keybinding. The following code block remaps it to =C-S-u=.
-
-#+begin_src emacs-lisp
-  (general-define-key
-   :states 'normal
-   "C-S-u" 'universal-argument)
-#+end_src
+   #+end_src
 
 ** Hydra
 *** Package Setup
@@ -877,13 +895,13 @@ This keybinding is to easily resize windows - horizontal or vertical
 #+end_src
 
 * Completion Frameworks
-** Ivy
+** Ivy (unused)
 Great completion framework. Ivy-rich mode gives more information on each line
 Packages:
 - [[https://github.com/abo-abo/swiper#ivy][ivy]]
 - [[https://github.com/Yevgnen/ivy-rich][ivy-rich]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package ivy
     :diminish
     :bind (("C-s" . swiper)
@@ -900,6 +918,8 @@ Packages:
            :map ivy-reverse-i-search-map
            ("C-k" . ivy-previous-line)
            ("C-d" . ivy-reverse-i-search-kill))
+    :custom
+    (ivy-use-virtual-buffers t)
     :init
     (ivy-mode 1)
     :config
@@ -911,10 +931,10 @@ Packages:
     (ivy-rich-mode 1))
 #+end_src
 
-** Counsel
+** Counsel (unused)
 Package: [[https://github.com/abo-abo/swiper#counsel][Counsel]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package counsel
     :bind (("M-x" . counsel-M-x)
            ("C-x b" . counsel-ibuffer)
@@ -928,14 +948,35 @@ Package: [[https://github.com/abo-abo/swiper#counsel][Counsel]]
   (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
 #+end_src
 
-** Vertico (unused)
+** Vertico
+Package: [[https://github.com/minad/vertico][vertico]] 
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
+  (defun rr/minibuffer-backward-kill (arg)
+    "When minibuffer is completing a file name delete up to parent
+  folder, otherwise delete a word"
+    (interactive "p")
+    (if minibuffer-completing-file-name
+        ;; Borrowed from https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
+        (if (string-match-p "/." (minibuffer-contents))
+            (zap-up-to-char (- arg) ?/)
+          (delete-minibuffer-contents))
+      (delete-word (- arg))))
+
+#+end_src
+
+#+begin_src emacs-lisp
   (use-package vertico
+    :bind (:map minibuffer-local-map
+                ("<Backspace>" . rr/minibuffer-backward-kill))
     :custom
     (vertico-cycle t)
     :init
     (vertico-mode))
+
+  (define-key vertico-map "?" #'minibuffer-completion-help)
+  (define-key vertico-map (kbd "M-RET") #'minibuffer-force-complete-and-exit)
+  (define-key vertico-map (kbd "M-TAB") #'minibuffer-complete)
 
   (use-package savehist
     :init
@@ -982,6 +1023,41 @@ Package: [[https://github.com/raxod502/prescient.el][prescient]]
     :after company
     :config
     (company-prescient-mode 1))
+#+end_src
+
+** Consult
+Package: [[https://github.com/minad/consult][consult]]
+*** Consult package setup
+Sets up some basic hooks, keybindings, theme, etc.
+
+#+begin_src emacs-lisp
+  (use-package consult
+    :hook (completion-list-mode . consult-preview-at-point-mode)
+    :init
+    :config
+    (consult-customize
+     consult-theme
+     :preview-key '(:debounce 0.2 any)
+     consult-ripgrep consult-git-grep consult-grep
+     consult-bookmark consult-recent-file consult-xref
+     consult--source-bookmark consult--source-recent-file
+     consult--source-project-recent-file
+     :preview-key (kbd "M-."))
+    ;; Optionally configure the narrowing key.
+    ;; Both < and C-+ work reasonably well.
+    (setq consult-narrow-key "<") ;; (kbd "C-+")
+    )
+#+end_src
+
+*** Projectile related
+Copied over from [[https://github.com/daviwil/dotfiles/blob/master/Emacs.org#consult-commands][David Wilson's config on Consult]].
+
+#+begin_src emacs-lisp
+  (defun rr/get-project-root ()
+    (when (fboundp 'projectile-project-root)
+      (projectile-project-root)))
+
+  (setq consult-project-root-function #'rr/get-project-root)
 #+end_src
 
 * Utilities
@@ -1031,15 +1107,15 @@ Package: [[https://github.com/bbatsov/crux][crux]]
     :defer 2)
 #+end_src
 
-** All the icons ivy
+** All the icons ivy (unused)
 Prettifies file list in ivy results with nice little icons
 Package: [[https://github.com/asok/all-the-icons-ivy][all-the-icons-ivy]] 
 
-#+begin_src emacs-lisp
-(use-package all-the-icons-ivy
-	:after ivy
-	:config
-	(all-the-icons-ivy-setup))
+#+begin_src emacs-lisp :tangle no
+  (use-package all-the-icons-ivy
+    :after ivy
+    :config
+    (all-the-icons-ivy-setup))
 #+end_src
 
 * Dired
@@ -1098,7 +1174,6 @@ Package: [[https://github.com/bbatsov/projectile][projectile]]
   (use-package projectile
     :diminish projectile-mode
     :config (projectile-mode)
-    :custom ((projectile-completion-system 'ivy))
     :init
     (when (file-directory-p "~/code")
       (setq projectile-project-search-path '("~/code")))
@@ -1112,6 +1187,15 @@ Package: [[https://github.com/bbatsov/projectile][projectile]]
    :states 'normal
    :prefix "C-c"
    "p" 'projectile-command-map)
+    #+end_src
+
+** Flymake
+
+#+begin_src emacs-lisp
+  (general-define-key
+   :states '(normal insert)
+   "s-." 'flymake-goto-next-error
+   "s->" 'flymake-goto-prev-error)
 #+end_src
 
 ** Git Gutter
@@ -1145,8 +1229,8 @@ Note: This is disabled for now. It slows down scrolling. But it can be enabled a
 
 #+begin_src emacs-lisp
   (use-package blamer
-;;    :hook ((js2-mode . blamer-mode)
-;;           (typescript-mode . blamer-mode))
+    ;;    :hook ((js2-mode . blamer-mode)
+    ;;           (typescript-mode . blamer-mode))
     :custom
     (blamer-idle-time 0.1)
     (blamer-min-offset 70)
@@ -1205,6 +1289,7 @@ Packages:
     :init
     (setq lsp-keymap-prefix "C-c l")
     :config
+    (setq lsp-auto-guess-root t)
     (setq lsp-ui-sideline-show-code-actions t)
     (lsp-enable-which-key-integration t)
     :custom
@@ -1215,14 +1300,19 @@ Packages:
   (use-package lsp-ui
     :hook (lsp-mode . lsp-ui-mode)
     :custom
-    (setq lsp-ui-doc-position 'bottom))
+    (setq lsp-ui-doc-position 'bottom)
+    (setq lsp-ui-doc-header t)
+    (setq lsp-ui-doc-include-signature t)
+    )
 
   (use-package lsp-treemacs
     :after lsp)
 
-  (use-package lsp-ivy
-    :after lsp)
+  ;; unused for now, Will enable it if needed
+  ;; (use-package lsp-ivy
+  ;; :after lsp)
 
+  ;; unused for now, Will enable it if needed
   ;; (use-package flycheck
   ;;   :defer t
   ;;   :hook (lsp-mode . flycheck-mode))
@@ -1275,15 +1365,19 @@ Package: [[http://company-mode.github.io/][company-mode]]
     :after lsp-mode
     :hook (lsp-mode . company-mode)
     :bind (:map company-active-map
-                ("<tab>" . company-complete-selection))
+                ("<tab>" . consult-company))
     (:map lsp-mode-map
-          ("<tab>" . company-indent-or-complete-common))
+          ("<tab>" . consult-company))
     :custom
     (company-minimum-prefix-length 1)
     (company-idle-delay 0.0))
 
   (use-package company-box
     :hook (company-mode . company-box-mode))
+
+  (use-package consult-company)
+
+  (define-key company-mode-map [remap completion-at-point] #'consult-company)
 #+end_src
 *** GraphQL
 This is to get syntax highlighting and indentation support for graphql files.
@@ -1342,7 +1436,11 @@ Set the directory for auto saving persp sessions
       ("og" "Guitar" entry (file+olp, (rr/org-path "organize.org") "Goals" "Guitar" "Practice Log")
        "* %u\n%?")
       ("w" "Work")
-      ("wt" "Work Task" entry (file+olp, (rr/org-path "work-tasks.org") "All Tasks")
+      ("wt" "Work Task" entry (file+olp, (rr/org-path "work-tasks.org") "All Tasks" "Overflow Tasks")
+       "* TODO %?\n%U\n %i" :kill-buffer t)
+      ("wd" "Deep Task" entry (file+olp, (rr/org-path "work-tasks.org") "All Tasks" "Deep")
+       "* TODO %?\n%U\n %i" :kill-buffer t)
+      ("ws" "Shallow Task" entry (file+olp, (rr/org-path "work-tasks.org") "All Tasks" "Shallow")
        "* TODO %?\n%U\n %i" :kill-buffer t)
       ("wi" "Work Inbox" entry (file+olp, (rr/org-path "work-tasks.org") "Inbox")
        "* %?\n%U\n %i")
@@ -1369,14 +1467,16 @@ Set the directory for auto saving persp sessions
 
   (defun rr/org-mode-setup ()
     (org-indent-mode)
+    (variable-pitch-mode 1)
     (auto-fill-mode 0)
     (visual-line-mode 1)
-    (setq org-directory "~/Dropbox/org-mode/")
+    (setq org-directory "~/Library/CloudStorage/Dropbox/org-mode/")
     (setq org-agenda-files (list org-directory))
     (setq org-capture-templates (rr/set-org-capture-templates))
     (setq org-todo-keywords
           '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "CODE(c)" "FDBK(f)" "|" "DONE(d!)" "KILL(k!)")
             ))
+    (setq org-id-link-to-org-use-id 'use-existing)
     (setq evil-auto-indent nil))
 
   (use-package org
@@ -1395,8 +1495,9 @@ Set the directory for auto saving persp sessions
           org-agenda-tags-column 100
           org-agenda-compact-blocks t
           org-agenda-include-diary t
-          org-catch-invisible-edits t
+          org-catch-invisible-edits 'smart
           org-fontify-whole-heading-line t
+          org-ctrl-k-protect-subtree t
           org-refile-targets
           '((nil :maxlevel . 3)
             (org-agenda-files :maxlevel . 3)))
@@ -1566,6 +1667,49 @@ Package: [[https://github.com/alphapapa/org-make-toc][org-make-toc]]
           ("IDEA" . (:foreground "#fdac37" :weight bold))
           ("DONE" . (:foreground "#5c6267" :weight bold))
           ("KILL" . (:foreground "#ee7570" :weight bold))))
+#+end_src
+
+** Org faces
+Currently trying out this setting with fixed width and variable width fonts. May change soon.
+
+#+begin_src emacs-lisp
+  ;; Set the fixed pitch face
+  (set-face-attribute 'fixed-pitch nil
+                      :font "JetBrains Mono"
+                      :height 160
+                      :weight 'light)
+
+  ;; Set the variable pitch face
+  (set-face-attribute 'variable-pitch nil
+                      :font "Avenir Next"
+                      :height 150
+                      :weight 'light)
+
+  (set-face-attribute 'org-document-title nil :font "Avenir Next" :weight 'regular :height 1.5)
+
+  (dolist (face '((org-level-1 . 1.3)
+                  (org-level-2 . 1.2)
+                  (org-level-3 . 1.15)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :font "Avenir Next" :weight 'regular :height (cdr face))
+
+    (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
+    (set-face-attribute 'org-todo nil  :inherit 'fixed-pitch)
+    (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+    (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+    (set-face-attribute 'org-column nil :background nil)
+    (set-face-attribute 'org-column-title nil :background nil))
 #+end_src
 
 ** Org Behaviors

@@ -231,10 +231,12 @@ soon as Emacs loads."
 
 (global-undo-tree-mode)
 
+(recentf-mode)
+
 ;; Making ESC key work like an ESC key by exiting/canceling stuff
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-(global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
+(global-set-key (kbd "C-M-j") 'consult-buffer)
 
 (use-package which-key
   :defer 0
@@ -274,6 +276,10 @@ soon as Emacs loads."
  :keymaps 'org-mode-map
  "t" 'org-todo)
 
+(general-define-key
+ :states 'normal
+ "C-S-u" 'universal-argument)
+
 (use-package general
   :config
   (general-evil-setup t))
@@ -285,7 +291,7 @@ soon as Emacs loads."
  "SPC" '(counsel-M-x :which-key "M-x")
  "X"   '(org-capture :which-key "org-capture")
  "`"   '(evil-switch-to-windows-last-buffer :which-key "last window")
- "RET" '(counsel-bookmark :which-key "bookmarks")
+ "RET" '(consult-bookmark :which-key "bookmarks")
  "t"   '(vterm-toggle :which-key "vterm-popup")
  ;; commands
  "e"   '(:ignore t :which-key "eval")
@@ -321,7 +327,7 @@ soon as Emacs loads."
  "w w" '(next-window-any-frame :which-key "next window")
  ;; help for variables, functions, keybindings, etc.
  "h"   '(:ignore t :which-key "help")
- "h a" '(counsel-apropos :which-key "apropos")
+ "h a" '(consult-apropos :which-key "apropos")
  "h v" '(counsel-describe-variable :which-key "variable")
  "h f" '(counsel-describe-function :which-key "function")
  "h k" '(helpful-key :which-key "key")
@@ -344,7 +350,7 @@ soon as Emacs loads."
  "o x" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
  "o h" '(org-toggle-heading :which-key "heading")
  "o i" '(org-toggle-item :which-key "item")
- "o o" '(counsel-outline :which-key "counsel-outline")
+ "o o" '(consult-outline :which-key "consult-outline")
  "o S" '(org-show-todo-tree :which-key "org-show-todo-tree")
  "o q" '(org-set-tags-command :which-key "org-set-tags-command")
  "o N" '(org-add-note :which-key "org-add-note")
@@ -379,15 +385,20 @@ soon as Emacs loads."
  ;; projectile
  "p"   '(:ignore t :which-key "projectile")
  "p f" '(projectile-find-file :which-key "projectile-find-file")
- "p /" '(counsel-projectile-rg :which-key "counsel-projectile-rg")
+ "p /" '(consult-ripgrep :which-key "consult-ripgrep")
  "p r" '(projectile-recentf :which-key "projectile-recentf")
  "p s" '(counsel-projectile-switch-project :which-key "projectile-switch-project")
  "p t" '(rr/projectile-run-vterm :which-key "rr/projectile-run-vterm")
  "p k" '(projectile-kill-buffers :which-key "projectile-kill-buffers")
  ;; files
  "f"   '(:ignore t :which-key "files")
- "f f" '(counsel-find-file :which-key "find file")
- "f r" '(counsel-recentf :which-key "recent files"))
+ "f f" '(find-file :which-key "find-file")
+ "f r" '(consult-recent-file :which-key "recent files")
+ ;; consult
+ "c"   '(:ignore t :which-key "consult")
+ "c m" '(consult-mark :which-key "consult-mark")
+ "c M" '(consult-global-mark :which-key "consult-global-mark")
+ )
 
 (general-define-key
  :states '(normal insert)
@@ -396,16 +407,13 @@ soon as Emacs loads."
  "C-n" 'evil-next-line
  "C-p" 'evil-previous-line
  "C-S-o" 'evil-jump-forward
- "C-o" 'evil-jump-backward)
+ "C-o" 'evil-jump-backward
+ "C-s" 'consult-line)
 
 (general-define-key
  :keymaps '(normal insert)
  "s-]" 'persp-next
  "s-[" 'persp-prev)
-
-(general-define-key
- :states 'normal
- "C-S-u" 'universal-argument)
 
 (use-package hydra
   :defer t)
@@ -417,43 +425,39 @@ soon as Emacs loads."
   ("j" enlarge-window "enlarge-vertical")
   ("k" shrink-window "shrink-vertical"))
 
-(use-package ivy
-  :diminish
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)
-         ("C-f" . ivy-alt-done)
-         ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
-         :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
+(defun rr/minibuffer-backward-kill (arg)
+  "When minibuffer is completing a file name delete up to parent
+folder, otherwise delete a word"
+  (interactive "p")
+  (if minibuffer-completing-file-name
+      ;; Borrowed from https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
+      (if (string-match-p "/." (minibuffer-contents))
+          (zap-up-to-char (- arg) ?/)
+        (delete-minibuffer-contents))
+    (delete-word (- arg))))
+
+(use-package vertico
+  :bind (:map minibuffer-local-map
+              ("<Backspace>" . rr/minibuffer-backward-kill))
+  :custom
+  (vertico-cycle t)
   :init
-  (ivy-mode 1)
-  :config
-  (setq ivy-wrap t))
+  (vertico-mode))
 
-(use-package ivy-rich
-  :after ivy
+(define-key vertico-map "?" #'minibuffer-completion-help)
+(define-key vertico-map (kbd "M-RET") #'minibuffer-force-complete-and-exit)
+(define-key vertico-map (kbd "M-TAB") #'minibuffer-complete)
+
+(use-package savehist
   :init
-  (ivy-rich-mode 1))
+  (savehist-mode))
 
-(use-package counsel
-  :bind (("M-x" . counsel-M-x)
-         ("C-x b" . counsel-ibuffer)
-         ("C-x C-f" . counsel-find-file)
-         :map minibuffer-local-map
-         ("C-r" . 'counsel-minibuffer-history))
-  :config
-  (setq ivy-initial-inputs-alist nil)
-  (counsel-mode 1))
-
-(setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+(use-package marginalia
+  :after vertico
+  :custom
+  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  :init
+  (marginalia-mode))
 
 (use-package orderless
   :after counsel
@@ -480,6 +484,29 @@ soon as Emacs loads."
   :config
   (company-prescient-mode 1))
 
+(use-package consult
+  :hook (completion-list-mode . consult-preview-at-point-mode)
+  :init
+  :config
+  (consult-customize
+   consult-theme
+   :preview-key '(:debounce 0.2 any)
+   consult-ripgrep consult-git-grep consult-grep
+   consult-bookmark consult-recent-file consult-xref
+   consult--source-bookmark consult--source-recent-file
+   consult--source-project-recent-file
+   :preview-key (kbd "M-."))
+  ;; Optionally configure the narrowing key.
+  ;; Both < and C-+ work reasonably well.
+  (setq consult-narrow-key "<") ;; (kbd "C-+")
+  )
+
+(defun rr/get-project-root ()
+  (when (fboundp 'projectile-project-root)
+    (projectile-project-root)))
+
+(setq consult-project-root-function #'rr/get-project-root)
+
 (use-package helpful
   :commands (helpful-callable helpful-variable helpful-command helpful-key helpful-function)
   :custom
@@ -500,11 +527,6 @@ soon as Emacs loads."
 
 (use-package crux
   :defer 2)
-
-(use-package all-the-icons-ivy
-	:after ivy
-	:config
-	(all-the-icons-ivy-setup))
 
 (use-package dired
   :ensure nil
@@ -551,7 +573,6 @@ soon as Emacs loads."
 (use-package projectile
   :diminish projectile-mode
   :config (projectile-mode)
-  :custom ((projectile-completion-system 'ivy))
   :init
   (when (file-directory-p "~/code")
     (setq projectile-project-search-path '("~/code")))
@@ -566,6 +587,11 @@ soon as Emacs loads."
  :prefix "C-c"
  "p" 'projectile-command-map)
 
+(general-define-key
+ :states '(normal insert)
+ "s-." 'flymake-goto-next-error
+ "s->" 'flymake-goto-prev-error)
+
 (use-package diff-hl)
 (global-diff-hl-mode)
 (diff-hl-flydiff-mode 1)
@@ -578,16 +604,16 @@ soon as Emacs loads."
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 (use-package blamer
-;;    :hook ((js2-mode . blamer-mode)
-;;           (typescript-mode . blamer-mode))
-    :custom
-    (blamer-idle-time 0.1)
-    (blamer-min-offset 70)
-    :custom-face
-    (blamer-face ((t :foreground "#7a88cf"
-                     :background nil
-                     :height 140
-                     :italic t))))
+  ;;    :hook ((js2-mode . blamer-mode)
+  ;;           (typescript-mode . blamer-mode))
+  :custom
+  (blamer-idle-time 0.1)
+  (blamer-min-offset 70)
+  :custom-face
+  (blamer-face ((t :foreground "#7a88cf"
+                   :background nil
+                   :height 140
+                   :italic t))))
 
 (use-package vterm
   :commands vterm)
@@ -611,6 +637,7 @@ soon as Emacs loads."
   :init
   (setq lsp-keymap-prefix "C-c l")
   :config
+  (setq lsp-auto-guess-root t)
   (setq lsp-ui-sideline-show-code-actions t)
   (lsp-enable-which-key-integration t)
   :custom
@@ -621,14 +648,19 @@ soon as Emacs loads."
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :custom
-  (setq lsp-ui-doc-position 'bottom))
+  (setq lsp-ui-doc-position 'bottom)
+  (setq lsp-ui-doc-header t)
+  (setq lsp-ui-doc-include-signature t)
+  )
 
 (use-package lsp-treemacs
   :after lsp)
 
-(use-package lsp-ivy
-  :after lsp)
+;; unused for now, Will enable it if needed
+;; (use-package lsp-ivy
+;; :after lsp)
 
+;; unused for now, Will enable it if needed
 ;; (use-package flycheck
 ;;   :defer t
 ;;   :hook (lsp-mode . flycheck-mode))
@@ -669,15 +701,19 @@ soon as Emacs loads."
   :after lsp-mode
   :hook (lsp-mode . company-mode)
   :bind (:map company-active-map
-              ("<tab>" . company-complete-selection))
+              ("<tab>" . consult-company))
   (:map lsp-mode-map
-        ("<tab>" . company-indent-or-complete-common))
+        ("<tab>" . consult-company))
   :custom
   (company-minimum-prefix-length 1)
   (company-idle-delay 0.0))
 
 (use-package company-box
   :hook (company-mode . company-box-mode))
+
+(use-package consult-company)
+
+(define-key company-mode-map [remap completion-at-point] #'consult-company)
 
 (use-package graphql-mode
   :defer t)
@@ -708,7 +744,11 @@ soon as Emacs loads."
     ("og" "Guitar" entry (file+olp, (rr/org-path "organize.org") "Goals" "Guitar" "Practice Log")
      "* %u\n%?")
     ("w" "Work")
-    ("wt" "Work Task" entry (file+olp, (rr/org-path "work-tasks.org") "All Tasks")
+    ("wt" "Work Task" entry (file+olp, (rr/org-path "work-tasks.org") "All Tasks" "Overflow Tasks")
+     "* TODO %?\n%U\n %i" :kill-buffer t)
+    ("wd" "Deep Task" entry (file+olp, (rr/org-path "work-tasks.org") "All Tasks" "Deep")
+     "* TODO %?\n%U\n %i" :kill-buffer t)
+    ("ws" "Shallow Task" entry (file+olp, (rr/org-path "work-tasks.org") "All Tasks" "Shallow")
      "* TODO %?\n%U\n %i" :kill-buffer t)
     ("wi" "Work Inbox" entry (file+olp, (rr/org-path "work-tasks.org") "Inbox")
      "* %?\n%U\n %i")
@@ -731,14 +771,16 @@ soon as Emacs loads."
 
 (defun rr/org-mode-setup ()
   (org-indent-mode)
+  (variable-pitch-mode 1)
   (auto-fill-mode 0)
   (visual-line-mode 1)
-  (setq org-directory "~/Dropbox/org-mode/")
+  (setq org-directory "~/Library/CloudStorage/Dropbox/org-mode/")
   (setq org-agenda-files (list org-directory))
   (setq org-capture-templates (rr/set-org-capture-templates))
   (setq org-todo-keywords
         '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "CODE(c)" "FDBK(f)" "|" "DONE(d!)" "KILL(k!)")
           ))
+  (setq org-id-link-to-org-use-id 'use-existing)
   (setq evil-auto-indent nil))
 
 (use-package org
@@ -757,8 +799,9 @@ soon as Emacs loads."
         org-agenda-tags-column 100
         org-agenda-compact-blocks t
         org-agenda-include-diary t
-        org-catch-invisible-edits t
+        org-catch-invisible-edits 'smart
         org-fontify-whole-heading-line t
+        org-ctrl-k-protect-subtree t
         org-refile-targets
         '((nil :maxlevel . 3)
           (org-agenda-files :maxlevel . 3)))
@@ -849,6 +892,44 @@ soon as Emacs loads."
         ("IDEA" . (:foreground "#fdac37" :weight bold))
         ("DONE" . (:foreground "#5c6267" :weight bold))
         ("KILL" . (:foreground "#ee7570" :weight bold))))
+
+;; Set the fixed pitch face
+(set-face-attribute 'fixed-pitch nil
+                    :font "JetBrains Mono"
+                    :height 160
+                    :weight 'light)
+
+;; Set the variable pitch face
+(set-face-attribute 'variable-pitch nil
+                    :font "Avenir Next"
+                    :height 150
+                    :weight 'light)
+
+(set-face-attribute 'org-document-title nil :font "Avenir Next" :weight 'regular :height 1.5)
+
+(dolist (face '((org-level-1 . 1.3)
+                (org-level-2 . 1.2)
+                (org-level-3 . 1.15)
+                (org-level-4 . 1.0)
+                (org-level-5 . 1.1)
+                (org-level-6 . 1.1)
+                (org-level-7 . 1.1)
+                (org-level-8 . 1.1)))
+  (set-face-attribute (car face) nil :font "Avenir Next" :weight 'regular :height (cdr face))
+
+  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'org-todo nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+  (set-face-attribute 'org-column nil :background nil)
+  (set-face-attribute 'org-column-title nil :background nil))
 
 (defun +org-get-todo-keywords-for (&optional keyword)
   "Returns the list of todo keywords that KEYWORD belongs to."
