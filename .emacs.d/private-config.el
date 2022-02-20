@@ -328,8 +328,8 @@ soon as Emacs loads."
  ;; help for variables, functions, keybindings, etc.
  "h"   '(:ignore t :which-key "help")
  "h a" '(consult-apropos :which-key "apropos")
- "h v" '(counsel-describe-variable :which-key "variable")
- "h f" '(counsel-describe-function :which-key "function")
+ "h v" '(describe-variable :which-key "variable")
+ "h f" '(describe-function :which-key "function")
  "h k" '(helpful-key :which-key "key")
  "h i" '(info :which-key "info")
  "h c" '(describe-key-briefly :which-key "describy-key-briefly")
@@ -460,29 +460,11 @@ folder, otherwise delete a word"
   (marginalia-mode))
 
 (use-package orderless
-  :after counsel
+  :after vertico
   :init
   (setq completion-styles '(orderless)
         completion-category-defaults nil
         completion-category-overrides '((file (styles . (partial-completion))))))
-
-(use-package prescient
-  :after counsel
-  :config
-  (prescient-persist-mode 1))
-
-(use-package ivy-prescient
-  :after prescient
-  :config
-  (ivy-prescient-mode 1)
-  (prescient-persist-mode 1))
-
-(setq ivy-prescient-retain-classic-highlighting t)
-
-(use-package company-prescient
-  :after company
-  :config
-  (company-prescient-mode 1))
 
 (use-package consult
   :hook (completion-list-mode . consult-preview-at-point-mode)
@@ -507,15 +489,18 @@ folder, otherwise delete a word"
 
 (setq consult-project-root-function #'rr/get-project-root)
 
+(use-package corfu
+  :config
+  (corfu-global-mode))
+
+(setq tab-always-indent 'complete)
+
 (use-package helpful
   :commands (helpful-callable helpful-variable helpful-command helpful-key helpful-function)
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
   :bind
-  ([remap describe-function] . counsel-describe-function)
   ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
+  ([remap describe-function] . helpful-callable)
+  ([remap describe-variable] . helpful-variable)
   ([remap describe-key] . helpful-key))
 
 (use-package expand-region
@@ -633,14 +618,20 @@ folder, otherwise delete a word"
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook ((typescript-mode js2-mode web-mode) . lsp)
+  :hook
+  ((typescript-mode js2-mode web-mode) . lsp)
+  ((lsp-completion-mode . rr/lsp-mode-setup-completion))
   :init
+  (defun rr/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless))) ;; Configure flex
   (setq lsp-keymap-prefix "C-c l")
   :config
   (setq lsp-auto-guess-root t)
   (setq lsp-ui-sideline-show-code-actions t)
   (lsp-enable-which-key-integration t)
   :custom
+  (lsp-completion-provider :none) ;; we use corfu
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
   (setq lsp-restart 'auto-restart)
   (lsp-headerline-breadcrumb-mode))
@@ -696,24 +687,6 @@ folder, otherwise delete a word"
          (typescript-mode . prettier-js-mode))
   :config
   (setq prettier-js-show-errors 'echo))
-
-(use-package company
-  :after lsp-mode
-  :hook (lsp-mode . company-mode)
-  :bind (:map company-active-map
-              ("<tab>" . consult-company))
-  (:map lsp-mode-map
-        ("<tab>" . consult-company))
-  :custom
-  (company-minimum-prefix-length 1)
-  (company-idle-delay 0.0))
-
-(use-package company-box
-  :hook (company-mode . company-box-mode))
-
-(use-package consult-company)
-
-(define-key company-mode-map [remap completion-at-point] #'consult-company)
 
 (use-package graphql-mode
   :defer t)
