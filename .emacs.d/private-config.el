@@ -38,30 +38,22 @@ soon as Emacs loads."
                  (cons 'height 81))
     )))
 
-;; Initialize package sources
-(require 'package)
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("melpa-stable" . "https://stable.melpa.org/packages/")
-                         ("org" . "https://orgmode.org/elpa/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
+(straight-use-package 'use-package)
 
-;; Fix an issue accessing the ELPA archive in Termux
-
-(package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
-
-;; Initialize use-package on non-Linux platforms
-(package-install 'use-package)
-(require 'use-package)
-
-;; Uncomment this to get a reading on packages that get loaded at startup
-;;(setq use-package-verbose t)
-
-;; On non-Guix systems, "ensure" packages by default
-(setq use-package-always-ensure t)
-(setq use-package-verbose t)
+(setq straight-use-package-by-default t)
 
 (use-package no-littering)
 
@@ -102,7 +94,7 @@ soon as Emacs loads."
 (set-face-attribute 'default nil :font "JetBrains Mono" :height 125)
 
 (use-package doom-modeline
-  :ensure t
+  :straight t
   :init (doom-modeline-mode 1))
 
 (use-package doom-themes
@@ -152,133 +144,6 @@ soon as Emacs loads."
   (push 'vterm-mode beacon-dont-blink-major-modes)
   :init
   (beacon-mode))
-
-(server-start)
-
-(use-package super-save
-  :defer 1
-  :diminish super-save-mode
-  :config
-  (super-save-mode +1)
-  (setq super-save-auto-save-when-idle t))
-
-;; Revert Dired and other buffers
-(setq global-auto-revert-non-file-buffers t)
-
-;; Revert buffers when the underlying file has changed
-(global-auto-revert-mode 1)
-
-(use-package evil-nerd-commenter
-  :after evil)
-
-(defun rr/comment-and-nextline ()
-  "Comment the current line and move the point to the next line"
-  (interactive)
-  (evilnc-comment-or-uncomment-lines 1)
-  (evil-next-line))
-
-(general-define-key
- :states '(normal insert)
- "s-/" 'rr/comment-and-nextline)
-
-(use-package avy
-  :commands (avy-goto-char avy-goto-word-0 avy-goto-line))
-
-(use-package eros
-  :defer t)
-(eros-mode 1)
-
-(use-package hungry-delete
-  :defer 2)
-(global-hungry-delete-mode)
-
-(use-package goto-last-change)
-
-(defun rr/revert-buffer-no-confirm ()
-  "Revert the buffer, but don't ask for confirmation"
-  (interactive)
-  (revert-buffer nil t nil))
-
-(use-package popper
-  :after projectile
-  :init
-  (setq popper-reference-buffers
-        '("\\*Messages\\*"
-          "^\\*Warnings\\*"
-          "^\\*IBuffer\\*"
-          "^\\*Compile-Log\\*"
-          "^\\*Backtrace\\*"
-          "[Oo]utput\\*$"
-          "\\*Help\\*"
-          "\\*helpful\\*"
-          "\\*vterm\\*"
-          "\\*Excorporate\\*"
-          "\\*xref\\*"
-          help-mode
-          helpful-mode
-          compilation-mode
-          term-mode
-          vterm-mode)
-        popper-group-function #'popper-group-by-projectile)
-  (popper-mode +1))
-
-(general-define-key
- :keymaps '(normal insert)
- "C-;" 'popper-toggle-latest
- "C-:" 'popper-cycle)
-
-(use-package undo-tree)
-
-(global-undo-tree-mode)
-
-(recentf-mode)
-
-;; Making ESC key work like an ESC key by exiting/canceling stuff
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-(global-set-key (kbd "C-M-j") 'consult-buffer)
-
-(use-package which-key
-  :defer 0
-  :diminish which-key-mode
-  :config
-  (which-key-mode)
-  (setq which-key-idle-delay 0.3))
-
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  :config
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-
-  ;; Use visual line motions even outside of visual-line-mode buffers
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-model 'normal))
-
-(evil-mode 1)
-
-;; Evil Collection for predictable Vim keybindings in a lot of modes
-(use-package evil-collection
-  :after evil
-  :config
-  (evil-collection-init))
-
-(general-define-key
- :states 'normal
- :keymaps 'org-mode-map
- "t" 'org-todo)
-
-(general-define-key
- :states 'normal
- "C-S-u" 'universal-argument)
 
 (use-package general
   :config
@@ -415,6 +280,134 @@ soon as Emacs loads."
  "s-]" 'persp-next
  "s-[" 'persp-prev)
 
+(server-start)
+
+(use-package super-save
+  :defer 1
+  :diminish super-save-mode
+  :config
+  (super-save-mode +1)
+  (setq super-save-auto-save-when-idle t))
+
+;; Revert Dired and other buffers
+(setq global-auto-revert-non-file-buffers t)
+
+;; Revert buffers when the underlying file has changed
+(global-auto-revert-mode 1)
+
+(use-package evil-nerd-commenter
+  :after evil)
+
+(defun rr/comment-and-nextline ()
+  "Comment the current line and move the point to the next line"
+  (interactive)
+  (evilnc-comment-or-uncomment-lines 1)
+  (evil-next-line))
+
+(general-define-key
+ :states '(normal insert)
+ "s-/" 'rr/comment-and-nextline)
+
+(use-package avy
+  :commands (avy-goto-char avy-goto-word-0 avy-goto-line))
+
+(use-package eros
+  :defer t)
+(eros-mode 1)
+
+(use-package hungry-delete
+  :defer 2)
+(global-hungry-delete-mode)
+
+(use-package goto-last-change)
+
+(defun rr/revert-buffer-no-confirm ()
+  "Revert the buffer, but don't ask for confirmation"
+  (interactive)
+  (revert-buffer nil t nil))
+
+(use-package popper
+  :after projectile
+  :init
+  (setq popper-reference-buffers
+        '("\\*Messages\\*"
+          "^\\*Warnings\\*"
+          "^\\*IBuffer\\*"
+          "^\\*Compile-Log\\*"
+          "^\\*Backtrace\\*"
+          "[Oo]utput\\*$"
+          "\\*Help\\*"
+          "\\*helpful\\*"
+          "\\*vterm\\*"
+          "\\*Excorporate\\*"
+          "\\*xref\\*"
+          help-mode
+          helpful-mode
+          compilation-mode
+          org-roam-mode
+          term-mode
+          vterm-mode)
+        popper-group-function #'popper-group-by-projectile)
+  (popper-mode +1))
+
+(general-define-key
+ :keymaps '(normal insert)
+ "C-;" 'popper-toggle-latest
+ "C-:" 'popper-cycle)
+
+(use-package undo-tree)
+
+(global-undo-tree-mode)
+
+(recentf-mode)
+
+;; Making ESC key work like an ESC key by exiting/canceling stuff
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+(global-set-key (kbd "C-M-j") 'consult-buffer)
+
+(use-package which-key
+  :defer 0
+  :diminish which-key-mode
+  :config
+  (which-key-mode)
+  (setq which-key-idle-delay 0.3))
+
+(use-package evil
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-i-jump nil)
+  :config
+  (evil-mode 1)
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+
+  ;; Use visual line motions even outside of visual-line-mode buffers
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+  (evil-set-initial-state 'messages-buffer-mode 'normal)
+  (evil-set-initial-state 'dashboard-model 'normal))
+
+(evil-mode 1)
+
+;; Evil Collection for predictable Vim keybindings in a lot of modes
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+
+(general-define-key
+ :states 'normal
+ :keymaps 'org-mode-map
+ "t" 'org-todo)
+
+(general-define-key
+ :states 'normal
+ "C-S-u" 'universal-argument)
+
 (use-package hydra
   :defer t)
 
@@ -514,7 +507,7 @@ folder, otherwise delete a word"
   :defer 2)
 
 (use-package dired
-  :ensure nil
+  :straight nil
   :commands (dired dired-jump)
   :config
   (setq ;;dired-listing-switches "-agho --group-directories-first"
@@ -563,9 +556,9 @@ folder, otherwise delete a word"
     (setq projectile-project-search-path '("~/code")))
   (setq projectile-switch-project-action #'projectile-dired))
 
-(use-package counsel-projectile
-  :after projectile
-  :config (counsel-projectile-mode))
+;; (use-package counsel-projectile
+  ;; :after projectile
+  ;; :config (counsel-projectile-mode))
 
 (general-define-key
  :states 'normal
@@ -866,19 +859,22 @@ folder, otherwise delete a word"
         ("DONE" . (:foreground "#5c6267" :weight bold))
         ("KILL" . (:foreground "#ee7570" :weight bold))))
 
+(setq my-fixed-pitch-font "JetBrains Mono")
+(setq my-variable-pitch-font "Avenir Next")
+
 ;; Set the fixed pitch face
 (set-face-attribute 'fixed-pitch nil
-                    :font "JetBrains Mono"
+                    :font my-fixed-pitch-font
                     :height 160
                     :weight 'light)
 
 ;; Set the variable pitch face
 (set-face-attribute 'variable-pitch nil
-                    :font "Avenir Next"
+                    :font my-variable-pitch-font
                     :height 150
                     :weight 'light)
 
-(set-face-attribute 'org-document-title nil :font "Avenir Next" :weight 'regular :height 1.5)
+(set-face-attribute 'org-document-title nil :font my-variable-pitch-font :weight 'regular :height 1.5)
 
 (dolist (face '((org-level-1 . 1.3)
                 (org-level-2 . 1.2)
@@ -888,7 +884,7 @@ folder, otherwise delete a word"
                 (org-level-6 . 1.1)
                 (org-level-7 . 1.1)
                 (org-level-8 . 1.1)))
-  (set-face-attribute (car face) nil :font "Avenir Next" :weight 'regular :height (cdr face))
+  (set-face-attribute (car face) nil :font my-variable-pitch-font :weight 'regular :height (cdr face))
 
   (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
   (set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
@@ -900,7 +896,6 @@ folder, otherwise delete a word"
   (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
   (set-face-attribute 'org-column nil :background nil)
   (set-face-attribute 'org-column-title nil :background nil))
 
@@ -1153,6 +1148,46 @@ If prefix ARG, copy instead of move."
         (org-refile-keep arg)
         current-prefix-arg)
     (call-interactively #'org-refile)))
+
+(general-define-key
+ :states '(normal)
+ :keymaps 'org-mode-map
+ :prefix "z"
+ "x" 'org-hide-drawer-toggle)
+
+(use-package org-roam
+  :straight t
+  :custom
+  (org-roam-directory "~/Library/CloudStorage/Dropbox/roam-notes")
+  (org-roam-completion-everywhere t)
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n I" . org-roam-node-insert-immediate)
+         ("C-c n t" . org-roam-tag-add)
+         )
+  :config
+  (org-roam-setup))
+
+(defun org-roam-node-insert-immediate (arg &rest args)
+  (interactive "P")
+  (let ((args (cons arg args))
+        (org-roam-capture-templates (list (append (car org-roam-capture-templates) '(:immediate-finish t)))))
+    (apply #'org-roam-node-insert args)))
+
+(use-package org-roam-ui
+  :straight
+    (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+    :after org-roam
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+;;  :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
 
 (use-package ox-hugo
   :after ox)

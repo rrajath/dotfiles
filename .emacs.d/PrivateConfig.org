@@ -18,7 +18,8 @@
   - [[#frame-management][Frame Management]]
     - [[#detect-display-size][Detect display size]]
     - [[#set-frame-size-and-position][Set frame size and position]]
-  - [[#package-management][Package Management]]
+  - [[#package-management-unused][Package Management (unused)]]
+  - [[#using-straight][Using Straight]]
   - [[#keep-emacsd-clean][Keep .emacs.d clean]]
   - [[#auto-update-packages][Auto update packages]]
   - [[#basic-setup][Basic Setup]]
@@ -38,6 +39,7 @@
   - [[#highlight-current-line][Highlight current line]]
   - [[#beacon][Beacon]]
 - [[#usability][Usability]]
+  - [[#general][General]]
   - [[#server-mode][Server Mode]]
   - [[#auto-saving-changed-files][Auto-saving changed files]]
   - [[#auto-reverting-changed-files][Auto-reverting changed files]]
@@ -63,7 +65,6 @@
     - [[#custom-keybindings-unused][Custom keybindings (unused)]]
     - [[#speedkeys][Speedkeys]]
   - [[#remap-universal-argument][Remap universal argument]]
-  - [[#general][General]]
   - [[#hydra][Hydra]]
     - [[#package-setup][Package Setup]]
     - [[#handle-window-resize][Handle Window Resize]]
@@ -133,6 +134,11 @@
       - [[#insert-item-below][Insert item below]]
       - [[#insert-item-above][Insert item above]]
     - [[#org-refile-to-current-file][Org refile to current file]]
+    - [[#org-showhide-drawers][Org show/hide drawers]]
+- [[#org-roam][Org Roam]]
+  - [[#basic-setup][Basic Setup]]
+  - [[#insert-new-note-immediately][Insert new note immediately]]
+  - [[#org-roam-ui][Org Roam UI]]
 - [[#blogging][Blogging]]
   - [[#ox-hugo][ox-hugo]]
   - [[#turn-on-org-hugo-auto-export-mode-when-you-visit-blogorg][Turn on org-hugo-auto-export-mode when you visit blog.org]]
@@ -237,10 +243,10 @@ This block of code uses the =display-mode= variable set in the previous section 
       )))
 #+end_src
 
-** Package Management
+** Package Management (unused)
 Adding package sources and setting =use-package-always-ensure= to =t=. This setting will eliminate the need to specify =:ensure t= while running writing =use-package= commands.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   ;; Initialize package sources
   (require 'package)
 
@@ -265,6 +271,27 @@ Adding package sources and setting =use-package-always-ensure= to =t=. This sett
   ;; On non-Guix systems, "ensure" packages by default
   (setq use-package-always-ensure t)
   (setq use-package-verbose t)
+#+end_src
+
+** Using Straight
+
+#+begin_src emacs-lisp
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+
+  (straight-use-package 'use-package)
+
+  (setq straight-use-package-by-default t)
 #+end_src
 
 ** Keep .emacs.d clean
@@ -363,7 +390,7 @@ Packages:
 
 #+begin_src emacs-lisp
   (use-package doom-modeline
-    :ensure t
+    :straight t
     :init (doom-modeline-mode 1))
 
   (use-package doom-themes
@@ -459,6 +486,146 @@ Package: [[https://github.com/Malabarba/beacon][beacon]]
 #+end_src
 
 * Usability
+** General
+General is a great package for adding custom keybindings not just globally, but for very specific modes (like org-mode-map, evil-mode-map, etc.). The following configuration is for global keybinding with =SPC= as the leader key.
+Package: [[https://github.com/noctuid/general.el][General]]
+
+#+begin_src emacs-lisp
+  (use-package general
+    :config
+    (general-evil-setup t))
+
+  (general-define-key
+   :states 'normal
+   :keymaps 'override
+   :prefix "SPC"
+   "SPC" '(counsel-M-x :which-key "M-x")
+   "X"   '(org-capture :which-key "org-capture")
+   "`"   '(evil-switch-to-windows-last-buffer :which-key "last window")
+   "RET" '(consult-bookmark :which-key "bookmarks")
+   "t"   '(vterm-toggle :which-key "vterm-popup")
+   ;; commands
+   "e"   '(:ignore t :which-key "eval")
+   "e e" '(eros-eval-last-sexp :which-key "eros-eval-last-sexp")
+   "e r" '(eval-region :which-key "eval-region")
+   "e b" '(eval-buffer :which-key "eval-buffer")
+   ;; buffer management
+   "b"   '(:ignore t :which-key "buffers")
+   "b i" '(ibuffer :which-key "ibuffer")
+   "b r" '(rr/revert-buffer-no-confirm :which-key "rr/revert-buffer-no-confirm")
+   "b R" '(revert-buffer :which-key "revert-buffer")
+   "b k" '(kill-buffer :which-key "kill-buffer")
+   ;; perspectives
+   "s"   '(:ignore t :which-key "perspectives")
+   "s b" '(persp-switch-to-buffer* :which-key "switch-to-buffer")
+   "s k" '(persp-kill-buffer :which-key "kill-buffer")
+   "s a" '(persp-add-buffer :which-key "add-buffer")
+   "s A" '(persp-set-buffer :which-key "set-buffer")
+   "s s" '(persp-switch :which-key "persp-switch")
+   "s r" '(persp-rename :which-key "persp-rename")
+   "s k" '(persp-kill :which-key "persp-kill")
+   ;; dired
+   "d"   '(:ignore t :which-key "dired")
+   "d j" '(dired-jump :which-key "dired-jump")
+   "d J" '(dired-jump-other-window :which-key "dired-jump-other-window")
+   "d d" '(dired :which-key "dired")
+   "d n" '(dired-create-empty-file :which-key "dired-create-empty-file")
+   ;; window management
+   "w"   '(:ignore t :which-key "window")
+   "w v" '(split-window-right :which-key "split window right")
+   "w h" '(split-window-below :which-key "split window below")
+   "w c" '(delete-window :which-key "delete-window")
+   "w w" '(next-window-any-frame :which-key "next window")
+   ;; help for variables, functions, keybindings, etc.
+   "h"   '(:ignore t :which-key "help")
+   "h a" '(consult-apropos :which-key "apropos")
+   "h v" '(describe-variable :which-key "variable")
+   "h f" '(describe-function :which-key "function")
+   "h k" '(helpful-key :which-key "key")
+   "h i" '(info :which-key "info")
+   "h c" '(describe-key-briefly :which-key "describy-key-briefly")
+   ;; jump with avy
+   "j"   '(:ignore t :which-key "jump")
+   "j j" '(avy-goto-char :which-key "avy-goto-char")
+   "j w" '(avy-goto-word-1 :which-key "avy-goto-word-1")
+   "j l" '(avy-goto-line :which-key "avy-goto-line")
+   ;; magit status
+   "g"   '(:ignore t :which-key "magit")
+   "g g" '(magit-status :which-key "magit status")
+   ;; org-mode
+   "o"   '(:ignore t :which-key "org-mode")
+   ;; org-mode
+   "o a" '(org-agenda :which-key "org-agenda")
+   "o e" '(org-export-dispatch :which-key "org-export-dispatch")
+   "o t" '(org-todo :which-key "org-todo")
+   "o x" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
+   "o h" '(org-toggle-heading :which-key "heading")
+   "o i" '(org-toggle-item :which-key "item")
+   "o o" '(consult-outline :which-key "consult-outline")
+   "o S" '(org-show-todo-tree :which-key "org-show-todo-tree")
+   "o q" '(org-set-tags-command :which-key "org-set-tags-command")
+   "o N" '(org-add-note :which-key "org-add-note")
+   ;; org-mode / clock
+   "o c" '(:ignore t :which-key "clock")
+   "o c i" '(org-clock-in :which-key "org-clock-in")
+   "o c o" '(org-clock-out :which-key "org-clock-out")
+   "o c c" '(org-clock-cancel :which-key "org-clock-cancel")
+   "o c d" '(org-clock-display :which-key "org-clock-display")
+   "o c g" '(org-clock-goto :which-key "org-clock-goto")
+   ;; org-mode / narrow
+   "o n" '(:ignore t :which-key "narrow")
+   "o n s" '(org-narrow-to-subtree :which-key "org-narrow-to-subtree")
+   "o n b" '(org-narrow-to-block :which-key "org-narrow-to-block")
+   "o n e" '(org-narrow-to-element :which-key "org-narrow-to-element")
+   "o n r" '(org-narrow-to-region :which-key "org-narrow-to-region")
+   "o n w" '(widen :which-key "widen")
+   ;; org-mode / refile
+   "o r" '(:ignore t :which-key "refile")
+   "o r r" '(org-refile :which-key "org-refile")
+   "o r ." '(+org/refile-to-current-file :which-key "+org/refile-to-current-file")
+   "o r A" '(org-archive-subtree :which-key "org-archive-subtree")
+   ;; org-mode / date
+   "o d" '(:ignore t :which-key "date/deadline")
+   "o d s" '(org-schedule :which-key "org-schedule")
+   "o d d" '(org-deadline :which-key "org-deadline")
+   "o d t" '(org-time-stamp :which-key "org-time-stamp")
+   "o d T" '(org-time-stamp-inactive :which-key "org-time-stamp-inactive")
+   ;; org-mode / links
+   "o l" '(:ignore t :which-key "links")
+   "o l l" '(org-insert-link :which-key "org-insert-link")
+   ;; projectile
+   "p"   '(:ignore t :which-key "projectile")
+   "p f" '(projectile-find-file :which-key "projectile-find-file")
+   "p /" '(consult-ripgrep :which-key "consult-ripgrep")
+   "p r" '(projectile-recentf :which-key "projectile-recentf")
+   "p s" '(counsel-projectile-switch-project :which-key "projectile-switch-project")
+   "p t" '(rr/projectile-run-vterm :which-key "rr/projectile-run-vterm")
+   "p k" '(projectile-kill-buffers :which-key "projectile-kill-buffers")
+   ;; files
+   "f"   '(:ignore t :which-key "files")
+   "f f" '(find-file :which-key "find-file")
+   "f r" '(consult-recent-file :which-key "recent files")
+   ;; consult
+   "c"   '(:ignore t :which-key "consult")
+   "c m" '(consult-mark :which-key "consult-mark")
+   "c M" '(consult-global-mark :which-key "consult-global-mark")
+   )
+
+  (general-define-key
+   :states '(normal insert)
+   "C-e" 'end-of-line
+   "C-a" 'beginning-of-line
+   "C-n" 'evil-next-line
+   "C-p" 'evil-previous-line
+   "C-S-o" 'evil-jump-forward
+   "C-o" 'evil-jump-backward
+   "C-s" 'consult-line)
+
+  (general-define-key
+   :keymaps '(normal insert)
+   "s-]" 'persp-next
+   "s-[" 'persp-prev)
+#+end_src
 ** Server Mode
 Make this instance of emacs start server so that other client instances can connect to this.
 
@@ -604,6 +771,7 @@ Package: [[https://github.com/karthink/popper][popper]]
             help-mode
             helpful-mode
             compilation-mode
+            org-roam-mode
             term-mode
             vterm-mode)
           popper-group-function #'popper-group-by-projectile)
@@ -730,147 +898,6 @@ Default keybinding for =prefix-argument= is =C-u=, but since this is now mapped 
   (general-define-key
    :states 'normal
    "C-S-u" 'universal-argument)
-#+end_src
-
-** General
-General is a great package for adding custom keybindings not just globally, but for very specific modes (like org-mode-map, evil-mode-map, etc.). The following configuration is for global keybinding with =SPC= as the leader key.
-Package: [[https://github.com/noctuid/general.el][General]]
-
-#+begin_src emacs-lisp
-  (use-package general
-    :config
-    (general-evil-setup t))
-
-  (general-define-key
-   :states 'normal
-   :keymaps 'override
-   :prefix "SPC"
-   "SPC" '(counsel-M-x :which-key "M-x")
-   "X"   '(org-capture :which-key "org-capture")
-   "`"   '(evil-switch-to-windows-last-buffer :which-key "last window")
-   "RET" '(consult-bookmark :which-key "bookmarks")
-   "t"   '(vterm-toggle :which-key "vterm-popup")
-   ;; commands
-   "e"   '(:ignore t :which-key "eval")
-   "e e" '(eros-eval-last-sexp :which-key "eros-eval-last-sexp")
-   "e r" '(eval-region :which-key "eval-region")
-   "e b" '(eval-buffer :which-key "eval-buffer")
-   ;; buffer management
-   "b"   '(:ignore t :which-key "buffers")
-   "b i" '(ibuffer :which-key "ibuffer")
-   "b r" '(rr/revert-buffer-no-confirm :which-key "rr/revert-buffer-no-confirm")
-   "b R" '(revert-buffer :which-key "revert-buffer")
-   "b k" '(kill-buffer :which-key "kill-buffer")
-   ;; perspectives
-   "s"   '(:ignore t :which-key "perspectives")
-   "s b" '(persp-switch-to-buffer* :which-key "switch-to-buffer")
-   "s k" '(persp-kill-buffer :which-key "kill-buffer")
-   "s a" '(persp-add-buffer :which-key "add-buffer")
-   "s A" '(persp-set-buffer :which-key "set-buffer")
-   "s s" '(persp-switch :which-key "persp-switch")
-   "s r" '(persp-rename :which-key "persp-rename")
-   "s k" '(persp-kill :which-key "persp-kill")
-   ;; dired
-   "d"   '(:ignore t :which-key "dired")
-   "d j" '(dired-jump :which-key "dired-jump")
-   "d J" '(dired-jump-other-window :which-key "dired-jump-other-window")
-   "d d" '(dired :which-key "dired")
-   "d n" '(dired-create-empty-file :which-key "dired-create-empty-file")
-   ;; window management
-   "w"   '(:ignore t :which-key "window")
-   "w v" '(split-window-right :which-key "split window right")
-   "w h" '(split-window-below :which-key "split window below")
-   "w c" '(delete-window :which-key "delete-window")
-   "w w" '(next-window-any-frame :which-key "next window")
-   ;; help for variables, functions, keybindings, etc.
-   "h"   '(:ignore t :which-key "help")
-   "h a" '(consult-apropos :which-key "apropos")
-   "h v" '(describe-variable :which-key "variable")
-   "h f" '(describe-function :which-key "function")
-   "h k" '(helpful-key :which-key "key")
-   "h i" '(info :which-key "info")
-   "h c" '(describe-key-briefly :which-key "describy-key-briefly")
-   ;; jump with avy
-   "j"   '(:ignore t :which-key "jump")
-   "j j" '(avy-goto-char :which-key "avy-goto-char")
-   "j w" '(avy-goto-word-1 :which-key "avy-goto-word-1")
-   "j l" '(avy-goto-line :which-key "avy-goto-line")
-   ;; magit status
-   "g"   '(:ignore t :which-key "magit")
-   "g g" '(magit-status :which-key "magit status")
-   ;; org-mode
-   "o"   '(:ignore t :which-key "org-mode")
-   ;; org-mode
-   "o a" '(org-agenda :which-key "org-agenda")
-   "o e" '(org-export-dispatch :which-key "org-export-dispatch")
-   "o t" '(org-todo :which-key "org-todo")
-   "o x" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
-   "o h" '(org-toggle-heading :which-key "heading")
-   "o i" '(org-toggle-item :which-key "item")
-   "o o" '(consult-outline :which-key "consult-outline")
-   "o S" '(org-show-todo-tree :which-key "org-show-todo-tree")
-   "o q" '(org-set-tags-command :which-key "org-set-tags-command")
-   "o N" '(org-add-note :which-key "org-add-note")
-   ;; org-mode / clock
-   "o c" '(:ignore t :which-key "clock")
-   "o c i" '(org-clock-in :which-key "org-clock-in")
-   "o c o" '(org-clock-out :which-key "org-clock-out")
-   "o c c" '(org-clock-cancel :which-key "org-clock-cancel")
-   "o c d" '(org-clock-display :which-key "org-clock-display")
-   "o c g" '(org-clock-goto :which-key "org-clock-goto")
-   ;; org-mode / narrow
-   "o n" '(:ignore t :which-key "narrow")
-   "o n s" '(org-narrow-to-subtree :which-key "org-narrow-to-subtree")
-   "o n b" '(org-narrow-to-block :which-key "org-narrow-to-block")
-   "o n e" '(org-narrow-to-element :which-key "org-narrow-to-element")
-   "o n r" '(org-narrow-to-region :which-key "org-narrow-to-region")
-   "o n w" '(widen :which-key "widen")
-   ;; org-mode / refile
-   "o r" '(:ignore t :which-key "refile")
-   "o r r" '(org-refile :which-key "org-refile")
-   "o r ." '(+org/refile-to-current-file :which-key "+org/refile-to-current-file")
-   "o r A" '(org-archive-subtree :which-key "org-archive-subtree")
-   ;; org-mode / date
-   "o d" '(:ignore t :which-key "date/deadline")
-   "o d s" '(org-schedule :which-key "org-schedule")
-   "o d d" '(org-deadline :which-key "org-deadline")
-   "o d t" '(org-time-stamp :which-key "org-time-stamp")
-   "o d T" '(org-time-stamp-inactive :which-key "org-time-stamp-inactive")
-   ;; org-mode / links
-   "o l" '(:ignore t :which-key "links")
-   "o l l" '(org-insert-link :which-key "org-insert-link")
-   ;; projectile
-   "p"   '(:ignore t :which-key "projectile")
-   "p f" '(projectile-find-file :which-key "projectile-find-file")
-   "p /" '(consult-ripgrep :which-key "consult-ripgrep")
-   "p r" '(projectile-recentf :which-key "projectile-recentf")
-   "p s" '(counsel-projectile-switch-project :which-key "projectile-switch-project")
-   "p t" '(rr/projectile-run-vterm :which-key "rr/projectile-run-vterm")
-   "p k" '(projectile-kill-buffers :which-key "projectile-kill-buffers")
-   ;; files
-   "f"   '(:ignore t :which-key "files")
-   "f f" '(find-file :which-key "find-file")
-   "f r" '(consult-recent-file :which-key "recent files")
-   ;; consult
-   "c"   '(:ignore t :which-key "consult")
-   "c m" '(consult-mark :which-key "consult-mark")
-   "c M" '(consult-global-mark :which-key "consult-global-mark")
-   )
-
-  (general-define-key
-   :states '(normal insert)
-   "C-e" 'end-of-line
-   "C-a" 'beginning-of-line
-   "C-n" 'evil-next-line
-   "C-p" 'evil-previous-line
-   "C-S-o" 'evil-jump-forward
-   "C-o" 'evil-jump-backward
-   "C-s" 'consult-line)
-
-  (general-define-key
-   :keymaps '(normal insert)
-   "s-]" 'persp-next
-   "s-[" 'persp-prev)
 #+end_src
 
 ** Hydra
@@ -1131,7 +1158,7 @@ File management with dired
 
 #+begin_src emacs-lisp
   (use-package dired
-    :ensure nil
+    :straight nil
     :commands (dired dired-jump)
     :config
     (setq ;;dired-listing-switches "-agho --group-directories-first"
@@ -1187,15 +1214,15 @@ Package: [[https://github.com/bbatsov/projectile][projectile]]
       (setq projectile-project-search-path '("~/code")))
     (setq projectile-switch-project-action #'projectile-dired))
 
-  (use-package counsel-projectile
-    :after projectile
-    :config (counsel-projectile-mode))
+  ;; (use-package counsel-projectile
+    ;; :after projectile
+    ;; :config (counsel-projectile-mode))
 
   (general-define-key
    :states 'normal
    :prefix "C-c"
    "p" 'projectile-command-map)
-    #+end_src
+#+end_src
 
 ** Flymake
 
@@ -1570,10 +1597,10 @@ There's currently [[https://github.com/Somelauw/evil-org-mode/issues/93][an issu
 The following snippet is a work around:
 
 #+begin_src emacs-lisp :tangle no
-(fset 'evil-redirect-digit-argument 'ignore) ; before evil-org loaded
+  (fset 'evil-redirect-digit-argument 'ignore) ; before evil-org loaded
 
-(add-to-list 'evil-digit-bound-motions 'evil-org-beginning-of-line)
-(evil-define-key 'motion 'evil-org-mode
+  (add-to-list 'evil-digit-bound-motions 'evil-org-beginning-of-line)
+  (evil-define-key 'motion 'evil-org-mode
     (kbd "0") 'evil-org-beginning-of-line)
 #+end_src
 
@@ -1684,22 +1711,25 @@ Package: [[https://github.com/alphapapa/org-make-toc][org-make-toc]]
 #+end_src
 
 ** Org faces
-Currently trying out this setting with fixed width and variable width fonts. May change soon.
+Currently trying out this setting with fixed width /and/ variable width fonts. /May change soon/.
 
 #+begin_src emacs-lisp
+  (setq my-fixed-pitch-font "JetBrains Mono")
+  (setq my-variable-pitch-font "Avenir Next")
+  
   ;; Set the fixed pitch face
   (set-face-attribute 'fixed-pitch nil
-                      :font "JetBrains Mono"
+                      :font my-fixed-pitch-font
                       :height 160
                       :weight 'light)
 
   ;; Set the variable pitch face
   (set-face-attribute 'variable-pitch nil
-                      :font "Avenir Next"
+                      :font my-variable-pitch-font
                       :height 150
                       :weight 'light)
 
-  (set-face-attribute 'org-document-title nil :font "Avenir Next" :weight 'regular :height 1.5)
+  (set-face-attribute 'org-document-title nil :font my-variable-pitch-font :weight 'regular :height 1.5)
 
   (dolist (face '((org-level-1 . 1.3)
                   (org-level-2 . 1.2)
@@ -1709,7 +1739,7 @@ Currently trying out this setting with fixed width and variable width fonts. May
                   (org-level-6 . 1.1)
                   (org-level-7 . 1.1)
                   (org-level-8 . 1.1)))
-    (set-face-attribute (car face) nil :font "Avenir Next" :weight 'regular :height (cdr face))
+    (set-face-attribute (car face) nil :font my-variable-pitch-font :weight 'regular :height (cdr face))
 
     (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
     (set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
@@ -1721,7 +1751,6 @@ Currently trying out this setting with fixed width and variable width fonts. May
     (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
     (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
     (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
     (set-face-attribute 'org-column nil :background nil)
     (set-face-attribute 'org-column-title nil :background nil))
 #+end_src
@@ -2045,6 +2074,69 @@ Copied over from doom emacs. Helps make refiling easier when it must be done wit
           (org-refile-keep arg)
           current-prefix-arg)
       (call-interactively #'org-refile)))
+#+end_src
+
+*** Org show/hide drawers
+This is a custom keybinding to show/hide drawers in org mode
+
+#+begin_src emacs-lisp
+  (general-define-key
+   :states '(normal)
+   :keymaps 'org-mode-map
+   :prefix "z"
+   "x" 'org-hide-drawer-toggle)
+#+end_src
+
+* Org Roam
+Zettelkasten-style note taking
+** Basic Setup
+Sets up org-roam, roam directory, few useful keybindings.
+
+#+begin_src emacs-lisp
+    (use-package org-roam
+      :straight t
+      :custom
+      (org-roam-directory "~/Library/CloudStorage/Dropbox/roam-notes")
+      (org-roam-completion-everywhere t)
+      :bind (("C-c n l" . org-roam-buffer-toggle)
+             ("C-c n f" . org-roam-node-find)
+             ("C-c n i" . org-roam-node-insert)
+             ("C-c n I" . org-roam-node-insert-immediate)
+             ("C-c n t" . org-roam-tag-add)
+             )
+      :config
+      (org-roam-setup))
+#+end_src
+
+** Insert new note immediately
+Without opening a new buffer while writing a note.
+
+#+begin_src emacs-lisp
+  (defun org-roam-node-insert-immediate (arg &rest args)
+    (interactive "P")
+    (let ((args (cons arg args))
+          (org-roam-capture-templates (list (append (car org-roam-capture-templates) '(:immediate-finish t)))))
+      (apply #'org-roam-node-insert args)))
+#+end_src
+
+** Org Roam UI
+This gives a really nice UI for your org-roam database. The UI not only shows all the nodes in a graph view, but also the contents of all the notes, the backlinks, filtering and several other customizations. It's great to capture all the notes via org-roam and view them using org-roam-ui.
+Package: [[https://github.com/org-roam/org-roam-ui][org-roam-ui]]
+
+#+begin_src emacs-lisp
+(use-package org-roam-ui
+  :straight
+    (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+    :after org-roam
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+;;  :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
 #+end_src
 
 * Blogging
