@@ -72,10 +72,11 @@
   - [[#counsel-unused][Counsel (unused)]]
   - [[#vertico][Vertico]]
   - [[#orderless][Orderless]]
-  - [[#prescient][Prescient]]
+  - [[#prescient-unused][Prescient (unused)]]
   - [[#consult][Consult]]
     - [[#consult-package-setup][Consult package setup]]
     - [[#projectile-related][Projectile related]]
+  - [[#corfu][Corfu]]
 - [[#utilities][Utilities]]
   - [[#helpful-package-for-better-documentation-formatting][Helpful package for better documentation formatting]]
   - [[#expand-region][Expand Region]]
@@ -95,7 +96,7 @@
   - [[#languages][Languages]]
     - [[#language-servers][Language Servers]]
     - [[#typescript][TypeScript]]
-    - [[#completions-with-company-mode][Completions with Company-mode]]
+    - [[#completions-with-company-mode-unused][Completions with Company-mode (unused)]]
     - [[#graphql][GraphQL]]
 - [[#buffers][Buffers]]
   - [[#perspectives][Perspectives]]
@@ -784,8 +785,8 @@ Package: [[https://github.com/noctuid/general.el][General]]
    ;; help for variables, functions, keybindings, etc.
    "h"   '(:ignore t :which-key "help")
    "h a" '(consult-apropos :which-key "apropos")
-   "h v" '(counsel-describe-variable :which-key "variable")
-   "h f" '(counsel-describe-function :which-key "function")
+   "h v" '(describe-variable :which-key "variable")
+   "h f" '(describe-function :which-key "function")
    "h k" '(helpful-key :which-key "key")
    "h i" '(info :which-key "info")
    "h c" '(describe-key-briefly :which-key "describy-key-briefly")
@@ -870,7 +871,7 @@ Package: [[https://github.com/noctuid/general.el][General]]
    :keymaps '(normal insert)
    "s-]" 'persp-next
    "s-[" 'persp-prev)
-   #+end_src
+#+end_src
 
 ** Hydra
 *** Package Setup
@@ -995,19 +996,19 @@ Package: [[https://github.com/oantolin/orderless][orderless]]
 
 #+begin_src emacs-lisp
   (use-package orderless
-    :after counsel
+    :after vertico
     :init
     (setq completion-styles '(orderless)
           completion-category-defaults nil
           completion-category-overrides '((file (styles . (partial-completion))))))
 #+end_src
 
-** Prescient
+** Prescient (unused)
 Package: [[https://github.com/raxod502/prescient.el][prescient]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package prescient
-    :after counsel
+    :after vertico
     :config
     (prescient-persist-mode 1))
 
@@ -1060,6 +1061,16 @@ Copied over from [[https://github.com/daviwil/dotfiles/blob/master/Emacs.org#con
   (setq consult-project-root-function #'rr/get-project-root)
 #+end_src
 
+** Corfu
+Package: corfu
+
+#+begin_src emacs-lisp
+  (use-package corfu
+    :config
+    (corfu-global-mode))
+
+  (setq tab-always-indent 'complete)
+#+end_src
 * Utilities
 ** Helpful package for better documentation formatting
 This gives better links and formatting inside emacs documentation. This is particularly helpful while looking up documentation for functions, variables, etc.
@@ -1069,13 +1080,10 @@ Package: [[https://github.com/Wilfred/helpful][helpful]]
 #+begin_src emacs-lisp
   (use-package helpful
     :commands (helpful-callable helpful-variable helpful-command helpful-key helpful-function)
-    :custom
-    (counsel-describe-function-function #'helpful-callable)
-    (counsel-describe-variable-function #'helpful-variable)
     :bind
-    ([remap describe-function] . counsel-describe-function)
     ([remap describe-command] . helpful-command)
-    ([remap describe-variable] . counsel-describe-variable)
+    ([remap describe-function] . helpful-callable)
+    ([remap describe-variable] . helpful-variable)
     ([remap describe-key] . helpful-key))
 #+end_src
 
@@ -1285,14 +1293,20 @@ Packages:
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
-    :hook ((typescript-mode js2-mode web-mode) . lsp)
+    :hook
+    ((typescript-mode js2-mode web-mode) . lsp)
+    ((lsp-completion-mode . rr/lsp-mode-setup-completion))
     :init
+    (defun rr/lsp-mode-setup-completion ()
+      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+            '(orderless))) ;; Configure flex
     (setq lsp-keymap-prefix "C-c l")
     :config
     (setq lsp-auto-guess-root t)
     (setq lsp-ui-sideline-show-code-actions t)
     (lsp-enable-which-key-integration t)
     :custom
+    (lsp-completion-provider :none) ;; we use corfu
     (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
     (setq lsp-restart 'auto-restart)
     (lsp-headerline-breadcrumb-mode))
@@ -1356,11 +1370,11 @@ Package: [[https://github.com/emacs-typescript/typescript.el][typescript]]
     (setq prettier-js-show-errors 'echo))
 #+end_src
 
-*** Completions with Company-mode
+*** Completions with Company-mode (unused)
 This is necessary for relevant code completions
 Package: [[http://company-mode.github.io/][company-mode]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package company
     :after lsp-mode
     :hook (lsp-mode . company-mode)
