@@ -269,8 +269,8 @@ soon as Emacs loads."
  :states '(normal insert)
  "C-e" 'end-of-line
  "C-a" 'beginning-of-line
- "C-n" 'evil-next-line
- "C-p" 'evil-previous-line
+ "C-n" 'evil-next-visual-line
+ "C-p" 'evil-previous-visual-line
  "C-S-o" 'evil-jump-forward
  "C-o" 'evil-jump-backward
  "C-s" 'consult-line)
@@ -449,8 +449,16 @@ folder, otherwise delete a word"
   :after vertico
   :custom
   (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  (marginalia-align 'right)
+  (marginalia-align-offset -5)
   :init
   (marginalia-mode))
+
+(use-package all-the-icons-completion
+  :after (marginalia all-the-icons)
+  :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
+  :init
+  (all-the-icons-completion-mode))
 
 (use-package orderless
   :after vertico
@@ -768,6 +776,7 @@ folder, otherwise delete a word"
         org-catch-invisible-edits 'smart
         org-fontify-whole-heading-line t
         org-ctrl-k-protect-subtree t
+        org-cycle-separator-lines 0
         org-refile-targets
         '((nil :maxlevel . 3)
           (org-agenda-files :maxlevel . 3)))
@@ -860,7 +869,7 @@ folder, otherwise delete a word"
         ("KILL" . (:foreground "#ee7570" :weight bold))))
 
 (setq my-fixed-pitch-font "JetBrains Mono")
-(setq my-variable-pitch-font "Avenir Next")
+(setq my-variable-pitch-font "Raleway")
 
 ;; Set the fixed pitch face
 (set-face-attribute 'fixed-pitch nil
@@ -872,7 +881,7 @@ folder, otherwise delete a word"
 (set-face-attribute 'variable-pitch nil
                     :font my-variable-pitch-font
                     :height 150
-                    :weight 'light)
+                    :weight 'regular)
 
 (set-face-attribute 'org-document-title nil :font my-variable-pitch-font :weight 'regular :height 1.5)
 
