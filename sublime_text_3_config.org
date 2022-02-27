@@ -1,0 +1,44 @@
+#+TITLE: Sublime Text 3 Configuration
+#+AUTHOR: Rajath Ramakrishna
+#+PROPERTY: header-args
+
+* Introduction
+I haven't customized Sublime Text 3 a lot. So there's not much going on. I use couple of packages - PrettyJSON, maybe markdown, and that's about it.
+
+* Setting color scheme, font size and window behavior
+
+#+begin_src text :tangle "~/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings"
+{
+	"color_scheme": "Packages/Agila Theme/Agila Dracula.tmTheme",
+	"font_size": 12,
+	"ignored_packages":
+	[
+		"Markdown",
+		"Vintage"
+	],
+	"open_files_in_new_window": false,
+	"theme": "Agila.sublime-theme"
+}
+
+#+end_src
+
+* Install the following packages
+
+#+begin_src text :tangle "~/Library/Application Support/Sublime Text 3/Packages/User/Package Control.sublime-settings"
+{
+        "bootstrapped": true,
+        "color_scheme": "Packages/Agila Theme/Agila Oceanic Next.tmTheme",
+        "in_process_packages":
+        [
+        ],
+        "installed_packages":
+        [
+                "Agila Theme",
+                "MarkdownEditing",
+                "Package Control",
+                "Pretty JSON"
+        ],
+        "theme": "Agila.sublime-theme"
+}
+
+#+end_src

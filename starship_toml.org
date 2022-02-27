@@ -1,0 +1,12 @@
+#+TITLE:     Starship_toml
+#+AUTHOR:    Rajath Ramakrishna
+#+PROPERTY:  header-args :tangle ~/.config/starship.toml
+
+* Introduction
+https://starship.rs
+* Prompt
+This will show things like directory, git status, etc.
+#+begin_src toml
+format = "$all"
+add_newline = true
+#+end_src
