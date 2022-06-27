@@ -247,6 +247,7 @@ soon as Emacs loads."
  ;; org-mode / links
  "o l" '(:ignore t :which-key "links")
  "o l l" '(org-insert-link :which-key "org-insert-link")
+ "o l r" '(rr/org-retrieve-url-from-point :which-key "retrieve-url-from-point")
  ;; projectile
  "p"   '(:ignore t :which-key "projectile")
  "p f" '(projectile-find-file :which-key "projectile-find-file")
@@ -442,6 +443,8 @@ folder, otherwise delete a word"
 (define-key vertico-map (kbd "M-TAB") #'minibuffer-complete)
 
 (use-package savehist
+  :custom
+  (history-length 25)
   :init
   (savehist-mode))
 
@@ -491,10 +494,60 @@ folder, otherwise delete a word"
 (setq consult-project-root-function #'rr/get-project-root)
 
 (use-package corfu
+  :general
+  (:keymaps 'corfu-map
+            :states 'insert
+            "M-n" #'corfu-next
+            "M-p" #'corfu-previous
+            "SPC" #'corfu-insert-separator
+            "C-M-s-d" #'corfu-show-documentation
+            "C-M-s-l" #'corfu-show-location)
+  :custom
+  (corfu-auto nil)
+  (corfu-auto-prefix 2)
+  (corfu-auto-delay 0.25)
+  (corfu-min-width 80)
+  (corfu-max-width corfu-min-width)
+  (corfu-count 14)
+  (corfu-scroll-margin 4)
+  (corfu-cycle nil)
+  (corfu-quit-at-boundary separator)
+  (corfu-separator ?\s)
+  (corfu-quit-no-match 'separator)
+  (corfu-preview-current 'insert)
+  (corfu-preselect-first t)
+  (corfu-echo-documentation t)
+  (tab-always-indent 'complete)
+  (completion-cycle-threshold nil)
   :config
   (corfu-global-mode))
 
 (setq tab-always-indent 'complete)
+
+(use-package kind-icon
+  :after corfu
+  :custom
+  (kind-icon-use-icons t)
+  (kind-icon-default-face 'corfu-default)
+  (kind-icon-blend-background nil)
+  (kind-icon-blend-frac 0.08)
+  (svg-lib-icons-dir (no-littering-expand-var-file-name "svg-lib/cache/"))
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
+(use-package corfu-doc
+  :straight (corfu-doc :type git :host github :repo "galeo/corfu-doc")
+  :after corfu
+  :hook (corfu-mode . corfu-doc-mode)
+  :general (:keymaps 'corfu-map
+                     [remap corfu-show-documentation] #'corfu-doc-toggle
+                     "M-n" #'corfu-doc-scroll-up
+                     "M-p" #'corfu-doc-scroll-down)
+  :custom
+  (corfu-doc-delay 0.5)
+  (corfu-doc-max-width 70)
+  (corfu-doc-max-height 20)
+  (corfu-echo-documentation nil))
 
 (use-package helpful
   :commands (helpful-callable helpful-variable helpful-command helpful-key helpful-function)
@@ -565,8 +618,8 @@ folder, otherwise delete a word"
   (setq projectile-switch-project-action #'projectile-dired))
 
 ;; (use-package counsel-projectile
-  ;; :after projectile
-  ;; :config (counsel-projectile-mode))
+;; :after projectile
+;; :config (counsel-projectile-mode))
 
 (general-define-key
  :states 'normal
@@ -737,6 +790,8 @@ folder, otherwise delete a word"
      "* %?\n%U\n %i")
     ("no" "Other" entry (file+olp, (rr/org-path "refile.org") "Notes")
      "* %?\n%U\n %i")
+    ("l" "Life")
+    ("lj" "Journal" entry (file+olp+datetree, (rr/org-path "life.org") "Journal") "* %?\n%U\n %i")
     )
   )
 
@@ -1163,6 +1218,26 @@ If prefix ARG, copy instead of move."
  :keymaps 'org-mode-map
  :prefix "z"
  "x" 'org-hide-drawer-toggle)
+
+(defun rr/org-retrieve-url-from-point ()
+  "Copies the URL from an org link at the point"
+  (interactive)
+  (let ((plain-url (url-get-url-at-point)))
+    (if plain-url
+        (progn
+          (kill-new plain-url)
+          (message (concat "Copied: " plain-url)))
+      (let* ((link-info (assoc :link (org-context)))
+             (text (when link-info
+                     (buffer-substring-no-properties
+                      (or (cadr link-info) (point-min))
+                      (or (caddr link-info) (point-max))))))
+        (if (not text)
+            (error "Oops! Point isn't in an org link")
+          (string-match org-link-bracket-re text)
+          (let ((url (substring text (match-beginning 1) (match-end 1))))
+            (kill-new url)
+            (message (concat "Copied: " url))))))))
 
 (use-package org-roam
   :straight t

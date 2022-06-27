@@ -66,6 +66,7 @@ export UPDATE_ZSH_DAYS=20
 #+end_src
 
 * Utilities
+
 #+begin_src bash
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -77,7 +78,7 @@ export UPDATE_ZSH_DAYS=20
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
+# ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
@@ -98,6 +99,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 #+end_src
 
 * Plugins
+
 #+begin_src bash
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -217,11 +219,18 @@ autoload -Uz compinit && compinit -ui
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
 #+end_src
+
 * Starship
+
 #+begin_src bash
 eval "$(starship init zsh)"
 #+end_src
+
 * Work Stuff
 If there is a =.zshrc_work= available in the home folder, source it. Else, ignore. The work-specific configuration can be found in =dot_zshrc_work.org=.
 
