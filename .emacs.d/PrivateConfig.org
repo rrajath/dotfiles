@@ -79,6 +79,8 @@
     - [[#consult-package-setup][Consult package setup]]
     - [[#projectile-related][Projectile related]]
   - [[#corfu][Corfu]]
+  - [[#kind-icon][Kind Icon]]
+  - [[#corfu-doc][Corfu-doc]]
 - [[#utilities][Utilities]]
   - [[#helpful-package-for-better-documentation-formatting][Helpful package for better documentation formatting]]
   - [[#expand-region][Expand Region]]
@@ -114,6 +116,7 @@
   - [[#visual-fill-column][Visual Fill Column]]
   - [[#evil-org-mode][Evil-Org-Mode]]
   - [[#agenda-configs][Agenda Configs]]
+  - [[#org-super-agenda][Org Super Agenda]]
   - [[#babel-configuration][Babel Configuration]]
     - [[#configure-babel-languages][Configure Babel Languages]]
     - [[#source-language-modes][Source Language Modes]]
@@ -136,6 +139,7 @@
       - [[#insert-item-above][Insert item above]]
     - [[#org-refile-to-current-file][Org refile to current file]]
     - [[#org-showhide-drawers][Org show/hide drawers]]
+  - [[#copy-link-at-point][Copy link at point]]
 - [[#org-roam][Org Roam]]
   - [[#basic-setup][Basic Setup]]
   - [[#insert-new-note-immediately][Insert new note immediately]]
@@ -594,6 +598,7 @@ Package: [[https://github.com/noctuid/general.el][General]]
    ;; org-mode / links
    "o l" '(:ignore t :which-key "links")
    "o l l" '(org-insert-link :which-key "org-insert-link")
+   "o l r" '(rr/org-retrieve-url-from-point :which-key "retrieve-url-from-point")
    ;; projectile
    "p"   '(:ignore t :which-key "projectile")
    "p f" '(projectile-find-file :which-key "projectile-find-file")
@@ -626,7 +631,7 @@ Package: [[https://github.com/noctuid/general.el][General]]
    :keymaps '(normal insert)
    "s-]" 'persp-next
    "s-[" 'persp-prev)
-#+end_src
+   #+end_src
 ** Server Mode
 Make this instance of emacs start server so that other client instances can connect to this.
 
@@ -1010,6 +1015,8 @@ Package: [[https://github.com/minad/vertico][vertico]]
   (define-key vertico-map (kbd "M-TAB") #'minibuffer-complete)
 
   (use-package savehist
+    :custom
+    (history-length 25)
     :init
     (savehist-mode))
 #+end_src
@@ -1106,14 +1113,74 @@ Copied over from [[https://github.com/daviwil/dotfiles/blob/master/Emacs.org#con
 #+end_src
 
 ** Corfu
-Package: corfu
+Package: [[https://github.com/minad/corfu][corfu]]
 
 #+begin_src emacs-lisp
   (use-package corfu
+    :general
+    (:keymaps 'corfu-map
+              :states 'insert
+              "M-n" #'corfu-next
+              "M-p" #'corfu-previous
+              "SPC" #'corfu-insert-separator
+              "C-M-s-d" #'corfu-show-documentation
+              "C-M-s-l" #'corfu-show-location)
+    :custom
+    (corfu-auto nil)
+    (corfu-auto-prefix 2)
+    (corfu-auto-delay 0.25)
+    (corfu-min-width 80)
+    (corfu-max-width corfu-min-width)
+    (corfu-count 14)
+    (corfu-scroll-margin 4)
+    (corfu-cycle nil)
+    (corfu-quit-at-boundary separator)
+    (corfu-separator ?\s)
+    (corfu-quit-no-match 'separator)
+    (corfu-preview-current 'insert)
+    (corfu-preselect-first t)
+    (corfu-echo-documentation t)
+    (tab-always-indent 'complete)
+    (completion-cycle-threshold nil)
     :config
     (corfu-global-mode))
 
   (setq tab-always-indent 'complete)
+#+end_src
+
+** Kind Icon
+Package: [[https://github.com/jdtsmith/kind-icon][kind-icon]]
+
+#+begin_src emacs-lisp
+  (use-package kind-icon
+    :after corfu
+    :custom
+    (kind-icon-use-icons t)
+    (kind-icon-default-face 'corfu-default)
+    (kind-icon-blend-background nil)
+    (kind-icon-blend-frac 0.08)
+    (svg-lib-icons-dir (no-littering-expand-var-file-name "svg-lib/cache/"))
+    :config
+    (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+#+end_src
+
+** Corfu-doc
+Package: [[https://github.com/galeo/corfu-doc][corfu-doc]]
+
+#+begin_src emacs-lisp
+  (use-package corfu-doc
+    :straight (corfu-doc :type git :host github :repo "galeo/corfu-doc")
+    :after corfu
+    :hook (corfu-mode . corfu-doc-mode)
+    :general (:keymaps 'corfu-map
+                       [remap corfu-show-documentation] #'corfu-doc-toggle
+                       "M-n" #'corfu-doc-scroll-up
+                       "M-p" #'corfu-doc-scroll-down)
+    :custom
+    (corfu-doc-delay 0.5)
+    (corfu-doc-max-width 70)
+    (corfu-doc-max-height 20)
+    (corfu-echo-documentation nil))
 #+end_src
 
 * Utilities
@@ -1233,8 +1300,8 @@ Package: [[https://github.com/bbatsov/projectile][projectile]]
     (setq projectile-switch-project-action #'projectile-dired))
 
   ;; (use-package counsel-projectile
-    ;; :after projectile
-    ;; :config (counsel-projectile-mode))
+  ;; :after projectile
+  ;; :config (counsel-projectile-mode))
 
   (general-define-key
    :states 'normal
@@ -1514,6 +1581,8 @@ Set the directory for auto saving persp sessions
        "* %?\n%U\n %i")
       ("no" "Other" entry (file+olp, (rr/org-path "refile.org") "Notes")
        "* %?\n%U\n %i")
+      ("l" "Life")
+      ("lj" "Journal" entry (file+olp+datetree, (rr/org-path "life.org") "Journal") "* %?\n%U\n %i")
       )
     )
 #+end_src
@@ -1654,6 +1723,35 @@ This needs a lot more work, but this is a good start
                        ((org-agenda-overriding-header "Work Tasks")))
             ))
           ))
+#+end_src
+
+** TODO Org Super Agenda
+
+#+begin_src emacs-lisp :tangle no
+  (use-package org-super-agenda)
+
+  (let ((org-super-agenda-groups
+         '((:log t)  ; Automatically named "Log"
+           (:name "Schedule"
+                  :time-grid t)
+           (:name "Today"
+                  :scheduled today)
+           (:habit t)
+           (:name "Due today"
+                  :deadline today)
+           (:name "Overdue"
+                  :deadline past)
+           (:name "Due soon"
+                  :deadline future)
+           (:name "Unimportant"
+                  :todo ("SOMEDAY" "MAYBE" "CHECK" "TO-READ" "TO-WATCH")
+                  :order 100)
+           (:name "Waiting..."
+                  :todo "WAITING"
+                  :order 98)
+           (:name "Scheduled earlier"
+                  :scheduled past))))
+    (org-agenda-list))
 #+end_src
 
 ** Babel Configuration
@@ -2104,6 +2202,31 @@ This is a custom keybinding to show/hide drawers in org mode
    :keymaps 'org-mode-map
    :prefix "z"
    "x" 'org-hide-drawer-toggle)
+#+end_src
+
+** Copy link at point
+This is a custom function to copy a URL at point. Lifted from: https://hungyi.net/posts/copy-org-mode-url/
+
+#+begin_src emacs-lisp
+  (defun rr/org-retrieve-url-from-point ()
+    "Copies the URL from an org link at the point"
+    (interactive)
+    (let ((plain-url (url-get-url-at-point)))
+      (if plain-url
+          (progn
+            (kill-new plain-url)
+            (message (concat "Copied: " plain-url)))
+        (let* ((link-info (assoc :link (org-context)))
+               (text (when link-info
+                       (buffer-substring-no-properties
+                        (or (cadr link-info) (point-min))
+                        (or (caddr link-info) (point-max))))))
+          (if (not text)
+              (error "Oops! Point isn't in an org link")
+            (string-match org-link-bracket-re text)
+            (let ((url (substring text (match-beginning 1) (match-end 1))))
+              (kill-new url)
+              (message (concat "Copied: " url))))))))
 #+end_src
 
 * Org Roam
