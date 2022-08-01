@@ -220,34 +220,35 @@ soon as Emacs loads."
  "o q" '(org-set-tags-command :which-key "org-set-tags-command")
  "o N" '(org-add-note :which-key "org-add-note")
  ;; org-mode / clock
- "o c" '(:ignore t :which-key "clock")
+ "o c"   '(:ignore t :which-key "clock")
  "o c i" '(org-clock-in :which-key "org-clock-in")
  "o c o" '(org-clock-out :which-key "org-clock-out")
  "o c c" '(org-clock-cancel :which-key "org-clock-cancel")
  "o c d" '(org-clock-display :which-key "org-clock-display")
  "o c g" '(org-clock-goto :which-key "org-clock-goto")
  ;; org-mode / narrow
- "o n" '(:ignore t :which-key "narrow")
+ "o n"   '(:ignore t :which-key "narrow")
  "o n s" '(org-narrow-to-subtree :which-key "org-narrow-to-subtree")
  "o n b" '(org-narrow-to-block :which-key "org-narrow-to-block")
  "o n e" '(org-narrow-to-element :which-key "org-narrow-to-element")
  "o n r" '(org-narrow-to-region :which-key "org-narrow-to-region")
  "o n w" '(widen :which-key "widen")
  ;; org-mode / refile
- "o r" '(:ignore t :which-key "refile")
+ "o r"   '(:ignore t :which-key "refile")
  "o r r" '(org-refile :which-key "org-refile")
+ "o r c" '(org-refile-copy :which-key "org-refile-copy")
  "o r ." '(+org/refile-to-current-file :which-key "+org/refile-to-current-file")
  "o r A" '(org-archive-subtree :which-key "org-archive-subtree")
  ;; org-mode / date
- "o d" '(:ignore t :which-key "date/deadline")
+ "o d"   '(:ignore t :which-key "date/deadline")
  "o d s" '(org-schedule :which-key "org-schedule")
  "o d d" '(org-deadline :which-key "org-deadline")
  "o d t" '(org-time-stamp :which-key "org-time-stamp")
  "o d T" '(org-time-stamp-inactive :which-key "org-time-stamp-inactive")
  ;; org-mode / links
- "o l" '(:ignore t :which-key "links")
+ "o l"   '(:ignore t :which-key "links")
  "o l l" '(org-insert-link :which-key "org-insert-link")
- "o l r" '(rr/org-retrieve-url-from-point :which-key "retrieve-url-from-point")
+ "o l v" '(crux-view-url :which-key "crux-view-url")
  ;; projectile
  "p"   '(:ignore t :which-key "projectile")
  "p f" '(projectile-find-file :which-key "projectile-find-file")
@@ -1218,26 +1219,6 @@ If prefix ARG, copy instead of move."
  :keymaps 'org-mode-map
  :prefix "z"
  "x" 'org-hide-drawer-toggle)
-
-(defun rr/org-retrieve-url-from-point ()
-  "Copies the URL from an org link at the point"
-  (interactive)
-  (let ((plain-url (url-get-url-at-point)))
-    (if plain-url
-        (progn
-          (kill-new plain-url)
-          (message (concat "Copied: " plain-url)))
-      (let* ((link-info (assoc :link (org-context)))
-             (text (when link-info
-                     (buffer-substring-no-properties
-                      (or (cadr link-info) (point-min))
-                      (or (caddr link-info) (point-max))))))
-        (if (not text)
-            (error "Oops! Point isn't in an org link")
-          (string-match org-link-bracket-re text)
-          (let ((url (substring text (match-beginning 1) (match-end 1))))
-            (kill-new url)
-            (message (concat "Copied: " url))))))))
 
 (use-package org-roam
   :straight t
