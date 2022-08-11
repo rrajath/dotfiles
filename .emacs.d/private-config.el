@@ -35,7 +35,7 @@ soon as Emacs loads."
     (add-to-list 'default-frame-alist
                  (cons 'width 214))
     (add-to-list 'default-frame-alist
-                 (cons 'height 81))
+                 (cons 'height 83))
     )))
 
 (defvar bootstrap-version)
@@ -212,13 +212,16 @@ soon as Emacs loads."
  "o a" '(org-agenda :which-key "org-agenda")
  "o e" '(org-export-dispatch :which-key "org-export-dispatch")
  "o t" '(org-todo :which-key "org-todo")
- "o x" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
  "o h" '(org-toggle-heading :which-key "heading")
  "o i" '(org-toggle-item :which-key "item")
  "o o" '(consult-outline :which-key "consult-outline")
  "o S" '(org-show-todo-tree :which-key "org-show-todo-tree")
  "o q" '(org-set-tags-command :which-key "org-set-tags-command")
  "o N" '(org-add-note :which-key "org-add-note")
+ ;; org-mode / checkbox
+ "o x"   '(:ignore t :which-key "checkbox")
+ "o x x" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
+ "o x s" '(rr/org-sort-list-by-checkbox-type :which-key "org-sort-checklist")
  ;; org-mode / clock
  "o c"   '(:ignore t :which-key "clock")
  "o c i" '(org-clock-in :which-key "org-clock-in")
@@ -249,6 +252,8 @@ soon as Emacs loads."
  "o l"   '(:ignore t :which-key "links")
  "o l l" '(org-insert-link :which-key "org-insert-link")
  "o l v" '(crux-view-url :which-key "crux-view-url")
+ "o l s" '(org-store-link :which-key "org-store-link")
+ "o l h" '(rr/org-insert-html-link :which-key "org-insert-link-with-title")
  ;; projectile
  "p"   '(:ignore t :which-key "projectile")
  "p f" '(projectile-find-file :which-key "projectile-find-file")
@@ -362,6 +367,26 @@ soon as Emacs loads."
 (global-undo-tree-mode)
 
 (recentf-mode)
+
+(require 'mm-url) ; to include mm-url-decode-entities-string
+
+(defun rr/org-insert-html-link ()
+  "Insert org link where default description is set to html title."
+  (interactive)
+  (let* ((url (read-string "URL: "))
+         (title (rr/get-html-title-from-url url)))
+    (org-insert-link nil url title)))
+
+(defun rr/get-html-title-from-url (url)
+  "Return content in <title> tag."
+  (let (x1 x2 (download-buffer (url-retrieve-synchronously url)))
+    (save-excursion
+      (set-buffer download-buffer)
+      (beginning-of-buffer)
+      (setq x1 (search-forward "<title>"))
+      (search-forward "</title>")
+      (setq x2 (search-backward "<"))
+      (mm-url-decode-entities-string (buffer-substring-no-properties x1 x2)))))
 
 ;; Making ESC key work like an ESC key by exiting/canceling stuff
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -834,8 +859,8 @@ folder, otherwise delete a word"
         org-ctrl-k-protect-subtree t
         org-cycle-separator-lines 0
         org-refile-targets
-        '((nil :maxlevel . 3)
-          (org-agenda-files :maxlevel . 3)))
+        '((nil :maxlevel . 6)
+          (org-agenda-files :maxlevel . 6)))
 
   (advice-add 'org-refile :after 'org-save-all-org-buffers))
 
@@ -955,6 +980,7 @@ folder, otherwise delete a word"
   (set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
   (set-face-attribute 'org-todo nil  :inherit 'fixed-pitch)
   (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'org-list-dt nil  :inherit 'fixed-pitch)
   (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
   (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
   (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
@@ -1219,6 +1245,98 @@ If prefix ARG, copy instead of move."
  :keymaps 'org-mode-map
  :prefix "z"
  "x" 'org-hide-drawer-toggle)
+
+(defun rr/org-show-next-heading-tidily ()
+  "Show next entry, keeping other entries closed."
+  (interactive)
+  (if (save-excursion (end-of-line) (outline-invisible-p))
+      (progn (org-show-entry) (show-children))
+    (outline-next-heading)
+    (unless (and (bolp) (org-on-heading-p))
+      (org-up-heading-safe)
+      (hide-subtree)
+      (error "Boundary reached"))
+    (org-overview)
+    (org-reveal t)
+    (org-show-entry)
+    (show-children)))
+
+(defun rr/org-show-previous-heading-tidily ()
+  "Show previous entry, keeping other entries closed."
+  (interactive)
+  (let ((pos (point)))
+    (outline-previous-heading)
+    (unless (and (< (point) pos) (bolp) (org-on-heading-p))
+      (goto-char pos)
+      (hide-subtree)
+      (error "Boundary reached"))
+    (org-overview)
+    (org-reveal t)
+    (org-show-entry)
+    (show-children)))
+
+(general-define-key
+ :states 'normal
+ :keymaps 'org-mode-map
+ "C-n" 'rr/org-show-next-heading-tidily
+ "C-p" 'rr/org-show-previous-heading-tidily)
+
+(defun rr/org-sort-list-by-checkbox-type ()
+  "Sort list items according to Checkbox state."
+  (interactive)
+  (org-sort-list
+   nil ?f
+   (lambda ()
+     (if (looking-at org-list-full-item-re)
+         (cdr (assoc (match-string 3)
+                     '(("[X]" . 4) ("[-]" . 3) ("[ ]" . 2) (nil . 1))))
+       4))))
+
+(defun rr/jump-to-org-agenda ()
+      (interactive)
+      (let ((buf (get-buffer "*Org Agenda*"))
+            wind)
+        (if buf
+            (if (setq wind (get-buffer-window buf))
+                (select-window wind)
+              (if (called-interactively-p)
+                  (progn
+                    (select-window (display-buffer buf t t))
+                    (org-fit-window-to-buffer)
+                    ;; (org-agenda-redo)
+                    )
+                (with-selected-window (display-buffer buf)
+                  (org-fit-window-to-buffer)
+                  ;; (org-agenda-redo)
+                  )))
+          (call-interactively 'org-agenda-list)))
+      ;;(let ((buf (get-buffer "*Calendar*")))
+      ;;  (unless (get-buffer-window buf)
+      ;;    (org-agenda-goto-calendar)))
+      )
+
+(run-with-idle-timer 600 t 'rr/jump-to-org-agenda)
+
+(eval-after-load 'org-list
+  '(add-hook 'org-checkbox-statistics-hook (function rr/checkbox-list-complete)))
+
+(defun rr/checkbox-list-complete ()
+  (save-excursion
+    (org-back-to-heading t)
+    (let ((beg (point)) end)
+      (end-of-line)
+      (setq end (point))
+      (goto-char beg)
+      (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]" end t)
+            (if (match-end 1)
+                (if (equal (match-string 1) "100%")
+                    ;; all done - do the state change
+                    (org-todo 'done)
+                  (org-todo 'todo))
+              (if (and (> (match-end 2) (match-beginning 2))
+                       (equal (match-string 2) (match-string 3)))
+                  (org-todo 'done)
+                (org-todo 'todo)))))))
 
 (use-package org-roam
   :straight t

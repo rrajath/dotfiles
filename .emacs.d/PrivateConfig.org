@@ -56,6 +56,7 @@
     - [[#keybindings][Keybindings]]
   - [[#undo-tree][Undo Tree]]
   - [[#recentf-mode][Recentf Mode]]
+  - [[#insert-html-link-with-title-as-default-description][Insert HTML link with title as default description]]
 - [[#keybindings][Keybindings]]
   - [[#make-esc-work-better][Make ESC work better]]
   - [[#switch-buffers-easily][Switch buffers easily]]
@@ -139,6 +140,10 @@
       - [[#insert-item-above][Insert item above]]
     - [[#org-refile-to-current-file][Org refile to current file]]
     - [[#org-showhide-drawers][Org show/hide drawers]]
+    - [[#org-show-nextprev-headings-tidily][Org show next/prev headings tidily]]
+    - [[#org-sort-list-by-checkbox-type][Org sort list by checkbox type]]
+    - [[#use-idle-timer-for-automatic-agenda-views][Use idle timer for automatic agenda views]]
+    - [[#mark-heading-done-when-all-checkboxes-are-checked][Mark heading DONE when all checkboxes are checked]]
 - [[#org-roam][Org Roam]]
   - [[#basic-setup][Basic Setup]]
   - [[#insert-new-note-immediately][Insert new note immediately]]
@@ -243,7 +248,7 @@ This block of code uses the =display-mode= variable set in the previous section 
       (add-to-list 'default-frame-alist
                    (cons 'width 214))
       (add-to-list 'default-frame-alist
-                   (cons 'height 81))
+                   (cons 'height 83))
       )))
 #+end_src
 
@@ -562,13 +567,16 @@ Package: [[https://github.com/noctuid/general.el][General]]
    "o a" '(org-agenda :which-key "org-agenda")
    "o e" '(org-export-dispatch :which-key "org-export-dispatch")
    "o t" '(org-todo :which-key "org-todo")
-   "o x" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
    "o h" '(org-toggle-heading :which-key "heading")
    "o i" '(org-toggle-item :which-key "item")
    "o o" '(consult-outline :which-key "consult-outline")
    "o S" '(org-show-todo-tree :which-key "org-show-todo-tree")
    "o q" '(org-set-tags-command :which-key "org-set-tags-command")
    "o N" '(org-add-note :which-key "org-add-note")
+   ;; org-mode / checkbox
+   "o x"   '(:ignore t :which-key "checkbox")
+   "o x x" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
+   "o x s" '(rr/org-sort-list-by-checkbox-type :which-key "org-sort-checklist")
    ;; org-mode / clock
    "o c"   '(:ignore t :which-key "clock")
    "o c i" '(org-clock-in :which-key "org-clock-in")
@@ -599,6 +607,8 @@ Package: [[https://github.com/noctuid/general.el][General]]
    "o l"   '(:ignore t :which-key "links")
    "o l l" '(org-insert-link :which-key "org-insert-link")
    "o l v" '(crux-view-url :which-key "crux-view-url")
+   "o l s" '(org-store-link :which-key "org-store-link")
+   "o l h" '(rr/org-insert-html-link :which-key "org-insert-link-with-title")
    ;; projectile
    "p"   '(:ignore t :which-key "projectile")
    "p f" '(projectile-find-file :which-key "projectile-find-file")
@@ -809,6 +819,30 @@ Enable =recentf= for usefulness.
 
 #+begin_src emacs-lisp
   (recentf-mode)
+#+end_src
+** Insert HTML link with title as default description
+Taken from: https://orgmode.org/worg/org-hacks.html#org4f1a640
+
+#+begin_src emacs-lisp
+  (require 'mm-url) ; to include mm-url-decode-entities-string
+
+  (defun rr/org-insert-html-link ()
+    "Insert org link where default description is set to html title."
+    (interactive)
+    (let* ((url (read-string "URL: "))
+           (title (rr/get-html-title-from-url url)))
+      (org-insert-link nil url title)))
+
+  (defun rr/get-html-title-from-url (url)
+    "Return content in <title> tag."
+    (let (x1 x2 (download-buffer (url-retrieve-synchronously url)))
+      (save-excursion
+        (set-buffer download-buffer)
+        (beginning-of-buffer)
+        (setq x1 (search-forward "<title>"))
+        (search-forward "</title>")
+        (setq x2 (search-backward "<"))
+        (mm-url-decode-entities-string (buffer-substring-no-properties x1 x2)))))
 #+end_src
 
 * Keybindings
@@ -1629,8 +1663,8 @@ Set the directory for auto saving persp sessions
           org-ctrl-k-protect-subtree t
           org-cycle-separator-lines 0
           org-refile-targets
-          '((nil :maxlevel . 3)
-            (org-agenda-files :maxlevel . 3)))
+          '((nil :maxlevel . 6)
+            (org-agenda-files :maxlevel . 6)))
 
     (advice-add 'org-refile :after 'org-save-all-org-buffers))
 
@@ -1863,6 +1897,7 @@ Currently trying out this setting with fixed width /and/ variable width fonts. /
     (set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
     (set-face-attribute 'org-todo nil  :inherit 'fixed-pitch)
     (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+    (set-face-attribute 'org-list-dt nil  :inherit 'fixed-pitch)
     (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
     (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
     (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
@@ -2203,6 +2238,119 @@ This is a custom keybinding to show/hide drawers in org mode
    :keymaps 'org-mode-map
    :prefix "z"
    "x" 'org-hide-drawer-toggle)
+#+end_src
+
+*** Org show next/prev headings tidily
+Taken from: https://orgmode.org/worg/org-hacks.html#orge99b7a9
+
+#+begin_src emacs-lisp
+  (defun rr/org-show-next-heading-tidily ()
+    "Show next entry, keeping other entries closed."
+    (interactive)
+    (if (save-excursion (end-of-line) (outline-invisible-p))
+        (progn (org-show-entry) (show-children))
+      (outline-next-heading)
+      (unless (and (bolp) (org-on-heading-p))
+        (org-up-heading-safe)
+        (hide-subtree)
+        (error "Boundary reached"))
+      (org-overview)
+      (org-reveal t)
+      (org-show-entry)
+      (show-children)))
+
+  (defun rr/org-show-previous-heading-tidily ()
+    "Show previous entry, keeping other entries closed."
+    (interactive)
+    (let ((pos (point)))
+      (outline-previous-heading)
+      (unless (and (< (point) pos) (bolp) (org-on-heading-p))
+        (goto-char pos)
+        (hide-subtree)
+        (error "Boundary reached"))
+      (org-overview)
+      (org-reveal t)
+      (org-show-entry)
+      (show-children)))
+
+  (general-define-key
+   :states 'normal
+   :keymaps 'org-mode-map
+   "C-n" 'rr/org-show-next-heading-tidily
+   "C-p" 'rr/org-show-previous-heading-tidily)
+
+#+end_src
+
+*** Org sort list by checkbox type
+Taken from: https://orgmode.org/worg/org-hacks.html#org5a09194
+
+#+begin_src emacs-lisp
+  (defun rr/org-sort-list-by-checkbox-type ()
+    "Sort list items according to Checkbox state."
+    (interactive)
+    (org-sort-list
+     nil ?f
+     (lambda ()
+       (if (looking-at org-list-full-item-re)
+           (cdr (assoc (match-string 3)
+                       '(("[X]" . 4) ("[-]" . 3) ("[ ]" . 2) (nil . 1))))
+         4))))
+#+end_src
+
+*** Use idle timer for automatic agenda views
+Taken from: https://orgmode.org/worg/org-hacks.html#orga781053
+
+#+begin_src emacs-lisp
+    (defun rr/jump-to-org-agenda ()
+      (interactive)
+      (let ((buf (get-buffer "*Org Agenda*"))
+            wind)
+        (if buf
+            (if (setq wind (get-buffer-window buf))
+                (select-window wind)
+              (if (called-interactively-p)
+                  (progn
+                    (select-window (display-buffer buf t t))
+                    (org-fit-window-to-buffer)
+                    ;; (org-agenda-redo)
+                    )
+                (with-selected-window (display-buffer buf)
+                  (org-fit-window-to-buffer)
+                  ;; (org-agenda-redo)
+                  )))
+          (call-interactively 'org-agenda-list)))
+      ;;(let ((buf (get-buffer "*Calendar*")))
+      ;;  (unless (get-buffer-window buf)
+      ;;    (org-agenda-goto-calendar)))
+      )
+
+(run-with-idle-timer 600 t 'rr/jump-to-org-agenda)
+#+end_src
+
+*** Mark heading DONE when all checkboxes are checked
+Taken from: https://orgmode.org/worg/org-hacks.html#mark-done-when-all-checkboxes-checked
+
+#+begin_src emacs-lisp
+(eval-after-load 'org-list
+  '(add-hook 'org-checkbox-statistics-hook (function rr/checkbox-list-complete)))
+
+(defun rr/checkbox-list-complete ()
+  (save-excursion
+    (org-back-to-heading t)
+    (let ((beg (point)) end)
+      (end-of-line)
+      (setq end (point))
+      (goto-char beg)
+      (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]" end t)
+            (if (match-end 1)
+                (if (equal (match-string 1) "100%")
+                    ;; all done - do the state change
+                    (org-todo 'done)
+                  (org-todo 'todo))
+              (if (and (> (match-end 2) (match-beginning 2))
+                       (equal (match-string 2) (match-string 3)))
+                  (org-todo 'done)
+                (org-todo 'todo)))))))
 #+end_src
 
 * Org Roam
