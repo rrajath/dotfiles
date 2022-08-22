@@ -323,7 +323,9 @@ soon as Emacs loads."
 (eros-mode 1)
 
 (use-package hungry-delete
-  :defer 2)
+  :defer 2
+  :config
+  (setq hungry-delete-join-reluctantly t))
 (global-hungry-delete-mode)
 
 (use-package goto-last-change)
@@ -878,7 +880,7 @@ folder, otherwise delete a word"
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 
 (defun rr/org-mode-visual-fill ()
-  (setq visual-fill-column-width 100
+  (setq visual-fill-column-width 120
         visual-fill-column-center-text t)
   (visual-fill-column-mode 1))
 
@@ -902,6 +904,9 @@ folder, otherwise delete a word"
           (tags-todo "+work-meeting"
                      ((org-agenda-overriding-header "Work Tasks")))
           ))
+        ("%" "Appointments" agenda* "Today's appointments"
+         ((org-agenda-span 1)
+          (org-agenda-max-entries 3)))
         ))
 
 (with-eval-after-load 'org
@@ -1291,31 +1296,6 @@ If prefix ARG, copy instead of move."
          (cdr (assoc (match-string 3)
                      '(("[X]" . 4) ("[-]" . 3) ("[ ]" . 2) (nil . 1))))
        4))))
-
-(defun rr/jump-to-org-agenda ()
-      (interactive)
-      (let ((buf (get-buffer "*Org Agenda*"))
-            wind)
-        (if buf
-            (if (setq wind (get-buffer-window buf))
-                (select-window wind)
-              (if (called-interactively-p)
-                  (progn
-                    (select-window (display-buffer buf t t))
-                    (org-fit-window-to-buffer)
-                    ;; (org-agenda-redo)
-                    )
-                (with-selected-window (display-buffer buf)
-                  (org-fit-window-to-buffer)
-                  ;; (org-agenda-redo)
-                  )))
-          (call-interactively 'org-agenda-list)))
-      ;;(let ((buf (get-buffer "*Calendar*")))
-      ;;  (unless (get-buffer-window buf)
-      ;;    (org-agenda-goto-calendar)))
-      )
-
-(run-with-idle-timer 600 t 'rr/jump-to-org-agenda)
 
 (eval-after-load 'org-list
   '(add-hook 'org-checkbox-statistics-hook (function rr/checkbox-list-complete)))
