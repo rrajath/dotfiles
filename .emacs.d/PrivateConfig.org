@@ -743,7 +743,9 @@ Package: [[https://github.com/nflath/hungry-delete][hungry-delete]]
 
 #+begin_src emacs-lisp
   (use-package hungry-delete
-    :defer 2)
+    :defer 2
+    :config
+    (setq hungry-delete-join-reluctantly t))
   (global-hungry-delete-mode)
 #+end_src
 
@@ -820,6 +822,7 @@ Enable =recentf= for usefulness.
 #+begin_src emacs-lisp
   (recentf-mode)
 #+end_src
+
 ** Insert HTML link with title as default description
 Taken from: https://orgmode.org/worg/org-hacks.html#org4f1a640
 
@@ -1705,7 +1708,7 @@ Package: [[https://github.com/joostkremers/visual-fill-column][visual-fill-colum
 
 #+begin_src emacs-lisp
   (defun rr/org-mode-visual-fill ()
-    (setq visual-fill-column-width 100
+    (setq visual-fill-column-width 120
           visual-fill-column-center-text t)
     (visual-fill-column-mode 1))
 
@@ -1757,6 +1760,9 @@ This needs a lot more work, but this is a good start
             (tags-todo "+work-meeting"
                        ((org-agenda-overriding-header "Work Tasks")))
             ))
+          ("%" "Appointments" agenda* "Today's appointments"
+           ((org-agenda-span 1)
+            (org-agenda-max-entries 3)))
           ))
 #+end_src
 
@@ -2300,7 +2306,7 @@ Taken from: https://orgmode.org/worg/org-hacks.html#org5a09194
 *** Use idle timer for automatic agenda views
 Taken from: https://orgmode.org/worg/org-hacks.html#orga781053
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
     (defun rr/jump-to-org-agenda ()
       (interactive)
       (let ((buf (get-buffer "*Org Agenda*"))
