@@ -1,0 +1,125 @@
+#+TITLE:      Custom Kitty Configuration
+#+AUTHOR:     Rajath Ramakrishna
+#+PROPERTY:   header-args :tangle ~/.config/kitty/custom.conf
+#+STARTUP:    overview indent hidestars
+
+* Introduction
+<Coming soon>
+* Pre-requisites
+- Install Kitty
+- Open Kitty and hit ~Cmd + ,~ to generate a default configuration file in =~/.config/kitty/kitty.conf=
+- Add the following to the end of the file: ~include custom.conf~
+- Download the following git repo: ~git clone --depth 1 https://github.com/dexpota/kitty-themes.git ~/.config/kitty/kitty-themes~
+* Fonts
+This sets the font, font size, etc
+
+#+begin_src yaml
+font_size 15.0
+font_family Ubuntu Mono
+#+end_src
+
+* Cursor
+
+#+begin_src yaml
+cursor_shape block
+#+end_src
+
+* Mouse
+** Hide mouse immediately when typing text
+This will make things less distracting.
+
+#+begin_src yaml
+mouse_hide_wait -1
+#+end_src
+
+** Copy on select
+This enables copying text whenever you select text with the mouse. Helps with not needing to hit =Cmd + C= to copy.
+
+#+begin_src yaml
+copy_on_select yes
+#+end_src
+
+** Strip trailing spaces
+No need of spaces before and after the text being copied
+
+#+begin_src yaml
+strip_trailing_spaces smart
+#+end_src
+
+* Scrollback
+Number of lines to scrollback to
+
+#+begin_src yaml
+scrollback_pager_history_size 30
+#+end_src
+
+* Color Scheme
+** Background Opacity
+Set background opacity and also add keyboard shortcuts to increase/decrease/toggle opacity.
+
+#+begin_src yaml
+dynamic_background_opacity yes
+background_opacity 1
+map f1 set_background_opacity +0.1
+map f2 set_background_opacity -0.1
+map f3 set_background_opacity 0.5
+map f4 set_background_opacity default
+#+end_src
+
+** Theme
+In order to change the theme, make the necessary change below and then hit =C-c C-c= for the change to take effect (i.e. for the below code to execute)
+
+#+begin_src sh
+ln -f -s ./kitty-themes/themes/Atom.conf ~/.config/kitty/theme.conf
+#+end_src
+
+* Window Layouts
+** Handling inactive windows
+This will fade the text of inactive windows thereby making the active window more easily recognizable.
+
+#+begin_src yaml
+inactive_text_alpha 0.5
+#+end_src
+** Window margins
+#+begin_src yaml
+window_margin_width 5
+#+end_src
+** Hiding window decorations
+#+begin_src yaml
+hide_window_decorations yes
+#+end_src
+** Window size
+#+begin_src yaml
+remember_window_size yes
+#+end_src
+* Tab Bar
+** Tab bar style
+#+begin_src yaml
+tab_bar_style powerline
+#+end_src
+
+* Utilities
+This contains settings in kitty that help with enabling specific features in Kitty.
+** Treat Option as Alt in MacOS
+By default Kitty doesn't treat =option= as =alt= in MacOS. Programs like fish shell uses =alt= exclusively.
+
+#+begin_src yaml
+macos_option_as_alt yes
+#+end_src
+
+** Allow other programs to control Kitty
+#+begin_src yaml
+allow_remote_control yes
+#+end_src
+* Keyboard Shortcuts
+
+#+begin_src yaml
+map opt+j previous_tab
+map opt+k next_tab
+
+map cmd+BACKSLASH kitten kittens/password.py security find-generic-password -s "login_keychain_test" -w
+# map cmd+BACKSLASH security find-generic-password -s "login_keychain_test" -w
+
+map cmd+p kitten mykitten.py
+#+end_src
+
