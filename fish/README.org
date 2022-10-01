@@ -1,0 +1,206 @@
+#+TITLE:      Custom Fish Configuration
+#+AUTHOR:     Rajath Ramakrishna
+#+PROPERTY:   header-args:shell :tangle ~/.config/fish/config.fish
+#+STARTUP:    overview indent hidestars
+
+* Introduction
+This is a custom config for fish shell
+* Pre-existing config
+#+begin_src shell
+if status is-interactive
+    # Commands to run in interactive sessions can go here
+end
+#+end_src
+* Startup
+This will be used during startup
+** Remove greeting
+This removes the fish default greeting which gets annoying after a while.
+
+#+begin_src shell
+set fish_greeting
+#+end_src
+
+** Set the terminal type
+... to 256 color
+
+#+begin_src shell
+set TERM "xterm-256color"
+#+end_src
+** Set Environment Variables
+*** Set ManPager to =bat=
+#+begin_src shell
+  set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+#+end_src
+*** Set Editor
+#+begin_src shell
+  set EDITOR emacsclient -a /usr/local/bin/emacs
+#+end_src
+* Theme
+Sets the theme
+
+#+begin_src shell
+  # Colorscheme ayu Mirage
+  set -U fish_color_normal CBCCC6
+  set -U fish_color_command 5CCFE6
+  set -U fish_color_quote BAE67E
+  set -U fish_color_redirection D4BFFF
+  set -U fish_color_end F29E74
+  set -U fish_color_error FF3333
+  set -U fish_color_param CBCCC6
+  set -U fish_color_comment 5C6773
+  set -U fish_color_match F28779
+  set -U fish_color_selection --background=FFCC66
+  set -U fish_color_search_match --background=FFCC66
+  set -U fish_color_history_current --bold
+  set -U fish_color_operator FFCC66
+  set -U fish_color_escape 95E6CB
+  set -U fish_color_cwd 73D0FF
+  set -U fish_color_cwd_root red
+  set -U fish_color_valid_path --underline
+  set -U fish_color_autosuggestion 707A8C
+  set -U fish_color_user brgreen
+  set -U fish_color_host normal
+  set -U fish_color_cancel --reverse
+  set -U fish_pager_color_prefix normal --bold --underline
+  set -U fish_pager_color_progress brwhite --background=cyan
+  set -U fish_pager_color_completion normal
+  set -U fish_pager_color_description B3A06D
+  set -U fish_pager_color_selected_background --background=FFCC66
+  set -U fish_pager_color_selected_completion
+  set -U fish_pager_color_selected_description
+  set -U fish_pager_color_secondary_prefix
+  set -U fish_pager_color_secondary_description
+  set -U fish_pager_color_secondary_completion
+  set -U fish_pager_color_background
+  set -U fish_color_option
+  set -U fish_color_keyword
+  set -U fish_color_host_remote
+  set -U fish_pager_color_selected_prefix
+  set -U fish_pager_color_secondary_background
+#+end_src
+
+* Prompt
+
+#+begin_src shell
+
+#+end_src
+
+* Auto Complete Colors
+#+begin_src shell
+  set fish_color_normal brcyan
+  set fish_color_autosuggestion '#7d7d7d'
+  set fish_color_command brcyan
+  set fish_color_error '#ff6c6b'
+  set fish_color_param brcyan
+#+end_src
+* Setting fish key bindings
+#+begin_src shell
+  function fish_user_key_bindings
+  fish_default_key_bindings
+  # fish_vi_key_bindings
+  end
+#+end_src
+* Functions and bindings for !! and !$
+** Functions
+#+begin_src shell
+  # Functions needed for !! and !$
+  function __history_previous_command
+  switch (commandline -t)
+  case "!"
+       commandline -t $history[1]; commandline -f repaint
+       case "*"
+            commandline -i !
+            end
+            end
+
+            function __history_previous_command_arguments
+            switch (commandline -t)
+            case "!"
+                 commandline -t ""
+                 commandline -f history-token-search-backward
+                 case "*"
+                      commandline -i '$'
+                      end
+                      end
+#+end_src
+** Bindings
+#+begin_src shell
+  # The bindings for !! and !$
+  if [ "$fish_key_bindings" = "fish_vi_key_bindings" ];
+     bind -Minsert ! __history_previous_command
+     bind -Minsert '$' __history_previous_command_arguments
+     else
+         bind ! __history_previous_command
+         bind '$' __history_previous_command_arguments
+         end
+#+end_src
+* Aliases
+** Basic aliases
+#+begin_src shell
+  alias ..='cd ..'
+  alias ...='cd ../..'
+  alias .3='cd ../../..'
+  alias .4='cd ../../../..'
+  alias .5='cd ../../../../..'
+#+end_src
+** =ls= aliases
+#+begin_src shell
+  alias ls='exa -l --color=always --group-directories-first' # my preferred listing
+  alias la='exa -a --color=always --group-directories-first'  # all files and dirs
+  alias ll='exa -l --color=always --group-directories-first'  # long format
+  alias lt='exa -aT --color=always --group-directories-first' # tree listing
+  alias l.='exa -a | egrep "^\."'
+#+end_src
+* Abbreviations
+These are like "text expansions". You type the abbreviations (like an alias), but before they get executed they get expanded to the actual command configured for that abbreviation. This way, your history will have full commands instead of a bunch of shortcuts/aliases/abbreviations.
+
+** General abbreviations
+These are general purpose abbreviations.
+
+#+begin_src shell
+  abbr -a - cd ..
+#+end_src
+
+** Git abbreviations
+I was using these during my zsh days when my [[https://github.com/ohmyzsh/ohmyzsh][oh-my-zsh]] had the nice [[https://github.com/ohmyzsh/ohmyzsh/blob/master/plugins/git/git.plugin.zsh][git plugin]].
+
+#+begin_src shell
+  abbr -a gco git checkout
+  abbr -a gst git status
+  abbr -a gcp git cherry-pick
+  abbr -a gbuom git branch -u origin/mainline
+  abbr -a grbc git rebase --continue
+  abbr -a grba git rebase --abort
+  abbr -a gup git pull --rebase
+  abbr -a ga git add
+  abbr -a gb git branch
+  abbr -a gd git difftool --no-symlinks --dir-diff
+#+end_src
+
+** Kitty abbreviations
+These are specific to Kitty
+
+#+begin_src shell
+  abbr -a s kitty +kitten ssh
+#+end_src
+* Functions
+#+begin_src shell
+# Function for org-agenda
+function org-search -d "send a search string to org-mode"
+    set -l output (emacsclient -a "" -e "(message \"%s\" (mapconcat #'substring-no-properties \
+        (mapcar #'org-link-display-format \
+        (org-ql-query \
+        :select #'org-get-heading \
+        :from  (org-agenda-files) \
+        :where (org-ql--query-string-to-sexp \"$argv\"))) \
+        \"
+    \"))")
+    printf $output
+end
+#+end_src
+* Starship
+Enables starship prompt for fish
+
+#+begin_src shell
+  starship init fish | source
+#+end_src
