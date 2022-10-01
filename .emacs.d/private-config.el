@@ -848,6 +848,8 @@ folder, otherwise delete a word"
         org-hide-emphasis-markers t
         org-log-done 'time
         org-log-into-drawer t
+        ;; org-adapt-indentation t
+        org-element-use-cache nil
         org-agenda-start-with-log-mode t
         org-agenda-skip-scheduled-if-done t
         org-agenda-skip-deadline-if-done t
