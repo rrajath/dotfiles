@@ -15,7 +15,7 @@ This sets the font, font size, etc
 
 #+begin_src yaml
 font_size 15.0
-font_family Ubuntu Mono
+font_family SourceCode Pro
 #+end_src
 
 * Cursor
