@@ -79,12 +79,6 @@ Sets the theme
   set -U fish_pager_color_secondary_background
 #+end_src
 
-* Prompt
-
-#+begin_src shell
-
-#+end_src
-
 * Auto Complete Colors
 #+begin_src shell
   set fish_color_normal brcyan
@@ -159,6 +153,11 @@ These are general purpose abbreviations.
 
 #+begin_src shell
   abbr -a - cd ..
+  abbr -a ls exa -l --color=always --group-directories-first # my preferred listing
+  abbr -a la exa -a --color=always --group-directories-first  # all files and dirs
+  abbr -a ll exa -l --color=always --group-directories-first  # long format
+  abbr -a lt exa -aT --color=always --group-directories-first # tree listing
+  abbr -a l. exa -a | egrep "^\."
 #+end_src
 
 ** Git abbreviations
@@ -202,7 +201,7 @@ end
 Enables starship prompt for fish
 *Note*: temporarily disabling since the preset I'm using with Starship doesn't support =prevd= and =nextd= updates in the prompt when done using keybindings.
 
-#+begin_src shell :tangle no
+#+begin_src shell
   starship init fish | source
 #+end_src
 * Useful Links
