@@ -204,6 +204,7 @@ path /usr/local/sbin
 path ~/bin
 path ~/.emacs.d/bin
 path /usr/local/Cellar/emacs-plus@27/27.2/bin
+path /Applications/kitty.app/Contents/MacOS
 
 #+end_src
 
@@ -228,7 +229,7 @@ export NVM_DIR="$HOME/.nvm"
 * Starship
 
 #+begin_src bash
-eval "$(starship init zsh)"
+# eval "$(starship init zsh)"
 #+end_src
 
 * Work Stuff
