@@ -200,7 +200,10 @@ end
 #+end_src
 * Starship
 Enables starship prompt for fish
+*Note*: temporarily disabling since the preset I'm using with Starship doesn't support =prevd= and =nextd= updates in the prompt when done using keybindings.
 
-#+begin_src shell
+#+begin_src shell :tangle no
   starship init fish | source
 #+end_src
+* Useful Links
+- [[https://github.com/jorgebucaran/awsm.fish][GitHub - jorgebucaran/awsm.fish: A curation of prompts, plugins & other resources for Fish]]
