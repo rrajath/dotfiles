@@ -913,7 +913,8 @@ folder, otherwise delete a word"
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
-     (python . t))))
+     (python . t)
+     (shell . t))))
 
 (setq org-confirm-babel-evaluate nil)
 
@@ -926,8 +927,7 @@ folder, otherwise delete a word"
 
 ;; Automatically tangle PrivateConfig.org config file when we save it
 (defun rr/org-babel-tangle-config ()
-  (when (string-equal (buffer-file-name)
-                      (expand-file-name "~/dotfiles/.emacs.d/PrivateConfig.org"))
+  (when (string-match "dotfiles\/" (buffer-file-name))
     ;; Dynamic scoping to the rescue
     (let ((org-confirm-babel-evaluate nil))
       (org-babel-tangle))))

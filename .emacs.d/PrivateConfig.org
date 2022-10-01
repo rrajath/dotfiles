@@ -641,7 +641,7 @@ Package: [[https://github.com/noctuid/general.el][General]]
    :keymaps '(normal insert)
    "s-]" 'persp-next
    "s-[" 'persp-prev)
-   #+end_src
+#+end_src
 
 ** Server Mode
 Make this instance of emacs start server so that other client instances can connect to this.
@@ -1803,7 +1803,8 @@ This needs a lot more work, but this is a good start
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((emacs-lisp . t)
-       (python . t))))
+       (python . t)
+       (shell . t))))
 
   (setq org-confirm-babel-evaluate nil)
 
@@ -1825,8 +1826,7 @@ This is for emacs to recognize and provide syntax highlighting for config files 
 #+begin_src emacs-lisp
   ;; Automatically tangle PrivateConfig.org config file when we save it
   (defun rr/org-babel-tangle-config ()
-    (when (string-equal (buffer-file-name)
-                        (expand-file-name "~/dotfiles/.emacs.d/PrivateConfig.org"))
+    (when (string-match "dotfiles\/" (buffer-file-name))
       ;; Dynamic scoping to the rescue
       (let ((org-confirm-babel-evaluate nil))
         (org-babel-tangle))))
