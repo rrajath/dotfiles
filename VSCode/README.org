@@ -1,0 +1,6 @@
+#+TITLE:      VSCode Configuration
+#+AUTHOR:     Rajath Ramakrishna
+#+STARTUP:    overview indent hidestars
+
+* Introduction
+The settings for VSCode are managed/maintained using the Settings Sync in VSCode. No settings configured using Literate Programming. On a new machine, the settings must be synced by logging in to your Microsoft account (or GitHub account, not sure).

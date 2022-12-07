@@ -1,0 +1,12 @@
+* Introduction
+Firefox, for the most part, doesn't need configuration. This file is just to capture the extensions that need to be installed and their configurations
+* Extensions
+Here are the most useful extensions:
+- BitWarden
+- Matter
+- Modern for HackerNews
+- OneTab
+- SimpleLogin
+- uBlock Origin
+- Vimium
+- Worldtime
