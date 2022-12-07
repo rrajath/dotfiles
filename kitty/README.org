@@ -50,7 +50,7 @@ strip_trailing_spaces smart
 Number of lines to scrollback to
 
 #+begin_src yaml
-scrollback_pager_history_size 30
+scrollback_pager_history_size 100
 #+end_src
 
 * Color Scheme
@@ -121,5 +121,16 @@ map cmd+BACKSLASH kitten kittens/password.py security find-generic-password -s "
 # map cmd+BACKSLASH security find-generic-password -s "login_keychain_test" -w
 
 map cmd+p kitten mykitten.py
+#+end_src
+* Marks
+#+begin_src yaml
+map f8 toggle_marker iregex 1 \\bERROR\\b 2 \\bFAILED\\b
+map ctrl+p scroll_to_mark prev
+map ctrl+n scroll_to_mark next
+map ctrl+1 scroll_to_mark prev 1
+map ctrl+2 scroll_to_mark prev 2
+
+map f7 create_marker
+map f9 remove_marker
 #+end_src
 
