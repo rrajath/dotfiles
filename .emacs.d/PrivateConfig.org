@@ -20,6 +20,7 @@
     - [[#set-frame-size-and-position][Set frame size and position]]
   - [[#package-management-unused][Package Management (unused)]]
   - [[#using-straight][Using Straight]]
+  - [[#garbage-collector-magic-hack][Garbage Collector Magic Hack]]
   - [[#keep-emacsd-clean][Keep .emacs.d clean]]
   - [[#auto-update-packages][Auto update packages]]
   - [[#basic-setup][Basic Setup]]
@@ -303,6 +304,16 @@ Adding package sources and setting =use-package-always-ensure= to =t=. This sett
   (setq straight-use-package-by-default t)
 #+end_src
 
+** Garbage Collector Magic Hack
+This is to enforce a sneaky garbage collection strategy to minimize GC interference with user activity
+Package: [[https://gitlab.com/koral/gcmh][gcmh]]
+
+#+begin_src emacs-lisp
+(use-package gcmh
+  :init
+  (gcmh-mode 1))
+#+end_src
+
 ** Keep .emacs.d clean
 This is to avoid emacs from creating temporary files:
 Package: [[https://github.com/emacscollective/no-littering][no-littering]]
@@ -552,7 +563,7 @@ Package: [[https://github.com/noctuid/general.el][General]]
    "h f" '(describe-function :which-key "function")
    "h k" '(helpful-key :which-key "key")
    "h i" '(info :which-key "info")
-   "h c" '(describe-key-briefly :which-key "describy-key-briefly")
+   "h c" '(describe-key-briefly :which-key "describe-key-briefly")
    ;; jump with avy
    "j"   '(:ignore t :which-key "jump")
    "j j" '(avy-goto-char :which-key "avy-goto-char")

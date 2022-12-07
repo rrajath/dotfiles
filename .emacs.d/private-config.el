@@ -55,6 +55,10 @@ soon as Emacs loads."
 
 (setq straight-use-package-by-default t)
 
+(use-package gcmh
+  :init
+  (gcmh-mode 1))
+
 (use-package no-littering)
 
 (setq auto-save-file-name-transforms
