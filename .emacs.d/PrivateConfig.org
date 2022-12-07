@@ -1336,6 +1336,7 @@ File management with dired
      dired-omit-files "^\\.[^.].*"
      dired-omit-verbose nil
      dired-hide-details-hide-symlink-targets nil
+     dired-kill-when-opening-new-dired-buffer t
      delete-by-moving-to-trash t)
 
     (autoload 'dired-omit-mode "dired-x")
@@ -1366,9 +1367,9 @@ File management with dired
       :defer t)
 
     (evil-collection-define-key 'normal 'dired-mode-map
-      "h" 'dired-single-up-directory
-      "l" 'dired-single-buffer
-      "H" 'dired-omit-mode))
+                                "h" 'dired-single-up-directory
+                                "l" 'dired-single-buffer
+                                "H" 'dired-omit-mode))
 #+end_src
 
 * Development
@@ -1776,6 +1777,9 @@ Set the directory for auto saving persp sessions
           org-fontify-whole-heading-line t
           org-ctrl-k-protect-subtree t
           org-cycle-separator-lines 0
+          org-refile-use-outline-path 'file
+          org-outline-path-complete-in-steps nil
+          org-refile-allow-creating-parent-nodes 'confirm
           org-refile-targets
           '((nil :maxlevel . 6)
             (org-agenda-files :maxlevel . 6)))
@@ -1838,7 +1842,7 @@ The following snippet is a work around:
 
   (add-to-list 'evil-digit-bound-motions 'evil-org-beginning-of-line)
   (evil-define-key 'motion 'evil-org-mode
-    (kbd "0") 'evil-org-beginning-of-line)
+                   (kbd "0") 'evil-org-beginning-of-line)
 #+end_src
 
 #+begin_src emacs-lisp :tangle no
@@ -1985,7 +1989,7 @@ Currently trying out this setting with fixed width /and/ variable width fonts. /
 #+begin_src emacs-lisp
   (setq my-fixed-pitch-font "JetBrains Mono")
   (setq my-variable-pitch-font "Raleway")
-  
+
   ;; Set the fixed pitch face
   (set-face-attribute 'fixed-pitch nil
                       :font my-fixed-pitch-font

@@ -201,7 +201,7 @@ soon as Emacs loads."
  "h f" '(describe-function :which-key "function")
  "h k" '(helpful-key :which-key "key")
  "h i" '(info :which-key "info")
- "h c" '(describe-key-briefly :which-key "describy-key-briefly")
+ "h c" '(describe-key-briefly :which-key "describe-key-briefly")
  ;; jump with avy
  "j"   '(:ignore t :which-key "jump")
  "j j" '(avy-goto-char :which-key "avy-goto-char")
@@ -634,6 +634,7 @@ folder, otherwise delete a word"
    dired-omit-files "^\\.[^.].*"
    dired-omit-verbose nil
    dired-hide-details-hide-symlink-targets nil
+   dired-kill-when-opening-new-dired-buffer t
    delete-by-moving-to-trash t)
 
   (autoload 'dired-omit-mode "dired-x")
@@ -664,9 +665,9 @@ folder, otherwise delete a word"
     :defer t)
 
   (evil-collection-define-key 'normal 'dired-mode-map
-    "h" 'dired-single-up-directory
-    "l" 'dired-single-buffer
-    "H" 'dired-omit-mode))
+                              "h" 'dired-single-up-directory
+                              "l" 'dired-single-buffer
+                              "H" 'dired-omit-mode))
 
 (use-package projectile
   :diminish projectile-mode
@@ -874,6 +875,9 @@ folder, otherwise delete a word"
         org-fontify-whole-heading-line t
         org-ctrl-k-protect-subtree t
         org-cycle-separator-lines 0
+        org-refile-use-outline-path 'file
+        org-outline-path-complete-in-steps nil
+        org-refile-allow-creating-parent-nodes 'confirm
         org-refile-targets
         '((nil :maxlevel . 6)
           (org-agenda-files :maxlevel . 6)))
