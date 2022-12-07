@@ -166,6 +166,7 @@
 - [[#ideas][Ideas]]
 - [[#packages-i-want-to-try][Packages I want to try]]
 - [[#runtime-performance][Runtime Performance]]
+- [[#launch-config][Launch Config]]
 - [[#pending-customizations][Pending Customizations]]
   - [[#custom-killring][Custom killring]]
   - [[#install-packages][Install packages]]
@@ -2746,6 +2747,25 @@ Dial the GC threshold back down so that garbage collection happens more frequent
   (setq gc-cons-threshold (* 2 1000 1000))
 #+end_src
 
+* Launch Config
+I want a certain workspaces and buffers open when emacs launches. The below script helps me with that.
+
+#+begin_src emacs-lisp :tangle no
+  (setq org-dir "~/Library/CloudStorage/Dropbox/org-mode/")
+  (setq dotfiles-dir "~/dotfiles/")
+  (find-file (concat org-dir "organize.org"))
+  (persp-switch "work")
+  (find-file (concat org-dir "work-tasks.org"))
+  ;; (persp-switch "config")
+  ;; (find-file (concat dotfiles-dir "kitty/README.org"))
+  ;; (persp-switch "blog")
+  ;; (find-file (concat org-dir "blog.org"))
+  (persp-switch "main")
+#+end_src
+
+#+begin_src emacs-lisp :tangle no
+(persp-state-load (concat persp-save-dir "persp-auto-save"))
+#+end_src
 * Pending Customizations
 ** TODO Custom killring
 
