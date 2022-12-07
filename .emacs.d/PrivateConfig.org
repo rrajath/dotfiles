@@ -105,6 +105,10 @@
     - [[#typescript][TypeScript]]
     - [[#completions-with-company-mode-unused][Completions with Company-mode (unused)]]
     - [[#graphql][GraphQL]]
+    - [[#tide][Tide]]
+      - [[#tsx][TSX]]
+      - [[#jsx][JSX]]
+      - [[#tide][Tide]]
 - [[#buffers][Buffers]]
   - [[#perspectives][Perspectives]]
     - [[#basic-setup][Basic Setup]]
@@ -445,7 +449,7 @@ I want to see line numbers and column numbers in most modes execpt a few.
                   term-mode-hook
                   vterm-mode-hook
                   shell-mode-hook
-                  treemacs-mode-hook
+                  ;; treemacs-mode-hook
                   eshell-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 #+end_src
@@ -1484,7 +1488,7 @@ Packages:
 - [[https://github.com/emacs-lsp/lsp-ivy][lsp-ivy]]
 - [[https://github.com/jscheid/prettier.el][prettier]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package lsp-mode
     :commands (lsp lsp-deferred)
     :hook
@@ -1513,8 +1517,8 @@ Packages:
     (setq lsp-ui-doc-include-signature t)
     )
 
-  (use-package lsp-treemacs
-    :after lsp)
+  ;; (use-package lsp-treemacs
+  ;; :after lsp)
 
   ;; unused for now, Will enable it if needed
   ;; (use-package lsp-ivy
@@ -1535,7 +1539,7 @@ Packages:
 This sets up typescript mode with defaults for eslint.
 Package: [[https://github.com/emacs-typescript/typescript.el][typescript]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package typescript-mode
     :mode "\\.ts\\'"
     :config
@@ -1594,6 +1598,67 @@ Package: [[https://github.com/davazp/graphql-mode][graphql-mode]]
 #+begin_src emacs-lisp
   (use-package graphql-mode
     :defer t)
+#+end_src
+*** Tide
+#+begin_src emacs-lisp
+  (defun setup-tide-mode ()
+    (interactive)
+    (tide-setup)
+    (flycheck-mode +1)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode +1)
+    (tide-hl-identifier-mode +1)
+    ;; company is an optional dependency. You have to
+    ;; install it separately via package-install
+    ;; `M-x package-install [ret] company`
+    (company-mode +1))
+
+  (use-package flycheck)
+
+  ;; aligns annotation to the right hand side
+  (setq company-tooltip-align-annotations t)
+
+  ;; formats the buffer before saving
+  (add-hook 'before-save-hook 'tide-format-before-save)
+
+  (add-hook 'typescript-mode-hook #'setup-tide-mode)
+#+end_src
+**** TSX
+#+begin_src emacs-lisp
+  (use-package web-mode)
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+  (add-hook 'web-mode-hook
+            (lambda ()
+              (when (string-equal "tsx" (file-name-extension buffer-file-name))
+                (setup-tide-mode))))
+  ;; enable typescript-tslint checker
+  (flycheck-add-mode 'typescript-tslint 'web-mode)
+
+  (add-hook 'js2-mode-hook #'setup-tide-mode)
+  ;; configure javascript-tide checker to run after your default javascript checker
+  ;; (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
+#+end_src
+**** JSX
+#+begin_src emacs-lisp
+  (use-package web-mode)
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+  (add-hook 'web-mode-hook
+            (lambda ()
+              (when (string-equal "jsx" (file-name-extension buffer-file-name))
+                (setup-tide-mode))))
+  ;; configure jsx-tide checker to run after your default jsx checker
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
+  ;; (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
+  (add-hook 'js2-mode-hook #'setup-tide-mode)
+#+end_src
+**** Tide
+#+begin_src emacs-lisp
+  (use-package tide
+    :ensure t
+    :after (typescript-mode company flycheck)
+    :hook ((typescript-mode . tide-setup)
+           (typescript-mode . tide-hl-identifier-mode)
+           (before-save . tide-format-before-save)))
 #+end_src
 
 * Buffers

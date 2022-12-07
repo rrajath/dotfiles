@@ -127,7 +127,7 @@ soon as Emacs loads."
                 term-mode-hook
                 vterm-mode-hook
                 shell-mode-hook
-                treemacs-mode-hook
+                ;; treemacs-mode-hook
                 eshell-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
@@ -729,80 +729,61 @@ folder, otherwise delete a word"
         (t (projectile-with-default-dir (projectile-acquire-root)
              (vterm-toggle)))))
 
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-  :hook
-  ((typescript-mode js2-mode web-mode) . lsp)
-  ((lsp-completion-mode . rr/lsp-mode-setup-completion))
-  :init
-  (defun rr/lsp-mode-setup-completion ()
-    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          '(orderless))) ;; Configure flex
-  (setq lsp-keymap-prefix "C-c l")
-  :config
-  (setq lsp-auto-guess-root t)
-  (setq lsp-ui-sideline-show-code-actions t)
-  (lsp-enable-which-key-integration t)
-  :custom
-  (lsp-completion-provider :none) ;; we use corfu
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (setq lsp-restart 'auto-restart)
-  (lsp-headerline-breadcrumb-mode))
-
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
-  :custom
-  (setq lsp-ui-doc-position 'bottom)
-  (setq lsp-ui-doc-header t)
-  (setq lsp-ui-doc-include-signature t)
-  )
-
-(use-package lsp-treemacs
-  :after lsp)
-
-;; unused for now, Will enable it if needed
-;; (use-package lsp-ivy
-;; :after lsp)
-
-;; unused for now, Will enable it if needed
-;; (use-package flycheck
-;;   :defer t
-;;   :hook (lsp-mode . flycheck-mode))
-
-(general-define-key
- :keymaps 'lsp-mode-map
- :prefix "C-c l"
- "a f" 'lsp-eslint-apply-all-fixes)
-
-(use-package typescript-mode
-  :mode "\\.ts\\'"
-  :config
-  (setq typescript-indent-level 2
-        lsp-eslint-auto-fix-on-save t))
-
-(defun rr/set-js-indentation ()
-  "Set javascript indentation to 2"
-  (setq js-indent-level 2)
-  (setq evil-shift-width js-indent-level)
-  (setq-default tab-width 2))
-
-(use-package js2-mode
-  :mode "\\.jsx?\\'"
-  :config
-  ;; Use js2-mode for Node scripts
-  (add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode)))
-
-(add-hook 'js2-mode-hook #'rr/set-js-indentation)
-(add-hook 'json-mode-hook #'rr/set-js-indentation)
-
-(use-package prettier-js
-  :hook ((js2-mode . prettier-js-mode)
-         (typescript-mode . prettier-js-mode))
-  :config
-  (setq prettier-js-show-errors 'echo))
-
 (use-package graphql-mode
   :defer t)
+
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  ;; company is an optional dependency. You have to
+  ;; install it separately via package-install
+  ;; `M-x package-install [ret] company`
+  (company-mode +1))
+
+(use-package flycheck)
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+
+;; formats the buffer before saving
+(add-hook 'before-save-hook 'tide-format-before-save)
+
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+
+(use-package web-mode)
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+(add-hook 'web-mode-hook
+          (lambda ()
+            (when (string-equal "tsx" (file-name-extension buffer-file-name))
+              (setup-tide-mode))))
+;; enable typescript-tslint checker
+(flycheck-add-mode 'typescript-tslint 'web-mode)
+
+(add-hook 'js2-mode-hook #'setup-tide-mode)
+;; configure javascript-tide checker to run after your default javascript checker
+;; (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
+
+(use-package web-mode)
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+(add-hook 'web-mode-hook
+          (lambda ()
+            (when (string-equal "jsx" (file-name-extension buffer-file-name))
+              (setup-tide-mode))))
+;; configure jsx-tide checker to run after your default jsx checker
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+;; (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
+(add-hook 'js2-mode-hook #'setup-tide-mode)
+
+(use-package tide
+  :ensure t
+  :after (typescript-mode company flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)
+         (before-save . tide-format-before-save)))
 
 (use-package perspective
   :bind (("C-x k" . persp-kill-buffer*))
