@@ -27,6 +27,8 @@
     - [[#some-defaults][Some defaults]]
     - [[#tab-widths][Tab widths]]
     - [[#enable-global-subword-mode][Enable Global Subword Mode]]
+    - [[#confirm-on-kill][Confirm on Kill]]
+    - [[#ignore-some-additional-files-when-doing-completing-read][Ignore some additional files when doing completing-read]]
 - [[#ui-configuration][UI Configuration]]
   - [[#get-rid-of-the-startup-message][Get rid of the startup message]]
   - [[#remove-toolbar-scrollbars-etc][Remove toolbar, scrollbars, etc.]]
@@ -374,6 +376,17 @@ Subword mode is great when you have to deal with camel case (or pascal case) str
 
 #+begin_src emacs-lisp
   (global-subword-mode 1)
+#+end_src
+*** Confirm on Kill
+Sometimes I hit =Cmd+q= by accident. I want to avoid this by setting the confirm on kill variable to true.
+#+begin_src emacs-lisp
+(setq confirm-kill-emacs #'y-or-n-p)
+#+end_src
+*** Ignore some additional files when doing completing-read
+[[https://emacs.stackexchange.com/questions/29914/how-to-ignore-certain-filename-patterns-in-find-file-counsel-find-file][Stack Exchange]] answer on the subject.
+
+#+begin_src emacs-lisp
+(add-to-list 'completion-ignored-extensions ".DS_Store")
 #+end_src
 
 * UI Configuration
