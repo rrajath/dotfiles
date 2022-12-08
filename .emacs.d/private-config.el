@@ -85,6 +85,10 @@ soon as Emacs loads."
 
 (global-subword-mode 1)
 
+(setq confirm-kill-emacs #'y-or-n-p)
+
+(add-to-list 'completion-ignored-extensions ".DS_Store")
+
 (setq inhibit-startup-message t)
 
 (scroll-bar-mode -1)
