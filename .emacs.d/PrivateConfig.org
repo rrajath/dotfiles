@@ -110,6 +110,7 @@
       - [[#tsx][TSX]]
       - [[#jsx][JSX]]
       - [[#tide][Tide]]
+    - [[#treesitter][Treesitter]]
 - [[#buffers][Buffers]]
   - [[#perspectives][Perspectives]]
     - [[#basic-setup][Basic Setup]]
@@ -1788,7 +1789,14 @@ Package: [[https://github.com/davazp/graphql-mode][graphql-mode]]
            (typescript-mode . tide-hl-identifier-mode)
            (before-save . tide-format-before-save)))
 #+end_src
+*** Treesitter
+Found this code snippet here: https://olddeuteronomy.github.io/post/a-tree-sitter-config-that-works
+#+begin_src emacs-lisp
+  (use-package tree-sitter)
+  (use-package tree-sitter-langs)
 
+  (add-hook 'typescript-mode-hook #'tree-sitter-hl-mode)
+#+end_src
 * Buffers
 ** Perspectives
 *** Basic Setup

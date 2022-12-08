@@ -786,6 +786,11 @@ folder, otherwise delete a word"
          (typescript-mode . tide-hl-identifier-mode)
          (before-save . tide-format-before-save)))
 
+(use-package tree-sitter)
+(use-package tree-sitter-langs)
+
+(add-hook 'typescript-mode-hook #'tree-sitter-hl-mode)
+
 (use-package perspective
   :bind (("C-x k" . persp-kill-buffer*))
   :custom
