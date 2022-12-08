@@ -1,0 +1,53 @@
+#+TITLE:      Custom Fish Configuration
+#+AUTHOR:     Rajath Ramakrishna
+#+PROPERTY:   header-args:shell :tangle ~/.config/helix/config.toml
+#+STARTUP:    overview indent hidestars
+
+* Introduction
+This is the config for [[https://helix-editor.com][Helix Editor]]. It's a command line editor/IDE written in Rust that has syntax highlighting, tree sitter, LSP, multiple cursors support out of the box.
+* Theme
+I like monokai themes
+#+begin_src shell
+theme = "monokai_pro_octagon"
+#+end_src
+* Editor
+** Basic Setup
+Disable mouse mode, enable cursor line for better visibility on where the cursor is and set appropriate idle timeout for code completions to show up after right amount of delay.
+#+begin_src shell
+[editor]
+mouse = false
+color-modes = true
+cursorline = true
+idle-timeout = 150
+#+end_src
+** Cursor Shape
+Change cursor shape based on different modes
+#+begin_src shell
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+#+end_src
+** File Picker
+Ignore hidden files in file picker
+#+begin_src shell
+[editor.file-picker]
+hidden = false
+#+end_src
+** Configure Statusline
+Add things on the statusline at appropriate places.
+#+begin_src shell
+[editor.statusline]
+left = ["mode", "spinner"]
+center = ["file-name"]
+right = ["diagnostics", "selections", "position", "file-encoding", "file-line-ending", "file-type"]
+#+end_src
+* Keybindings
+** Normal mode keybindings
+Some keybindings in normal mode so that it's easy to save and reload buffer.
+#+begin_src shell
+[keys.normal]
+C-s = ":w"
+C-r = ":reload"
+esc = ["collapse_selection", "keep_primary_selection"]
+#+end_src
