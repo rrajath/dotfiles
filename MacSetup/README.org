@@ -1,0 +1,105 @@
+#+TITLE: README for updating app configs
+#+AUTHOR: Rajath Ramakrishna
+#+OPTIONS: toc:nil
+
+* Introduction
+This file serves as the starting point to restore all configs and also outlines pre-requisites. Since this is literate programming, there is no need to create symlinks to all the dotfiles and manage them. Just opening the org files in emacs and tangling them would generate all the necessary config files in the right locations.
+
+The directory this file and other config files are present in is called =dotfiles=. However, this directory includes settings/preferences backup of other apps (in app-specific internal formats).
+
+* How to use the org files in this directory?
+Each org file must be tangled in order to generate the source files in the respective locations.
+
+* Non text-based settings
+There are few apps which don't have text based settings. Like, Alfred, BetterTouchTool, IntelliJ, etc. For these, the preferences are exported in the format that the app understands and are saved directly in this folder. These settings are to be applied directly.
+
+* Mac settings
+** Gestures
+Found under System Preferences > Trackpad
+- 4 finger swipe across spaces
+- Tap to click
+- Swipe up with 4 fingers for Mission Control
+- Swipe down with 4 fingers for App Expose
+- Tracking speed set to highest
+
+Found under System Preferences > Accessibility > Mouse & Trackpad
+- Enable dragging > Three finger drag
+
+** Keyboard
+Swap Ctrl and Caps Lock
+Set Key Repeat and Delay Until Repeat to Short.
+
+** Accessibility
+Go to Accessibility in System Preferences. Then go to Pointer Control on the left pane.
+Click on Trackpad Options. Check Enable Dragging and select 'three finger drag' from the drop down.
+
+** General Settings
+Found under System Preferences > General
+- Uncheck "Use font smoothing when available"
+
+** Display
+Found under System Preferences > Display
+- Set Resolution to "Scaled" and select the one between Default and More Space
+
+** Dockbar popup delay
+I don't want Dockbar to keep popping up every time my mouse moves to the bottom of the screen. I don't even use the Dockbar. So, setting the auto-hide delay timer to 3 seconds
+
+=defaults write com.apple.Dock autohide-delay -float 3 && killall Dock=
+** Prevent Dockbar icon bounce
+I don't want icons on the dockbar to bounce continuously. It's annoying! The following command will prevent the bounce.
+
+=defaults write com.apple.dock no-bouncing -bool TRUE=
+
+** Install Xcode Command Line Tools
+This is needed for some programs to work
+
+=xcode-select --install=
+
+** Git Settings
+The following git settings are recommended:
+#+begin_src bash
+git config --global user.email rajath@amazon.com
+git config --global user.name "Rajath Ramakrishna"
+git config --global pull.rebase true
+git config --global rerere.enabled true
+git config --global "color.ui" "auto"
+git config --global "core.pager" "less -FMRiX"
+git config --global "push.default" "simple"
+git config --global "alias.dag" "log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)"%an" <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order"
+#+end_src
+
+* Apps to install
+Following are the apps to install after getting a new Mac:
+- Alfred
+- iTerm
+- BetterTouchTool
+- Sublime Text 3
+- Emacs (27.1)
+- oh-my-zsh
+- Syncthing
+- Synology Drive
+- Slack
+- Meld
+- IntelliJ
+- Amphetamine
+- Horo
+- Pycharm
+- Obsidian
+
+* Firefox Extensions
+I use the following Chrome Extensions
+- Bitwarden
+- Worldtime
+- OneTab
+- The Great Suspender
+- uBlock Origin
+- Tamper Monkey
+- cVim-fixed (this should be installed by unpacking the extension from the folder)
+  To configure cVim, use Alfred snippet. The entire cVim config has been saved as a snippet which should be easy to restore.
+
+* Tampermonkey Scripts
+This has been exported to a zip file, which must be imported upon new installation.
+
+* Command Line Tools
+Install the following:
+- diff-so-fancy
