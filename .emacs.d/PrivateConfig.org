@@ -1555,7 +1555,7 @@ Projectile's function to invoke terminal in project root only opens it in full s
 #+end_src
 
 ** Languages
-*** Language Servers
+*** Language Servers (unused)
 This sets up language server configuration with some pretty cool defaults.
 Make sure to run =lsp-install-server es-lint= to enable eslint configuration.
 Packages:
@@ -1612,7 +1612,7 @@ Packages:
    "a f" 'lsp-eslint-apply-all-fixes)
 #+end_src
 
-*** TypeScript
+*** TypeScript (unused)
 This sets up typescript mode with defaults for eslint.
 Package: [[https://github.com/emacs-typescript/typescript.el][typescript]]
 
@@ -1668,16 +1668,8 @@ Package: [[http://company-mode.github.io/][company-mode]]
 
   (define-key company-mode-map [remap completion-at-point] #'consult-company)
 #+end_src
-*** GraphQL
-This is to get syntax highlighting and indentation support for graphql files.
-Package: [[https://github.com/davazp/graphql-mode][graphql-mode]]
-
-#+begin_src emacs-lisp
-  (use-package graphql-mode
-    :defer t)
-#+end_src
-*** Tide
-#+begin_src emacs-lisp
+*** Tide (unused)
+#+begin_src emacs-lisp :tangle no
   (defun setup-tide-mode ()
     (interactive)
     (tide-setup)
@@ -1688,7 +1680,9 @@ Package: [[https://github.com/davazp/graphql-mode][graphql-mode]]
     ;; company is an optional dependency. You have to
     ;; install it separately via package-install
     ;; `M-x package-install [ret] company`
-    (company-mode +1))
+    ;; (company-mode +1))
+    ;; (corfu-mode)
+    )
 
   (use-package flycheck)
 
@@ -1701,7 +1695,7 @@ Package: [[https://github.com/davazp/graphql-mode][graphql-mode]]
   (add-hook 'typescript-mode-hook #'setup-tide-mode)
 #+end_src
 **** TSX
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package web-mode)
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
   (add-hook 'web-mode-hook
@@ -1716,7 +1710,7 @@ Package: [[https://github.com/davazp/graphql-mode][graphql-mode]]
   ;; (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
 #+end_src
 **** JSX
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package web-mode)
   (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
   (add-hook 'web-mode-hook
@@ -1729,13 +1723,52 @@ Package: [[https://github.com/davazp/graphql-mode][graphql-mode]]
   (add-hook 'js2-mode-hook #'setup-tide-mode)
 #+end_src
 **** Tide
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package tide
     :ensure t
-    :after (typescript-mode company flycheck)
+    :after (typescript-mode corfu flycheck)
     :hook ((typescript-mode . tide-setup)
            (typescript-mode . tide-hl-identifier-mode)
            (before-save . tide-format-before-save)))
+#+end_src
+*** Flycheck
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :diminish flycheck-mode
+    :ensure t
+    :defer t
+    :custom
+    (flycheck-check-syntax-automatically '(mode-enabled save)) ; Check on save instead of running constantly
+    :hook ((prog-mode-hook text-mode-hook typescript-mode-hook typescript-ts-mode-hook) . flycheck-mode))
+#+end_src
+*** Tide
+Found it here: https://gitlab.com/nathanfurnal/dotemacs/-/blob/master/init.el#L1023
+#+begin_src emacs-lisp
+  (use-package tide
+    :ensure t
+    :defer t
+    :commands flycheck-add-next-checker
+    :after (typescript-mode flycheck)
+    :defines (tide-mode-map flycheck-check-syntax-automatically)
+    :config
+    (defun setup-tide-mode ()
+      (interactive)
+      (tide-setup)
+      (flycheck-mode +1)
+      (setq flycheck-check-syntax-automatically '(save mode-enabled))
+      (eldoc-mode +1)
+      (tide-hl-identifier-mode +1))
+
+    ;; configure javascript-tide checker to run after your default javascript checker
+    (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
+    :hook
+    ((rjsx-mode-hook . setup-tide-mode)
+     (typescript-mode-hook . tide-setup)
+     (typescript-mode-hook . tide-hl-identifier-mode)
+     (before-save-hook . tide-format-before-save))
+
+    :bind (:map tide-mode-map
+                ("M-j" . tide-jsdoc-template)))
 #+end_src
 *** Treesitter
 Found this code snippet here: https://olddeuteronomy.github.io/post/a-tree-sitter-config-that-works
@@ -1743,7 +1776,9 @@ Found this code snippet here: https://olddeuteronomy.github.io/post/a-tree-sitte
   (use-package tree-sitter)
   (use-package tree-sitter-langs)
 
+  (setq treesit-extra-load-path '("~/dotfiles/.emacs.d/tree-sitter" "~/dotfiles/.emacs.d/tree-sitter-langs"))
   (add-hook 'typescript-mode-hook #'tree-sitter-hl-mode)
+  (add-hook 'typescript-ts-mode-hook #'tree-sitter-hl-mode)
 #+end_src
 * Buffers
 ** Perspectives
@@ -1755,6 +1790,7 @@ Package: [[https://github.com/nex3/perspective-el][perspective.el]]
   (use-package perspective
     :bind (("C-x k" . persp-kill-buffer*))
     :custom
+    (persp-mode-prefix-key (kbd "C-c M-p"))
     (persp-initial-frame-name "main")
     (persp-sort 'created)
     :init
