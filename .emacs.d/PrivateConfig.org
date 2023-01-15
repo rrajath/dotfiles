@@ -1192,59 +1192,6 @@ This keybinding is to easily resize windows - horizontal or vertical
     (meow-setup))
 #+end_src
 * Completion Frameworks
-** Ivy (unused)
-Great completion framework. Ivy-rich mode gives more information on each line
-Packages:
-- [[https://github.com/abo-abo/swiper#ivy][ivy]]
-- [[https://github.com/Yevgnen/ivy-rich][ivy-rich]]
-
-#+begin_src emacs-lisp :tangle no
-  (use-package ivy
-    :diminish
-    :bind (("C-s" . swiper)
-           :map ivy-minibuffer-map
-           ("TAB" . ivy-alt-done)
-           ("C-f" . ivy-alt-done)
-           ("C-l" . ivy-alt-done)
-           ("C-j" . ivy-next-line)
-           ("C-k" . ivy-previous-line)
-           :map ivy-switch-buffer-map
-           ("C-k" . ivy-previous-line)
-           ("C-l" . ivy-done)
-           ("C-d" . ivy-switch-buffer-kill)
-           :map ivy-reverse-i-search-map
-           ("C-k" . ivy-previous-line)
-           ("C-d" . ivy-reverse-i-search-kill))
-    :custom
-    (ivy-use-virtual-buffers t)
-    :init
-    (ivy-mode 1)
-    :config
-    (setq ivy-wrap t))
-
-  (use-package ivy-rich
-    :after ivy
-    :init
-    (ivy-rich-mode 1))
-#+end_src
-
-** Counsel (unused)
-Package: [[https://github.com/abo-abo/swiper#counsel][Counsel]]
-
-#+begin_src emacs-lisp :tangle no
-  (use-package counsel
-    :bind (("M-x" . counsel-M-x)
-           ("C-x b" . counsel-ibuffer)
-           ("C-x C-f" . counsel-find-file)
-           :map minibuffer-local-map
-           ("C-r" . 'counsel-minibuffer-history))
-    :config
-    (setq ivy-initial-inputs-alist nil)
-    (counsel-mode 1))
-
-  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
-#+end_src
-
 ** Vertico
 Package: [[https://github.com/minad/vertico][vertico]] 
 
@@ -1314,30 +1261,6 @@ Package: [[https://github.com/oantolin/orderless][orderless]]
           completion-category-defaults nil
           completion-category-overrides '((file (styles . (partial-completion))))))
 #+end_src
-
-** Prescient (unused)
-Package: [[https://github.com/raxod502/prescient.el][prescient]]
-
-#+begin_src emacs-lisp :tangle no
-  (use-package prescient
-    :after vertico
-    :config
-    (prescient-persist-mode 1))
-
-  (use-package ivy-prescient
-    :after prescient
-    :config
-    (ivy-prescient-mode 1)
-    (prescient-persist-mode 1))
-
-  (setq ivy-prescient-retain-classic-highlighting t)
-
-  (use-package company-prescient
-    :after company
-    :config
-    (company-prescient-mode 1))
-#+end_src
-
 ** Consult
 Package: [[https://github.com/minad/consult][consult]]
 *** Consult package setup
