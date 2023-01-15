@@ -437,6 +437,10 @@ soon as Emacs loads."
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+(use-package embrace)
+(global-set-key (kbd "C-.") #'embrace-commander)
+(add-hook 'org-mode-hook #'embrace-org-mode-hook)
+
 ;; Making ESC key work like an ESC key by exiting/canceling stuff
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
