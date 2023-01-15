@@ -796,6 +796,8 @@ folder, otherwise delete a word"
      "* %?\n%U\n %i")
     ("wm" "Work Meeting" entry (file+headline, (rr/org-path "work-tasks.org") "Meeting Notes")
      "* %?\n%U\n %i")
+    ("wa" "Activity Log" entry (file+olp+datetree, (rr/org-path "work-tasks.org") "Activity Log")
+     "* %?\n%U\n %i")
     ("j" "Journal" entry (file+datetree, (rr/org-path "journal.org"))
      "* %?\n")
     ("n" "Notes")
