@@ -77,6 +77,12 @@ soon as Emacs loads."
   (auto-package-update-maybe)
   (auto-package-update-at-time "09:00"))
 
+;; Silence compiler warnings as they can be pretty disruptive
+(setq native-comp-async-report-warnings-errors 'silent)
+
+;; Set the right directory to store the native comp cache
+(add-to-list 'native-comp-eln-load-path (expand-file-name "eln-cache/" user-emacs-directory))
+
 (setq-default
  delete-by-moving-to-trash t
  evil-want-fine-undo t
