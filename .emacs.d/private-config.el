@@ -38,6 +38,8 @@ soon as Emacs loads."
                  (cons 'height 83))
     )))
 
+(setq use-package-verbose t)
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))

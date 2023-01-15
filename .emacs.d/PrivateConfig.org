@@ -271,6 +271,10 @@ This block of code uses the =display-mode= variable set in the previous section 
 ** Package Management (unused)
 Adding package sources and setting =use-package-always-ensure= to =t=. This setting will eliminate the need to specify =:ensure t= while running writing =use-package= commands.
 
+#+begin_src emacs-lisp
+  (setq use-package-verbose t)
+#+end_src
+
 #+begin_src emacs-lisp :tangle no
   ;; Initialize package sources
   (require 'package)
