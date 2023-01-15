@@ -613,8 +613,17 @@ folder, otherwise delete a word"
 (use-package dired
   :straight nil
   :commands (dired dired-jump)
+  :bind (:map dired-mode-map
+              ("H" . dired-omit-mode)
+              ("h" . dired-single-up-directory)
+              ("l" . dired-single-buffer)
+              ("s-[" . persp-prev)
+              ("s-]" . persp-next)
+              ("M-j" . persp-prev)
+              ("M-k" . persp-next))
   :config
-  (setq ;;dired-listing-switches "-agho --group-directories-first"
+  (setq
+   dired-listing-switches "-agho --group-directories-first"
    dired-omit-files "^\\.[^.].*"
    dired-omit-verbose nil
    dired-hide-details-hide-symlink-targets nil
@@ -646,12 +655,7 @@ folder, otherwise delete a word"
     :defer t)
 
   (use-package diredfl
-    :defer t)
-
-  (evil-collection-define-key 'normal 'dired-mode-map
-                              "h" 'dired-single-up-directory
-                              "l" 'dired-single-buffer
-                              "H" 'dired-omit-mode))
+    :defer t))
 
 (use-package projectile
   :diminish projectile-mode
