@@ -489,7 +489,11 @@ folder, otherwise delete a word"
   :custom
   (vertico-cycle t)
   :init
-  (vertico-mode))
+  (vertico-mode +1)
+  (setq completion-styles '(flex partial-completion)
+        completion-ignore-case t
+        completion-category-defaults nil
+        completion-category-overrides nil))
 
 (define-key vertico-map "?" #'minibuffer-completion-help)
 (define-key vertico-map (kbd "M-RET") #'minibuffer-force-complete-and-exit)
