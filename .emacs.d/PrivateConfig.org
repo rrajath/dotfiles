@@ -738,7 +738,7 @@ This is to make sure regular files are reloaded when they're changed outside Ema
 Commenting lines is now easy and works across languages.
 Package: [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package evil-nerd-commenter
     :after evil)
 #+end_src
@@ -974,7 +974,7 @@ Package: [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 This turns on evil mode with some specific customizations (that are self explanatory).
 Package: [[https://github.com/emacs-evil/evil][Evil]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package evil
     :init
     (setq evil-want-integration t)
@@ -2007,7 +2007,7 @@ Package: [[https://github.com/joostkremers/visual-fill-column][visual-fill-colum
     :hook (org-mode . rr/org-mode-visual-fill))
 #+end_src
 
-** Evil-Org-Mode
+** Evil-Org-Mode (unused)
 Package: [[https://github.com/Somelauw/evil-org-mode][evil-org-mode]]
 
 There's currently [[https://github.com/Somelauw/evil-org-mode/issues/93][an issue]] with =evil-org= where Emacs gives this error on startup: =(void-function evil-redirect-digit-argument)=
