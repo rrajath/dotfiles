@@ -820,7 +820,7 @@ folder, otherwise delete a word"
   (variable-pitch-mode 1)
   (auto-fill-mode 0)
   (visual-line-mode 1)
-  (setq org-directory "~/Library/CloudStorage/Dropbox/org-mode/")
+  (setq org-directory "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/org-mode/")
   (setq org-agenda-files (list org-directory))
   (setq org-capture-templates (rr/set-org-capture-templates))
   (setq org-todo-keywords
