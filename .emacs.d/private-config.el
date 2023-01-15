@@ -838,7 +838,10 @@ folder, otherwise delete a word"
         org-log-done 'time
         org-log-into-drawer t
         ;; org-adapt-indentation t
-        org-element-use-cache nil
+        ;; org-element-use-cache nil
+        org-special-ctrl-a/e t
+        org-insert-heading-respect-content t
+        org-tags-column 0
         org-agenda-start-with-log-mode t
         org-agenda-skip-scheduled-if-done t
         org-agenda-skip-deadline-if-done t
@@ -975,7 +978,7 @@ folder, otherwise delete a word"
                 (org-level-8 . 1.1)))
   (set-face-attribute (car face) nil :font my-variable-pitch-font :weight 'regular :height (cdr face))
 
-  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-block nil :foreground "unspecified" :inherit 'fixed-pitch)
   (set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
   (set-face-attribute 'org-todo nil  :inherit 'fixed-pitch)
   (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
@@ -986,8 +989,8 @@ folder, otherwise delete a word"
   (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-column nil :background nil)
-  (set-face-attribute 'org-column-title nil :background nil))
+  (set-face-attribute 'org-column nil :background "unspecified")
+  (set-face-attribute 'org-column-title nil :background "unspecified"))
 
 (defun +org-get-todo-keywords-for (&optional keyword)
   "Returns the list of todo keywords that KEYWORD belongs to."
