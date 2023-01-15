@@ -1318,7 +1318,7 @@ If prefix ARG, copy instead of move."
 (use-package org-roam
   :straight t
   :custom
-  (org-roam-directory "~/Library/CloudStorage/Dropbox/roam-notes")
+  (org-roam-directory "~/Personal/roam-notes")
   (org-roam-completion-everywhere t)
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
