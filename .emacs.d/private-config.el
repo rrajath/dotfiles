@@ -17,7 +17,7 @@ soon as Emacs loads."
 (setq display-mode "")
 
 (cond
- ((= pixel-width 1792)
+ ((= pixel-width 1512)
   (setq display-mode "laptop"))
  ((= pixel-width 5232)
   (setq display-mode "desktop")))

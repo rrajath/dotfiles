@@ -204,7 +204,12 @@ Literate config has a few benefits:
 - Easy to maintain. You never touch the actual config, you only update this .org file and make it generate the actual source file
 - Easy to publish. If you want to publish your config online, it's super easy. GitHub, for example, natively supports org the same way it supports Markdown. So, these org files are rendered nicely, just as regular documentation.
 * Current Issues
-** TODO Hitting =X= in evil mode deletes alternate characters instead of the one just behind the cursor
+** DONE Hitting =X= in evil mode deletes alternate characters instead of the one just behind the cursor
+CLOSED: [2022-12-23 Fri 00:18]
+:LOGBOOK:
+- Note taken on [2022-12-23 Fri 00:18] \\
+  No longer using evil. Resolving.
+:END:
 In vim normal mode, hitting =x= would delete the character right in front of the cursor whereas hitting =X= /should/ delete the character just before the cursor, but it doesn't. For example, if there is a word called "emacs" and the cursor was right after the letter 's', hitting =X= twice would delete the letters 'c' and 'm'.
 * First things first
 ** Startup Performance
@@ -236,7 +241,7 @@ If =display-pixel-width= is neither of these, then the frame will not be moved o
   (setq display-mode "")
 
   (cond
-   ((= pixel-width 1792)
+   ((= pixel-width 1512)
     (setq display-mode "laptop"))
    ((= pixel-width 5232)
     (setq display-mode "desktop")))
