@@ -328,9 +328,9 @@ This is to enforce a sneaky garbage collection strategy to minimize GC interfere
 Package: [[https://gitlab.com/koral/gcmh][gcmh]]
 
 #+begin_src emacs-lisp
-(use-package gcmh
-  :init
-  (gcmh-mode 1))
+  (use-package gcmh
+    :init
+    (gcmh-mode 1))
 #+end_src
 
 ** Keep .emacs.d clean
@@ -361,6 +361,14 @@ Package: [[https://github.com/rranelli/auto-package-update.el][auto-package-upda
     (auto-package-update-at-time "09:00"))
 #+end_src
 
+** Native Comp related
+#+begin_src emacs-lisp
+  ;; Silence compiler warnings as they can be pretty disruptive
+  (setq native-comp-async-report-warnings-errors 'silent)
+
+  ;; Set the right directory to store the native comp cache
+  (add-to-list 'native-comp-eln-load-path (expand-file-name "eln-cache/" user-emacs-directory))
+#+end_src
 ** Basic Setup
 *** Some defaults
 I want files to move to trash when I delete them in Emacs. I want better undo unlike vim where entire block is considered giant undo step. This settting changes the undo structure into finer steps. I also want to auto save files by default.
