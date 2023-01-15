@@ -97,6 +97,13 @@ soon as Emacs loads."
 
 (add-to-list 'completion-ignored-extensions ".DS_Store")
 
+(repeat-mode)
+
+(save-place-mode +1)
+(electric-pair-mode +1)
+(electric-quote-mode +1)
+(electric-indent-mode +1)
+
 (setq inhibit-startup-message t)
 
 (scroll-bar-mode -1)
