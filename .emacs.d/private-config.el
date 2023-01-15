@@ -718,70 +718,51 @@ folder, otherwise delete a word"
         (t (projectile-with-default-dir (projectile-acquire-root)
              (vterm-toggle)))))
 
-(use-package graphql-mode
-  :defer t)
-
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  ;; company is an optional dependency. You have to
-  ;; install it separately via package-install
-  ;; `M-x package-install [ret] company`
-  (company-mode +1))
-
-(use-package flycheck)
-
-;; aligns annotation to the right hand side
-(setq company-tooltip-align-annotations t)
-
-;; formats the buffer before saving
-(add-hook 'before-save-hook 'tide-format-before-save)
-
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
-
-(use-package web-mode)
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-(add-hook 'web-mode-hook
-          (lambda ()
-            (when (string-equal "tsx" (file-name-extension buffer-file-name))
-              (setup-tide-mode))))
-;; enable typescript-tslint checker
-(flycheck-add-mode 'typescript-tslint 'web-mode)
-
-(add-hook 'js2-mode-hook #'setup-tide-mode)
-;; configure javascript-tide checker to run after your default javascript checker
-;; (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
-
-(use-package web-mode)
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
-(add-hook 'web-mode-hook
-          (lambda ()
-            (when (string-equal "jsx" (file-name-extension buffer-file-name))
-              (setup-tide-mode))))
-;; configure jsx-tide checker to run after your default jsx checker
-(flycheck-add-mode 'javascript-eslint 'web-mode)
-;; (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
-(add-hook 'js2-mode-hook #'setup-tide-mode)
+(use-package flycheck
+  :diminish flycheck-mode
+  :ensure t
+  :defer t
+  :custom
+  (flycheck-check-syntax-automatically '(mode-enabled save)) ; Check on save instead of running constantly
+  :hook ((prog-mode-hook text-mode-hook typescript-mode-hook typescript-ts-mode-hook) . flycheck-mode))
 
 (use-package tide
   :ensure t
-  :after (typescript-mode company flycheck)
-  :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)
-         (before-save . tide-format-before-save)))
+  :defer t
+  :commands flycheck-add-next-checker
+  :after (typescript-mode flycheck)
+  :defines (tide-mode-map flycheck-check-syntax-automatically)
+  :config
+  (defun setup-tide-mode ()
+    (interactive)
+    (tide-setup)
+    (flycheck-mode +1)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode +1)
+    (tide-hl-identifier-mode +1))
+
+  ;; configure javascript-tide checker to run after your default javascript checker
+  (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
+  :hook
+  ((rjsx-mode-hook . setup-tide-mode)
+   (typescript-mode-hook . tide-setup)
+   (typescript-mode-hook . tide-hl-identifier-mode)
+   (before-save-hook . tide-format-before-save))
+
+  :bind (:map tide-mode-map
+              ("M-j" . tide-jsdoc-template)))
 
 (use-package tree-sitter)
 (use-package tree-sitter-langs)
 
+(setq treesit-extra-load-path '("~/dotfiles/.emacs.d/tree-sitter" "~/dotfiles/.emacs.d/tree-sitter-langs"))
 (add-hook 'typescript-mode-hook #'tree-sitter-hl-mode)
+(add-hook 'typescript-ts-mode-hook #'tree-sitter-hl-mode)
 
 (use-package perspective
   :bind (("C-x k" . persp-kill-buffer*))
   :custom
+  (persp-mode-prefix-key (kbd "C-c M-p"))
   (persp-initial-frame-name "main")
   (persp-sort 'created)
   :init
