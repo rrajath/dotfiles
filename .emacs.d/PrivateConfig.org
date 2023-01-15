@@ -940,6 +940,12 @@ Package: [[https://github.com/oantolin/embark][Embark]]
     (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
 
+** Embrace
+#+begin_src emacs-lisp
+  (use-package embrace)
+  (global-set-key (kbd "C-.") #'embrace-commander)
+  (add-hook 'org-mode-hook #'embrace-org-mode-hook)
+#+end_src
 * Keybindings
 ** Make ESC work better
 Making =ESC= work like how it works in other programs - cancelling the operation
