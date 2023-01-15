@@ -592,20 +592,6 @@ folder, otherwise delete a word"
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
-(use-package corfu-doc
-  :straight (corfu-doc :type git :host github :repo "galeo/corfu-doc")
-  :after corfu
-  :hook (corfu-mode . corfu-doc-mode)
-  :general (:keymaps 'corfu-map
-                     [remap corfu-show-documentation] #'corfu-doc-toggle
-                     "M-n" #'corfu-doc-scroll-up
-                     "M-p" #'corfu-doc-scroll-down)
-  :custom
-  (corfu-doc-delay 0.5)
-  (corfu-doc-max-width 70)
-  (corfu-doc-max-height 20)
-  (corfu-echo-documentation nil))
-
 (use-package helpful
   :commands (helpful-callable helpful-variable helpful-command helpful-key helpful-function)
   :bind
