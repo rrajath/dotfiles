@@ -956,6 +956,8 @@ folder, otherwise delete a word"
               ("M-k" . persp-next))
   :config
   (setq
+   ;; https://github.com/d12frosted/homebrew-emacs-plus/issues/383
+   insert-directory-program "/opt/homebrew/bin/gls"
    dired-listing-switches "-agho --group-directories-first"
    dired-omit-files "^\\.[^.].*"
    dired-omit-verbose nil
