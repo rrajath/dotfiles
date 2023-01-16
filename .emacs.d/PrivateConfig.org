@@ -1028,9 +1028,303 @@ This keybinding is to easily resize windows - horizontal or vertical
     ("k" shrink-window "shrink-vertical"))
 #+end_src
 
+** Global keys
+I constantly hit =C-w= to delete words and currently it’s bound to delete region, which deletes a huge chunk of text. This keybinding will give a better experience in deleting words.
+#+begin_src emacs-lisp
+  (keymap-global-set "C-w" 'backward-kill-word)
+  (keymap-global-set "C-s" 'save-buffer)
+#+end_src
 ** Meow
-#+begin_src emacs-lisp :tangle no
+*** Custom Functions
+This section has all the custom functions I use for Meow Mode. Most of them are written to make it work like Helix.
+**** Meow Insert at start
+This function upon execution moves the cursor to the beginning of the line and turns on the insert mode
+#+begin_src emacs-lisp
+  (defun rr/meow-insert-at-start ()
+    (interactive)
+    (beginning-of-line)
+    (meow-insert-mode))
+#+end_src
+**** Meow Insert at end
+This function upon execution moves the cursor to the end of the line and turns on the insert mode
+#+begin_src emacs-lisp
+  (defun rr/meow-insert-at-end ()
+    (interactive)
+    (end-of-line)
+    (meow-insert-mode))
+#+end_src
+**** Meow Paste before
+Pastes whatever is in the clipboard on the line above the cursor’s current position.
+#+begin_src emacs-lisp
+  (defun rr/meow-paste-before ()
+    (interactive)
+    (meow-open-above)
+    (beginning-of-line)
+    (meow-yank)
+    (meow-normal-mode))
+#+end_src
+**** Meow delete char or region
+Deletes char if no region is selected.
+Deletes region if selected.
+Cuts org subtree if point is on an org heading
+#+begin_src emacs-lisp
+  (defun rr/meow-delete-char-or-region ()
+    (interactive)
+    (cond
+     ((equal mark-active t)
+			(if (org-at-heading-p)
+					(org-cut-subtree)
+      (delete-region (region-beginning) (region-end))))
+     ((equal mark-active nil)
+      (delete-char 1))))
+#+end_src
+**** Meow Save
+Copies the entire line when no selection exists
+Copies region when there’s selection
+Copies org subtree if point is on an org heading
+#+begin_src emacs-lisp
+  (defun rr/copy-line ()
+    (interactive)
+    (save-excursion
+      (back-to-indentation)
+      (kill-ring-save
+       (point)
+       (line-end-position)))
+    (message "1 line copied"))
 
+  (defun rr/meow-save ()
+    (interactive)
+    (cond
+     ((org-at-heading-p)
+      (org-copy-subtree))
+     ((equal mark-active t)
+      (meow-save))
+     ((equal mark-active nil)
+      (rr/copy-line))))
+#+end_src
+*** Custom Keymaps
+**** Nav Keymap
+This keymap is used for navigation. A lot of the functions here try to emulate Helix keybindings and navigation in order to make the experience more consistent.
+#+begin_src emacs-lisp
+  (defvar meow-nav-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "h") #'beginning-of-line)
+      (define-key keymap (kbd "l") #'end-of-line)
+      (define-key keymap (kbd "g") #'beginning-of-buffer)
+      (define-key keymap (kbd "e") #'end-of-buffer)
+      (define-key keymap (kbd "y") #'eglot-find-typeDefinition)
+      (define-key keymap (kbd "i") #'eglot-find-implementation)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-nav-keymap meow-nav-keymap)
+  ;;  (global-set-key (kbd "C-x C-w") 'nav-keymap)
+  ;;                              ^ note the quote
+#+end_src
+**** Persp keymap
+#+begin_src emacs-lisp
+  (defvar meow-persp-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "s") #'persp-switch)
+      (define-key keymap (kbd "b") #'persp-switch-to-buffer)
+      (define-key keymap (kbd "k") #'persp-kill)
+      (define-key keymap (kbd "r") #'persp-rename)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-persp-keymap meow-persp-keymap)
+#+end_src
+**** Buffer Keymap
+#+begin_src emacs-lisp
+  (defvar meow-buffer-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "k") #'kill-buffer)
+      (define-key keymap (kbd "r") #'rr/revert-buffer-no-confirm)
+      (define-key keymap (kbd "R") #'revert-buffer)
+      (define-key keymap (kbd "i") #'ibuffer)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-buffer-keymap meow-buffer-keymap)
+#+end_src
+**** Help Keymap
+#+begin_src emacs-lisp
+  (defvar meow-help-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "f") #'describe-function)
+      (define-key keymap (kbd "v") #'describe-variable)
+      (define-key keymap (kbd "c") #'describe-key-briefly)
+      (define-key keymap (kbd "a") #'apropos-command)
+      (define-key keymap (kbd "b") #'describe-bindings)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-help-keymap meow-help-keymap)
+#+end_src
+**** Dired Keymap
+#+begin_src emacs-lisp
+  (defvar meow-dired-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "d") #'dired)
+      (define-key keymap (kbd "j") #'dired-jump)
+      (define-key keymap (kbd "J") #'dired-jump-other-window)
+      (define-key keymap (kbd "n") #'dired-create-empty-file)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-dired-keymap meow-dired-keymap)
+#+end_src
+**** Window Keymap
+#+begin_src emacs-lisp
+  (defvar meow-window-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "v") #'split-window-right)
+      (define-key keymap (kbd "h") #'split-window-below)
+      (define-key keymap (kbd "c") #'delete-window)
+      (define-key keymap (kbd "w") #'next-window-any-frame)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-window-keymap meow-window-keymap)
+#+end_src  
+**** File Keymap
+#+begin_src emacs-lisp
+  (defvar meow-file-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "f") #'find-file)
+      (define-key keymap (kbd "r") #'consult-recent-file)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-file-keymap meow-file-keymap)
+#+end_src
+**** Org Keymaps
+***** Org checklist keymap
+#+begin_src emacs-lisp
+  (defvar meow-org-checklist-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "x") #'org-toggle-checkbox)
+      (define-key keymap (kbd "s") #'rr/org-sort-list-by-checkbox-type)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-org-checklist-keymap meow-org-checklist-keymap)
+#+end_src
+***** Org clock keymap
+#+begin_src emacs-lisp
+  (defvar meow-org-clock-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "i") #'org-clock-in)
+      (define-key keymap (kbd "o") #'org-clock-out)
+      (define-key keymap (kbd "c") #'org-clock-cancel)
+      (define-key keymap (kbd "d") #'org-clock-display)
+      (define-key keymap (kbd "i") #'org-clock-goto)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-org-clock-keymap meow-org-clock-keymap)
+#+end_src
+***** Org narrow keymap
+#+begin_src emacs-lisp
+  (defvar meow-org-narrow-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "s") #'org-narrow-to-subtree)
+      (define-key keymap (kbd "b") #'org-narrow-to-block)
+      (define-key keymap (kbd "e") #'org-narrow-to-element)
+      (define-key keymap (kbd "r") #'org-narrow-to-region)
+      (define-key keymap (kbd "w") #'widen)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-org-narrow-keymap meow-org-narrow-keymap)
+#+end_src
+***** Org deadline keymap
+#+begin_src emacs-lisp
+  (defvar meow-org-deadline-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "s") #'org-schedule)
+      (define-key keymap (kbd "d") #'org-deadline)
+      (define-key keymap (kbd "t") #'org-time-stamp)
+      (define-key keymap (kbd "T") #'org-time-stamp-inactive)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-org-deadline-keymap meow-org-deadline-keymap)
+#+end_src
+***** Org link keymap
+#+begin_src emacs-lisp
+  (defvar meow-org-link-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "l") #'org-insert-link)
+      (define-key keymap (kbd "v") #'crux-view-url)
+      (define-key keymap (kbd "s") #'org-store-link)
+      (define-key keymap (kbd "h") #'rr/org-insert-html-link)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-org-link-keymap meow-org-link-keymap)
+#+end_src
+***** Org toggle keymap
+#+begin_src emacs-lisp
+  (defvar meow-org-toggle-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "h") #'org-toggle-heading)
+      (define-key keymap (kbd "i") #'org-toggle-item)
+      (define-key keymap (kbd "x") #'org-toggle-checkbox)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-org-toggle-keymap meow-org-toggle-keymap)
+#+end_src
+***** Org refile keymap
+#+begin_src emacs-lisp
+  (defvar meow-org-refile-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "r") #'org-refile)
+      (define-key keymap (kbd "c") #'org-refile-copy)
+      (define-key keymap (kbd ".") #'+org/refile-to-current-file)
+      (define-key keymap (kbd "A") #'org-archive-subtree)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-org-refile-keymap meow-org-refile-keymap)
+#+end_src
+***** Org main keymap
+#+begin_src emacs-lisp
+  (defvar meow-org-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "x") #'meow-org-checklist-keymap)
+      (define-key keymap (kbd "c") #'meow-org-clock-keymap)
+      (define-key keymap (kbd "r") #'meow-org-refile-keymap)
+      (define-key keymap (kbd "n") #'meow-org-narrow-keymap)
+      (define-key keymap (kbd "d") #'meow-org-deadline-keymap)
+      (define-key keymap (kbd "l") #'meow-org-link-keymap)
+      (define-key keymap (kbd "t") #'meow-org-toggle-keymap)
+      (define-key keymap (kbd "N") #'org-add-note)
+      (define-key keymap (kbd "o") #'consult-outline)
+      (define-key keymap (kbd "q") #'org-set-tags-command)
+      (define-key keymap (kbd "e") #'org-export-dispatch)
+      (define-key keymap (kbd "a") #'org-agenda)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-org-keymap meow-org-keymap)
+#+end_src
+**** Avy Keymap
+#+begin_src emacs-lisp
+  (defvar meow-avy-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "j") #'avy-goto-char)
+      (define-key keymap (kbd "w") #'avy-goto-word-1)
+      (define-key keymap (kbd "l") #'avy-goto-line)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-avy-keymap meow-avy-keymap)
+#+end_src
+*** Meow Setup
+This has key mappings to a bunch of things. It is the main entry point to do most of the operations. Space is the leader key and I’m trying to keep it consistent with the keymap I had with General.
+#+begin_src emacs-lisp
   (defun meow-setup ()
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
     (meow-motion-overwrite-define-key
@@ -1052,25 +1346,18 @@ This keybinding is to easily resize windows - horizontal or vertical
      '("8" . meow-digit-argument)
      '("9" . meow-digit-argument)
      '("0" . meow-digit-argument)
-     '("O" . consult-outline)
      '("`" . meow-last-buffer)
-     '("|" . split-window-right)
-     '("-" . split-window-below)
-     '("w" . next-window)
      '("RET" . consult-bookmark)
-     '("br" . rr/revert-buffer-no-confirm)
-     '("bk" . kill-buffer)
-     '("sb" . persp-switch-to-buffer)
-     '("sk" . persp-kill)
-     '("sr" . persp-rename)
-     '("ss" . persp-switch)
-     '("Jl" . avy-goto-line)
-     '("Jc" . avy-goto-char)
-     '("Jw" . avy-goto-word-1)
-     '("g" . magit-status)
-     '("a" . org-agenda)
-     '("A" . org-archive-subtree)
+     '("b" . meow-buffer-keymap)
+     '("h" . meow-help-keymap)  
+     '("s" . meow-persp-keymap)
+     '("d" . meow-dired-keymap)
+     '("j" . meow-avy-keymap)
+     '("f" . meow-file-keymap)
+     '("w" . meow-window-keymap)
+     '("o" . meow-org-keymap)
      '("/" . meow-keypad-describe-key)
+     '("z" . scratch-buffer)
      '("?" . meow-cheatsheet))
     (meow-normal-define-key
      '("0" . meow-expand-0)
@@ -1089,28 +1376,34 @@ This keybinding is to easily resize windows - horizontal or vertical
      '("." . meow-bounds-of-thing)
      '("s-[" . persp-prev)
      '("s-]" . persp-next)
-     '("C-s" . consult-line)
+     '("M-j" . persp-prev)
+     '("M-k" . persp-next)
+     '("C-;" . popper-kill-latest-popup)
+     '("C-S-s" . consult-line)
      '("C-u" . meow-page-up)
      '("C-d" . meow-page-down)
+     '("C-w" . backward-kill-word)
+     ;; '("C-n" . rr/org-show-next-heading-tidily)
+     ;; '("C-p" . rr/org-show-previous-heading-tidily)
      '("t" . org-todo)
      '("[" . meow-beginning-of-thing)
      '("]" . meow-end-of-thing)
      '("a" . meow-append)
-                                          ;'("A" . meow-open-below)
+     '("A" . rr/meow-insert-at-end)
      '("b" . meow-back-word)
      '("B" . meow-back-symbol)
      '("c" . meow-change)
-     '("d" . meow-delete)
+     '("d" . rr/meow-delete-char-or-region)
      '("D" . meow-backward-delete)
      '("e" . meow-block)
      '("E" . meow-to-block)
      '("f" . meow-find)
-     '("g" . meow-cancel-selection)
+     '("g" . meow-nav-keymap)
      '("G" . meow-grab)
      '("h" . meow-left)
      '("H" . meow-left-expand)
      '("i" . meow-insert)
-     '("I" . meow-join)
+     '("I" . rr/meow-insert-at-start)
      '("j" . meow-next)
      '("J" . meow-next-expand)
      '("k" . meow-prev)
@@ -1123,24 +1416,28 @@ This keybinding is to easily resize windows - horizontal or vertical
      '("o" . meow-open-below)
      '("O" . meow-open-above)
      '("p" . meow-yank)
+     '("P" . rr/meow-paste-before)
      '("Q" . meow-goto-line)
      '("r" . meow-replace)
      '("R" . meow-swap-grab)
      '("s" . meow-kill)
      '("T" . meow-till)
-     '("u" . meow-undo)
-     '("U" . meow-undo-in-selection)
+     '("u" . undo-tree-undo)
+     '("U" . undo-tree-redo)
      '("v" . meow-visit)
      '("w" . meow-next-word)
      '("W" . meow-next-symbol)
      '("x" . meow-line)
      '("X" . org-capture)
-     '("y" . meow-save)
+     '("y" . rr/meow-save)
      '("Y" . meow-sync-grab)
      '("z" . meow-pop-selection)
      '("'" . repeat)
+     '(";" . meow-cancel-selection)
      '("<escape>" . ignore)))
-
+#+end_src
+*** Meow Package Setup
+#+begin_src emacs-lisp
   (use-package meow
     :custom
     (meow-use-cursor-position-hack t)

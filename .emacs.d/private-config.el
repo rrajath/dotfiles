@@ -448,6 +448,363 @@ soon as Emacs loads."
   ("j" enlarge-window "enlarge-vertical")
   ("k" shrink-window "shrink-vertical"))
 
+(keymap-global-set "C-w" 'backward-kill-word)
+(keymap-global-set "C-s" 'save-buffer)
+
+(defun rr/meow-insert-at-start ()
+  (interactive)
+  (beginning-of-line)
+  (meow-insert-mode))
+
+(defun rr/meow-insert-at-end ()
+  (interactive)
+  (end-of-line)
+  (meow-insert-mode))
+
+(defun rr/meow-paste-before ()
+  (interactive)
+  (meow-open-above)
+  (beginning-of-line)
+  (meow-yank)
+  (meow-normal-mode))
+
+(defun rr/meow-delete-char-or-region ()
+  (interactive)
+  (cond
+   ((equal mark-active t)
+		(if (org-at-heading-p)
+				(org-cut-subtree)
+    (delete-region (region-beginning) (region-end))))
+   ((equal mark-active nil)
+    (delete-char 1))))
+
+(defun rr/copy-line ()
+  (interactive)
+  (save-excursion
+    (back-to-indentation)
+    (kill-ring-save
+     (point)
+     (line-end-position)))
+  (message "1 line copied"))
+
+(defun rr/meow-save ()
+  (interactive)
+  (cond
+   ((org-at-heading-p)
+    (org-copy-subtree))
+   ((equal mark-active t)
+    (meow-save))
+   ((equal mark-active nil)
+    (rr/copy-line))))
+
+(defvar meow-nav-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "h") #'beginning-of-line)
+    (define-key keymap (kbd "l") #'end-of-line)
+    (define-key keymap (kbd "g") #'beginning-of-buffer)
+    (define-key keymap (kbd "e") #'end-of-buffer)
+    (define-key keymap (kbd "y") #'eglot-find-typeDefinition)
+    (define-key keymap (kbd "i") #'eglot-find-implementation)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-nav-keymap meow-nav-keymap)
+;;  (global-set-key (kbd "C-x C-w") 'nav-keymap)
+;;                              ^ note the quote
+
+(defvar meow-persp-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "s") #'persp-switch)
+    (define-key keymap (kbd "b") #'persp-switch-to-buffer)
+    (define-key keymap (kbd "k") #'persp-kill)
+    (define-key keymap (kbd "r") #'persp-rename)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-persp-keymap meow-persp-keymap)
+
+(defvar meow-buffer-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "k") #'kill-buffer)
+    (define-key keymap (kbd "r") #'rr/revert-buffer-no-confirm)
+    (define-key keymap (kbd "R") #'revert-buffer)
+    (define-key keymap (kbd "i") #'ibuffer)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-buffer-keymap meow-buffer-keymap)
+
+(defvar meow-help-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "f") #'describe-function)
+    (define-key keymap (kbd "v") #'describe-variable)
+    (define-key keymap (kbd "c") #'describe-key-briefly)
+    (define-key keymap (kbd "a") #'apropos-command)
+    (define-key keymap (kbd "b") #'describe-bindings)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-help-keymap meow-help-keymap)
+
+(defvar meow-dired-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "d") #'dired)
+    (define-key keymap (kbd "j") #'dired-jump)
+    (define-key keymap (kbd "J") #'dired-jump-other-window)
+    (define-key keymap (kbd "n") #'dired-create-empty-file)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-dired-keymap meow-dired-keymap)
+
+(defvar meow-window-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "v") #'split-window-right)
+    (define-key keymap (kbd "h") #'split-window-below)
+    (define-key keymap (kbd "c") #'delete-window)
+    (define-key keymap (kbd "w") #'next-window-any-frame)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-window-keymap meow-window-keymap)
+
+(defvar meow-file-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "f") #'find-file)
+    (define-key keymap (kbd "r") #'consult-recent-file)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-file-keymap meow-file-keymap)
+
+(defvar meow-org-checklist-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "x") #'org-toggle-checkbox)
+    (define-key keymap (kbd "s") #'rr/org-sort-list-by-checkbox-type)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-org-checklist-keymap meow-org-checklist-keymap)
+
+(defvar meow-org-clock-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "i") #'org-clock-in)
+    (define-key keymap (kbd "o") #'org-clock-out)
+    (define-key keymap (kbd "c") #'org-clock-cancel)
+    (define-key keymap (kbd "d") #'org-clock-display)
+    (define-key keymap (kbd "i") #'org-clock-goto)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-org-clock-keymap meow-org-clock-keymap)
+
+(defvar meow-org-narrow-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "s") #'org-narrow-to-subtree)
+    (define-key keymap (kbd "b") #'org-narrow-to-block)
+    (define-key keymap (kbd "e") #'org-narrow-to-element)
+    (define-key keymap (kbd "r") #'org-narrow-to-region)
+    (define-key keymap (kbd "w") #'widen)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-org-narrow-keymap meow-org-narrow-keymap)
+
+(defvar meow-org-deadline-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "s") #'org-schedule)
+    (define-key keymap (kbd "d") #'org-deadline)
+    (define-key keymap (kbd "t") #'org-time-stamp)
+    (define-key keymap (kbd "T") #'org-time-stamp-inactive)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-org-deadline-keymap meow-org-deadline-keymap)
+
+(defvar meow-org-link-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "l") #'org-insert-link)
+    (define-key keymap (kbd "v") #'crux-view-url)
+    (define-key keymap (kbd "s") #'org-store-link)
+    (define-key keymap (kbd "h") #'rr/org-insert-html-link)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-org-link-keymap meow-org-link-keymap)
+
+(defvar meow-org-toggle-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "h") #'org-toggle-heading)
+    (define-key keymap (kbd "i") #'org-toggle-item)
+    (define-key keymap (kbd "x") #'org-toggle-checkbox)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-org-toggle-keymap meow-org-toggle-keymap)
+
+(defvar meow-org-refile-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "r") #'org-refile)
+    (define-key keymap (kbd "c") #'org-refile-copy)
+    (define-key keymap (kbd ".") #'+org/refile-to-current-file)
+    (define-key keymap (kbd "A") #'org-archive-subtree)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-org-refile-keymap meow-org-refile-keymap)
+
+(defvar meow-org-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "x") #'meow-org-checklist-keymap)
+    (define-key keymap (kbd "c") #'meow-org-clock-keymap)
+    (define-key keymap (kbd "r") #'meow-org-refile-keymap)
+    (define-key keymap (kbd "n") #'meow-org-narrow-keymap)
+    (define-key keymap (kbd "d") #'meow-org-deadline-keymap)
+    (define-key keymap (kbd "l") #'meow-org-link-keymap)
+    (define-key keymap (kbd "t") #'meow-org-toggle-keymap)
+    (define-key keymap (kbd "N") #'org-add-note)
+    (define-key keymap (kbd "o") #'consult-outline)
+    (define-key keymap (kbd "q") #'org-set-tags-command)
+    (define-key keymap (kbd "e") #'org-export-dispatch)
+    (define-key keymap (kbd "a") #'org-agenda)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-org-keymap meow-org-keymap)
+
+(defvar meow-avy-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "j") #'avy-goto-char)
+    (define-key keymap (kbd "w") #'avy-goto-word-1)
+    (define-key keymap (kbd "l") #'avy-goto-line)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-avy-keymap meow-avy-keymap)
+
+(defun meow-setup ()
+  (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+  (meow-motion-overwrite-define-key
+   '("j" . meow-next)
+   '("k" . meow-prev)
+   '("<escape>" . ignore))
+  (meow-leader-define-key
+   ;; SPC j/k will run the original command in MOTION state.
+   '("j" . "H-j")
+   '("k" . "H-k")
+   ;; Use SPC (0-9) for digit arguments.
+   '("1" . meow-digit-argument)
+   '("2" . meow-digit-argument)
+   '("3" . meow-digit-argument)
+   '("4" . meow-digit-argument)
+   '("5" . meow-digit-argument)
+   '("6" . meow-digit-argument)
+   '("7" . meow-digit-argument)
+   '("8" . meow-digit-argument)
+   '("9" . meow-digit-argument)
+   '("0" . meow-digit-argument)
+   '("`" . meow-last-buffer)
+   '("RET" . consult-bookmark)
+   '("b" . meow-buffer-keymap)
+   '("h" . meow-help-keymap)  
+   '("s" . meow-persp-keymap)
+   '("d" . meow-dired-keymap)
+   '("j" . meow-avy-keymap)
+   '("f" . meow-file-keymap)
+   '("w" . meow-window-keymap)
+   '("o" . meow-org-keymap)
+   '("/" . meow-keypad-describe-key)
+   '("z" . scratch-buffer)
+   '("?" . meow-cheatsheet))
+  (meow-normal-define-key
+   '("0" . meow-expand-0)
+   '("9" . meow-expand-9)
+   '("8" . meow-expand-8)
+   '("7" . meow-expand-7)
+   '("6" . meow-expand-6)
+   '("5" . meow-expand-5)
+   '("4" . meow-expand-4)
+   '("3" . meow-expand-3)
+   '("2" . meow-expand-2)
+   '("1" . meow-expand-1)
+   '("-" . negative-argument)
+   '(";" . meow-reverse)
+   '("," . meow-inner-of-thing)
+   '("." . meow-bounds-of-thing)
+   '("s-[" . persp-prev)
+   '("s-]" . persp-next)
+   '("M-j" . persp-prev)
+   '("M-k" . persp-next)
+   '("C-;" . popper-kill-latest-popup)
+   '("C-S-s" . consult-line)
+   '("C-u" . meow-page-up)
+   '("C-d" . meow-page-down)
+   '("C-w" . backward-kill-word)
+   ;; '("C-n" . rr/org-show-next-heading-tidily)
+   ;; '("C-p" . rr/org-show-previous-heading-tidily)
+   '("t" . org-todo)
+   '("[" . meow-beginning-of-thing)
+   '("]" . meow-end-of-thing)
+   '("a" . meow-append)
+   '("A" . rr/meow-insert-at-end)
+   '("b" . meow-back-word)
+   '("B" . meow-back-symbol)
+   '("c" . meow-change)
+   '("d" . rr/meow-delete-char-or-region)
+   '("D" . meow-backward-delete)
+   '("e" . meow-block)
+   '("E" . meow-to-block)
+   '("f" . meow-find)
+   '("g" . meow-nav-keymap)
+   '("G" . meow-grab)
+   '("h" . meow-left)
+   '("H" . meow-left-expand)
+   '("i" . meow-insert)
+   '("I" . rr/meow-insert-at-start)
+   '("j" . meow-next)
+   '("J" . meow-next-expand)
+   '("k" . meow-prev)
+   '("K" . meow-prev-expand)
+   '("l" . meow-right)
+   '("L" . meow-right-expand)
+   '("m" . meow-mark-word)
+   '("M" . meow-mark-symbol)
+   '("n" . meow-search)
+   '("o" . meow-open-below)
+   '("O" . meow-open-above)
+   '("p" . meow-yank)
+   '("P" . rr/meow-paste-before)
+   '("Q" . meow-goto-line)
+   '("r" . meow-replace)
+   '("R" . meow-swap-grab)
+   '("s" . meow-kill)
+   '("T" . meow-till)
+   '("u" . undo-tree-undo)
+   '("U" . undo-tree-redo)
+   '("v" . meow-visit)
+   '("w" . meow-next-word)
+   '("W" . meow-next-symbol)
+   '("x" . meow-line)
+   '("X" . org-capture)
+   '("y" . rr/meow-save)
+   '("Y" . meow-sync-grab)
+   '("z" . meow-pop-selection)
+   '("'" . repeat)
+   '(";" . meow-cancel-selection)
+   '("<escape>" . ignore)))
+
+(use-package meow
+  :custom
+  (meow-use-cursor-position-hack t)
+  (meow-use-clipboard t)
+  (meow-goto-line-function 'consult-goto-line)
+  :config
+  (setq meow--kbd-delete-char "<deletechar>")
+  (meow-thing-register 'angle '(regexp "<" ">") '(regexp "<" ">"))
+  (add-to-list 'meow-char-thing-table '(?a . angle))
+  (meow-global-mode 1)
+  (meow-setup))
+
 (defun rr/minibuffer-backward-kill (arg)
   "When minibuffer is completing a file name delete up to parent
 folder, otherwise delete a word"
