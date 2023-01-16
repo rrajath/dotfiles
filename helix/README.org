@@ -1,4 +1,4 @@
-#+TITLE:      Custom Fish Configuration
+#+TITLE:      Helix Configuration
 #+AUTHOR:     Rajath Ramakrishna
 #+PROPERTY:   header-args:shell :tangle ~/.config/helix/config.toml
 #+STARTUP:    overview indent hidestars
@@ -8,17 +8,19 @@ This is the config for [[https://helix-editor.com][Helix Editor]]. It's a comman
 * Theme
 I like monokai themes
 #+begin_src shell
-theme = "monokai_pro_octagon"
+  theme = "ayu_mirage"
 #+end_src
 * Editor
 ** Basic Setup
 Disable mouse mode, enable cursor line for better visibility on where the cursor is and set appropriate idle timeout for code completions to show up after right amount of delay.
 #+begin_src shell
-[editor]
-mouse = false
-color-modes = true
-cursorline = true
-idle-timeout = 150
+  [editor]
+  mouse = false
+  color-modes = true
+  cursorline = true
+  idle-timeout = 150
+  auto-save = true
+  bufferline = "multiple"
 #+end_src
 ** Cursor Shape
 Change cursor shape based on different modes
@@ -37,17 +39,52 @@ hidden = false
 ** Configure Statusline
 Add things on the statusline at appropriate places.
 #+begin_src shell
-[editor.statusline]
-left = ["mode", "spinner"]
-center = ["file-name"]
-right = ["diagnostics", "selections", "position", "file-encoding", "file-line-ending", "file-type"]
+  [editor.statusline]
+  left = ["mode", "spinner", "file-name", "file-type", "total-line-numbers", "file-encoding"]
+  center = ["selections", "primary-selection-length", "position", "position-percentage"]
+  right = ["diagnostics", "workspace-diagnostics"]
+#+end_src
+** LSP
+#+begin_src shell
+  [editor.lsp]
+  display-messages = true
+#+end_src
+** Indent Guides
+#+begin_src shell
+  [editor.indent-guides]
+  render = true
+#+end_src
+** Prettier Setup
+Adding custom prettier to helix
+https://github.com/helix-editor/helix/discussions/3198
+#+begin_src shell :tangle no
+  formatter = { command = 'npx', args = ["prettier", "--config", ".prettierrc", "--parser", "typescript"] }
 #+end_src
 * Keybindings
 ** Normal mode keybindings
 Some keybindings in normal mode so that it's easy to save and reload buffer.
 #+begin_src shell
-[keys.normal]
-C-s = ":w"
-C-r = ":reload"
-esc = ["collapse_selection", "keep_primary_selection"]
+  [keys.normal]
+  C-s = ":w"
+  C-r = ":reload"
+  C-S-up = "expand_selection"
+  C-S-down = "shrink_selection"
+  C-n = ":buffer-previous"
+  C-e = ":buffer-next"
+  D = ["extend_line_below", "delete_selection"]
+  C-c = ["toggle_comments", "move_line_down"]
+  esc = ["collapse_selection", "keep_primary_selection"]
+
+  [keys.normal.space]
+  w = ":write"
+  q = ":quit"
+#+end_src
+
+** Insert mode keybindings
+#+begin_src shell
+  [keys.insert]
+  C-s = ":w"
+  C-f = "move_char_right"
+  C-b = "move_char_left"
+  C-c = ["toggle_comments", "move_line_down"]
 #+end_src
