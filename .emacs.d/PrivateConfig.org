@@ -540,20 +540,6 @@ I want to be able to easily see the line my cursor is currently on
   (global-hl-line-mode)
 #+end_src
 
-** Beacon
-Highlight line temporarily to show where your cursor is.
-Disable =beacon= in term-mode.
-Package: [[https://github.com/Malabarba/beacon][beacon]]
-
-#+begin_src emacs-lisp
-  (use-package beacon
-    :defer t
-    :config
-    (push 'vterm-mode beacon-dont-blink-major-modes)
-    :init
-    (beacon-mode))
-#+end_src
-
 * Usability
 ** General
 General is a great package for adding custom keybindings not just globally, but for very specific modes (like org-mode-map, evil-mode-map, etc.). The following configuration is for global keybinding with =SPC= as the leader key.
@@ -703,10 +689,11 @@ Package: [[https://github.com/noctuid/general.el][General]]
    "s-[" 'persp-prev)
 #+end_src
 
-** Server Mode
+** Server Mode (unused)
 Make this instance of emacs start server so that other client instances can connect to this.
 
-#+begin_src emacs-lisp
+*Note*: Actually, I never have more than one instance of Emacs open at any time. No need to do this.
+#+begin_src emacs-lisp :tangle no
   (server-start)
 #+end_src
 
@@ -731,31 +718,6 @@ This is to make sure regular files are reloaded when they're changed outside Ema
 
   ;; Revert buffers when the underlying file has changed
   (global-auto-revert-mode 1)
-#+end_src
-
-** Commenting Lines
-*** Basic setup
-Commenting lines is now easy and works across languages.
-Package: [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
-
-#+begin_src emacs-lisp :tangle no
-  (use-package evil-nerd-commenter
-    :after evil)
-#+end_src
-
-*** Comment and Nextline
-When I comment a line, I'd like that line to be commented and the cursor to be moved to the next line. This way, I can keep hitting the comment line keybinding repeatedly without having to manually move to the next line. This custom function will help me do that. It is also bound to =s-/=
-
-#+begin_src emacs-lisp
-  (defun rr/comment-and-nextline ()
-    "Comment the current line and move the point to the next line"
-    (interactive)
-    (evilnc-comment-or-uncomment-lines 1)
-    (evil-next-line))
-
-  (general-define-key
-   :states '(normal insert)
-   "s-/" 'rr/comment-and-nextline)
 #+end_src
 
 ** Automatically clean whitespaces (unused)
