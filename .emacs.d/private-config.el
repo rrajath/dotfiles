@@ -161,13 +161,6 @@ soon as Emacs loads."
 
 (global-hl-line-mode)
 
-(use-package beacon
-  :defer t
-  :config
-  (push 'vterm-mode beacon-dont-blink-major-modes)
-  :init
-  (beacon-mode))
-
 (use-package general
   :config
   (general-evil-setup t))
@@ -298,19 +291,12 @@ soon as Emacs loads."
 (general-define-key
  :states '(normal insert)
  "C-e" 'end-of-line
- "C-a" 'beginning-of-line
- "C-n" 'evil-next-visual-line
- "C-p" 'evil-previous-visual-line
- "C-S-o" 'evil-jump-forward
- "C-o" 'evil-jump-backward
- "C-s" 'consult-line)
+ "C-a" 'beginning-of-line)
 
 (general-define-key
  :keymaps '(normal insert)
  "s-]" 'persp-next
  "s-[" 'persp-prev)
-
-(server-start)
 
 (use-package super-save
   :defer 1
@@ -324,16 +310,6 @@ soon as Emacs loads."
 
 ;; Revert buffers when the underlying file has changed
 (global-auto-revert-mode 1)
-
-(defun rr/comment-and-nextline ()
-  "Comment the current line and move the point to the next line"
-  (interactive)
-  (evilnc-comment-or-uncomment-lines 1)
-  (evil-next-line))
-
-(general-define-key
- :states '(normal insert)
- "s-/" 'rr/comment-and-nextline)
 
 (use-package avy
   :commands (avy-goto-char avy-goto-word-0 avy-goto-line))
