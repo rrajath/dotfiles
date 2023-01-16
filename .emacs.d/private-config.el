@@ -1159,12 +1159,11 @@ folder, otherwise delete a word"
   (setq org-todo-keywords
         '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "CODE(c)" "FDBK(f)" "|" "DONE(d!)" "KILL(k!)")
           ))
-  (setq org-id-link-to-org-use-id 'use-existing)
-  (setq evil-auto-indent nil))
+  (setq org-id-link-to-org-use-id 'use-existing))
 
 (use-package org
-  :hook (org-mode . rr/org-mode-setup)
-  :commands (org-capture org-agenda)
+      :hook (org-mode . rr/org-mode-setup)
+  ;;    :commands (org-capture org-agenda)
   :config
   (setq org-ellipsis " ▾"
         org-hide-emphasis-markers t
