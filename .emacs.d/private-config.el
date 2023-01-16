@@ -884,33 +884,32 @@ folder, otherwise delete a word"
 (setq consult-project-root-function #'rr/get-project-root)
 
 (use-package corfu
-  :general
-  (:keymaps 'corfu-map
-            :states 'insert
-            "M-n" #'corfu-next
-            "M-p" #'corfu-previous
-            "SPC" #'corfu-insert-separator
-            "C-M-s-d" #'corfu-show-documentation
-            "C-M-s-l" #'corfu-show-location)
+  :ensure t
+  ;; Optional customizations
   :custom
-  (corfu-auto nil)
-  (corfu-auto-prefix 2)
-  (corfu-auto-delay 0.25)
-  (corfu-min-width 80)
-  (corfu-max-width corfu-min-width)
-  (corfu-count 14)
-  (corfu-scroll-margin 4)
-  (corfu-cycle nil)
-  (corfu-quit-at-boundary separator)
-  (corfu-separator ?\s)
-  (corfu-quit-no-match 'separator)
-  (corfu-preview-current 'insert)
-  (corfu-preselect-first t)
-  (corfu-echo-documentation t)
-  (tab-always-indent 'complete)
-  (completion-cycle-threshold nil)
-  :config
-  (corfu-global-mode))
+  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  (corfu-auto t)                 ;; Enable auto completion
+  (corfu-separator ?\s)          ;; Orderless field separator
+  (corfu-quit-at-boundary 'separator)	;; Never quit at completion boundary
+  (corfu-quit-no-match 'separator)      ;; Never quit, even if there is no match
+  (corfu-preview-current 'insert)    ;; Disable current candidate preview
+  (corfu-preselect-first nil)    ;; Disable candidate preselection
+  (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+  (corfu-echo-documentation nil) ;; Disable documentation in the echo area
+  (corfu-scroll-margin 5)        ;; Use scroll margin
+
+  ;; Enable Corfu only for certain modes.
+  :hook ((prog-mode . corfu-mode)
+         (shell-mode . corfu-mode)
+         (eshell-mode . corfu-mode)
+         (typescript-mode . corfu-mode)
+         (typescript-ts-mode . corfu-mode))
+
+  ;; Recommended: Enable Corfu globally.
+  ;; This is recommended since Dabbrev can be used globally (M-/).
+  ;; See also `corfu-excluded-modes'.
+  :init
+  (global-corfu-mode))
 
 (setq tab-always-indent 'complete)
 
