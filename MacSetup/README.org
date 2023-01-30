@@ -45,6 +45,7 @@ Found under System Preferences > Display
 I don't want Dockbar to keep popping up every time my mouse moves to the bottom of the screen. I don't even use the Dockbar. So, setting the auto-hide delay timer to 3 seconds
 
 =defaults write com.apple.Dock autohide-delay -float 3 && killall Dock=
+
 ** Prevent Dockbar icon bounce
 I don't want icons on the dockbar to bounce continuously. It's annoying! The following command will prevent the bounce.
 
@@ -58,7 +59,7 @@ This is needed for some programs to work
 ** Git Settings
 The following git settings are recommended:
 #+begin_src bash
-git config --global user.email rajath@amazon.com
+git config --global user.email rajath.ramakrishna@getcruise.com
 git config --global user.name "Rajath Ramakrishna"
 git config --global pull.rebase true
 git config --global rerere.enabled true
