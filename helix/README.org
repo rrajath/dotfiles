@@ -18,7 +18,7 @@ Disable mouse mode, enable cursor line for better visibility on where the cursor
   mouse = false
   color-modes = true
   cursorline = true
-  idle-timeout = 150
+  idle-timeout = 40
   auto-save = true
   bufferline = "multiple"
 #+end_src
@@ -33,8 +33,8 @@ select = "underline"
 ** File Picker
 Ignore hidden files in file picker
 #+begin_src shell
-[editor.file-picker]
-hidden = false
+  [editor.file-picker]
+  hidden = false
 #+end_src
 ** Configure Statusline
 Add things on the statusline at appropriate places.
@@ -78,6 +78,8 @@ Some keybindings in normal mode so that it's easy to save and reload buffer.
   [keys.normal.space]
   w = ":write"
   q = ":quit"
+  c = ":buffer-close"
+  C = ":buffer-close-others"
 #+end_src
 
 ** Insert mode keybindings
