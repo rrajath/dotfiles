@@ -450,6 +450,8 @@ soon as Emacs loads."
 
 (keymap-global-set "C-w" 'backward-kill-word)
 (keymap-global-set "C-s" 'save-buffer)
+(keymap-global-set "s-[" 'persp-prev)
+(keymap-global-set "s-]" 'persp-next)
 
 (defun rr/meow-insert-at-start ()
   (interactive)
@@ -731,8 +733,6 @@ soon as Emacs loads."
    '(";" . meow-reverse)
    '("," . meow-inner-of-thing)
    '("." . meow-bounds-of-thing)
-   '("s-[" . persp-prev)
-   '("s-]" . persp-next)
    '("M-j" . persp-prev)
    '("M-k" . persp-next)
    '("C-;" . popper-kill-latest-popup)

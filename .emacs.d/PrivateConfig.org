@@ -1052,6 +1052,8 @@ I constantly hit =C-w= to delete words and currently it’s bound to delete regi
 #+begin_src emacs-lisp
   (keymap-global-set "C-w" 'backward-kill-word)
   (keymap-global-set "C-s" 'save-buffer)
+  (keymap-global-set "s-[" 'persp-prev)
+  (keymap-global-set "s-]" 'persp-next)
 #+end_src
 ** Meow
 *** Custom Functions
@@ -1393,8 +1395,6 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '(";" . meow-reverse)
      '("," . meow-inner-of-thing)
      '("." . meow-bounds-of-thing)
-     '("s-[" . persp-prev)
-     '("s-]" . persp-next)
      '("M-j" . persp-prev)
      '("M-k" . persp-next)
      '("C-;" . popper-kill-latest-popup)
