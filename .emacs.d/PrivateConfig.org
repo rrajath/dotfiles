@@ -2961,13 +2961,10 @@ property called EXPORT_FILE_NAME that is required by ox-hugo to
 generate a Hugo-friendly markdown file in the location specified
 in HUGO_BASE_DIR property."
     (interactive)
-    (setq-local title-line (thing-at-point 'line t))
-    (unless (not (string-match "TODO " title-line))
-      (let* ((lines (split-string title-line "TODO "))
-             (blog-post-title (nth 1 lines))
-             (file-name (replace-regexp-in-string "_+" "-" (replace-regexp-in-string "\\W" "_" (string-trim (downcase blog-post-title)))))
+    (setq-local blog-post-title (nth 4 (org-heading-components)))
+      (let* ((file-name (replace-regexp-in-string "_+" "-" (replace-regexp-in-string "\\W" "_" (string-trim (downcase blog-post-title)))))
              (blog-post-file-name (concat file-name ".md")))
-        (org-set-property "EXPORT_FILE_NAME" blog-post-file-name))))
+        (org-set-property "EXPORT_FILE_NAME" blog-post-file-name)))
 #+end_src
 
 * Work
