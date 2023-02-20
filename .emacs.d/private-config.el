@@ -124,7 +124,7 @@ soon as Emacs loads."
   :config
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-one t)
+  (load-theme 'doom-monokai-octagon t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
@@ -1163,9 +1163,8 @@ folder, otherwise delete a word"
   (setq org-id-link-to-org-use-id 'use-existing))
 
 (use-package org
-      :hook (org-mode . rr/org-mode-setup)
-  ;;    :commands (org-capture org-agenda)
   :config
+  (rr/org-mode-setup)
   (setq org-ellipsis " ▾"
         org-hide-emphasis-markers t
         org-log-done 'time
@@ -1174,7 +1173,7 @@ folder, otherwise delete a word"
         ;; org-element-use-cache nil
         org-special-ctrl-a/e t
         org-insert-heading-respect-content t
-        org-tags-column 0
+        org-tags-column -70
         org-agenda-start-with-log-mode t
         org-agenda-skip-scheduled-if-done t
         org-agenda-skip-deadline-if-done t
@@ -1322,6 +1321,8 @@ folder, otherwise delete a word"
   (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-tag nil :foreground "#5A5D67")
+  (set-face-attribute 'hl-line nil :background "#475569")
   (set-face-attribute 'org-column nil :background "unspecified")
   (set-face-attribute 'org-column-title nil :background "unspecified"))
 
