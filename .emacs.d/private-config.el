@@ -124,7 +124,7 @@ soon as Emacs loads."
   :config
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-monokai-octagon t)
+  (load-theme 'doom-one t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
@@ -417,6 +417,16 @@ soon as Emacs loads."
 (global-set-key (kbd "C-.") #'embrace-commander)
 (add-hook 'org-mode-hook #'embrace-org-mode-hook)
 
+(use-package highlight-symbol :ensure t
+  :config
+  (set-face-attribute 'highlight-symbol-face nil
+                      :background "default"
+                      :foreground "#48E5C2") ;original: #FA009A, DE7C5A
+  (setq highlight-symbol-idle-delay 0)
+  (setq highlight-symbol-on-navigation-p t)
+  (add-hook 'prog-mode-hook #'highlight-symbol-mode)
+  (add-hook 'prog-mode-hook #'highlight-symbol-nav-mode))
+
 ;; Making ESC key work like an ESC key by exiting/canceling stuff
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
@@ -452,6 +462,7 @@ soon as Emacs loads."
 (keymap-global-set "C-s" 'save-buffer)
 (keymap-global-set "s-[" 'persp-prev)
 (keymap-global-set "s-]" 'persp-next)
+(keymap-global-set "M-o" 'completion-at-point)
 
 (defun rr/meow-insert-at-start ()
   (interactive)
@@ -474,9 +485,9 @@ soon as Emacs loads."
   (interactive)
   (cond
    ((equal mark-active t)
-		(if (org-at-heading-p)
-				(org-cut-subtree)
-    (delete-region (region-beginning) (region-end))))
+    (if (org-at-heading-p)
+        (org-cut-subtree)
+      (delete-region (region-beginning) (region-end))))
    ((equal mark-active nil)
     (delete-char 1))))
 
@@ -505,6 +516,7 @@ soon as Emacs loads."
     (define-key keymap (kbd "l") #'end-of-line)
     (define-key keymap (kbd "g") #'beginning-of-buffer)
     (define-key keymap (kbd "e") #'end-of-buffer)
+    (define-key keymap (kbd "s") #'back-to-indentation)
     (define-key keymap (kbd "y") #'eglot-find-typeDefinition)
     (define-key keymap (kbd "i") #'eglot-find-implementation)
     keymap))
@@ -574,6 +586,7 @@ soon as Emacs loads."
   (let ((keymap (make-keymap)))
     (define-key keymap (kbd "f") #'find-file)
     (define-key keymap (kbd "r") #'consult-recent-file)
+    (define-key keymap (kbd "p") #'projectile-find-file)
     keymap))
 
 ;; define an alias for your keymap
@@ -629,6 +642,7 @@ soon as Emacs loads."
     (define-key keymap (kbd "v") #'crux-view-url)
     (define-key keymap (kbd "s") #'org-store-link)
     (define-key keymap (kbd "h") #'rr/org-insert-html-link)
+    (define-key keymap (kbd "d") #'rr/org-insert-link-dwim)
     keymap))
 
 ;; define an alias for your keymap
@@ -684,6 +698,45 @@ soon as Emacs loads."
 ;; define an alias for your keymap
 (defalias 'meow-avy-keymap meow-avy-keymap)
 
+(defvar meow-eglot-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "a") #'eglot-code-actions)
+    (define-key keymap (kbd "f") #'projectile-find-file)
+    (define-key keymap (kbd "n") #'flymake-goto-next-error)
+    (define-key keymap (kbd "p") #'flymake-goto-prev-error)
+    (define-key keymap (kbd "s") #'flymake-show-project-diagnostics)
+    (define-key keymap (kbd "r") #'eglot-rename)
+    (define-key keymap (kbd "c") #'consult-flymake)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-eglot-keymap meow-eglot-keymap)
+
+(defvar meow-highlight-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "t") #'highlight-symbol-mode)
+    (define-key keymap (kbd "n") #'highlight-symbol-next)
+    (define-key keymap (kbd "p") #'highlight-symbol-prev)
+    (define-key keymap (kbd "r") #'highlight-symbol-remove-all)
+    (define-key keymap (kbd "c") #'highlight-symbol-count)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-highlight-keymap meow-highlight-keymap)
+
+(defvar meow-util-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "r") #'restart-emacs)
+    (define-key keymap (kbd "h") #'meow-highlight-keymap)
+    (define-key keymap (kbd "g") #'magit-status)
+    (define-key keymap (kbd "k") #'magit-discard)
+    (define-key keymap (kbd "f") #'free-keys)
+    (define-key keymap (kbd "w") #'writegood-mode)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-util-keymap meow-util-keymap)
+
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (meow-motion-overwrite-define-key
@@ -713,6 +766,8 @@ soon as Emacs loads."
    '("d" . meow-dired-keymap)
    '("j" . meow-avy-keymap)
    '("f" . meow-file-keymap)
+   '("l" . meow-eglot-keymap)
+   '("u" . meow-util-keymap)
    '("w" . meow-window-keymap)
    '("o" . meow-org-keymap)
    '("/" . meow-keypad-describe-key)
@@ -791,6 +846,7 @@ soon as Emacs loads."
    '("z" . meow-pop-selection)
    '("'" . repeat)
    '(";" . meow-cancel-selection)
+   '(":" . meow-cancel-selection)
    '("<escape>" . ignore)))
 
 (use-package meow
@@ -942,6 +998,69 @@ folder, otherwise delete a word"
 (use-package crux
   :defer 2)
 
+(use-package writegood-mode)
+
+(use-package centaur-tabs
+  :demand
+  :config
+  (centaur-tabs-mode t)
+  (setq
+   centaur-tabs-cycle-scope 'tabs
+   centaur-tabs-style "wave"
+   centaur-tabs-set-icons t
+   centaur-tabs-gray-out-icons 'buffer
+   centaur-tabs-height 32
+   centaur-tabs-set-bar 'under
+   centaur-tabs-set-modified-marker t
+   x-underline-at-descent-line t
+   uniquify-separator "/"
+   uniquify-buffer-name-style 'forward)
+  (defun centaur-tabs-buffer-groups ()
+    "`centaur-tabs-buffer-groups' control buffers' group rules.
+
+Group centaur-tabs with mode if buffer is derived from `eshell-mode' `emacs-lisp-mode' `dired-mode' `org-mode' `magit-mode'.
+All buffer name start with * will group to \"Emacs\".
+Other buffer group by `centaur-tabs-get-group-name' with project name."
+    (list
+     (cond
+      ;; ((not (eq (file-remote-p (buffer-file-name)) nil))
+      ;; "Remote")
+      ((or (string-equal "*" (substring (buffer-name) 0 1))
+           (memq major-mode '(magit-process-mode
+                              magit-status-mode
+                              magit-diff-mode
+                              magit-log-mode
+                              magit-file-mode
+                              magit-blob-mode
+                              magit-blame-mode
+                              )))
+       "Emacs")
+      ((derived-mode-p 'prog-mode)
+       "Editing")
+      ((derived-mode-p 'dired-mode)
+       "Dired")
+      ((memq major-mode '(helpful-mode
+                          help-mode))
+       "Help")
+      ((memq major-mode '(org-mode
+                          org-agenda-clockreport-mode
+                          org-src-mode
+                          org-agenda-mode
+                          org-beamer-mode
+                          org-indent-mode
+                          org-bullets-mode
+                          org-cdlatex-mode
+                          org-agenda-log-mode
+                          diary-mode))
+       "OrgMode")
+      (t
+       (centaur-tabs-get-group-name (current-buffer))))))
+  :bind
+  ("C-S-<tab>" . centaur-tabs-backward)
+  ("C-<tab>" . centaur-tabs-forward))
+
+(use-package free-keys)
+
 (use-package dired
   :straight nil
   :commands (dired dired-jump)
@@ -1052,46 +1171,53 @@ folder, otherwise delete a word"
         (t (projectile-with-default-dir (projectile-acquire-root)
              (vterm-toggle)))))
 
-(use-package flycheck
-  :diminish flycheck-mode
+(use-package apheleia
   :ensure t
-  :defer t
-  :custom
-  (flycheck-check-syntax-automatically '(mode-enabled save)) ; Check on save instead of running constantly
-  :hook ((prog-mode-hook text-mode-hook typescript-mode-hook typescript-ts-mode-hook) . flycheck-mode))
-
-(use-package tide
-  :ensure t
-  :defer t
-  :commands flycheck-add-next-checker
-  :after (typescript-mode flycheck)
-  :defines (tide-mode-map flycheck-check-syntax-automatically)
   :config
-  (defun setup-tide-mode ()
-    (interactive)
-    (tide-setup)
-    (flycheck-mode +1)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled))
-    (eldoc-mode +1)
-    (tide-hl-identifier-mode +1))
+  (apheleia-global-mode +1))
 
-  ;; configure javascript-tide checker to run after your default javascript checker
-  (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
-  :hook
-  ((rjsx-mode-hook . setup-tide-mode)
-   (typescript-mode-hook . tide-setup)
-   (typescript-mode-hook . tide-hl-identifier-mode)
-   (before-save-hook . tide-format-before-save))
+(use-package tree-sitter
+  :ensure t
+  :config
+  ;; activate tree-sitter on any buffer containing code for which it has a parser available
+  (global-tree-sitter-mode)
+  ;; you can easily see the difference tree-sitter-hl-mode makes for python, ts or tsx
+  ;; by switching on and off
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 
-  :bind (:map tide-mode-map
-              ("M-j" . tide-jsdoc-template)))
+(use-package tree-sitter-langs
+  :ensure t
+  :after tree-sitter)
 
-(use-package tree-sitter)
-(use-package tree-sitter-langs)
+(use-package typescript-mode
+  :after tree-sitter
+  :config
+  ;; we choose this instead of tsx-mode so that eglot can automatically figure out language for server
+  ;; see https://github.com/joaotavora/eglot/issues/624 and https://github.com/joaotavora/eglot#handling-quirky-servers
+  (define-derived-mode typescriptreact-mode typescript-mode
+    "TypeScript TSX")
 
-(setq treesit-extra-load-path '("~/dotfiles/.emacs.d/tree-sitter" "~/dotfiles/.emacs.d/tree-sitter-langs"))
-(add-hook 'typescript-mode-hook #'tree-sitter-hl-mode)
-(add-hook 'typescript-ts-mode-hook #'tree-sitter-hl-mode)
+  ;; use our derived mode for tsx files
+  (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . typescriptreact-mode))
+  ;; by default, typescript-mode is mapped to the treesitter typescript parser
+  ;; use our derived mode to map both .tsx AND .ts - typescriptreact-mode - treesitter tsx
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescriptreact-mode . tsx)))
+
+(use-package tsi
+  :after tree-sitter
+  :straight (tsi :host github :repo "orzechowskid/tsi.el")
+  ;; define autoload definitions which when actually invoked will cause package to be loaded
+  :commands (tsi-typescript-mode tsi-json-mode tsi-css-mode)
+  :init
+  (add-hook 'typescript-mode-hook (lambda () (tsi-typescript-mode 1)))
+  (add-hook 'json-mode-hook (lambda () (tsi-json-mode 1)))
+  (add-hook 'css-mode-hook (lambda () (tsi-css-mode 1)))
+  (add-hook 'scss-mode-hook (lambda () (tsi-scss-mode 1))))
+
+(use-package eglot
+  :hook ((typescriptreact-mode . eglot-ensure))
+  :config
+  (setq eglot-confirm-server-initiated-edits nil))
 
 (use-package perspective
   :bind (("C-x k" . persp-kill-buffer*))
@@ -1120,7 +1246,7 @@ folder, otherwise delete a word"
     ("og" "Guitar" entry (file+olp, (rr/org-path "organize.org") "Goals" "Guitar" "Practice Log")
      "* %u\n%?")
     ("w" "Work")
-    ("wt" "Work Task" entry (file+olp, (rr/org-path "work-tasks.org") "All Tasks" "Overflow Tasks")
+    ("wt" "Work Task" entry (file+olp, (rr/org-path "work-tasks.org") "Tasks")
      "* TODO %?\n%U\n %i" :kill-buffer t)
     ("wd" "Deep Task" entry (file+olp, (rr/org-path "work-tasks.org") "All Tasks" "Deep")
      "* TODO %?\n%U\n %i" :kill-buffer t)
@@ -1147,55 +1273,56 @@ folder, otherwise delete a word"
   )
 
 (defun rr/org-path (path)
-  (expand-file-name path org-directory))
+    (expand-file-name path org-directory))
 
-(defun rr/org-mode-setup ()
-  (org-indent-mode)
-  (variable-pitch-mode 1)
-  (auto-fill-mode 0)
-  (visual-line-mode 1)
-  (setq org-directory "/ssh:rrajath@192.168.0.218#522:/var/services/homes/rrajath/Dropbox/org-mode")
-  (setq org-agenda-files (list org-directory))
-  (setq org-capture-templates (rr/set-org-capture-templates))
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "CODE(c)" "FDBK(f)" "|" "DONE(d!)" "KILL(k!)")
-          ))
-  (setq org-id-link-to-org-use-id 'use-existing))
+  (defun rr/org-mode-setup ()
+    (org-indent-mode)
+    (variable-pitch-mode 1)
+    (auto-fill-mode 0)
+    (visual-line-mode)
+    (setq org-directory "/ssh:rrajath@192.168.0.218#522:/var/services/homes/rrajath/Dropbox/org-mode")
+    (setq org-agenda-files (list org-directory))
+    (setq org-capture-templates (rr/set-org-capture-templates))
+    (setq org-todo-keywords
+          '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "CODE(c)" "FDBK(f)" "|" "DONE(d!)" "KILL(k!)")
+            ))
+    (setq org-id-link-to-org-use-id 'use-existing))
 
-(use-package org
-  :config
-  (rr/org-mode-setup)
-  (setq org-ellipsis " ▾"
-        org-hide-emphasis-markers t
-        org-log-done 'time
-        org-log-into-drawer t
-        ;; org-adapt-indentation t
-        ;; org-element-use-cache nil
-        org-special-ctrl-a/e t
-        org-insert-heading-respect-content t
-        org-tags-column -70
-        org-agenda-start-with-log-mode t
-        org-agenda-skip-scheduled-if-done t
-        org-agenda-skip-deadline-if-done t
-        org-agenda-include-deadlines t
-        org-agenda-block-separator nil
-        org-agenda-tags-column 100
-        org-agenda-compact-blocks t
-        org-agenda-include-diary t
-        org-catch-invisible-edits 'smart
-        org-fontify-whole-heading-line t
-        org-ctrl-k-protect-subtree t
-        org-cycle-separator-lines 0
-        org-refile-use-outline-path 'file
-        org-outline-path-complete-in-steps nil
-        org-refile-allow-creating-parent-nodes 'confirm
-        org-refile-targets
-        '((nil :maxlevel . 6)
-          (org-agenda-files :maxlevel . 6)))
+  (use-package org
+    :hook (org-mode . rr/org-mode-setup)
+    :config
+;;    (rr/org-mode-setup)
+    (setq org-ellipsis " ▾"
+          org-hide-emphasis-markers t
+          org-log-done 'time
+          org-log-into-drawer t
+          ;; org-adapt-indentation t
+          ;; org-element-use-cache nil
+          org-special-ctrl-a/e t
+          org-insert-heading-respect-content t
+          org-tags-column -70
+          org-agenda-start-with-log-mode t
+          org-agenda-skip-scheduled-if-done t
+          org-agenda-skip-deadline-if-done t
+          org-agenda-include-deadlines t
+          org-agenda-block-separator nil
+          org-agenda-tags-column 100
+          org-agenda-compact-blocks t
+          org-agenda-include-diary t
+          org-catch-invisible-edits 'smart
+          org-fontify-whole-heading-line t
+          org-ctrl-k-protect-subtree t
+          org-cycle-separator-lines 0
+          org-refile-use-outline-path 'file
+          org-outline-path-complete-in-steps nil
+          org-refile-allow-creating-parent-nodes 'confirm
+          org-refile-targets
+          '((nil :maxlevel . 6)
+            (org-agenda-files :maxlevel . 6)))
 
-  (advice-add 'org-refile :after 'org-save-all-org-buffers))
+    (advice-add 'org-refile :after 'org-save-all-org-buffers))
 
-(require 'org-indent)
+  (require 'org-indent)
 
 (use-package ox-gfm
   :after org)
@@ -1310,7 +1437,8 @@ folder, otherwise delete a word"
                 (org-level-8 . 1.1)))
   (set-face-attribute (car face) nil :font my-variable-pitch-font :weight 'regular :height (cdr face))
 
-  (set-face-attribute 'org-block nil :foreground "unspecified" :inherit 'fixed-pitch)
+  ;; Original background color of org-block: #3B3D4A
+  (set-face-attribute 'org-block nil :foreground "unspecified" :background "#2D313B" :inherit 'fixed-pitch)
   (set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
   (set-face-attribute 'org-todo nil  :inherit 'fixed-pitch)
   (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
@@ -1322,7 +1450,7 @@ folder, otherwise delete a word"
   (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
   (set-face-attribute 'org-tag nil :foreground "#5A5D67")
-  (set-face-attribute 'hl-line nil :background "#475569")
+  (set-face-attribute 'hl-line nil :background "#0d3b66")
   (set-face-attribute 'org-column nil :background "unspecified")
   (set-face-attribute 'org-column-title nil :background "unspecified"))
 
@@ -1476,6 +1604,31 @@ If on a:
  :states 'normal
  :keymaps 'org-mode-map
  "RET" '+org/dwim-at-point)
+
+(defun rr/org-insert-link-dwim ()
+  "Like `org-insert-link' but with personal dwim preferences."
+  (interactive)
+  (let* ((point-in-link (org-in-regexp org-link-any-re 1))
+         (clipboard-url (when (string-match-p "^http" (current-kill 0))
+                          (current-kill 0)))
+         (region-content (when (region-active-p)
+                           (buffer-substring-no-properties (region-beginning)
+                                                           (region-end)))))
+    (cond ((and region-content clipboard-url (not point-in-link))
+           (delete-region (region-beginning) (region-end))
+           (insert (org-make-link-string clipboard-url region-content)))
+          ((and clipboard-url (not point-in-link))
+           (insert (org-make-link-string
+                    clipboard-url
+                    (read-string "title: "
+                                 (with-current-buffer (url-retrieve-synchronously clipboard-url)
+                                   (dom-text (car
+                                              (dom-by-tag (libxml-parse-html-region
+                                                           (point-min)
+                                                           (point-max))
+                                                          'title))))))))
+          (t
+           (call-interactively 'org-insert-link)))))
 
 (general-define-key
  :states 'normal
