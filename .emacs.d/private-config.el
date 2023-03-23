@@ -162,143 +162,6 @@ soon as Emacs loads."
 
 (global-hl-line-mode)
 
-(use-package general
-  :config
-  (general-evil-setup t))
-
-(general-define-key
- :states 'normal
- :keymaps 'override
- :prefix "SPC"
- "SPC" '(counsel-M-x :which-key "M-x")
- "X"   '(org-capture :which-key "org-capture")
- "`"   '(evil-switch-to-windows-last-buffer :which-key "last window")
- "RET" '(consult-bookmark :which-key "bookmarks")
- "t"   '(vterm-toggle :which-key "vterm-popup")
- ;; commands
- "e"   '(:ignore t :which-key "eval")
- "e e" '(eros-eval-last-sexp :which-key "eros-eval-last-sexp")
- "e r" '(eval-region :which-key "eval-region")
- "e b" '(eval-buffer :which-key "eval-buffer")
- ;; buffer management
- "b"   '(:ignore t :which-key "buffers")
- "b i" '(ibuffer :which-key "ibuffer")
- "b r" '(rr/revert-buffer-no-confirm :which-key "rr/revert-buffer-no-confirm")
- "b R" '(revert-buffer :which-key "revert-buffer")
- "b k" '(kill-buffer :which-key "kill-buffer")
- ;; perspectives
- "s"   '(:ignore t :which-key "perspectives")
- "s b" '(persp-switch-to-buffer* :which-key "switch-to-buffer")
- "s k" '(persp-kill-buffer :which-key "kill-buffer")
- "s a" '(persp-add-buffer :which-key "add-buffer")
- "s A" '(persp-set-buffer :which-key "set-buffer")
- "s s" '(persp-switch :which-key "persp-switch")
- "s r" '(persp-rename :which-key "persp-rename")
- "s k" '(persp-kill :which-key "persp-kill")
- ;; dired
- "d"   '(:ignore t :which-key "dired")
- "d j" '(dired-jump :which-key "dired-jump")
- "d J" '(dired-jump-other-window :which-key "dired-jump-other-window")
- "d d" '(dired :which-key "dired")
- "d n" '(dired-create-empty-file :which-key "dired-create-empty-file")
- ;; window management
- "w"   '(:ignore t :which-key "window")
- "w v" '(split-window-right :which-key "split window right")
- "w h" '(split-window-below :which-key "split window below")
- "w c" '(delete-window :which-key "delete-window")
- "w w" '(next-window-any-frame :which-key "next window")
- ;; help for variables, functions, keybindings, etc.
- "h"   '(:ignore t :which-key "help")
- "h a" '(consult-apropos :which-key "apropos")
- "h v" '(describe-variable :which-key "variable")
- "h f" '(describe-function :which-key "function")
- "h k" '(helpful-key :which-key "key")
- "h i" '(info :which-key "info")
- "h c" '(describe-key-briefly :which-key "describe-key-briefly")
- ;; jump with avy
- "j"   '(:ignore t :which-key "jump")
- "j j" '(avy-goto-char :which-key "avy-goto-char")
- "j w" '(avy-goto-word-1 :which-key "avy-goto-word-1")
- "j l" '(avy-goto-line :which-key "avy-goto-line")
- ;; magit status
- "g"   '(:ignore t :which-key "magit")
- "g g" '(magit-status :which-key "magit status")
- ;; org-mode
- "o"   '(:ignore t :which-key "org-mode")
- ;; org-mode
- "o a" '(org-agenda :which-key "org-agenda")
- "o e" '(org-export-dispatch :which-key "org-export-dispatch")
- "o t" '(org-todo :which-key "org-todo")
- "o h" '(org-toggle-heading :which-key "heading")
- "o i" '(org-toggle-item :which-key "item")
- "o o" '(consult-outline :which-key "consult-outline")
- "o S" '(org-show-todo-tree :which-key "org-show-todo-tree")
- "o q" '(org-set-tags-command :which-key "org-set-tags-command")
- "o N" '(org-add-note :which-key "org-add-note")
- ;; org-mode / checkbox
- "o x"   '(:ignore t :which-key "checkbox")
- "o x x" '(org-toggle-checkbox :which-key "org-toggle-checkbox")
- "o x s" '(rr/org-sort-list-by-checkbox-type :which-key "org-sort-checklist")
- ;; org-mode / clock
- "o c"   '(:ignore t :which-key "clock")
- "o c i" '(org-clock-in :which-key "org-clock-in")
- "o c o" '(org-clock-out :which-key "org-clock-out")
- "o c c" '(org-clock-cancel :which-key "org-clock-cancel")
- "o c d" '(org-clock-display :which-key "org-clock-display")
- "o c g" '(org-clock-goto :which-key "org-clock-goto")
- ;; org-mode / narrow
- "o n"   '(:ignore t :which-key "narrow")
- "o n s" '(org-narrow-to-subtree :which-key "org-narrow-to-subtree")
- "o n b" '(org-narrow-to-block :which-key "org-narrow-to-block")
- "o n e" '(org-narrow-to-element :which-key "org-narrow-to-element")
- "o n r" '(org-narrow-to-region :which-key "org-narrow-to-region")
- "o n w" '(widen :which-key "widen")
- ;; org-mode / refile
- "o r"   '(:ignore t :which-key "refile")
- "o r r" '(org-refile :which-key "org-refile")
- "o r c" '(org-refile-copy :which-key "org-refile-copy")
- "o r ." '(+org/refile-to-current-file :which-key "+org/refile-to-current-file")
- "o r A" '(org-archive-subtree :which-key "org-archive-subtree")
- ;; org-mode / date
- "o d"   '(:ignore t :which-key "date/deadline")
- "o d s" '(org-schedule :which-key "org-schedule")
- "o d d" '(org-deadline :which-key "org-deadline")
- "o d t" '(org-time-stamp :which-key "org-time-stamp")
- "o d T" '(org-time-stamp-inactive :which-key "org-time-stamp-inactive")
- ;; org-mode / links
- "o l"   '(:ignore t :which-key "links")
- "o l l" '(org-insert-link :which-key "org-insert-link")
- "o l v" '(crux-view-url :which-key "crux-view-url")
- "o l s" '(org-store-link :which-key "org-store-link")
- "o l h" '(rr/org-insert-html-link :which-key "org-insert-link-with-title")
- ;; projectile
- "p"   '(:ignore t :which-key "projectile")
- "p f" '(projectile-find-file :which-key "projectile-find-file")
- "p /" '(consult-ripgrep :which-key "consult-ripgrep")
- "p r" '(projectile-recentf :which-key "projectile-recentf")
- "p s" '(counsel-projectile-switch-project :which-key "projectile-switch-project")
- "p t" '(rr/projectile-run-vterm :which-key "rr/projectile-run-vterm")
- "p k" '(projectile-kill-buffers :which-key "projectile-kill-buffers")
- ;; files
- "f"   '(:ignore t :which-key "files")
- "f f" '(find-file :which-key "find-file")
- "f r" '(consult-recent-file :which-key "recent files")
- ;; consult
- "c"   '(:ignore t :which-key "consult")
- "c m" '(consult-mark :which-key "consult-mark")
- "c M" '(consult-global-mark :which-key "consult-global-mark")
- )
-
-(general-define-key
- :states '(normal insert)
- "C-e" 'end-of-line
- "C-a" 'beginning-of-line)
-
-(general-define-key
- :keymaps '(normal insert)
- "s-]" 'persp-next
- "s-[" 'persp-prev)
-
 (use-package super-save
   :defer 1
   :diminish super-save-mode
@@ -355,11 +218,6 @@ soon as Emacs loads."
           vterm-mode)
         popper-group-function #'popper-group-by-projectile)
   (popper-mode +1))
-
-(general-define-key
- :keymaps '(normal insert)
- "C-;" 'popper-toggle-latest
- "C-:" 'popper-cycle)
 
 (use-package undo-tree)
 
@@ -440,10 +298,6 @@ soon as Emacs loads."
   (which-key-mode)
   (setq which-key-idle-delay 0.3))
 
-(general-define-key
- :states 'normal
- "C-S-u" 'universal-argument)
-
 (use-package hydra
   :defer t)
 
@@ -459,6 +313,7 @@ soon as Emacs loads."
 (keymap-global-set "s-[" 'persp-prev)
 (keymap-global-set "s-]" 'persp-next)
 (keymap-global-set "M-o" 'completion-at-point)
+(keymap-global-set "C-S-u" 'universal-argument)
 
 (defun rr/meow-insert-at-start ()
   (interactive)
@@ -1114,20 +969,6 @@ Other buffer group by `centaur-tabs-get-group-name' with project name."
     (setq projectile-project-search-path '("~/code")))
   (setq projectile-switch-project-action #'projectile-dired))
 
-;; (use-package counsel-projectile
-;; :after projectile
-;; :config (counsel-projectile-mode))
-
-(general-define-key
- :states 'normal
- :prefix "C-c"
- "p" 'projectile-command-map)
-
-(general-define-key
- :states '(normal insert)
- "s-." 'flymake-goto-next-error
- "s->" 'flymake-goto-prev-error)
-
 (use-package diff-hl)
 (global-diff-hl-mode)
 (diff-hl-flydiff-mode 1)
@@ -1596,11 +1437,6 @@ If on a:
             (org-element-property :begin context)
             (org-element-property :end context))))))))
 
-(general-define-key
- :states 'normal
- :keymaps 'org-mode-map
- "RET" '+org/dwim-at-point)
-
 (defun rr/org-insert-link-dwim ()
   "Like `org-insert-link' but with personal dwim preferences."
   (interactive)
@@ -1625,11 +1461,6 @@ If on a:
                                                           'title))))))))
           (t
            (call-interactively 'org-insert-link)))))
-
-(general-define-key
- :states 'normal
- :keymaps 'org-mode-map
- "<tab>" 'evil-toggle-fold)
 
 (defun +org--insert-item (direction)
   (let ((context (org-element-lineage
@@ -1700,20 +1531,10 @@ If on a:
   (interactive "p")
   (dotimes (_ count) (+org--insert-item 'below)))
 
-(general-define-key
- :states '(normal insert)
- :keymaps 'org-mode-map
- "<C-return>" '+org/insert-item-below)
-
 (defun +org/insert-item-above (count)
   "Inserts a new heading, table cell or item above the current one."
   (interactive "p")
   (dotimes (_ count) (+org--insert-item 'above)))
-
-(general-define-key
- :states '(normal insert)
- :keymaps 'org-mode-map
- "<C-S-return>" '+org/insert-item-above)
 
 (defun +org/refile-to-current-file (arg &optional file)
   "Refile current heading to elsewhere in the current buffer.
@@ -1724,12 +1545,6 @@ If prefix ARG, copy instead of move."
         (org-refile-keep arg)
         current-prefix-arg)
     (call-interactively #'org-refile)))
-
-(general-define-key
- :states '(normal)
- :keymaps 'org-mode-map
- :prefix "z"
- "x" 'org-hide-drawer-toggle)
 
 (defun rr/org-show-next-heading-tidily ()
   "Show next entry, keeping other entries closed."
@@ -1759,12 +1574,6 @@ If prefix ARG, copy instead of move."
     (org-reveal t)
     (org-show-entry)
     (show-children)))
-
-(general-define-key
- :states 'normal
- :keymaps 'org-mode-map
- "C-n" 'rr/org-show-next-heading-tidily
- "C-p" 'rr/org-show-previous-heading-tidily)
 
 (defun rr/org-sort-list-by-checkbox-type ()
   "Sort list items according to Checkbox state."
