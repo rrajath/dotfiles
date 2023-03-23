@@ -40,16 +40,12 @@
   - [[#set-up-theme][Set up theme]]
   - [[#show-line-and-column-numbers][Show line and column numbers]]
   - [[#rainbow-delimiters][Rainbow Delimiters]]
-  - [[#smart-modeline-unused][Smart Modeline (unused)]]
   - [[#highlight-matching-braces][Highlight Matching Braces]]
   - [[#highlight-current-line][Highlight current line]]
 - [[#usability][Usability]]
   - [[#general][General]]
-  - [[#server-mode-unused][Server Mode (unused)]]
   - [[#auto-saving-changed-files][Auto-saving changed files]]
   - [[#auto-reverting-changed-files][Auto-reverting changed files]]
-  - [[#automatically-clean-whitespaces-unused][Automatically clean whitespaces (unused)]]
-  - [[#smart-parenthesis-unused][Smart Parenthesis (unused)]]
   - [[#jumping-around-with-avy][Jumping around with Avy]]
   - [[#eros-mode][Eros Mode]]
   - [[#hungry-delete][Hungry Delete]]
@@ -67,10 +63,6 @@
   - [[#make-esc-work-better][Make ESC work better]]
   - [[#switch-buffers-easily][Switch buffers easily]]
   - [[#which-key][Which key]]
-  - [[#evil][Evil]]
-    - [[#basic-setup][Basic Setup]]
-    - [[#custom-keybindings-unused][Custom keybindings (unused)]]
-    - [[#speedkeys][Speedkeys]]
   - [[#remap-universal-argument][Remap universal argument]]
   - [[#hydra][Hydra]]
     - [[#package-setup][Package Setup]]
@@ -135,17 +127,7 @@
     - [[#vterm-setup][Vterm setup]]
     - [[#invoke-terminal-in-projects-root-as-popup][Invoke terminal in project's root (as popup)]]
   - [[#languages][Languages]]
-    - [[#language-servers-unused][Language Servers (unused)]]
-    - [[#typescript-unused][TypeScript (unused)]]
-    - [[#completions-with-company-mode-unused][Completions with Company-mode (unused)]]
-    - [[#tide-unused][Tide (unused)]]
-      - [[#tsx][TSX]]
-      - [[#jsx][JSX]]
-      - [[#tide][Tide]]
-    - [[#flycheck-unused][Flycheck (unused)]]
-    - [[#tide-unused][Tide (unused)]]
     - [[#aphelia-for-auto-format][Aphelia for auto-format]]
-    - [[#treesitter-unused][Treesitter (unused)]]
     - [[#treesitter][Treesitter]]
     - [[#eglot][Eglot]]
 - [[#buffers][Buffers]]
@@ -160,9 +142,7 @@
   - [[#org-appear][Org Appear]]
   - [[#prettier-bullets][Prettier bullets]]
   - [[#visual-fill-column][Visual Fill Column]]
-  - [[#evil-org-mode-unused][Evil-Org-Mode (unused)]]
   - [[#agenda-configs][Agenda Configs]]
-  - [[#org-super-agenda][Org Super Agenda]]
   - [[#babel-configuration][Babel Configuration]]
     - [[#configure-babel-languages][Configure Babel Languages]]
     - [[#source-language-modes][Source Language Modes]]
@@ -188,7 +168,6 @@
     - [[#org-showhide-drawers][Org show/hide drawers]]
     - [[#org-show-nextprev-headings-tidily][Org show next/prev headings tidily]]
     - [[#org-sort-list-by-checkbox-type][Org sort list by checkbox type]]
-    - [[#use-idle-timer-for-automatic-agenda-views][Use idle timer for automatic agenda views]]
     - [[#mark-heading-done-when-all-checkboxes-are-checked][Mark heading DONE when all checkboxes are checked]]
 - [[#org-roam][Org Roam]]
   - [[#basic-setup][Basic Setup]]
@@ -198,16 +177,11 @@
   - [[#ox-hugo][ox-hugo]]
   - [[#turn-on-org-hugo-auto-export-mode-when-you-visit-blogorg][Turn on org-hugo-auto-export-mode when you visit blog.org]]
   - [[#generate-a-filename-given-a-blog-post-title][Generate a filename given a blog post title]]
-- [[#work][Work]]
-  - [[#excorporate][Excorporate]]
-    - [[#setup-unused][Setup (unused)]]
-    - [[#show-todays-meetings][Show today's meetings]]
 - [[#ideas][Ideas]]
 - [[#packages-i-want-to-try][Packages I want to try]]
 - [[#runtime-performance][Runtime Performance]]
-- [[#launch-config][Launch Config]]
 - [[#pending-customizations][Pending Customizations]]
-  - [[#custom-killring][Custom killring]]
+  - [[#custom-killring-unused][Custom killring (unused)]]
   - [[#install-packages][Install packages]]
     - [[#vterm][vterm]]
     - [[#vertico][vertico]]
@@ -308,32 +282,6 @@ This block of code uses the =display-mode= variable set in the previous section 
 Adding package sources and setting =use-package-always-ensure= to =t=. This setting will eliminate the need to specify =:ensure t= while running writing =use-package= commands.
 
 #+begin_src emacs-lisp
-  (setq use-package-verbose t)
-#+end_src
-
-#+begin_src emacs-lisp :tangle no
-  ;; Initialize package sources
-  (require 'package)
-
-  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                           ("melpa-stable" . "https://stable.melpa.org/packages/")
-                           ("org" . "https://orgmode.org/elpa/")
-                           ("elpa" . "https://elpa.gnu.org/packages/")))
-
-  ;; Fix an issue accessing the ELPA archive in Termux
-
-  (package-initialize)
-  (unless package-archive-contents
-    (package-refresh-contents))
-
-  ;; Initialize use-package on non-Linux platforms
-  (package-install 'use-package)
-  (require 'use-package)
-
-  ;; Uncomment this to get a reading on packages that get loaded at startup
-  ;;(setq use-package-verbose t)
-
-  ;; On non-Guix systems, "ensure" packages by default
   (setq use-package-always-ensure t)
   (setq use-package-verbose t)
 #+end_src
@@ -543,21 +491,6 @@ Package: [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
     :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
-** Smart Modeline (unused)
-Make the mode line pretty
-Package: [[https://github.com/Malabarba/smart-mode-line][smart-mode-line]]
-
-#+begin_src emacs-lisp :tangle no
-  (use-package smart-mode-line
-    :config
-    (setq
-     sml/theme 'atom-one-dark
-     sml/no-confirm-load-theme t
-     sml/mode-width 'right
-     sml/name-width 60)
-    (sml/setup))
-#+end_src
-
 ** Highlight Matching Braces
 This is super helpful, especially in lisp
 
@@ -720,14 +653,6 @@ Package: [[https://github.com/noctuid/general.el][General]]
    "s-[" 'persp-prev)
 #+end_src
 
-** Server Mode (unused)
-Make this instance of emacs start server so that other client instances can connect to this.
-
-*Note*: Actually, I never have more than one instance of Emacs open at any time. No need to do this.
-#+begin_src emacs-lisp :tangle no
-  (server-start)
-#+end_src
-
 ** Auto-saving changed files
 This removes the need to hit Save all the time.
 
@@ -749,26 +674,6 @@ This is to make sure regular files are reloaded when they're changed outside Ema
 
   ;; Revert buffers when the underlying file has changed
   (global-auto-revert-mode 1)
-#+end_src
-
-** Automatically clean whitespaces (unused)
-Trim whitespace at the end of the line. This happens when the buffer is saved and is unobtrusive. This means the user is not aware of the trimming that has happened. So, the point is not moved, but when the buffer is reverted this can be seen.
-Package: [[https://github.com/lewang/ws-butler][ws-butler]]
-
-#+begin_src emacs-lisp :tangle no
-  (use-package ws-butler
-    :hook ((text-mode . ws-butler-mode)
-           (prog-mode . ws-butler-mode)))
-#+end_src
-
-** Smart Parenthesis (unused)
-Add closing parenthesis whenever you open parenthesis.
-Package: [[https://github.com/Fuco1/smartparens][smartparens]]
-
-*Note*: temporarily disabling smartparens
-#+begin_src emacs-lisp :tangle no
-  (use-package smartparens)
-  (smartparens-global-mode)
 #+end_src
 
 ** Jumping around with Avy
@@ -978,66 +883,6 @@ Package: [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
     :config
     (which-key-mode)
     (setq which-key-idle-delay 0.3))
-#+end_src
-
-** Evil
-*** Basic Setup
-This turns on evil mode with some specific customizations (that are self explanatory).
-Package: [[https://github.com/emacs-evil/evil][Evil]]
-
-#+begin_src emacs-lisp :tangle no
-  (use-package evil
-    :init
-    (setq evil-want-integration t)
-    (setq evil-want-keybinding nil)
-    (setq evil-want-C-u-scroll t)
-    (setq evil-want-C-i-jump nil)
-    :config
-    (evil-mode 1)
-    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-
-    ;; Use visual line motions even outside of visual-line-mode buffers
-    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-
-    (evil-set-initial-state 'messages-buffer-mode 'normal)
-    (evil-set-initial-state 'dashboard-model 'normal))
-
-  (evil-mode 1)
-
-  ;; Evil Collection for predictable Vim keybindings in a lot of modes
-  (use-package evil-collection
-    :after evil
-    :config
-    (evil-collection-init))
-#+end_src
-
-*** Custom keybindings (unused)
-Deleting words or lines make the deleted text end up in kill ring. This prevents me from pasting what I initially had in the clipboard. The following functions rewrite delete-word and delete-line functionalities without adding them to the kill-ring.
-Currently, this is disabled. Will enable it once it's thoroughly tested.
-
-#+begin_src emacs-lisp :tangle no
-  (defun rr/delete-word (arg)
-    (interactive "p")
-    (delete-region
-     (point)
-     (progn
-       (forward-word arg)
-       (point))))
-
-  (general-define-key
-   :states 'normal
-   "C-;" 'my-delete-word)
-#+end_src
-*** Speedkeys
-Spacemacs has a cool feature where if you're on an org-mode heading and you press =t=, it invokes =org-todo= and you can quickly set the state of the heading to one of the many todo states. The following code is implementing that feature.
-
-#+begin_src emacs-lisp
-  (general-define-key
-   :states 'normal
-   :keymaps 'org-mode-map
-   "t" 'org-todo)
 #+end_src
 
 ** Remap universal argument
@@ -1985,221 +1830,6 @@ Projectile's function to invoke terminal in project root only opens it in full s
 #+end_src
 
 ** Languages
-*** Language Servers (unused)
-This sets up language server configuration with some pretty cool defaults.
-Make sure to run =lsp-install-server es-lint= to enable eslint configuration.
-Packages:
-- [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]]
-- [[https://github.com/emacs-lsp/lsp-ui][lsp-ui]]
-- [[https://github.com/emacs-lsp/lsp-treemacs][lsp-treemacs]]
-- [[https://github.com/emacs-lsp/lsp-ivy][lsp-ivy]]
-- [[https://github.com/jscheid/prettier.el][prettier]]
-
-#+begin_src emacs-lisp :tangle no
-  (use-package lsp-mode
-    :commands (lsp lsp-deferred)
-    :hook
-    ((typescript-mode js2-mode web-mode) . lsp)
-    ((lsp-completion-mode . rr/lsp-mode-setup-completion))
-    :init
-    (defun rr/lsp-mode-setup-completion ()
-      (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-            '(orderless))) ;; Configure flex
-    (setq lsp-keymap-prefix "C-c l")
-    :config
-    (setq lsp-auto-guess-root t)
-    (setq lsp-ui-sideline-show-code-actions t)
-    (lsp-enable-which-key-integration t)
-    :custom
-    (lsp-completion-provider :none) ;; we use corfu
-    (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-    (setq lsp-restart 'auto-restart)
-    (lsp-headerline-breadcrumb-mode))
-
-  (use-package lsp-ui
-    :hook (lsp-mode . lsp-ui-mode)
-    :custom
-    (setq lsp-ui-doc-position 'bottom)
-    (setq lsp-ui-doc-header t)
-    (setq lsp-ui-doc-include-signature t)
-    )
-
-  ;; (use-package lsp-treemacs
-  ;; :after lsp)
-
-  ;; unused for now, Will enable it if needed
-  ;; (use-package lsp-ivy
-  ;; :after lsp)
-
-  ;; unused for now, Will enable it if needed
-  ;; (use-package flycheck
-  ;;   :defer t
-  ;;   :hook (lsp-mode . flycheck-mode))
-
-  (general-define-key
-   :keymaps 'lsp-mode-map
-   :prefix "C-c l"
-   "a f" 'lsp-eslint-apply-all-fixes)
-#+end_src
-
-*** TypeScript (unused)
-This sets up typescript mode with defaults for eslint.
-Package: [[https://github.com/emacs-typescript/typescript.el][typescript]]
-
-#+begin_src emacs-lisp :tangle no
-  (use-package typescript-mode
-    :mode "\\.ts\\'"
-    :config
-    (setq typescript-indent-level 2
-          lsp-eslint-auto-fix-on-save t))
-
-  (defun rr/set-js-indentation ()
-    "Set javascript indentation to 2"
-    (setq js-indent-level 2)
-    (setq evil-shift-width js-indent-level)
-    (setq-default tab-width 2))
-
-  (use-package js2-mode
-    :mode "\\.jsx?\\'"
-    :config
-    ;; Use js2-mode for Node scripts
-    (add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode)))
-
-  (add-hook 'js2-mode-hook #'rr/set-js-indentation)
-  (add-hook 'json-mode-hook #'rr/set-js-indentation)
-
-  (use-package prettier-js
-    :hook ((js2-mode . prettier-js-mode)
-           (typescript-mode . prettier-js-mode))
-    :config
-    (setq prettier-js-show-errors 'echo))
-#+end_src
-
-*** Completions with Company-mode (unused)
-This is necessary for relevant code completions
-Package: [[http://company-mode.github.io/][company-mode]]
-
-#+begin_src emacs-lisp :tangle no
-  (use-package company
-    :after lsp-mode
-    :hook (lsp-mode . company-mode)
-    :bind (:map company-active-map
-                ("<tab>" . consult-company))
-    (:map lsp-mode-map
-          ("<tab>" . consult-company))
-    :custom
-    (company-minimum-prefix-length 1)
-    (company-idle-delay 0.0))
-
-  (use-package company-box
-    :hook (company-mode . company-box-mode))
-
-  (use-package consult-company)
-
-  (define-key company-mode-map [remap completion-at-point] #'consult-company)
-#+end_src
-*** Tide (unused)
-#+begin_src emacs-lisp :tangle no
-  (defun setup-tide-mode ()
-    (interactive)
-    (tide-setup)
-    (flycheck-mode +1)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled))
-    (eldoc-mode +1)
-    (tide-hl-identifier-mode +1)
-    ;; company is an optional dependency. You have to
-    ;; install it separately via package-install
-    ;; `M-x package-install [ret] company`
-    ;; (company-mode +1))
-    ;; (corfu-mode)
-    )
-
-  (use-package flycheck)
-
-  ;; aligns annotation to the right hand side
-  (setq company-tooltip-align-annotations t)
-
-  ;; formats the buffer before saving
-  (add-hook 'before-save-hook 'tide-format-before-save)
-
-  (add-hook 'typescript-mode-hook #'setup-tide-mode)
-#+end_src
-**** TSX
-#+begin_src emacs-lisp :tangle no
-  (use-package web-mode)
-  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-  (add-hook 'web-mode-hook
-            (lambda ()
-              (when (string-equal "tsx" (file-name-extension buffer-file-name))
-                (setup-tide-mode))))
-  ;; enable typescript-tslint checker
-  (flycheck-add-mode 'typescript-tslint 'web-mode)
-
-  (add-hook 'js2-mode-hook #'setup-tide-mode)
-  ;; configure javascript-tide checker to run after your default javascript checker
-  ;; (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
-#+end_src
-**** JSX
-#+begin_src emacs-lisp :tangle no
-  (use-package web-mode)
-  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
-  (add-hook 'web-mode-hook
-            (lambda ()
-              (when (string-equal "jsx" (file-name-extension buffer-file-name))
-                (setup-tide-mode))))
-  ;; configure jsx-tide checker to run after your default jsx checker
-  (flycheck-add-mode 'javascript-eslint 'web-mode)
-  ;; (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
-  (add-hook 'js2-mode-hook #'setup-tide-mode)
-#+end_src
-**** Tide
-#+begin_src emacs-lisp :tangle no
-  (use-package tide
-    :ensure t
-    :after (typescript-mode corfu flycheck)
-    :hook ((typescript-mode . tide-setup)
-           (typescript-mode . tide-hl-identifier-mode)
-           (before-save . tide-format-before-save)))
-#+end_src
-*** Flycheck (unused)
-#+begin_src emacs-lisp :tangle no
-  (use-package flycheck
-    :diminish flycheck-mode
-    :ensure t
-    :defer t
-    :custom
-    (flycheck-check-syntax-automatically '(mode-enabled save)) ; Check on save instead of running constantly
-    :hook ((prog-mode-hook text-mode-hook typescript-mode-hook typescript-ts-mode-hook) . flycheck-mode))
-#+end_src
-*** Tide (unused)
-Found it here: https://gitlab.com/nathanfurnal/dotemacs/-/blob/master/init.el#L1023
-#+begin_src emacs-lisp :tangle no
-  (use-package tide
-    :ensure t
-    :defer t
-    :commands flycheck-add-next-checker
-    :after (typescript-mode flycheck)
-    :defines (tide-mode-map flycheck-check-syntax-automatically)
-    :config
-    (defun setup-tide-mode ()
-      (interactive)
-      (tide-setup)
-      (flycheck-mode +1)
-      (setq flycheck-check-syntax-automatically '(save mode-enabled))
-      (eldoc-mode +1)
-      (tide-hl-identifier-mode +1))
-
-    ;; configure javascript-tide checker to run after your default javascript checker
-    (flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
-    :hook
-    ((rjsx-mode-hook . setup-tide-mode)
-     (typescript-mode-hook . tide-setup)
-     (typescript-mode-hook . tide-hl-identifier-mode)
-     (before-save-hook . tide-format-before-save))
-
-    :bind (:map tide-mode-map
-                ("M-j" . tide-jsdoc-template)))
-#+end_src
 *** Aphelia for auto-format
 Package: [[https://github.com/radian-software/apheleia][aphelia]]
 
@@ -2209,18 +1839,6 @@ Package: [[https://github.com/radian-software/apheleia][aphelia]]
   :config
   (apheleia-global-mode +1))
 #+end_src
-*** Treesitter (unused)
-Found this code snippet here: https://olddeuteronomy.github.io/post/a-tree-sitter-config-that-works
-
-#+begin_src emacs-lisp :tangle no
-  (use-package tree-sitter)
-  (use-package tree-sitter-langs)
-
-  (setq treesit-extra-load-path '("~/dotfiles/.emacs.d/tree-sitter" "~/dotfiles/.emacs.d/tree-sitter-langs"))
-  (add-hook 'typescript-mode-hook #'tree-sitter-hl-mode)
-  (add-hook 'typescript-ts-mode-hook #'tree-sitter-hl-mode)
-#+end_src
-
 *** Treesitter
 Found a working setup here: https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022
 
@@ -2444,30 +2062,7 @@ Package: [[https://github.com/joostkremers/visual-fill-column][visual-fill-colum
     :hook (org-mode . rr/org-mode-visual-fill))
 #+end_src
 
-** Evil-Org-Mode (unused)
-Package: [[https://github.com/Somelauw/evil-org-mode][evil-org-mode]]
-
-There's currently [[https://github.com/Somelauw/evil-org-mode/issues/93][an issue]] with =evil-org= where Emacs gives this error on startup: =(void-function evil-redirect-digit-argument)=
-The following snippet is a work around:
-
-#+begin_src emacs-lisp :tangle no
-  (fset 'evil-redirect-digit-argument 'ignore) ; before evil-org loaded
-
-  (add-to-list 'evil-digit-bound-motions 'evil-org-beginning-of-line)
-  (evil-define-key 'motion 'evil-org-mode
-                   (kbd "0") 'evil-org-beginning-of-line)
-#+end_src
-
-#+begin_src emacs-lisp :tangle no
-  (use-package evil-org
-    :after org
-    :hook (org-mode . (lambda () evil-org-mode))
-    :config
-    (require 'evil-org-agenda)
-    (evil-org-agenda-set-keys))
-#+end_src
-
-** TODO Agenda Configs
+** Agenda Configs
 This needs a lot more work, but this is a good start
 
 #+begin_src emacs-lisp
@@ -2492,35 +2087,6 @@ This needs a lot more work, but this is a good start
            ((org-agenda-span 1)
             (org-agenda-max-entries 3)))
           ))
-#+end_src
-
-** TODO Org Super Agenda
-
-#+begin_src emacs-lisp :tangle no
-  (use-package org-super-agenda)
-
-  (let ((org-super-agenda-groups
-         '((:log t)  ; Automatically named "Log"
-           (:name "Schedule"
-                  :time-grid t)
-           (:name "Today"
-                  :scheduled today)
-           (:habit t)
-           (:name "Due today"
-                  :deadline today)
-           (:name "Overdue"
-                  :deadline past)
-           (:name "Due soon"
-                  :deadline future)
-           (:name "Unimportant"
-                  :todo ("SOMEDAY" "MAYBE" "CHECK" "TO-READ" "TO-WATCH")
-                  :order 100)
-           (:name "Waiting..."
-                  :todo "WAITING"
-                  :order 98)
-           (:name "Scheduled earlier"
-                  :scheduled past))))
-    (org-agenda-list))
 #+end_src
 
 ** Babel Configuration
@@ -3063,36 +2629,6 @@ Taken from: https://orgmode.org/worg/org-hacks.html#org5a09194
          4))))
 #+end_src
 
-*** Use idle timer for automatic agenda views
-Taken from: https://orgmode.org/worg/org-hacks.html#orga781053
-
-#+begin_src emacs-lisp :tangle no
-    (defun rr/jump-to-org-agenda ()
-      (interactive)
-      (let ((buf (get-buffer "*Org Agenda*"))
-            wind)
-        (if buf
-            (if (setq wind (get-buffer-window buf))
-                (select-window wind)
-              (if (called-interactively-p)
-                  (progn
-                    (select-window (display-buffer buf t t))
-                    (org-fit-window-to-buffer)
-                    ;; (org-agenda-redo)
-                    )
-                (with-selected-window (display-buffer buf)
-                  (org-fit-window-to-buffer)
-                  ;; (org-agenda-redo)
-                  )))
-          (call-interactively 'org-agenda-list)))
-      ;;(let ((buf (get-buffer "*Calendar*")))
-      ;;  (unless (get-buffer-window buf)
-      ;;    (org-agenda-goto-calendar)))
-      )
-
-(run-with-idle-timer 600 t 'rr/jump-to-org-agenda)
-#+end_src
-
 *** Mark heading DONE when all checkboxes are checked
 Taken from: https://orgmode.org/worg/org-hacks.html#mark-done-when-all-checkboxes-checked
 
@@ -3212,40 +2748,6 @@ in HUGO_BASE_DIR property."
         (org-set-property "EXPORT_FILE_NAME" blog-post-file-name)))
 #+end_src
 
-* Work
-** Excorporate
-*** Setup (unused)
-This needs initial setup of work account so that it can access the calendar. This can be done using =M-x excorporate=. More configuration can be found in [[https://emacs.stackexchange.com/a/46022][this stack overflow post]].
-Package: [[https://github.com/emacsmirror/excorporate][excorporate]]
-
-#+begin_src emacs-lisp :tangle no
-  (use-package excorporate
-    :defer t
-    :config
-    (setq excorporate-diary-today-file
-          (concat user-emacs-directory "var/excorporate/diary-excorporate-today")
-          excorporate-diary-transient-file
-          (concat user-emacs-directory "var/excorporate/diary-excorporate-transient")))
-  (excorporate-diary-enable)
-#+end_src
-
-*** Show today's meetings
-A call to =exco-org-show-day= will display the meetings for what is passed in the arguments (MONTH, DAY, YEAR). This needs some tweaking since there is no function to display meetings for current day. Upon invoking the function, a new read-only org buffer is opened and switched to that contains all the meetings for the current day.
-
-#+begin_src emacs-lisp :tangle no
-  (defun rr/show-work-cal-for-current-day ()
-    "Show meetings for current day."
-    (interactive)
-    (exco-org-show-day
-     (nth 0 (calendar-current-date))
-     (nth 1 (calendar-current-date))
-     (nth 2 (calendar-current-date)))
-    (other-window 1)
-    (sleep-for 1)
-    (org-shifttab)
-    (evil-toggle-fold))
-#+end_src
-
 * Ideas
 Some ideas for customizing emacs. I keep thinking about different ways to customize emacs and I'd like to have them all in one place so that whenever I have some time, I can pick one up and work on it.
 * Packages I want to try
@@ -3262,27 +2764,8 @@ Dial the GC threshold back down so that garbage collection happens more frequent
   (setq gc-cons-threshold (* 2 1000 1000))
 #+end_src
 
-* Launch Config
-I want a certain workspaces and buffers open when emacs launches. The below script helps me with that.
-
-#+begin_src emacs-lisp :tangle no
-  (setq org-dir "~/Library/CloudStorage/Dropbox/org-mode/")
-  (setq dotfiles-dir "~/dotfiles/")
-  (find-file (concat org-dir "organize.org"))
-  (persp-switch "work")
-  (find-file (concat org-dir "work-tasks.org"))
-  ;; (persp-switch "config")
-  ;; (find-file (concat dotfiles-dir "kitty/README.org"))
-  ;; (persp-switch "blog")
-  ;; (find-file (concat org-dir "blog.org"))
-  (persp-switch "main")
-#+end_src
-
-#+begin_src emacs-lisp :tangle no
-(persp-state-load (concat persp-save-dir "persp-auto-save"))
-#+end_src
 * Pending Customizations
-** TODO Custom killring
+** TODO Custom killring (unused)
 
 #+begin_src emacs-lisp :tangle no
   (defun my-delete-word (arg)
