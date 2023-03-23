@@ -38,6 +38,7 @@ soon as Emacs loads."
                  (cons 'height 83))
     )))
 
+(setq use-package-always-ensure t)
 (setq use-package-verbose t)
 
 (defvar bootstrap-version)
@@ -441,11 +442,6 @@ soon as Emacs loads."
 
 (general-define-key
  :states 'normal
- :keymaps 'org-mode-map
- "t" 'org-todo)
-
-(general-define-key
- :states 'normal
  "C-S-u" 'universal-argument)
 
 (use-package hydra
@@ -846,7 +842,7 @@ soon as Emacs loads."
    '("z" . meow-pop-selection)
    '("'" . repeat)
    '(";" . meow-cancel-selection)
-   '(":" . meow-cancel-selection)
+   '(":" . meow-reverse)
    '("<escape>" . ignore)))
 
 (use-package meow
