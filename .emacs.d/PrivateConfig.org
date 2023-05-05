@@ -412,7 +412,30 @@ I don't like Mac's default titlebar and I'd rather have the titlebar blend with 
 This font face will be used everywhere in Emacs, not just in source code
 
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font "JetBrains Mono" :height 125)
+  (defun rr/set-font-faces ()
+    (message "Setting font faces!")
+    (set-face-attribute 'default nil :font "JetBrains Mono" :height 125)
+    (setq my-fixed-pitch-font "JetBrains Mono")
+    (setq my-variable-pitch-font "Raleway")
+
+    ;; Set the fixed pitch face
+    (set-face-attribute 'fixed-pitch nil
+                        :font my-fixed-pitch-font
+                        :height 160
+                        :weight 'light)
+
+    ;; Set the variable pitch face
+    (set-face-attribute 'variable-pitch nil
+                        :font my-variable-pitch-font
+                        :height 150
+                        :weight 'regular))
+
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions
+                (lambda (frame)
+                  (setq doom-modeline-icon t)
+                  (with-selected-frame frame (rr/set-font-faces))))
+    (rr/set-font-faces))
 #+end_src
 
 ** Set up theme

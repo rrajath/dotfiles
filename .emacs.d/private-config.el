@@ -115,7 +115,30 @@ soon as Emacs loads."
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . dark))
 
-(set-face-attribute 'default nil :font "JetBrains Mono" :height 125)
+(defun rr/set-font-faces ()
+  (message "Setting font faces!")
+  (set-face-attribute 'default nil :font "JetBrains Mono" :height 125)
+  (setq my-fixed-pitch-font "JetBrains Mono")
+  (setq my-variable-pitch-font "Raleway")
+
+  ;; Set the fixed pitch face
+  (set-face-attribute 'fixed-pitch nil
+                      :font my-fixed-pitch-font
+                      :height 160
+                      :weight 'light)
+
+  ;; Set the variable pitch face
+  (set-face-attribute 'variable-pitch nil
+                      :font my-variable-pitch-font
+                      :height 150
+                      :weight 'regular))
+
+(if (daemonp)
+    (add-hook 'after-make-frame-functions
+              (lambda (frame)
+                (setq doom-modeline-icon t)
+                (with-selected-frame frame (rr/set-font-faces))))
+  (rr/set-font-faces))
 
 (use-package doom-modeline
   :straight t
