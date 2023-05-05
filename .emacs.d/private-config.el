@@ -873,9 +873,7 @@ folder, otherwise delete a word"
   :defer 2)
 
 (use-package crux
-  :defer 2)
-
-(use-package writegood-mode)
+  :defer t)
 
 (use-package centaur-tabs
   :demand
