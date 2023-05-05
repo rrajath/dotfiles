@@ -999,12 +999,13 @@ Other buffer group by `centaur-tabs-get-group-name' with project name."
 (use-package blamer
   ;;    :hook ((js2-mode . blamer-mode)
   ;;           (typescript-mode . blamer-mode))
+  :defer t
   :custom
   (blamer-idle-time 0.1)
   (blamer-min-offset 70)
   :custom-face
   (blamer-face ((t :foreground "#7a88cf"
-                   :background nil
+                   :background "unspecified"
                    :height 140
                    :italic t))))
 
