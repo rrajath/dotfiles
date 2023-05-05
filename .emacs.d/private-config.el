@@ -88,11 +88,9 @@ soon as Emacs loads."
 
 (setq-default
  delete-by-moving-to-trash t
- evil-want-fine-undo t
  auto-save-default t)
 
 (setq-default tab-width 2)
-(setq-default evil-shift-width tab-width)
 
 (global-subword-mode 1)
 

@@ -343,7 +343,6 @@ I want files to move to trash when I delete them in Emacs. I want better undo un
 #+begin_src emacs-lisp
   (setq-default
    delete-by-moving-to-trash t
-   evil-want-fine-undo t
    auto-save-default t)
 #+end_src
 
@@ -352,7 +351,6 @@ I mostly use typescript and I want to have tab width to 2
 
 #+begin_src emacs-lisp
   (setq-default tab-width 2)
-  (setq-default evil-shift-width tab-width)
 #+end_src
 
 *** Enable Global Subword Mode
