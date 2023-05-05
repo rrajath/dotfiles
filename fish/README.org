@@ -205,12 +205,16 @@ I was using these during my zsh days when my [[https://github.com/ohmyzsh/ohmyzs
   abbr -a gsta git stash
   abbr -a gstp git stash pop
 #+end_src
-
-** Kitty abbreviations
-These are specific to Kitty
-
+* Environment Variables
 #+begin_src shell
-  abbr -a s kitty +kitten ssh
+  set -xg POPPY_DIRECT_CONNECT t
+  set -xg VAULT_ADDR https://vault.robot.car:8200
+  set -xg N_PREFIX ~
+#+end_src
+* Paths
+#+begin_src shell
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/rajath.ramakrishna/google-cloud-sdk/path.fish.inc' ]; . '/Users/rajath.ramakrishna/google-cloud-sdk/path.fish.inc'; end
 #+end_src
 * NVM
 #+begin_src shell
