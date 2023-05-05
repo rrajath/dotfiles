@@ -151,37 +151,39 @@ end
          bind '$' __history_previous_command_arguments
          end
 #+end_src
-* Aliases
-** Basic aliases
-#+begin_src shell
-  alias ..='cd ..'
-  alias ...='cd ../..'
-  alias .3='cd ../../..'
-  alias .4='cd ../../../..'
-  alias .5='cd ../../../../..'
-#+end_src
-** =ls= aliases
-#+begin_src shell
-  alias ls='exa -l --color=always --group-directories-first' # my preferred listing
-  alias la='exa -a --color=always --group-directories-first'  # all files and dirs
-  alias ll='exa -l --color=always --group-directories-first'  # long format
-  alias lt='exa -aT --color=always --group-directories-first' # tree listing
-  alias l.='exa -a | egrep "^\."'
-#+end_src
 * Abbreviations
 These are like "text expansions". You type the abbreviations (like an alias), but before they get executed they get expanded to the actual command configured for that abbreviation. This way, your history will have full commands instead of a bunch of shortcuts/aliases/abbreviations.
-
 ** General abbreviations
 These are general purpose abbreviations.
 
 #+begin_src shell
   abbr -a - cd -
+  abbr -a mc mkdir-cd
+  abbr --add dotdot --regex '^\.\.+$' --function multicd
+  abbr -a !! --position anywhere --function last_history_item
+#+end_src
+
+** ~ls~ abbreviations
+
+#+begin_src shell
   abbr -a ls exa -l --color=always --group-directories-first # my preferred listing
   abbr -a la exa -a --color=always --group-directories-first  # all files and dirs
   abbr -a ll exa -l --color=always --group-directories-first  # long format
   abbr -a lt exa -aT --color=always --group-directories-first # tree listing
   abbr -a l. exa -a | egrep "^\."
-  abbr -a mc mkdir-cd
+#+end_src
+
+** ~yarn~ abbreviations
+These are some abbreviations for running yarn commands in typescript projects
+
+#+begin_src shell
+  abbr -a ylf yarn lint:fix
+  abbr -a yt yarn test
+  abbr -a ytw yarn test:watch
+  abbr -a yte yarn test:e2e:local
+  abbr -a ytew yarn test:e2e:local:watch
+  abbr -a yi yarn install
+  abbr -a yb yarn betterer
 #+end_src
 
 ** Git abbreviations
