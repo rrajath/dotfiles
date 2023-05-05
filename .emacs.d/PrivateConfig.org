@@ -666,6 +666,15 @@ Package: [[https://github.com/oantolin/embark][Embark]]
     (add-hook 'prog-mode-hook #'highlight-symbol-mode)
     (add-hook 'prog-mode-hook #'highlight-symbol-nav-mode))
 #+end_src
+** Auto Scrolling
+I don’t want emacs to scroll half a page when I reach the top or bottom of the screen. Setting these variables help in scrolling lines one by one and maintain an offset of 5 lines on either ends.
+
+#+begin_src emacs-lisp
+  (setq scroll-conservatively 10000)
+  (setq scroll-margin 5)
+  (setq scroll-step 1)
+#+end_src
+
 * Keybindings
 ** Make ESC work better
 Making =ESC= work like how it works in other programs - cancelling the operation

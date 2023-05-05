@@ -280,6 +280,10 @@ soon as Emacs loads."
   (add-hook 'prog-mode-hook #'highlight-symbol-mode)
   (add-hook 'prog-mode-hook #'highlight-symbol-nav-mode))
 
+(setq scroll-conservatively 10000)
+(setq scroll-margin 5)
+(setq scroll-step 1)
+
 ;; Making ESC key work like an ESC key by exiting/canceling stuff
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
