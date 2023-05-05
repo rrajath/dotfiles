@@ -1282,21 +1282,6 @@ Other buffer group by `centaur-tabs-get-group-name' with project name."
         ("DONE" . (:foreground "#5c6267" :weight bold))
         ("KILL" . (:foreground "#ee7570" :weight bold))))
 
-(setq my-fixed-pitch-font "JetBrains Mono")
-(setq my-variable-pitch-font "Raleway")
-
-;; Set the fixed pitch face
-(set-face-attribute 'fixed-pitch nil
-                    :font my-fixed-pitch-font
-                    :height 160
-                    :weight 'light)
-
-;; Set the variable pitch face
-(set-face-attribute 'variable-pitch nil
-                    :font my-variable-pitch-font
-                    :height 150
-                    :weight 'regular)
-
 (set-face-attribute 'org-document-title nil :font my-variable-pitch-font :weight 'regular :height 1.5)
 
 (dolist (face '((org-level-1 . 1.3)
