@@ -38,8 +38,10 @@ soon as Emacs loads."
                  (cons 'height 83))
     )))
 
-(setq use-package-always-ensure t)
 (setq use-package-verbose t)
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                       ("org" . "https://orgmode.org/elpa/")
+                       ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
