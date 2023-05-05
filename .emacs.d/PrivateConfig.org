@@ -1413,16 +1413,9 @@ Package: [[https://github.com/bbatsov/crux][crux]]
 
 #+begin_src emacs-lisp
   (use-package crux
-    :defer 2)
+    :defer t)
 #+end_src
 
-** Writegood
-This package is to identify bad writing and help replace certain words/phrases in the sentence to make it better.
-Package: [[https://github.com/bnbeckwith/writegood-mode][writegood-mode]]
-
-#+begin_src emacs-lisp
-  (use-package writegood-mode)
-#+end_src
 ** Centaur Tabs
 Package: [[https://github.com/ema2159/centaur-tabs][centaur-tabs]]
 
