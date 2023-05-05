@@ -933,7 +933,8 @@ Other buffer group by `centaur-tabs-get-group-name' with project name."
   ("C-S-<tab>" . centaur-tabs-backward)
   ("C-<tab>" . centaur-tabs-forward))
 
-(use-package free-keys)
+(use-package free-keys
+  :defer t)
 
 (use-package dired
   :straight nil
