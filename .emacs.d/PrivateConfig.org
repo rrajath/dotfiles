@@ -45,9 +45,7 @@
   - [[#auto-saving-changed-files][Auto-saving changed files]]
   - [[#auto-reverting-changed-files][Auto-reverting changed files]]
   - [[#jumping-around-with-avy][Jumping around with Avy]]
-  - [[#eros-mode][Eros Mode]]
   - [[#hungry-delete][Hungry Delete]]
-  - [[#go-to-last-change][Go to last change]]
   - [[#revert-buffer-noconfirm][Revert buffer NOCONFIRM]]
   - [[#popper][Popper]]
   - [[#undo-tree][Undo Tree]]
@@ -526,17 +524,6 @@ Package: [[https://github.com/abo-abo/avy][avy]]
   (use-package avy
     :commands (avy-goto-char avy-goto-word-0 avy-goto-line))
 #+end_src
-
-** Eros Mode
-While evaluating elisp expressions in a buffer, the eval results will be displayed as an overlay next to the expression instead of the echo area
-Package: [[https://github.com/xiongtx/eros][eros]]
-
-#+begin_src emacs-lisp
-  (use-package eros
-    :defer t)
-  (eros-mode 1)
-#+end_src
-
 ** Hungry Delete
 If there are multiple consecutive whitespaces, I don't want to repeatedly hit delete to remove all the whitespaces. Instead, I just want to hit it once.
 Package: [[https://github.com/nflath/hungry-delete][hungry-delete]]
@@ -547,14 +534,6 @@ Package: [[https://github.com/nflath/hungry-delete][hungry-delete]]
     :config
     (setq hungry-delete-join-reluctantly t))
   (global-hungry-delete-mode)
-#+end_src
-
-** Go to last change
-As I make edits in different parts of the file, I want to go to last change and by default emacs gives the ability to do this only by explicitly setting a mark and then jumping to that mark. This is too tedious. This package takes care of going to last change with the keybinding =g ;=
-Package: [[https://github.com/camdez/goto-last-change.el][goto-last-change]]
-
-#+begin_src emacs-lisp
-  (use-package goto-last-change)
 #+end_src
 
 ** Revert buffer NOCONFIRM
