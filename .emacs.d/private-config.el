@@ -816,12 +816,6 @@ folder, otherwise delete a word"
   (setq consult-narrow-key "<") ;; (kbd "C-+")
   )
 
-(defun rr/get-project-root ()
-  (when (fboundp 'projectile-project-root)
-    (projectile-project-root)))
-
-(setq consult-project-root-function #'rr/get-project-root)
-
 (use-package corfu
   :ensure t
   ;; Optional customizations
@@ -992,14 +986,6 @@ Other buffer group by `centaur-tabs-get-group-name' with project name."
 
   (use-package diredfl
     :defer t))
-
-(use-package projectile
-  :diminish projectile-mode
-  :config (projectile-mode)
-  :init
-  (when (file-directory-p "~/code")
-    (setq projectile-project-search-path '("~/code")))
-  (setq projectile-switch-project-action #'projectile-dired))
 
 (use-package diff-hl)
 (global-diff-hl-mode)
