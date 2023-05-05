@@ -178,17 +178,11 @@ soon as Emacs loads."
 (use-package avy
   :commands (avy-goto-char avy-goto-word-0 avy-goto-line))
 
-(use-package eros
-  :defer t)
-(eros-mode 1)
-
 (use-package hungry-delete
   :defer 2
   :config
   (setq hungry-delete-join-reluctantly t))
 (global-hungry-delete-mode)
-
-(use-package goto-last-change)
 
 (defun rr/revert-buffer-no-confirm ()
   "Revert the buffer, but don't ask for confirmation"
