@@ -587,6 +587,7 @@ Package: [[https://github.com/karthink/popper][popper]]
             "\\*vterm\\*"
             "\\*Excorporate\\*"
             "\\*xref\\*"
+            eat-mode
             help-mode
             helpful-mode
             compilation-mode
@@ -1619,18 +1620,24 @@ Projectile's function to invoke terminal in project root only opens it in full s
             (equal t (projectile-mode)))
            (vterm-toggle))
           (t (projectile-with-default-dir (projectile-acquire-root)
-               (vterm-toggle)))))
+                                          (vterm-toggle)))))
 #+end_src
 
+*** Eat
+#+begin_src emacs-lisp
+  (use-package eat
+    :defer t)
+#+end_src
 ** Languages
 *** Aphelia for auto-format
 Package: [[https://github.com/radian-software/apheleia][aphelia]]
 
 #+begin_src emacs-lisp
-(use-package apheleia
-  :ensure t
-  :config
-  (apheleia-global-mode +1))
+  (use-package apheleia
+    :ensure t
+    :hook ((typescriptreact-mode . aphelia-mode))
+    :config
+    (apheleia-global-mode +1))
 #+end_src
 *** Treesitter
 Found a working setup here: https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022
