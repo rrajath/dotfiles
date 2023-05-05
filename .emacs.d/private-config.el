@@ -277,7 +277,7 @@ soon as Emacs loads."
   (setq prefix-help-command #'embark-prefix-help-command)
 
   :config
-
+  (keymap-set minibuffer-local-map "M-k" "C-. k y")
   ;; Hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
