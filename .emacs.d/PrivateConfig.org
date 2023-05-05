@@ -359,6 +359,7 @@ Subword mode is great when you have to deal with camel case (or pascal case) str
 #+begin_src emacs-lisp
   (global-subword-mode 1)
 #+end_src
+
 *** Confirm on Kill
 Sometimes I hit =Cmd+q= by accident. I want to avoid this by setting the confirm on kill variable to true.
 #+begin_src emacs-lisp
@@ -370,11 +371,15 @@ Sometimes I hit =Cmd+q= by accident. I want to avoid this by setting the confirm
 #+begin_src emacs-lisp
   (add-to-list 'completion-ignored-extensions ".DS_Store")
 #+end_src
+
 *** Repeat Mode
+
 #+begin_src emacs-lisp
   (repeat-mode)
 #+end_src
+
 *** Other basics
+
 #+begin_src emacs-lisp  
   (save-place-mode +1)
   (electric-pair-mode +1)
@@ -1298,6 +1303,7 @@ Package: [[https://github.com/oantolin/orderless][orderless]]
           completion-category-defaults nil
           completion-category-overrides '((file (styles . (partial-completion))))))
 #+end_src
+
 ** Consult
 Package: [[https://github.com/minad/consult][consult]]
 *** Consult package setup
