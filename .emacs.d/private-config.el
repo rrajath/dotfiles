@@ -670,7 +670,6 @@ soon as Emacs loads."
    '(";" . meow-reverse)
    '("," . meow-inner-of-thing)
    '("." . meow-bounds-of-thing)
-   '("M-j" . persp-prev)
    '("C-;" . popper-kill-latest-popup)
    '("C-S-s" . consult-line)
    '("C-u" . meow-page-up)
