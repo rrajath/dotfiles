@@ -880,7 +880,7 @@ folder, otherwise delete a word"
   (centaur-tabs-mode t)
   (setq
    centaur-tabs-cycle-scope 'tabs
-   centaur-tabs-style "wave"
+   centaur-tabs-style "box"
    centaur-tabs-set-icons t
    centaur-tabs-gray-out-icons 'buffer
    centaur-tabs-height 32
