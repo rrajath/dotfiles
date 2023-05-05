@@ -1145,56 +1145,56 @@ Other buffer group by `centaur-tabs-get-group-name' with project name."
   )
 
 (defun rr/org-path (path)
-    (expand-file-name path org-directory))
+  (expand-file-name path org-directory))
 
-  (defun rr/org-mode-setup ()
-    (org-indent-mode)
-    (variable-pitch-mode 1)
-    (auto-fill-mode 0)
-    (visual-line-mode)
-    (setq org-directory "/ssh:rrajath@192.168.0.218#522:/var/services/homes/rrajath/Dropbox/org-mode")
-    (setq org-agenda-files (list org-directory))
-    (setq org-capture-templates (rr/set-org-capture-templates))
-    (setq org-todo-keywords
-          '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "CODE(c)" "FDBK(f)" "|" "DONE(d!)" "KILL(k!)")
-            ))
-    (setq org-id-link-to-org-use-id 'use-existing))
+(defun rr/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (auto-fill-mode 0)
+  (visual-line-mode)
+  (setq org-directory "/ssh:rrajath@192.168.0.218#522:/var/services/homes/rrajath/Dropbox/org-mode")
+  (setq org-agenda-files (list org-directory))
+  (setq org-capture-templates (rr/set-org-capture-templates))
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "CODE(c)" "FDBK(f)" "|" "DONE(d!)" "KILL(k!)")
+          ))
+  (setq org-id-link-to-org-use-id 'use-existing))
 
-  (use-package org
-    :hook (org-mode . rr/org-mode-setup)
-    :config
-;;    (rr/org-mode-setup)
-    (setq org-ellipsis " ▾"
-          org-hide-emphasis-markers t
-          org-log-done 'time
-          org-log-into-drawer t
-          ;; org-adapt-indentation t
-          ;; org-element-use-cache nil
-          org-special-ctrl-a/e t
-          org-insert-heading-respect-content t
-          org-tags-column -70
-          org-agenda-start-with-log-mode t
-          org-agenda-skip-scheduled-if-done t
-          org-agenda-skip-deadline-if-done t
-          org-agenda-include-deadlines t
-          org-agenda-block-separator nil
-          org-agenda-tags-column 100
-          org-agenda-compact-blocks t
-          org-agenda-include-diary t
-          org-catch-invisible-edits 'smart
-          org-fontify-whole-heading-line t
-          org-ctrl-k-protect-subtree t
-          org-cycle-separator-lines 0
-          org-refile-use-outline-path 'file
-          org-outline-path-complete-in-steps nil
-          org-refile-allow-creating-parent-nodes 'confirm
-          org-refile-targets
-          '((nil :maxlevel . 6)
-            (org-agenda-files :maxlevel . 6)))
+(use-package org
+  :hook (org-mode . rr/org-mode-setup)
+  :config
+  ;;    (rr/org-mode-setup)
+  (setq org-ellipsis " ▾"
+        org-hide-emphasis-markers t
+        org-log-done 'time
+        org-log-into-drawer t
+        ;; org-adapt-indentation t
+        ;; org-element-use-cache nil
+        org-special-ctrl-a/e t
+        org-insert-heading-respect-content t
+        org-tags-column -70
+        org-agenda-start-with-log-mode t
+        org-agenda-skip-scheduled-if-done t
+        org-agenda-skip-deadline-if-done t
+        org-agenda-include-deadlines t
+        org-agenda-block-separator nil
+        org-agenda-tags-column 100
+        org-agenda-compact-blocks t
+        org-agenda-include-diary t
+        org-catch-invisible-edits 'smart
+        org-fontify-whole-heading-line t
+        org-ctrl-k-protect-subtree t
+        org-cycle-separator-lines 0
+        org-refile-use-outline-path 'file
+        org-outline-path-complete-in-steps nil
+        org-refile-allow-creating-parent-nodes 'confirm
+        org-refile-targets
+        '((nil :maxlevel . 6)
+          (org-agenda-files :maxlevel . 6)))
 
-    (advice-add 'org-refile :after 'org-save-all-org-buffers))
+  (advice-add 'org-refile :after 'org-save-all-org-buffers))
 
-  (require 'org-indent)
+(require 'org-indent)
 
 (use-package ox-gfm
   :after org)

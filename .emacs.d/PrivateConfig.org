@@ -1812,7 +1812,7 @@ Set the directory for auto saving persp sessions
   (use-package org
     :hook (org-mode . rr/org-mode-setup)
     :config
-;;    (rr/org-mode-setup)
+    ;;    (rr/org-mode-setup)
     (setq org-ellipsis " ▾"
           org-hide-emphasis-markers t
           org-log-done 'time
