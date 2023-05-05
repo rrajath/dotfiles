@@ -1481,8 +1481,10 @@ Package: [[https://github.com/ema2159/centaur-tabs][centaur-tabs]]
 This package shows a list of unbound keys so that it’s easy to pick one while assigning a keybinding to a function
 
 #+begin_src emacs-lisp
-  (use-package free-keys)
+  (use-package free-keys
+    :defer t)
 #+end_src
+
 * Dired
 File management with dired
 
