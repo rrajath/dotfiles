@@ -734,9 +734,10 @@ I constantly hit =C-w= to delete words and currently it’s bound to delete regi
   (keymap-global-set "C-s" 'save-buffer)
   (keymap-global-set "s-[" 'persp-prev)
   (keymap-global-set "s-]" 'persp-next)
+  (keymap-global-set "s-r" 'rr/revert-buffer-no-confirm)
   (keymap-global-set "M-o" 'completion-at-point)
   (keymap-global-set "C-S-u" 'universal-argument)
-  #+end_src
+#+end_src
 ** Meow
 *** Custom Functions
 This section has all the custom functions I use for Meow Mode. Most of them are written to make it work like Helix.
@@ -846,6 +847,7 @@ This keymap is used for navigation. A lot of the functions here try to emulate H
       (define-key keymap (kbd "r") #'rr/revert-buffer-no-confirm)
       (define-key keymap (kbd "R") #'revert-buffer)
       (define-key keymap (kbd "i") #'ibuffer)
+      (define-key keymap (kbd "o") #'centaur-tabs-kill-other-buffers-in-current-group)
       keymap))
 
   ;; define an alias for your keymap
@@ -1028,6 +1030,23 @@ This keymap is used for navigation. A lot of the functions here try to emulate H
   ;; define an alias for your keymap
   (defalias 'meow-avy-keymap meow-avy-keymap)
 #+end_src
+**** Project Keymap
+#+begin_src emacs-lisp
+  (defvar meow-project-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "f") #'project-find-file)
+      (define-key keymap (kbd "D") #'project-find-dir)
+      (define-key keymap (kbd "d") #'project-dired)
+      (define-key keymap (kbd "m") #'magit-project-status)
+      (define-key keymap (kbd "k") #'project-kill-buffers)
+      (define-key keymap (kbd "s") #'project-switch-project)
+      (define-key keymap (kbd "c") #'consult-project-buffer)
+      (define-key keymap (kbd "/") #'consult-ripgrep)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-project-keymap meow-project-keymap)
+#+end_src
 **** Eglot/Flymake Keymap
 #+begin_src emacs-lisp
   (defvar meow-eglot-keymap
@@ -1038,6 +1057,7 @@ This keymap is used for navigation. A lot of the functions here try to emulate H
       (define-key keymap (kbd "p") #'flymake-goto-prev-error)
       (define-key keymap (kbd "s") #'flymake-show-project-diagnostics)
       (define-key keymap (kbd "r") #'eglot-rename)
+      (define-key keymap (kbd "R") #'eglot-reconnect)
       (define-key keymap (kbd "c") #'consult-flymake)
       keymap))
 
@@ -1107,6 +1127,7 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("j" . meow-avy-keymap)
      '("f" . meow-file-keymap)
      '("l" . meow-eglot-keymap)
+     '("p" . meow-project-keymap)
      '("u" . meow-util-keymap)
      '("w" . meow-window-keymap)
      '("o" . meow-org-keymap)
@@ -1129,7 +1150,7 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("," . meow-inner-of-thing)
      '("." . meow-bounds-of-thing)
      '("M-j" . persp-prev)
-     '("M-k" . persp-next)
+     ;; '("M-k" . persp-next)
      '("C-;" . popper-kill-latest-popup)
      '("C-S-s" . consult-line)
      '("C-u" . meow-page-up)
@@ -1150,6 +1171,7 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("e" . meow-block)
      '("E" . meow-to-block)
      '("f" . meow-find)
+     '("F" . eglot-code-actions)
      '("g" . meow-nav-keymap)
      '("G" . meow-grab)
      '("h" . meow-left)
@@ -1165,6 +1187,7 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("m" . meow-mark-word)
      '("M" . meow-mark-symbol)
      '("n" . meow-search)
+     '("N" . flymake-goto-next-error)
      '("o" . meow-open-below)
      '("O" . meow-open-above)
      '("p" . meow-yank)
