@@ -1323,18 +1323,6 @@ Sets up some basic hooks, keybindings, theme, etc.
     (setq consult-narrow-key "<") ;; (kbd "C-+")
     )
 #+end_src
-
-*** Projectile related
-Copied over from [[https://github.com/daviwil/dotfiles/blob/master/Emacs.org#consult-commands][David Wilson's config on Consult]].
-
-#+begin_src emacs-lisp
-  (defun rr/get-project-root ()
-    (when (fboundp 'projectile-project-root)
-      (projectile-project-root)))
-
-  (setq consult-project-root-function #'rr/get-project-root)
-#+end_src
-
 ** Corfu
 Found it here: https://gitlab.com/nathanfurnal/dotemacs/-/blob/master/init.el#L251
 #+begin_src emacs-lisp
@@ -1559,20 +1547,6 @@ File management with dired
 #+end_src
 
 * Development
-** Projectile
-This is great for managing projects. It is good at finding project roots and provides many other functions.
-Package: [[https://github.com/bbatsov/projectile][projectile]]
-
-#+begin_src emacs-lisp
-  (use-package projectile
-    :diminish projectile-mode
-    :config (projectile-mode)
-    :init
-    (when (file-directory-p "~/code")
-      (setq projectile-project-search-path '("~/code")))
-    (setq projectile-switch-project-action #'projectile-dired))
-#+end_src
-
 ** Git Gutter
 Highlight addition, changes or deletion of lines on the left margin of each file that's inside a git repository. This helps in quickly identifying the changes in a file.
 Package: [[https://github.com/dgutov/diff-hl][diff-hl]]
