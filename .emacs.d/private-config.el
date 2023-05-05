@@ -1072,10 +1072,24 @@ Other buffer group by `centaur-tabs-get-group-name' with project name."
   (add-hook 'css-mode-hook (lambda () (tsi-css-mode 1)))
   (add-hook 'scss-mode-hook (lambda () (tsi-scss-mode 1))))
 
+(straight-use-package
+ '(flymake-popon
+   :type git
+   :repo "https://codeberg.org/akib/emacs-flymake-popon.git"))
+
+(use-package jsonrpc
+  :defer t)
+
 (use-package eglot
-  :hook ((typescriptreact-mode . eglot-ensure))
+  :hook (
+         (typescriptreact-mode . eglot-ensure)
+         (typescriptreact-mode . flymake-popon-mode)
+         )
   :config
   (setq eglot-confirm-server-initiated-edits nil))
+
+(use-package restclient
+  :defer t)
 
 (use-package perspective
   :bind (("C-x k" . persp-kill-buffer*))

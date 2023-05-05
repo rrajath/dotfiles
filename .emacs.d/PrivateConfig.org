@@ -1678,13 +1678,42 @@ Found a working setup here: https://vxlabs.com/2022/06/12/typescript-development
     (add-hook 'css-mode-hook (lambda () (tsi-css-mode 1)))
     (add-hook 'scss-mode-hook (lambda () (tsi-scss-mode 1))))
 #+end_src
-*** Eglot
+
+*** Flymake diagnostics as popups
+This is to display any errors or warnings as popups instead of the echo area. The popups are displayed when the point is on a variable that has an error/warning. This is better than what is usually displayed in the echo area (by default) because the text in the echo area gets cut off at the end.
+Package: [[https://codeberg.org/akib/emacs-flymake-popon][flymake-popon]]
+
 #+begin_src emacs-lisp
+  (straight-use-package
+   '(flymake-popon
+     :type git
+     :repo "https://codeberg.org/akib/emacs-flymake-popon.git"))
+#+end_src
+
+*** Eglot
+Using the built-in eglot instead of LSP. I previously used LSP and found it to be pretty heavy. In my experience eglot is lighter and gives me pretty much all the functionality that I need.
+
+#+begin_src emacs-lisp
+  (use-package jsonrpc
+    :defer t)
+
   (use-package eglot
-    :hook ((typescriptreact-mode . eglot-ensure))
+    :hook (
+           (typescriptreact-mode . eglot-ensure)
+           (typescriptreact-mode . flymake-popon-mode)
+           )
     :config
     (setq eglot-confirm-server-initiated-edits nil))
 #+end_src
+** Rest Client
+Make Emacs execute rest calls
+*Package*: [[https://github.com/pashky/restclient.el][restclient]]
+
+#+begin_src emacs-lisp
+  (use-package restclient
+    :defer t)
+#+end_src
+
 * Buffers
 ** Perspectives
 *** Basic Setup
