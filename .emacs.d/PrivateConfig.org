@@ -12,13 +12,12 @@
   - [[#personal-information][Personal Information]]
   - [[#why-literate-config][Why literate config?]]
 - [[#current-issues][Current Issues]]
-  - [[#hitting-x-in-evil-mode-deletes-alternate-characters-instead-of-the-one-just-behind-the-cursor][Hitting X in evil mode deletes alternate characters instead of the one just behind the cursor]]
 - [[#first-things-first][First things first]]
   - [[#startup-performance][Startup Performance]]
   - [[#frame-management][Frame Management]]
     - [[#detect-display-size][Detect display size]]
     - [[#set-frame-size-and-position][Set frame size and position]]
-  - [[#package-management-unused][Package Management (unused)]]
+  - [[#package-management][Package Management]]
   - [[#using-straight][Using Straight]]
   - [[#garbage-collector-magic-hack][Garbage Collector Magic Hack]]
   - [[#keep-emacsd-clean][Keep .emacs.d clean]]
@@ -207,13 +206,6 @@ Literate config has a few benefits:
 - Easy to maintain. You never touch the actual config, you only update this .org file and make it generate the actual source file
 - Easy to publish. If you want to publish your config online, it's super easy. GitHub, for example, natively supports org the same way it supports Markdown. So, these org files are rendered nicely, just as regular documentation.
 * Current Issues
-** DONE Hitting =X= in evil mode deletes alternate characters instead of the one just behind the cursor
-CLOSED: [2022-12-23 Fri 00:18]
-:LOGBOOK:
-- Note taken on [2022-12-23 Fri 00:18] \\
-  No longer using evil. Resolving.
-:END:
-In vim normal mode, hitting =x= would delete the character right in front of the cursor whereas hitting =X= /should/ delete the character just before the cursor, but it doesn't. For example, if there is a word called "emacs" and the cursor was right after the letter 's', hitting =X= twice would delete the letters 'c' and 'm'.
 * First things first
 ** Startup Performance
 
