@@ -227,6 +227,7 @@ soon as Emacs loads."
           "\\*vterm\\*"
           "\\*Excorporate\\*"
           "\\*xref\\*"
+          eat-mode
           help-mode
           helpful-mode
           compilation-mode
@@ -1018,10 +1019,14 @@ Other buffer group by `centaur-tabs-get-group-name' with project name."
           (equal t (projectile-mode)))
          (vterm-toggle))
         (t (projectile-with-default-dir (projectile-acquire-root)
-             (vterm-toggle)))))
+                                        (vterm-toggle)))))
+
+(use-package eat
+  :defer t)
 
 (use-package apheleia
   :ensure t
+  :hook ((typescriptreact-mode . aphelia-mode))
   :config
   (apheleia-global-mode +1))
 
