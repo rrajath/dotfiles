@@ -407,6 +407,7 @@ soon as Emacs loads."
     (define-key keymap (kbd "r") #'rr/revert-buffer-no-confirm)
     (define-key keymap (kbd "R") #'revert-buffer)
     (define-key keymap (kbd "i") #'ibuffer)
+    (define-key keymap (kbd "o") #'centaur-tabs-kill-other-buffers-in-current-group)
     keymap))
 
 ;; define an alias for your keymap
@@ -562,6 +563,21 @@ soon as Emacs loads."
 ;; define an alias for your keymap
 (defalias 'meow-avy-keymap meow-avy-keymap)
 
+(defvar meow-project-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "f") #'project-find-file)
+    (define-key keymap (kbd "D") #'project-find-dir)
+    (define-key keymap (kbd "d") #'project-dired)
+    (define-key keymap (kbd "m") #'magit-project-status)
+    (define-key keymap (kbd "k") #'project-kill-buffers)
+    (define-key keymap (kbd "s") #'project-switch-project)
+    (define-key keymap (kbd "c") #'consult-project-buffer)
+    (define-key keymap (kbd "/") #'consult-ripgrep)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-project-keymap meow-project-keymap)
+
 (defvar meow-eglot-keymap
   (let ((keymap (make-keymap)))
     (define-key keymap (kbd "a") #'eglot-code-actions)
@@ -570,6 +586,7 @@ soon as Emacs loads."
     (define-key keymap (kbd "p") #'flymake-goto-prev-error)
     (define-key keymap (kbd "s") #'flymake-show-project-diagnostics)
     (define-key keymap (kbd "r") #'eglot-rename)
+    (define-key keymap (kbd "R") #'eglot-reconnect)
     (define-key keymap (kbd "c") #'consult-flymake)
     keymap))
 
@@ -631,6 +648,7 @@ soon as Emacs loads."
    '("j" . meow-avy-keymap)
    '("f" . meow-file-keymap)
    '("l" . meow-eglot-keymap)
+   '("p" . meow-project-keymap)
    '("u" . meow-util-keymap)
    '("w" . meow-window-keymap)
    '("o" . meow-org-keymap)
@@ -653,7 +671,6 @@ soon as Emacs loads."
    '("," . meow-inner-of-thing)
    '("." . meow-bounds-of-thing)
    '("M-j" . persp-prev)
-   '("M-k" . persp-next)
    '("C-;" . popper-kill-latest-popup)
    '("C-S-s" . consult-line)
    '("C-u" . meow-page-up)
@@ -674,6 +691,7 @@ soon as Emacs loads."
    '("e" . meow-block)
    '("E" . meow-to-block)
    '("f" . meow-find)
+   '("F" . eglot-code-actions)
    '("g" . meow-nav-keymap)
    '("G" . meow-grab)
    '("h" . meow-left)
@@ -689,6 +707,7 @@ soon as Emacs loads."
    '("m" . meow-mark-word)
    '("M" . meow-mark-symbol)
    '("n" . meow-search)
+   '("N" . flymake-goto-next-error)
    '("o" . meow-open-below)
    '("O" . meow-open-above)
    '("p" . meow-yank)
