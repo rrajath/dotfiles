@@ -54,13 +54,11 @@
   - [[#embark][Embark]]
   - [[#embrace][Embrace]]
   - [[#highlight-symbol][Highlight Symbol]]
+  - [[#auto-scrolling][Auto Scrolling]]
 - [[#keybindings][Keybindings]]
   - [[#make-esc-work-better][Make ESC work better]]
   - [[#switch-buffers-easily][Switch buffers easily]]
   - [[#which-key][Which key]]
-  - [[#hydra][Hydra]]
-    - [[#package-setup][Package Setup]]
-    - [[#handle-window-resize][Handle Window Resize]]
   - [[#global-keys][Global keys]]
   - [[#meow][Meow]]
     - [[#custom-functions][Custom Functions]]
@@ -696,29 +694,6 @@ Package: [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
     (which-key-mode)
     (setq which-key-idle-delay 0.3))
 #+end_src
-
-** Hydra
-*** Package Setup
-With a prefix set, Hydra helps you run similar commands in succession without having to run them with the prefix each time. For example, resizing windows or text scaling become much easier with this.
-Package: [[https://github.com/abo-abo/hydra][Hydra]]
-
-#+begin_src emacs-lisp
-  (use-package hydra
-    :defer t)
-#+end_src
-
-*** Handle Window Resize
-This keybinding is to easily resize windows - horizontal or vertical
-
-#+begin_src emacs-lisp
-  (defhydra hydra-window-resize (global-map "C->")
-    "resize"
-    ("l" enlarge-window-horizontally "enlarge-horizontal")
-    ("h" shrink-window-horizontally "shrink-horizontal")
-    ("j" enlarge-window "enlarge-vertical")
-    ("k" shrink-window "shrink-vertical"))
-#+end_src
-
 ** Global keys
 I constantly hit =C-w= to delete words and currently it’s bound to delete region, which deletes a huge chunk of text. This keybinding will give a better experience in deleting words.
 #+begin_src emacs-lisp

@@ -292,20 +292,11 @@ soon as Emacs loads."
   (which-key-mode)
   (setq which-key-idle-delay 0.3))
 
-(use-package hydra
-  :defer t)
-
-(defhydra hydra-window-resize (global-map "C->")
-  "resize"
-  ("l" enlarge-window-horizontally "enlarge-horizontal")
-  ("h" shrink-window-horizontally "shrink-horizontal")
-  ("j" enlarge-window "enlarge-vertical")
-  ("k" shrink-window "shrink-vertical"))
-
 (keymap-global-set "C-w" 'backward-kill-word)
 (keymap-global-set "C-s" 'save-buffer)
 (keymap-global-set "s-[" 'persp-prev)
 (keymap-global-set "s-]" 'persp-next)
+(keymap-global-set "s-r" 'rr/revert-buffer-no-confirm)
 (keymap-global-set "M-o" 'completion-at-point)
 (keymap-global-set "C-S-u" 'universal-argument)
 
