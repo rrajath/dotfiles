@@ -32,128 +32,129 @@ This can be done by doing the following:
 - Going to the top of the file (=g g=)
 - Refreshing the local setup (=C-c C-c=)
 - Tangling all the code blocks in this file (=C-c C-v t=)
-  
+* Rationale
+I use Warp as my terminal which is built on Rust and has a very rich set of features that help with productivity. Some of the notable features are worth listing here because they take care of some of the features some plugins offer that keeps my config and plugin dependency light.
+
+Here are some of those features:
+- *Auto expand aliases*. Warp automatically expands aliases defined in shell configs (like bashrc or zshrc). Warp treats them as abbreviations and this removes the dependency on zsh-abbr plugin which offers that functionality.
+- *Syntax highlighting*. Warp highlights syntax and also shows errors or typos in commands which eliminates the need for the syntax highlighting plugin.
+- *Auto suggestions*. Warp suggests commands and displays them in shell as auto completes. This is exactly what zsh-autosuggestions does and I don’t need it as a plugin anymore.
+
+Warp also warpifies shells that you ssh into and gives a native experience out of the box with no configuration needed. So, any ssh session or even docker console will immediately get all the Warp features.
 * Prerequisites
 - First download oh-my-zsh from github: https://ohmyz.sh
 - Tangle [[./dot_zsh_aliases.org][dot_zsh_aliases]]
 - Tangle [[./dot_zsh_aliases_amazon.org][dot_zsh_aliases_amazon]]
+* First things first
+** Pre-requisites
+*** Install Antidote
+Run the following command. It installs antidote in the ~$HOME~ directory.
 
-* Export the path to oh-my-zsh installation
-#+begin_src bash
-# Path to your oh-my-zsh installation.
-export ZSH=/Users/rajath/.oh-my-zsh
-
+#+begin_src bash :tangle no
+git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-$HOME}/.antidote
 #+end_src
-
-* Theme Selection
-#+begin_src bash
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="sorin"
-
-#+end_src
-
-* Updating oh-my-zsh
-#+begin_src bash
-# Uncomment the following line to disable bi-weekly auto-update checks.
-DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-export UPDATE_ZSH_DAYS=20
-
-#+end_src
-
-* Utilities
+* Setting the main PATH variable
+Following is a nicer implementation of the PATH variable wherein adding new paths doesn't involve appending to a long list of paths on the same line. Instead new paths are added on new lines for better readability.
 
 #+begin_src bash
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+  function path() {
+      if [[ -d "$1" ]] ; then
+          if [[ -z "$PATH" ]] ; then
+              export PATH=$1
+          else
+              export PATH=$PATH:$1
+          fi
+      fi
+  }
 
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-#+end_src
-
-* Plugins
-
-#+begin_src bash
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(zsh-z git colorize zsh-autosuggestions zsh-syntax-highlighting)
+  export PATH=''
+  path /usr/bin
+  path /bin
+  path /usr/sbin
+  path /sbin
+  path /usr/local/bin
+  path /usr/local/sbin
+  path ~/bin
+  path /opt/homebrew/bin
+  # path ~/.emacs.d/bin
+  # path /usr/local/Cellar/emacs-plus@27/27.2/bin
+  # path /Applications/kitty.app/Contents/MacOS
 
 #+end_src
 
 * User Configuration
-#+begin_src bash
-# If we have a glob this will expand it
-setopt GLOB_COMPLETE
-setopt PUSHD_MINUS
+#+begin_src bash :tangle no
+  # If we have a glob this will expand it
+  setopt GLOB_COMPLETE
+  setopt PUSHD_MINUS
 
-# Make cd=pushd
-setopt AUTO_PUSHD
+  # Make cd=pushd
+  setopt AUTO_PUSHD
 
-# No more annoying pushd messages
-setopt PUSHD_SILENT
+  # No more annoying pushd messages
+  setopt PUSHD_SILENT
 
-# allow tab completion in the middle of a word
-setopt COMPLETE_IN_WORD
+  # allow tab completion in the middle of a word
+  setopt COMPLETE_IN_WORD
 
-# This will use named dirs when possible
-setopt AUTO_NAME_DIRS
+  # This will use named dirs when possible
+  setopt AUTO_NAME_DIRS
 
-export EDITOR="vi"
+  export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-11.jdk/Contents/Home"
+  export EMACS="/opt/homebrew/bin/emacs"
 
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_211.jdk/Contents/Home/"
-export EMACS="/usr/local/Cellar/emacs-plus@27/27.2/bin/emacs"
+  # You may need to manually set your language environment
+  # export LANG=en_US.UTF-8
 
-source $ZSH/oh-my-zsh.sh
+  # Preferred editor for local and remote sessions
+  # if [[ -n $SSH_CONNECTION ]]; then
+  #   export EDITOR='vim'
+  # else
+  #   export EDITOR='mvim'
+  # fi
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+  # Compilation flags
+  # export ARCHFLAGS="-arch x86_64"
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+  # ssh
+  # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
-
-# . `brew --prefix`/etc/profile.d/z.sh
+  # . `brew --prefix`/etc/profile.d/z.sh
 
 #+end_src
 
+* Utilities
+#+begin_src bash
+  COMPLETION_WAITING_DOTS="true"
+  DISABLE_UNTRACKED_FILES_DIRTY="true"
+  
+  setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
+  setopt AUTO_PUSHD           # Push the current directory visited on the stack.
+  setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
+  setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
+#+end_src
+* Environment Variables
+#+begin_src bash 
+  export POPPY_DIRECT_CONNECT=t
+  export VAULT_ADDR=https://vault.robot.car:8200
+  export N_PREFIX=~
+  export HTTPS_PROXY=http://127.0.0.1:19995
+  export ANDROID_HOME=$HOME/Library/Android/sdk
+
+  export EDITOR="hx"
+  export VISUAL="vi"
+
+  export ZDOTDIR=$HOME
+  export HISTFILE="$ZDOTDIR/.zhistory"    # History filepath
+  export HISTSIZE=10000                   # Maximum events for internal history
+  export SAVEHIST=10000                   # Maximum events in history file
+
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+  export EDITOR="emacsclient -a /usr/local/bin/emacs"
+#+end_src
 * Aliases
 There are some global aliases and there are some amazon specific aliases. Both are stored in separate files. And these files are loaded in this section
 
@@ -172,70 +173,40 @@ There are some global aliases and there are some amazon specific aliases. Both a
 
 #+end_src
 
-* Shell Integration
-iTerm has Shell Integration which gives us some nifty tools to make our lives easier.
+* Zsh Completion System
+Borrowed from: https://thevaluable.dev/zsh-install-configure-mouseless/#zsh-completion-system
 
 #+begin_src bash
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
+  autoload -U compinit; compinit
 #+end_src
 
-* Setting the main PATH variable
-Following is a nicer implementation of the PATH variable wherein adding new paths doesn't involve appending to a long list of paths on the same line. Instead new paths are added on new lines for better readability.
+* Plugins
+[[https://github.com/unixorn/awesome-zsh-plugins?tab=readme-ov-file#plugins][Awesome zsh plugins]]
+#+begin_src text :tangle ~/.zsh_plugins.txt
+  
+#+end_src
 
-#+begin_src bash
-function path() {
-  if [[ -d "$1" ]] ; then
-    if [[ -z "$PATH" ]] ; then
-      export PATH=$1
-    else
-      export PATH=$PATH:$1
-    fi
+** Autojump
+Autojump was installed with ~brew install autojump~ on MacOS.
+On Ubuntu, run ~man autojump~ and grab the command that loads autojump.
+#+begin_src bash :tangle no
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+      [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+  elif [[ "$OSTYPE" == "linux-gnu" ]]; then
+      . /usr/share/autojump/autojump.sh
+  else
+      echo "Unable to load autojump. Unknown OS"
   fi
-}
-
-export PATH=''
-path /usr/bin
-path /bin
-path /usr/sbin
-path /sbin
-path /usr/local/bin
-path /usr/local/sbin
-path ~/bin
-path ~/.emacs.d/bin
-path /usr/local/Cellar/emacs-plus@27/27.2/bin
-path /Applications/kitty.app/Contents/MacOS
-
 #+end_src
-
-* Extras
-Things like fzf, autojump, etc. are currently not working as intended, but I have to get around to fixing it sometime. So, leaving them here.
-
-#+begin_src bash
-[[ -s /Users/rajath/.autojump/etc/profile.d/autojump.sh ]] && source /Users/rajath/.autojump/etc/profile.d/autojump.sh
-
-fpath=(~/.zsh/completion $fpath)
-
-autoload -Uz compinit && compinit -ui
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
-
-export EDITOR="emacsclient -a /usr/local/bin/emacs"
-#+end_src
-
-* Starship
-
-#+begin_src bash
-# eval "$(starship init zsh)"
-#+end_src
-
 * Work Stuff
 If there is a =.zshrc_work= available in the home folder, source it. Else, ignore. The work-specific configuration can be found in =dot_zshrc_work.org=.
 
-#+begin_src bash
+#+begin_src bash :tangle no
 [[ -f $HOME/.zshrc_work ]] && source $HOME/.zshrc_work
+#+end_src
+
+* Load antidote
+#+begin_src bash
+  source ${ZDOTDIR:-$HOME}/.antidote/antidote.zsh
+  antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
 #+end_src

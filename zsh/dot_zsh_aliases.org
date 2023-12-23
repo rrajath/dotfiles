@@ -8,17 +8,42 @@ This contains aliases that are more like utilities and not project or team speci
 * Utilities
 
 #+begin_src bash
-alias ..='cd ..'
-alias l='ls -lrt'
-alias lh='ls -lh'
-alias sz='source ~/.zshrc'
-alias ez='vi ~/.zshrc'
-alias saf='defaults write com.apple.finder AppleShowAllFiles -bool YES'
-alias haf='defaults write com.apple.finder AppleShowAllFiles -bool NO'
-alias e='/usr/local/Cellar/emacs-plus@27/27.1/bin/emacs '
-alias mkcd='_(){ mkdir $1; cd $1; }; _'
-alias fzfp="fzf --preview 'bat --style=numbers --color=always --line-range :500 {}"
-alias emacs='/usr/local/Cellar/emacs-plus@27/27.1/bin/emacs '
-alias gbuom='git branch -u origin/mainline'
-alias resem='emacsclient -e "(kill-emacs)" && doom sync && /usr/local/bin/emacs --daemon && emacsclient -nc'
+  alias ..='cd ..'
+  alias l='ls -lrt'
+  alias lh='ls -lh'
+  alias ez="hx ~/.zshrc"
+  alias sz="source ~/.zshrc"
+  alias saf='defaults write com.apple.finder AppleShowAllFiles -bool YES'
+  alias haf='defaults write com.apple.finder AppleShowAllFiles -bool NO'
+  alias e='/usr/local/Cellar/emacs-plus@27/27.1/bin/emacs '
+  alias mkcd='_(){ mkdir $1; cd $1; }; _'
+  alias fzfp="fzf --preview 'bat --style=numbers --color=always --line-range :500 {}"
+  alias gbuom='git branch -u origin/mainline'
+  alias resem='emacsclient -e "(kill-emacs)" && doom sync && /usr/local/bin/emacs --daemon && emacsclient -nc'
+#+end_src
+
+* Git
+
+#+begin_src bash
+  alias gco="git checkout"
+  alias gst="git status"
+  alias gss="git status -s"
+  alias gcp="git cherry-pick"
+  alias grbc="git rebase --continue"
+  alias grba="git rebase --abort"
+  alias grbi="git rebase -i"
+  alias gup="git pull --rebase"
+  alias ga="git add"
+  alias gb="git branch"
+  alias gsta="git stash"
+  alias gstp="git stash pop"
+#+end_src
+* ~ls~
+
+#+begin_src bash
+  alias ls="exa -l --color=always --group-directories-first"
+  alias la="exa -a --color=always --group-directories-first"
+  alias ll="exa -l --color=always --group-directories-first" 
+  alias lt="exa -aT --color=always --group-directories-first"
+  alias l.=exa -a | egrep "^\."
 #+end_src
