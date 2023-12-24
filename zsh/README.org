@@ -130,19 +130,21 @@ Following is a nicer implementation of the PATH variable wherein adding new path
 #+begin_src bash
   COMPLETION_WAITING_DOTS="true"
   DISABLE_UNTRACKED_FILES_DIRTY="true"
-  
+
   setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
   setopt AUTO_PUSHD           # Push the current directory visited on the stack.
   setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
   setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
 #+end_src
 * Environment Variables
-#+begin_src bash 
-  export POPPY_DIRECT_CONNECT=t
-  export VAULT_ADDR=https://vault.robot.car:8200
-  export N_PREFIX=~
-  export HTTPS_PROXY=http://127.0.0.1:19995
-  export ANDROID_HOME=$HOME/Library/Android/sdk
+#+begin_src bash
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+      export POPPY_DIRECT_CONNECT=t
+      export VAULT_ADDR=https://vault.robot.car:8200
+      export N_PREFIX=~
+      export HTTPS_PROXY=http://127.0.0.1:19995
+      export ANDROID_HOME=$HOME/Library/Android/sdk
+  fi
 
   export EDITOR="hx"
   export VISUAL="vi"
