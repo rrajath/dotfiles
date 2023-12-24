@@ -10,19 +10,21 @@
 
 :CONTENTS:
 - [[#introduction][Introduction]]
+- [[#rationale][Rationale]]
 - [[#prerequisites][Prerequisites]]
-- [[#export-the-path-to-oh-my-zsh-installation][Export the path to oh-my-zsh installation]]
-- [[#theme-selection][Theme Selection]]
-- [[#updating-oh-my-zsh][Updating oh-my-zsh]]
-- [[#utilities][Utilities]]
-- [[#plugins][Plugins]]
-- [[#user-configuration][User Configuration]]
-- [[#aliases][Aliases]]
-- [[#shell-integration][Shell Integration]]
+- [[#first-things-first][First things first]]
+  - [[#pre-requisites][Pre-requisites]]
+    - [[#install-antidote][Install Antidote]]
 - [[#setting-the-main-path-variable][Setting the main PATH variable]]
-- [[#extras][Extras]]
-- [[#starship][Starship]]
+- [[#user-configuration][User Configuration]]
+- [[#utilities][Utilities]]
+- [[#environment-variables][Environment Variables]]
+- [[#aliases][Aliases]]
+- [[#zsh-completion-system][Zsh Completion System]]
+- [[#plugins][Plugins]]
+  - [[#autojump][Autojump]]
 - [[#work-stuff][Work Stuff]]
+- [[#load-antidote][Load antidote]]
 :END:
 
 * Introduction
@@ -76,6 +78,7 @@ Following is a nicer implementation of the PATH variable wherein adding new path
   path /usr/local/sbin
   path ~/bin
   path /opt/homebrew/bin
+  path ~/.cargo/bin
   # path ~/.emacs.d/bin
   # path /usr/local/Cellar/emacs-plus@27/27.2/bin
   # path /Applications/kitty.app/Contents/MacOS
