@@ -15,7 +15,7 @@ This contains aliases that are more like utilities and not project or team speci
   alias sz="source ~/.zshrc"
   alias saf='defaults write com.apple.finder AppleShowAllFiles -bool YES'
   alias haf='defaults write com.apple.finder AppleShowAllFiles -bool NO'
-  alias e='/usr/local/Cellar/emacs-plus@27/27.1/bin/emacs '
+  alias e='emacs --init-directory=~/dotfiles/.emacs.d --debug-init'
   alias mkcd='_(){ mkdir $1; cd $1; }; _'
   alias fzfp="fzf --preview 'bat --style=numbers --color=always --line-range :500 {}"
   alias gbuom='git branch -u origin/mainline'
