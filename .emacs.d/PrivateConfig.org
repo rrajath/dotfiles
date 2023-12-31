@@ -1510,7 +1510,7 @@ File management with dired
     :config
     (setq
      ;; https://github.com/d12frosted/homebrew-emacs-plus/issues/383
-     insert-directory-program "/opt/homebrew/bin/gls"
+     ;;insert-directory-program "/opt/homebrew/bin/gls"
      dired-listing-switches "-agho --group-directories-first"
      dired-omit-files "^\\.[^.].*"
      dired-omit-verbose nil
@@ -1640,7 +1640,7 @@ Package: [[https://github.com/radian-software/apheleia][aphelia]]
 *** Treesitter
 Found a working setup here: https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package tree-sitter
     :ensure t
     :config
@@ -1802,7 +1802,8 @@ Set the directory for auto saving persp sessions
     (variable-pitch-mode 1)
     (auto-fill-mode 0)
     (visual-line-mode)
-    (setq org-directory "/ssh:rrajath@192.168.0.218#522:/var/services/homes/rrajath/Dropbox/org-mode")
+    ;;(setq org-directory "/ssh:rrajath@192.168.0.218#522:/var/services/homes/rrajath/Dropbox/org-mode")
+    (setq org-directory "~/org-mode")
     (setq org-agenda-files (list org-directory))
     (setq org-capture-templates (rr/set-org-capture-templates))
     (setq org-todo-keywords
