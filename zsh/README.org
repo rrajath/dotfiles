@@ -189,7 +189,7 @@ Borrowed from: https://thevaluable.dev/zsh-install-configure-mouseless/#zsh-comp
 * Plugins
 [[https://github.com/unixorn/awesome-zsh-plugins?tab=readme-ov-file#plugins][Awesome zsh plugins]]
 #+begin_src text :tangle ~/.zsh_plugins.txt
-  agkozak/zsh-z
+
 #+end_src
 
 ** Autojump
@@ -204,6 +204,15 @@ On Ubuntu, run ~man autojump~ and grab the command that loads autojump.
       echo "Unable to load autojump. Unknown OS"
   fi
 #+end_src
+
+** zoxide
+This is a CLI tool built in Rust. It was installed using homebrew on MacOS and cargo on linux. It needs some setup in shell.
+[[https://github.com/ajeetdsouza/zoxide][GitHub - ajeetdsouza/zoxide: A smarter cd command. Supports all major shells.]]
+
+#+begin_src shell
+  eval "$(zoxide init zsh)"
+#+end_src
+
 * Work Stuff
 If there is a =.zshrc_work= available in the home folder, source it. Else, ignore. The work-specific configuration can be found in =dot_zshrc_work.org=.
 
