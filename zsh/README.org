@@ -79,6 +79,7 @@ Following is a nicer implementation of the PATH variable wherein adding new path
   path ~/bin
   path /opt/homebrew/bin
   path ~/.cargo/bin
+  path ~/.bun/bin
   # path ~/.emacs.d/bin
   # path /usr/local/Cellar/emacs-plus@27/27.2/bin
   # path /Applications/kitty.app/Contents/MacOS
@@ -188,7 +189,7 @@ Borrowed from: https://thevaluable.dev/zsh-install-configure-mouseless/#zsh-comp
 * Plugins
 [[https://github.com/unixorn/awesome-zsh-plugins?tab=readme-ov-file#plugins][Awesome zsh plugins]]
 #+begin_src text :tangle ~/.zsh_plugins.txt
-  
+  agkozak/zsh-z
 #+end_src
 
 ** Autojump

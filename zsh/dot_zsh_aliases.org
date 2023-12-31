@@ -20,7 +20,7 @@ This contains aliases that are more like utilities and not project or team speci
   alias fzfp="fzf --preview 'bat --style=numbers --color=always --line-range :500 {}"
   alias gbuom='git branch -u origin/mainline'
   alias resem='emacsclient -e "(kill-emacs)" && doom sync && /usr/local/bin/emacs --daemon && emacsclient -nc'
-  alias sshr="ssh rrajath@pihosted.local"
+  alias sshr="ssh rrajath@infiniteloop.local"
 #+end_src
 
 * Git
