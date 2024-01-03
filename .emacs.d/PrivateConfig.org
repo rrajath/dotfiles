@@ -1424,7 +1424,7 @@ Package: [[https://github.com/bbatsov/crux][crux]]
 ** Centaur Tabs
 Package: [[https://github.com/ema2159/centaur-tabs][centaur-tabs]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package centaur-tabs
     :demand
     :config
