@@ -23,6 +23,7 @@
 - [[#zsh-completion-system][Zsh Completion System]]
 - [[#plugins][Plugins]]
   - [[#autojump][Autojump]]
+  - [[#zoxide][zoxide]]
 - [[#work-stuff][Work Stuff]]
 - [[#load-antidote][Load antidote]]
 :END:
@@ -159,7 +160,7 @@ Following is a nicer implementation of the PATH variable wherein adding new path
   [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-  export EDITOR="emacsclient -a /usr/local/bin/emacs"
+#  export EDITOR="emacsclient -a /usr/local/bin/emacs"
 #+end_src
 * Aliases
 There are some global aliases and there are some amazon specific aliases. Both are stored in separate files. And these files are loaded in this section

@@ -18,8 +18,8 @@ This contains aliases that are more like utilities and not project or team speci
   alias e='emacs --init-directory=~/dotfiles/.emacs.d --debug-init'
   alias mkcd='_(){ mkdir $1; cd $1; }; _'
   alias fzfp="fzf --preview 'bat --style=numbers --color=always --line-range :500 {}"
-  alias gbuom='git branch -u origin/mainline'
   alias resem='emacsclient -e "(kill-emacs)" && doom sync && /usr/local/bin/emacs --daemon && emacsclient -nc'
+  alias brs="br -s"
   alias sshr="ssh rrajath@infiniteloop.local"
 #+end_src
 
@@ -38,6 +38,7 @@ This contains aliases that are more like utilities and not project or team speci
   alias gb="git branch"
   alias gsta="git stash"
   alias gstp="git stash pop"
+  alias gp="git push"
 #+end_src
 * ~ls~
 
@@ -47,4 +48,14 @@ This contains aliases that are more like utilities and not project or team speci
   alias ll="exa -l --color=always --group-directories-first" 
   alias lt="exa -aT --color=always --group-directories-first"
   alias l.=exa -a | egrep "^\."
+#+end_src
+
+* ~yarn~
+
+#+begin_src bash
+  alias yt="yarn test"
+  alias ytw="yarn test:watch"
+  alias yb="yarn betterer"
+  alias ylf="yarn lint:fix"
+  alias yp="yarn prep"
 #+end_src
