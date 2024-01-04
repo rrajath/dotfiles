@@ -59,3 +59,11 @@ This contains aliases that are more like utilities and not project or team speci
   alias ylf="yarn lint:fix"
   alias yp="yarn prep"
 #+end_src
+
+* Rpi-specific
+
+#+begin_src bash 
+  if [[ $(hostname) == "infiniteloop" ]]; then
+  		alias bat="batcat"
+  fi
+#+end_src
