@@ -288,6 +288,7 @@ Adding package sources and setting =use-package-always-ensure= to =t=. This sett
     (load bootstrap-file nil 'nomessage))
 
   (straight-use-package 'use-package)
+  (straight-use-package 'org)
 
   (setq straight-use-package-by-default t)
 #+end_src
