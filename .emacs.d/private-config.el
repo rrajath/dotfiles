@@ -464,6 +464,7 @@ soon as Emacs loads."
   (let ((keymap (make-keymap)))
     (define-key keymap (kbd "x") #'org-toggle-checkbox)
     (define-key keymap (kbd "s") #'rr/org-sort-list-by-checkbox-type)
+    (define-key keymap (kbd "S") #'org-sort)
     keymap))
 
 ;; define an alias for your keymap
