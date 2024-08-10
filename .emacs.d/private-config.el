@@ -475,7 +475,7 @@ soon as Emacs loads."
     (define-key keymap (kbd "o") #'org-clock-out)
     (define-key keymap (kbd "c") #'org-clock-cancel)
     (define-key keymap (kbd "d") #'org-clock-display)
-    (define-key keymap (kbd "i") #'org-clock-goto)
+    (define-key keymap (kbd "g") #'org-clock-goto)
     keymap))
 
 ;; define an alias for your keymap
