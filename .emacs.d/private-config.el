@@ -1537,29 +1537,136 @@ If prefix ARG, copy instead of move."
       (setq end (point))
       (goto-char beg)
       (if (re-search-forward "\\[\\([0-9]*%\\)\\]\\|\\[\\([0-9]*\\)/\\([0-9]*\\)\\]" end t)
-            (if (match-end 1)
-                (if (equal (match-string 1) "100%")
-                    ;; all done - do the state change
-                    (org-todo 'done)
-                  (org-todo 'todo))
-              (if (and (> (match-end 2) (match-beginning 2))
-                       (equal (match-string 2) (match-string 3)))
+          (if (match-end 1)
+              (if (equal (match-string 1) "100%")
+                  ;; all done - do the state change
                   (org-todo 'done)
-                (org-todo 'todo)))))))
+                (org-todo 'todo))
+            (if (and (> (match-end 2) (match-beginning 2))
+                     (equal (match-string 2) (match-string 3)))
+                (org-todo 'done)
+              (org-todo 'todo)))))))
 
 (use-package org-roam
   :straight t
+  :demand t
   :custom
   (org-roam-directory "~/Personal/roam-notes")
   (org-roam-completion-everywhere t)
+  (org-roam-capture-templates
+   '(("d" "Default" plain
+      "%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+      :unnarrowed t)
+     ("p" "Project" plain
+      (file "~/Documents/roam-notes/templates/projectNoteTemplate.org")
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags:project")
+      :unnarrowed t)
+     
+     ("m" "Meeting" plain
+      (file "~/Documents/roam-notes/templates/meetingTemplate.org")
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags:meeting")
+      :unnarrowed t)
+     )
+   )
+  (org-roam-dailies-capture-templates
+   '(("d" "default" entry "* %?\n[%<%I:%M %p>]\n" :target
+      (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n#+filetags:%<%Yw%V>\n")))
+   )
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert)
          ("C-c n I" . org-roam-node-insert-immediate)
-         ("C-c n t" . org-roam-tag-add)
+         ("C-c n a" . org-roam-tag-add)
+         ("C-c n d" . org-roam-dailies-map)
          )
   :config
   (org-roam-setup))
+
+(defun rr/org-roam-filter-by-tag (tag-name)
+	(lambda (node)
+		(member tag-name (org-roam-node-tags node))))
+
+(defun rr/org-roam-list-notes-by-tag (tag-name)
+	(let ((nodes (org-roam-node-list)))
+		(mapcar #'org-roam-node-file
+						(seq-filter
+						 (rr/org-roam-filter-by-tag tag-name)
+						 (org-roam-node-list)))))
+
+(defun rr/org-roam-refresh-agenda-list ()
+	(interactive)
+	(setq org-agenda-files (rr/org-roam-list-notes-by-tag "project")))
+
+(rr/org-roam-refresh-agenda-list)
+
+(defun rr/org-roam-project-finalize-hook ()
+  "Adds the captured project file to `org-agenda-files' if the
+  capture was not aborted."
+  ;; Remove the hook since it was added temporarily
+  (remove-hook 'org-capture-after-finalize-hook #'rr/org-roam-project-finalize-hook)
+
+  ;; Add project file to the agenda list if the capture was confirmed
+  (unless org-note-abort
+    (with-current-buffer (org-capture-get :buffer)
+      (add-to-list 'org-agenda-files (buffer-file-name)))))
+
+(defun rr/org-roam-find-project ()
+  (interactive)
+  ;; Add the project file to the agenda after capture is finished
+  (add-hook 'org-capture-after-finalize-hook #'rr/org-roam-project-finalize-hook)
+
+  ;; Select a project file to open, creating it if necessary
+  (org-roam-node-find
+   nil
+   nil
+   (rr/org-roam-filter-by-tag "project")
+   nil
+   :templates
+   '(("p" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
+  		:if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: project")
+  		:unnarrowed t))))
+
+(global-set-key (kbd "C-c n p") #'rr/org-roam-find-project)
+
+(defun rr/org-roam-capture-task ()
+  (interactive)
+  ;; Add the project file to the agenda after capture is finished
+  (add-hook 'org-capture-after-finalize-hook #'rr/org-roam-project-finalize-hook)
+
+  ;; Capture the new task, creating the project file if necessary
+  (org-roam-capture- :node (org-roam-node-read
+                            nil
+                            (rr/org-roam-filter-by-tag "project"))
+                     :templates '(("p" "project" plain "** TODO %?"
+                                   :if-new (file+head+olp "%<%Y%m%d%H%M%S>-${slug}.org"
+                                                          "#+title: ${title}\n#+category: ${title}\n#+filetags: project"
+                                                          ("Tasks"))))))
+(global-set-key (kbd "C-c n t") #'rr/org-roam-capture-task)
+
+(defun rr/org-roam-copy-todo-to-today ()
+  (interactive)
+  (let ((org-refile-keep t) ;; Set this to nil to delete the original!
+        (org-roam-dailies-capture-templates
+          '(("t" "tasks" entry "%?"
+             :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
+        (org-after-refile-insert-hook #'save-buffer)
+        today-file
+        pos)
+    (save-window-excursion
+      (org-roam-dailies--capture (current-time) t)
+      (setq today-file (buffer-file-name))
+      (setq pos (point)))
+
+    ;; Only refile if the target file is different than the current file
+    (unless (equal (file-truename today-file)
+                   (file-truename (buffer-file-name)))
+      (org-refile nil nil (list "Tasks" today-file nil pos)))))
+
+(add-to-list 'org-after-todo-state-change-hook
+             (lambda ()
+               (when (equal org-state "DONE")
+                 (rr/org-roam-copy-todo-to-today))))
 
 (defun org-roam-node-insert-immediate (arg &rest args)
   (interactive "P")
