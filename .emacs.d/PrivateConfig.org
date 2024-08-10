@@ -31,6 +31,7 @@
     - [[#ignore-some-additional-files-when-doing-completing-read][Ignore some additional files when doing completing-read]]
     - [[#repeat-mode][Repeat Mode]]
     - [[#other-basics][Other basics]]
+  - [[#set-up-lexical-binding][Set up Lexical Binding]]
 - [[#ui-configuration][UI Configuration]]
   - [[#get-rid-of-the-startup-message][Get rid of the startup message]]
   - [[#remove-toolbar-scrollbars-etc][Remove toolbar, scrollbars, etc.]]
@@ -387,7 +388,11 @@ Sometimes I hit =Cmd+q= by accident. I want to avoid this by setting the confirm
   (electric-quote-mode +1)
   (electric-indent-mode +1)
 #+end_src
-
+** Set up Lexical Binding
+This is needed for some org roam functions to work
+#+begin_src emacs-lisp
+  (setq lexical-binding t)
+#+end_src
 * UI Configuration
 ** Get rid of the startup message
 This is to remove the ugly annoying startup message on a white screen that you get when you load emacs (without any custom configs)
