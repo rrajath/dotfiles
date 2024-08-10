@@ -120,8 +120,11 @@
   - [[#languages][Languages]]
     - [[#aphelia-for-auto-format][Aphelia for auto-format]]
     - [[#treesitter][Treesitter]]
+    - [[#treesit-auto][Treesit-auto]]
     - [[#flymake-diagnostics-as-popups][Flymake diagnostics as popups]]
     - [[#eglot][Eglot]]
+    - [[#typescript][Typescript]]
+      - [[#prettier][Prettier]]
   - [[#rest-client][Rest Client]]
 - [[#buffers][Buffers]]
   - [[#perspectives][Perspectives]]
@@ -1636,7 +1639,7 @@ Projectile's function to invoke terminal in project root only opens it in full s
 *** Aphelia for auto-format
 Package: [[https://github.com/radian-software/apheleia][aphelia]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package apheleia
     :ensure t
     :hook ((typescriptreact-mode . aphelia-mode))
@@ -1646,7 +1649,7 @@ Package: [[https://github.com/radian-software/apheleia][aphelia]]
 *** Treesitter
 Found a working setup here: https://vxlabs.com/2022/06/12/typescript-development-with-emacs-tree-sitter-and-lsp-in-2022
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package tree-sitter
     :ensure t
     :config
@@ -1685,6 +1688,18 @@ Found a working setup here: https://vxlabs.com/2022/06/12/typescript-development
     (add-hook 'css-mode-hook (lambda () (tsi-css-mode 1)))
     (add-hook 'scss-mode-hook (lambda () (tsi-scss-mode 1))))
 #+end_src
+*** Treesit-auto
+Package: [[https://github.com/renzmann/treesit-auto][treesit-auto]]
+This package worked best for setting all the treesitter stuff.
+
+#+begin_src emacs-lisp
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+#+end_src
 
 *** Flymake diagnostics as popups
 This is to display any errors or warnings as popups instead of the echo area. The popups are displayed when the point is on a variable that has an error/warning. This is better than what is usually displayed in the echo area (by default) because the text in the echo area gets cut off at the end.
@@ -1704,13 +1719,29 @@ Using the built-in eglot instead of LSP. I previously used LSP and found it to b
   (use-package jsonrpc
     :defer t)
 
+  (use-package typescript-ts-mode
+  	:mode "\\.ts\\'"
+  	:hook (typescript-ts-mode . eglot-ensure))
+
   (use-package eglot
     :hook (
-           (typescriptreact-mode . eglot-ensure)
+           ((typescriptreact-mode typescript-ts-mode) . eglot-ensure)
+  				 (go-ts-mode . eglot-ensure)
            (typescriptreact-mode . flymake-popon-mode)
            )
     :config
-    (setq eglot-confirm-server-initiated-edits nil))
+    (setq eglot-confirm-server-initiated-edits nil)
+  	(setq eglot-ignored-server-capabilities nil)
+  	(add-to-list 'eglot-server-programs
+  							 '((typescript-ts-mode typescript-mode) . ("typescript-language-server" "--stdio"))))
+#+end_src
+*** Typescript
+**** Prettier
+Package: [[https://github.com/jscheid/prettier.el][prettier]]
+#+begin_src emacs-lisp
+  (use-package prettier)
+  (setq prettier-mode-sync-config-flag nil)
+  (add-hook 'after-init-hook #'global-prettier-mode)
 #+end_src
 ** Rest Client
 Make Emacs execute rest calls
