@@ -105,6 +105,8 @@ soon as Emacs loads."
 (electric-quote-mode +1)
 (electric-indent-mode +1)
 
+(setq lexical-binding t)
+
 (setq inhibit-startup-message t)
 
 (scroll-bar-mode -1)
