@@ -195,6 +195,7 @@ This config is built by copying parts from [[https://github.com/daviwil/dotfiles
 ** Personal Information
 It's useful to set up personal information. Some packages tend to use it.
 #+begin_src emacs-lisp
+;;; private-config.el --- DESCRIPTION -*- lexical-binding: t; -*- 
   (setq user-full-name "Rajath Ramakrishna"
         user-mail-address "r.rajath@pm.me")
 #+end_src

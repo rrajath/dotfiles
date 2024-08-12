@@ -1,5 +1,6 @@
-(setq user-full-name "Rajath Ramakrishna"
-      user-mail-address "r.rajath@pm.me")
+;;; private-config.el --- DESCRIPTION -*- lexical-binding: t; -*- 
+  (setq user-full-name "Rajath Ramakrishna"
+        user-mail-address "r.rajath@pm.me")
 
 (setq gc-cons-threshold (* 50 1000 1000))
 
