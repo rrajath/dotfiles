@@ -651,6 +651,7 @@ soon as Emacs loads."
    '(";" . meow-reverse)
    '("," . meow-inner-of-thing)
    '("." . meow-bounds-of-thing)
+   '("/" . isearch-forward)
    '("C-;" . popper-kill-latest-popup)
    '("C-S-s" . consult-line)
    '("C-u" . meow-page-up)

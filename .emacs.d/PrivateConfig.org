@@ -1134,6 +1134,7 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '(";" . meow-reverse)
      '("," . meow-inner-of-thing)
      '("." . meow-bounds-of-thing)
+     '("/" . isearch-forward)
      '("C-;" . popper-kill-latest-popup)
      '("C-S-s" . consult-line)
      '("C-u" . meow-page-up)
