@@ -1063,7 +1063,7 @@ folder, otherwise delete a word"
   (auto-fill-mode 0)
   (visual-line-mode)
   (setq org-directory "~/org-mode")
-  (setq org-agenda-files (list org-directory))
+  (setq org-agenda-files (append (directory-files org-directory t "\\.org$") (rr/org-roam-list-notes-by-tag "project")))
   (setq org-capture-templates (rr/set-org-capture-templates))
   (setq org-todo-keywords
         '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "CODE(c)" "FDBK(f)" "|" "DONE(d!)" "KILL(k!)")
