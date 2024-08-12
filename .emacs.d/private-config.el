@@ -78,7 +78,6 @@ soon as Emacs loads."
 
 (save-place-mode +1)
 (electric-pair-mode +1)
-(electric-quote-mode +1)
 (electric-indent-mode +1)
 
 (setq lexical-binding t)

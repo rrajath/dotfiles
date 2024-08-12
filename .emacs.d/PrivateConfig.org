@@ -351,7 +351,6 @@ Sometimes I hit =Cmd+q= by accident. I want to avoid this by setting the confirm
 #+begin_src emacs-lisp  
   (save-place-mode +1)
   (electric-pair-mode +1)
-  (electric-quote-mode +1)
   (electric-indent-mode +1)
 #+end_src
 ** Set up Lexical Binding
