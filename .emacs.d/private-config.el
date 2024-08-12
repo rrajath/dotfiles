@@ -117,6 +117,9 @@ soon as Emacs loads."
                 (with-selected-frame frame (rr/set-font-faces))))
   (rr/set-font-faces))
 
+(use-package nerd-icons
+	:straight (nerd-icons :host github :repo "rainstormstudio/nerd-icons.el"))
+
 (use-package doom-modeline
   :straight t
   :init (doom-modeline-mode 1))
