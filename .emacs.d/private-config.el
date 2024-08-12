@@ -1598,7 +1598,7 @@ If prefix ARG, copy instead of move."
   :straight t
   :demand t
   :custom
-  (org-roam-directory "~/Personal/roam-notes")
+  (org-roam-directory "~/org-mode/roam/work")
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
    '(("d" "Default" plain
@@ -1606,12 +1606,12 @@ If prefix ARG, copy instead of move."
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
       :unnarrowed t)
      ("p" "Project" plain
-      (file "~/Documents/roam-notes/templates/projectNoteTemplate.org")
+      (file "~/org-mode/roam/work/templates/projectNoteTemplate.org")
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags:project")
       :unnarrowed t)
      
      ("m" "Meeting" plain
-      (file "~/Documents/roam-notes/templates/meetingTemplate.org")
+      (file "~/org-mode/roam/work/templates/meetingTemplate.org")
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags:meeting")
       :unnarrowed t)
      )
@@ -1631,21 +1631,21 @@ If prefix ARG, copy instead of move."
   (org-roam-setup))
 
 (defun rr/org-roam-filter-by-tag (tag-name)
-	(lambda (node)
-		(member tag-name (org-roam-node-tags node))))
+  	(lambda (node)
+  		(member tag-name (org-roam-node-tags node))))
 
-(defun rr/org-roam-list-notes-by-tag (tag-name)
-	(let ((nodes (org-roam-node-list)))
-		(mapcar #'org-roam-node-file
-						(seq-filter
-						 (rr/org-roam-filter-by-tag tag-name)
-						 (org-roam-node-list)))))
+  (defun rr/org-roam-list-notes-by-tag (tag-name)
+  	(let ((nodes (org-roam-node-list)))
+  		(mapcar #'org-roam-node-file
+  						(seq-filter
+  						 (rr/org-roam-filter-by-tag tag-name)
+  						 (org-roam-node-list)))))
 
-(defun rr/org-roam-refresh-agenda-list ()
-	(interactive)
-	(setq org-agenda-files (rr/org-roam-list-notes-by-tag "project")))
+  (defun rr/org-roam-refresh-agenda-list ()
+  	(interactive)
+  	(setq org-agenda-files (rr/org-roam-list-notes-by-tag "project")))
 
-(rr/org-roam-refresh-agenda-list)
+;  (rr/org-roam-refresh-agenda-list)
 
 (defun rr/org-roam-project-finalize-hook ()
   "Adds the captured project file to `org-agenda-files' if the
@@ -1670,7 +1670,8 @@ If prefix ARG, copy instead of move."
    (rr/org-roam-filter-by-tag "project")
    nil
    :templates
-   '(("p" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
+   '(("p" "project" plain
+      (file "~/org-mode/roam/work/templates/projectNoteTemplate.org")
   		:if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: project")
   		:unnarrowed t))))
 

@@ -2516,7 +2516,7 @@ Sets up org-roam, roam directory, few useful keybindings.
     :straight t
     :demand t
     :custom
-    (org-roam-directory "~/Personal/roam-notes")
+    (org-roam-directory "~/org-mode/roam/work")
     (org-roam-completion-everywhere t)
     (org-roam-capture-templates
      '(("d" "Default" plain
@@ -2524,12 +2524,12 @@ Sets up org-roam, roam directory, few useful keybindings.
         :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
         :unnarrowed t)
        ("p" "Project" plain
-        (file "~/Documents/roam-notes/templates/projectNoteTemplate.org")
+        (file "~/org-mode/roam/work/templates/projectNoteTemplate.org")
         :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags:project")
         :unnarrowed t)
        
        ("m" "Meeting" plain
-        (file "~/Documents/roam-notes/templates/meetingTemplate.org")
+        (file "~/org-mode/roam/work/templates/meetingTemplate.org")
         :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags:meeting")
         :unnarrowed t)
        )
@@ -2565,7 +2565,7 @@ Sets up org-roam, roam directory, few useful keybindings.
   	(interactive)
   	(setq org-agenda-files (rr/org-roam-list-notes-by-tag "project")))
 
-  (rr/org-roam-refresh-agenda-list)
+;  (rr/org-roam-refresh-agenda-list)
 #+end_src
 
 ** Default Project Template
@@ -2593,7 +2593,8 @@ Sets up org-roam, roam directory, few useful keybindings.
      (rr/org-roam-filter-by-tag "project")
      nil
      :templates
-     '(("p" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
+     '(("p" "project" plain
+        (file "~/org-mode/roam/work/templates/projectNoteTemplate.org")
     		:if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: project")
     		:unnarrowed t))))
 
