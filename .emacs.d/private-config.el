@@ -1135,6 +1135,13 @@ folder, otherwise delete a word"
 (use-package visual-fill-column
   :hook (org-mode . rr/org-mode-visual-fill))
 
+(use-package org-super-agenda
+  :straight t
+  :after org
+  :defer t
+	:init
+	(org-super-agenda-mode))
+
 (setq org-agenda-span 'day)
 
 (setq org-agenda-custom-commands
@@ -1148,14 +1155,54 @@ folder, otherwise delete a word"
           (todo "TODO"
                 ((org-agenda-overriding-header "Unprocessed Inbox Tasks")))))
         ("w" "Work Tasks"
-         ((agenda "" ((org-deadline-warning-days 7)))
-          (tags-todo "+work-meeting"
-                     ((org-agenda-overriding-header "Work Tasks")))
-          ))
+         ((agenda "" ((org-deadline-warning-days 7))
+									(tags-todo "+work-meeting"
+														 ((org-agenda-overriding-header "Work Tasks")))
+									)))
         ("%" "Appointments" agenda* "Today's appointments"
          ((org-agenda-span 1)
           (org-agenda-max-entries 3)))
-        ))
+				("f" "Follow up"
+				 ((tags-todo "+followup"
+										 ((org-agenda-overriding-header "Follow-up Tasks")))
+					(tags-todo "-{.*}"
+										 ((org-agenda-overriding-header "Untagged Tasks")))))
+				("r" "Weekly Review"
+				 ((agenda ""
+									((org-agenda-overriding-header "Completed Tasks")
+									 (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
+									 (org-agenda-span 'week)))
+					(agenda ""
+									((org-agenda-overriding-header "Unfinished Scheduled Tasks")
+									 (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+									 (org-agenda-span 'week)))))
+				("u" "Super View"
+				 ((agenda "" ((org-agenda-span 1)
+											(org-super-agenda-groups
+											 '(
+												 (:name "Today"
+																:time-grid t
+																:date today
+																:scheduled today
+																:order 1
+																:face 'warning
+																)
+												 (:name "Overdue"
+																:deadline past
+																:face 'error
+																)
+												 (:name "Reschedule"
+																:scheduled past
+																:face 'error
+																)
+												 (:name "Projects"
+												        :tag ("project" "@proj")
+																)
+												 (:name "Due soon"
+																:deadline future
+																:scheduled future)
+												 ))))))
+				))
 
 (with-eval-after-load 'org
   (org-babel-do-load-languages
