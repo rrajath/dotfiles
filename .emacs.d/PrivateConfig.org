@@ -1771,6 +1771,7 @@ Set the directory for auto saving persp sessions
        "* TODO %?\n%U\n %i")
       ("og" "Guitar" entry (file+olp, (rr/org-path "organize.org") "Goals" "Guitar" "Practice Log")
        "* %u\n%?")
+  		
       ("w" "Work")
       ("wt" "Work Task" entry (file+olp, (rr/org-path "work-tasks.org") "Tasks")
        "* TODO %?\n%U\n %i" :kill-buffer t)
@@ -1784,8 +1785,18 @@ Set the directory for auto saving persp sessions
        "* %?\n%U\n %i")
       ("wa" "Activity Log" entry (file+olp+datetree, (rr/org-path "work-tasks.org") "Activity Log")
        "* %?\n%U\n %i")
+
+  		("m" "Meeting")
+      ("mm" "1:1 with Max" entry (file+datetree, "~/Documents/roam-notes/meetings/1on1/max.org")
+       "* %U\n- %?\n %i" :kill-buffer t)
+      ("mr" "1:1 with Rob" entry (file+datetree, "~/Documents/roam-notes/meetings/1on1/rob.org")
+       "* %U\n- %?\n %i" :kill-buffer t)
+      ("mj" "1:1 with Joseph" entry (file+datetree, "~/Documents/roam-notes/meetings/1on1/joseph.org")
+       "* %U\n- %?\n %i" :kill-buffer t)
+  		
       ("j" "Journal" entry (file+datetree, (rr/org-path "journal.org"))
        "* %?\n")
+  		
       ("n" "Notes")
       ("nr" "Resource" entry (file+olp, (rr/org-path "refile.org") "Resources")
        "* %?\n%U\n %i")
@@ -1793,6 +1804,7 @@ Set the directory for auto saving persp sessions
        "* %?\n%U\n %i")
       ("no" "Other" entry (file+olp, (rr/org-path "refile.org") "Notes")
        "* %?\n%U\n %i")
+  		
       ("l" "Life")
       ("lj" "Journal" entry (file+olp+datetree, (rr/org-path "life.org") "Journal") "* %?\n%U\n %i")
       )
