@@ -1095,6 +1095,18 @@ folder, otherwise delete a word"
         org-cycle-separator-lines 0
         org-refile-use-outline-path 'file
         org-outline-path-complete-in-steps nil
+				org-tag-alist '(;; Places
+												("@home" . ?H)
+												("@work" . ?W)
+												;; Devices
+												("@phone" . ?P)
+												("@computer" . ?C)
+												;; Activities
+												("@writing" . ?w)
+												("@errands" . ?r)
+												("@email" . ?e)
+												("@call" . ?c)
+												)
         org-refile-allow-creating-parent-nodes 'confirm
         org-refile-targets
         '((nil :maxlevel . 6)
