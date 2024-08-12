@@ -34,6 +34,7 @@
   - [[#remove-toolbar-scrollbars-etc][Remove toolbar, scrollbars, etc.]]
   - [[#make-titlebar-the-same-color-as-background][Make titlebar the same color as background]]
   - [[#set-up-fonts][Set up fonts]]
+  - [[#set-up-icons][Set up icons]]
   - [[#set-up-theme][Set up theme]]
   - [[#show-line-and-column-numbers][Show line and column numbers]]
   - [[#rainbow-delimiters][Rainbow Delimiters]]
@@ -413,6 +414,14 @@ This font face will be used everywhere in Emacs, not just in source code
     (rr/set-font-faces))
 #+end_src
 
+** Set up icons
+Package: [[https://github.com/emacsmirror/nerd-icons?tab=readme-ov-file][nerd-icons]]
+
+Using nerd icons package to make the modeline look pretty.
+#+begin_src emacs-lisp
+  (use-package nerd-icons
+  	:straight (nerd-icons :host github :repo "rainstormstudio/nerd-icons.el"))
+#+end_src
 ** Set up theme
 I use the Doom-One theme with a Doom modeline and also use all-the-icons for pretty icons. The following code block sets them up
 Packages:
