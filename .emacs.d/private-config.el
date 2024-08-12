@@ -96,12 +96,12 @@ soon as Emacs loads."
   (message "Setting font faces!")
   (set-face-attribute 'default nil :font "JetBrains Mono" :height 125)
   (setq my-fixed-pitch-font "JetBrains Mono")
-  (setq my-variable-pitch-font "Raleway")
+  (setq my-variable-pitch-font "SN Pro")
 
   ;; Set the fixed pitch face
   (set-face-attribute 'fixed-pitch nil
                       :font my-fixed-pitch-font
-                      :height 160
+                      :height 170
                       :weight 'light)
 
   ;; Set the variable pitch face
