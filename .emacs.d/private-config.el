@@ -1087,9 +1087,7 @@ folder, otherwise delete a word"
         org-agenda-skip-scheduled-if-done t
         org-agenda-skip-deadline-if-done t
         org-agenda-include-deadlines t
-        org-agenda-block-separator nil
         org-agenda-tags-column 100
-        org-agenda-compact-blocks t
         org-agenda-include-diary t
         org-catch-invisible-edits 'smart
         org-fontify-whole-heading-line t
