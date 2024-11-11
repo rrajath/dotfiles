@@ -7,7 +7,7 @@
 This is a custom config for fish shell
 * Pre-existing config
 #+begin_src shell
-if status is-interactive
+if status --is-interactive
     # Commands to run in interactive sessions can go here
 end
 #+end_src
@@ -171,6 +171,7 @@ These are general purpose abbreviations.
   abbr -a ll exa -l --color=always --group-directories-first  # long format
   abbr -a lt exa -aT --color=always --group-directories-first # tree listing
   abbr -a l. exa -a | egrep "^\."
+  abbr -a lss ls
 #+end_src
 
 ** ~yarn~ abbreviations
@@ -236,6 +237,10 @@ function org-search -d "send a search string to org-mode"
     \"))")
     printf $output
 end
+#+end_src
+* Set up zoxide
+#+begin_src shell
+  zoxide init fish | source
 #+end_src
 * Starship
 Enables starship prompt for fish
