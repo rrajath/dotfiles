@@ -1,0 +1,54 @@
+{
+  "filterLinkHints": true,
+  "waitForEnterForFilteredHints": false,
+  "keyMappings": "# Insert your preferred key mappings here.\nunmap >>\nunmap <<\nunmap ^\nmap <c-.> moveTabRight\nmap <c-,> moveTabLeft\nmap <c-6> visitPreviousTab\nmap ge scrollToBottom",
+  "linkHintCharacters": "1234567890",
+  "searchUrl": "https://duckduckgo.com/?q=",
+  "settingsVersion": "2.1.2",
+  "exclusionRules": [
+    {
+      "passKeys": "",
+      "pattern": "https?://beta.protonmail.com/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://us-west-2.console.aws.amazon.com/cloudshell/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://mail.protonmail.com/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://192.168.0.218:6606/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://config.qmk.fm/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://app.asana.com/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://mail.proton.me/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://slowroads.io/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://linear.app/*"
+    },
+    {
+      "passKeys": "?/jkwivmns",
+      "pattern": "https?://kagi.com/*"
+    },
+    {
+      "passKeys": "",
+      "pattern": "https?://192.168.0.52:9000/*"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+#+title: Browser Extensions Config
+#+author: Rajath Ramakrishna
+
+* Introduction
+This folder contains configs for some of the browser extensions. Most of them are big json files and hard to tangle, so literate config is less helpful here. These files just need to be copied back and forth to their respective locations (like import/export options in the browser extension) whenever they change.
