@@ -1,0 +1,7 @@
+#+TITLE:      Karabiner Configuration
+#+AUTHOR:     Rajath Ramakrishna
+#+PROPERTY:   header-args:shell :tangle ~/.config/fish/config.fish
+#+STARTUP:    overview indent hidestars
+
+* Introduction
+Karabiner uses JSON for its config and it's pretty verbose. It's not easy to create a literate config out of it. The actual config json file will be copy pasted into this directory. Any time the original Karabiner config is updated, the json must be copied over to this directory. This introduces a risk where the files may go out of sync, but for now that's the approach until I find a better way to manage this.
