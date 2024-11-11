@@ -3,6 +3,10 @@
 #+PROPERTY:   header-args:emacs-lisp :tangle ./post-init.el
 #+STARTUP:    overview indent hidestars
 
+* Table of Contents
+:PROPERTIES:
+:TOC:      :include all :ignore this
+:END:
 * Introduction
 <Add stuff here>
 * First things first
@@ -100,7 +104,7 @@ Packages:
     :config
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
           doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    (load-theme 'doom-tokyo-night t)
+    (load-theme 'doom-molokai t)
 
     ;; Enable flashing mode-line on errors
     (doom-themes-visual-bell-config)
@@ -134,6 +138,11 @@ This removes the need to hit Save all the time.
     :config
     (super-save-mode +1)
     (setq super-save-auto-save-when-idle t))
+
+  (setq backup-directory-alist
+        `((".*" . ,temporary-file-directory)))
+  (setq auto-save-file-name-transforms
+        `((".*" ,temporary-file-directory t)))
 #+end_src
 
 ** Jumping around with Avy
@@ -203,6 +212,105 @@ Taken from: https://orgmode.org/worg/org-hacks.html#org4f1a640
     (add-hook 'prog-mode-hook #'highlight-symbol-mode)
     (add-hook 'prog-mode-hook #'highlight-symbol-nav-mode))
 #+end_src
+** Embark
+Package: [[https://github.com/oantolin/embark][Embark]]
+
+#+begin_src emacs-lisp
+  (use-package embark
+    :ensure t
+
+    :bind
+    (("C-," . embark-act)         ;; pick some comfortable binding
+     ("C-M-," . embark-dwim)        ;; good alternative: M-.
+     ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+
+    :init
+
+    ;; Optionally replace the key help with a completing-read interface
+    (setq prefix-help-command #'embark-prefix-help-command)
+
+    :config
+    (keymap-set minibuffer-local-map "M-k" "C-. k y")
+    ;; Hide the mode line of the Embark live/completions buffers
+    (add-to-list 'display-buffer-alist
+                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                   nil
+                   (window-parameters (mode-line-format . none)))))
+
+  ;; Consult users will also want the embark-consult package.
+  (use-package embark-consult
+    :ensure t ; only need to install it, embark loads it after consult if found
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode))
+#+end_src
+
+** Embrace
+#+begin_src emacs-lisp
+  (use-package embrace
+    :defer t)
+  (global-set-key (kbd "C-.") #'embrace-commander)
+  (add-hook 'org-mode-hook #'embrace-org-mode-hook)
+#+end_src
+** Beacon
+Package: [[https://github.com/Malabarba/beacon][beacon]]
+
+#+begin_src emacs-lisp
+  (use-package beacon
+    :defer t
+    :init
+    (beacon-mode 1))
+#+end_src
+** Moving Lines
+*** Move line down
+#+begin_src emacs-lisp
+  (defun rr/move-line-down ()
+    (interactive)
+    (forward-line 1)
+    (transpose-lines 1)
+    (forward-line -1))
+
+  (global-set-key (kbd "M-<down>") 'rr/move-line-down)
+#+end_src
+*** Move line up
+#+begin_src emacs-lisp
+  (defun rr/move-line-up ()
+    (interactive)
+    (transpose-lines 1)
+    (forward-line -2))
+  
+  (global-set-key (kbd "M-<up>") 'rr/move-line-up)
+#+end_src
+** Popper
+Manage pop up windows with ease. Make specific major modes open as popups.
+Package: [[https://github.com/karthink/popper][popper]]
+
+#+begin_src emacs-lisp
+  (use-package popper
+    :after projectile
+    :init
+    (setq popper-reference-buffers
+          '("\\*Messages\\*"
+            "^\\*Warnings\\*"
+            "^\\*IBuffer\\*"
+            "^\\*Compile-Log\\*"
+            "^\\*Backtrace\\*"
+            "[Oo]utput\\*$"
+            "\\*Help\\*"
+            "\\*helpful\\*"
+            "\\*vterm\\*"
+            "\\*Excorporate\\*"
+            "\\*xref\\*"
+            eat-mode
+            help-mode
+            helpful-mode
+            compilation-mode
+            org-roam-mode
+            term-mode
+            vterm-mode)
+          popper-group-function #'popper-group-by-projectile)
+    (popper-mode +1))
+#+end_src
+
 * Keybindings
 ** Switch buffers easily
 =consult-buffer= lets you preview buffers as you scroll through them. It is not set to the keybinding =C-M-j= for easy access. Also, these buffers are aggregated across workspaces (or perspectives).
@@ -537,7 +645,7 @@ This keymap is used for navigation. A lot of the functions here try to emulate H
   (defvar meow-eglot-keymap
     (let ((keymap (make-keymap)))
       (define-key keymap (kbd "a") #'eglot-code-actions)
-      (define-key keymap (kbd "f") #'projectile-find-file)
+      (define-key keymap (kbd "f") #'project-find-file)
       (define-key keymap (kbd "n") #'flymake-goto-next-error)
       (define-key keymap (kbd "p") #'flymake-goto-prev-error)
       (define-key keymap (kbd "s") #'flymake-show-project-diagnostics)
@@ -640,6 +748,8 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("C-u" . meow-page-up)
      '("C-d" . meow-page-down)
      '("C-w" . backward-kill-word)
+     '("RET" . +org/dwim-at-point)
+     '("TAB" . +org-cycle-only-current-subtree-h)
      ;; '("C-n" . rr/org-show-next-heading-tidily)
      ;; '("C-p" . rr/org-show-previous-heading-tidily)
      '("t" . org-todo)
@@ -681,8 +791,8 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("R" . meow-swap-grab)
      '("s" . meow-kill)
      '("T" . meow-till)
-     '("u" . undo-tree-undo)
-     '("U" . undo-tree-redo)
+     '("u" . undo)
+     '("U" . undo-redo)
      '("v" . meow-visit)
      '("w" . meow-next-word)
      '("W" . meow-next-symbol)
@@ -709,6 +819,8 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
     (add-to-list 'meow-char-thing-table '(?a . angle))
     (meow-global-mode 1)
     (meow-setup))
+
+  (global-set-key (kbd "C-<tab>") 'meow-last-buffer)
 #+end_src
 * Completion Frameworks
 ** Vertico
@@ -910,7 +1022,7 @@ File management with dired
     (setq
      ;; https://github.com/d12frosted/homebrew-emacs-plus/issues/383
      insert-directory-program "/opt/homebrew/bin/gls"
-     dired-listing-switches "-agho --group-directories-first"
+     dired-listing-switches "-tagho --group-directories-first"
      dired-omit-files "^\\.[^.].*"
      dired-omit-verbose nil
      dired-hide-details-hide-symlink-targets nil
@@ -1100,17 +1212,17 @@ Set the directory for auto saving persp sessions
       ("wa" "Activity Log" entry (file+olp+datetree, (rr/org-path "work-tasks.org") "Activity Log")
        "* %?\n%U\n %i")
 
-  		("m" "Meeting")
+  	("m" "Meeting")
       ("mm" "1:1 with Max" entry (file+datetree, "~/Documents/roam-notes/meetings/1on1/max.org")
        "* %U\n- %?\n %i" :kill-buffer t)
       ("mr" "1:1 with Rob" entry (file+datetree, "~/Documents/roam-notes/meetings/1on1/rob.org")
        "* %U\n- %?\n %i" :kill-buffer t)
       ("mj" "1:1 with Joseph" entry (file+datetree, "~/Documents/roam-notes/meetings/1on1/joseph.org")
        "* %U\n- %?\n %i" :kill-buffer t)
-  		
+  	
       ("j" "Journal" entry (file+datetree, (rr/org-path "journal.org"))
        "* %?\n")
-  		
+  	
       ("n" "Notes")
       ("nr" "Resource" entry (file+olp, (rr/org-path "refile.org") "Resources")
        "* %?\n%U\n %i")
@@ -1118,7 +1230,7 @@ Set the directory for auto saving persp sessions
        "* %?\n%U\n %i")
       ("no" "Other" entry (file+olp, (rr/org-path "refile.org") "Notes")
        "* %?\n%U\n %i")
-  		
+  	
       ("l" "Life")
       ("lj" "Journal" entry (file+olp+datetree, (rr/org-path "life.org") "Journal") "* %?\n%U\n %i")
       )
@@ -1137,7 +1249,7 @@ Set the directory for auto saving persp sessions
     (auto-fill-mode 0)
     (visual-line-mode)
     (setq org-directory "~/org-mode")
-  	(setq org-agenda-files (append (directory-files org-directory t "\\.org$") (rr/org-roam-list-notes-by-tag "project")))
+    (setq org-agenda-files (append (directory-files org-directory t "\\.org$") (rr/org-roam-list-notes-by-tag "project")))
     (setq org-capture-templates (rr/set-org-capture-templates))
     (setq org-todo-keywords
           '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "CODE(c)" "FDBK(f)" "|" "DONE(d!)" "KILL(k!)")
@@ -1145,6 +1257,7 @@ Set the directory for auto saving persp sessions
     (setq org-id-link-to-org-use-id 'use-existing))
 
   (use-package org
+    :demand t
     :hook (org-mode . rr/org-mode-setup)
     :config
     ;;    (rr/org-mode-setup)
@@ -1169,18 +1282,18 @@ Set the directory for auto saving persp sessions
           org-cycle-separator-lines 0
           org-refile-use-outline-path 'file
           org-outline-path-complete-in-steps nil
-  				org-tag-alist '(;; Places
-  												("@home" . ?H)
-  												("@work" . ?W)
-  												;; Devices
-  												("@phone" . ?P)
-  												("@computer" . ?C)
-  												;; Activities
-  												("@writing" . ?w)
-  												("@errands" . ?r)
-  												("@email" . ?e)
-  												("@call" . ?c)
-  												)
+  		org-tag-alist '(;; Places
+  						("@home" . ?H)
+  						("@work" . ?W)
+  						;; Devices
+  						("@phone" . ?P)
+  						("@computer" . ?C)
+  						;; Activities
+  						("@writing" . ?w)
+  						("@errands" . ?r)
+  						("@email" . ?e)
+  						("@call" . ?c)
+  						)
           org-refile-allow-creating-parent-nodes 'confirm
           org-refile-targets
           '((nil :maxlevel . 6)
@@ -1265,53 +1378,53 @@ The following are some custom agenda commands
                   ((org-agenda-overriding-header "Unprocessed Inbox Tasks")))))
           ("w" "Work Tasks"
            ((agenda "" ((org-deadline-warning-days 7))
-  									(tags-todo "+work-meeting"
-  														 ((org-agenda-overriding-header "Work Tasks")))
-  									)))
+  				  (tags-todo "+work-meeting"
+  							 ((org-agenda-overriding-header "Work Tasks")))
+  				  )))
           ("%" "Appointments" agenda* "Today's appointments"
            ((org-agenda-span 1)
             (org-agenda-max-entries 3)))
-  				("f" "Follow up"
-  				 ((tags-todo "+followup"
-  										 ((org-agenda-overriding-header "Follow-up Tasks")))
-  					(tags-todo "-{.*}"
-  										 ((org-agenda-overriding-header "Untagged Tasks")))))
-  				("r" "Weekly Review"
-  				 ((agenda ""
-  									((org-agenda-overriding-header "Completed Tasks")
-  									 (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
-  									 (org-agenda-span 'week)))
-  					(agenda ""
-  									((org-agenda-overriding-header "Unfinished Scheduled Tasks")
-  									 (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-  									 (org-agenda-span 'week)))))
-  				("u" "Super View"
-  				 ((agenda "" ((org-agenda-span 1)
-  											(org-super-agenda-groups
-  											 '(
-  												 (:name "Today"
-  																:time-grid t
-  																:date today
-  																:scheduled today
-  																:order 1
-  																:face 'warning
-  																)
-  												 (:name "Overdue"
-  																:deadline past
-  																:face 'error
-  																)
-  												 (:name "Reschedule"
-  																:scheduled past
-  																:face 'error
-  																)
-  												 (:name "Projects"
-  												        :tag ("project" "@proj")
-  																)
-  												 (:name "Due soon"
-  																:deadline future
-  																:scheduled future)
-  												 ))))))
-  				))
+  		("f" "Follow up"
+  		 ((tags-todo "+followup"
+  					 ((org-agenda-overriding-header "Follow-up Tasks")))
+  		  (tags-todo "-{.*}"
+  					 ((org-agenda-overriding-header "Untagged Tasks")))))
+  		("r" "Weekly Review"
+  		 ((agenda ""
+  				  ((org-agenda-overriding-header "Completed Tasks")
+  				   (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
+  				   (org-agenda-span 'week)))
+  		  (agenda ""
+  				  ((org-agenda-overriding-header "Unfinished Scheduled Tasks")
+  				   (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+  				   (org-agenda-span 'week)))))
+  		("u" "Super View"
+  		 ((agenda "" ((org-agenda-span 1)
+  					  (org-super-agenda-groups
+  					   '(
+  						 (:name "Today"
+  								:time-grid t
+  								:date today
+  								:scheduled today
+  								:order 1
+  								:face 'warning
+  								)
+  						 (:name "Overdue"
+  								:deadline past
+  								:face 'error
+  								)
+  						 (:name "Reschedule"
+  								:scheduled past
+  								:face 'error
+  								)
+  						 (:name "Projects"
+  								:tag ("project" "@proj")
+  								)
+  						 (:name "Due soon"
+  								:deadline future
+  								:scheduled future)
+  						 ))))))
+  		))
 #+end_src
 
 ** Babel Configuration
@@ -1341,7 +1454,6 @@ This is for emacs to recognize and provide syntax highlighting for config files 
 #+end_src
 
 *** Auto-tangle Configuration Files
-
 #+begin_src emacs-lisp
   ;; Automatically tangle PrivateConfig.org config file when we save it
   (defun rr/org-babel-tangle-config ()
@@ -1440,8 +1552,6 @@ This function is called by +org/dwim-at-point
 
 **** Org dwim-at-point
 This is copied over from Doom Emacs. This function basically interprets RET as one of several things based on the context. On a checkbox, it toggles the checkbox, on a TODO heading it toggles that, on a link it opens the link in a browser, etc. Makes everything very intuitive.
-
-*Note*: Yet to add a keybinding for this function
 
 #+begin_src emacs-lisp
   (defun +org/dwim-at-point (&optional arg)
@@ -1609,10 +1719,10 @@ Got it from: [[https://xenodium.com/emacs-dwim-do-what-i-mean/][Emacs DWIM: do w
 
 *** Org cycle behavior
 I really liked Doom style org cycling. It just goes through folded and children modes and doesn't enter subtree. As my note structure grows, there will invariably be lot of nested headings and looking at all the notes at once adds no value. So, just cycling between FOLDED and CHILDREN works perfectly for me. The below code is copied over from Doom's config.
-**** Set up function for custom cycling (unused)
-Realized the existing =evil-toggle-fold= function does the job for me and also solves the problem of expanding drawers. I'll be disabling this function for now and instead use =evil-toggle-fold= for a while. If it works as expected for all my use cases, I'll delete this section entirely.
+**** Set up function for custom cycling
+I want =TAB= to just open or fold the current heading. I can use =Shift+TAB= if I want to open everything. This function handles it. Stole it from doom-emacs.
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (defun +org-cycle-only-current-subtree-h (&optional arg)
     "Toggle the local fold at the point, and no deeper.
          `org-cycle's standard behavior is to cycle between three levels: collapsed,
@@ -1715,6 +1825,9 @@ Realized the existing =evil-toggle-fold= function does the job for me and also s
     "Inserts a new heading, table cell or item below the current one."
     (interactive "p")
     (dotimes (_ count) (+org--insert-item 'below)))
+
+  (with-eval-after-load 'org
+    (define-key org-mode-map (kbd "M-RET") '+org/insert-item-below))
 #+end_src
 
 **** Insert item above
@@ -1761,6 +1874,8 @@ Taken from: https://orgmode.org/worg/org-hacks.html#orge99b7a9
       (org-show-entry)
       (show-children)))
 
+  (global-set-key (kbd "M-n") 'rr/org-show-next-heading-tidily)
+
   (defun rr/org-show-previous-heading-tidily ()
     "Show previous entry, keeping other entries closed."
     (interactive)
@@ -1774,6 +1889,8 @@ Taken from: https://orgmode.org/worg/org-hacks.html#orge99b7a9
       (org-reveal t)
       (org-show-entry)
       (show-children)))
+
+  (global-set-key (kbd "M-p") 'rr/org-show-previous-heading-tidily)
 #+end_src
 
 *** Org sort list by checkbox type
@@ -1829,6 +1946,7 @@ Sets up org-roam, roam directory, few useful keybindings.
     :demand t
     :custom
     (org-roam-directory "~/org-mode/roam/work")
+    (org-roam-dailies-directory "journals/")
     (org-roam-completion-everywhere t)
     (org-roam-capture-templates
      '(("d" "Default" plain
@@ -1858,6 +1976,7 @@ Sets up org-roam, roam directory, few useful keybindings.
            ("C-c n d" . org-roam-dailies-map)
            )
     :config
+    (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
     (org-roam-setup))
 #+end_src
 ** Agenda configs
@@ -1984,4 +2103,50 @@ Package: [[https://github.com/org-roam/org-roam-ui][org-roam-ui]]
           org-roam-ui-follow t
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
+#+end_src
+* Blogging
+** ox-hugo
+This is the emacs package I use to publish to my Hugo website using org files
+Package: [[https://github.com/kaushalmodi/ox-hugo][ox-hugo]]
+
+#+begin_src emacs-lisp
+  (use-package ox-hugo
+    :after ox)
+#+end_src
+
+** Turn on org-hugo-auto-export-mode when you visit blog.org
+The minor mode =org-hugo-auto-export-mode= enables auto export hugo posts on saving. However, this minor mode is disabled by default. It doesn't make sense to have this turned on globally. So, the following piece of code enables the minor mode only when the buffer is =blog.org=.
+Found the code in a [[https://stackoverflow.com/a/39652226][stack overflow post]].
+
+#+begin_src emacs-lisp
+  (defun rr/enable-hugo-auto-export-mode ()
+    (if (equal (buffer-name) "blog.org")
+        (org-hugo-auto-export-mode)))
+
+  (add-hook 'find-file-hook 'rr/enable-hugo-auto-export-mode)
+#+end_src
+** Generate a filename given a blog post title
+This is a nice little helper function I wrote for myself to generate a filename from a blog post's title. ox-hugo needs a property called =EXPORT_FILE_NAME= which must be set under the heading that contains the blog post. This function generates the file name and sets the property based on the org heading the point is on.
+
+#+begin_src emacs-lisp
+  (defun rr/extract-hugo-post-file-name ()
+    "Create a filename out of blog post's title.
+
+This method is expected to be executed on a TODO heading on a an
+org file containing blog posts that would be exported using
+ox-hugo. Running this interactive command would set an org
+property called EXPORT_FILE_NAME that is required by ox-hugo to
+generate a Hugo-friendly markdown file in the location specified
+in HUGO_BASE_DIR property."
+    (interactive)
+    (setq-local blog-post-title (nth 4 (org-heading-components)))
+      (let* ((file-name (replace-regexp-in-string "_+" "-" (replace-regexp-in-string "\\W" "_" (string-trim (downcase blog-post-title)))))
+             (blog-post-file-name (concat file-name ".md")))
+        (org-set-property "EXPORT_FILE_NAME" blog-post-file-name)))
+#+end_src
+* After Load
+Restore last saved persp-state
+
+#+begin_src emacs-lisp
+  (persp-state-restore persp-state-default-file)
 #+end_src
