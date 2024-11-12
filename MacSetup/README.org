@@ -71,21 +71,16 @@ git config --global "alias.dag" "log --graph --format='format:%C(yellow)%h%C(res
 
 * Apps to install
 Following are the apps to install after getting a new Mac:
-- Alfred
-- iTerm
+- Raycast
+- Arc
+- Warp
 - BetterTouchTool
-- Sublime Text 3
-- Emacs (27.1)
-- oh-my-zsh
+- Emacs (30 or later)
+- fish
 - Syncthing
 - Synology Drive
-- Slack
-- Meld
-- IntelliJ
-- Amphetamine
-- Horo
+- VSCode
 - Pycharm
-- Obsidian
 
 * Firefox Extensions
 I use the following Chrome Extensions
