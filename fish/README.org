@@ -166,11 +166,11 @@ These are general purpose abbreviations.
 ** ~ls~ abbreviations
 
 #+begin_src shell
-  abbr -a ls exa -l --color=always --group-directories-first # my preferred listing
-  abbr -a la exa -a --color=always --group-directories-first  # all files and dirs
-  abbr -a ll exa -l --color=always --group-directories-first  # long format
-  abbr -a lt exa -aT --color=always --group-directories-first # tree listing
-  abbr -a l. exa -a | egrep "^\."
+  abbr -a ls eza -l --color=always --group-directories-first # my preferred listing
+  abbr -a la eza -a --color=always --group-directories-first  # all files and dirs
+  abbr -a ll eza -l --color=always --group-directories-first  # long format
+  abbr -a lt eza -aT --color=always --group-directories-first # tree listing
+  abbr -a l. eza -a | egrep "^\."
   abbr -a lss ls
 #+end_src
 
