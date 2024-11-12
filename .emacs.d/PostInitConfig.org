@@ -98,7 +98,9 @@ Packages:
 
 #+begin_src emacs-lisp
   (use-package doom-modeline
-    :init (doom-modeline-mode 1))
+    :init (doom-modeline-mode 1)
+    :custom
+    (doom-modeline-height 30))
 
   (use-package doom-themes
     :config
@@ -117,6 +119,9 @@ Packages:
   ;; Set modeline's background to something lighter
   (set-face-attribute 'mode-line nil
                       :background "#2c323b")
+
+  ;; Make the titlebar on MacOS transparent
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 #+end_src
 ** Rainbow Delimiters
 Lisp stands for Lots of Irritating Superfluous Parentheses. Let's make them colorful at least.
