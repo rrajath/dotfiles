@@ -47,7 +47,7 @@ Package: [[https://github.com/emacscollective/no-littering][no-littering]]
 
 ** Use straight-use-package org
 #+begin_src emacs-lisp
-(straight-use-package 'org)
+(use-package org)
 #+end_src
 * UI Configuration
 ** Set up fonts
@@ -86,7 +86,8 @@ Package: [[https://github.com/emacsmirror/nerd-icons?tab=readme-ov-file][nerd-ic
 Using nerd icons package to make the modeline look pretty.
 #+begin_src emacs-lisp
   (use-package nerd-icons
-  	:straight (nerd-icons :host github :repo "rainstormstudio/nerd-icons.el"))
+  	:vc (:url "https://github.com/rainstormstudio/nerd-icons.el"))
+  (setq nerd-icons-font-family "JetBrainsMono Nerd Font")
 #+end_src
 ** Set up theme
 I use the Doom-One theme with a Doom modeline and also use all-the-icons for pretty icons. The following code block sets them up
@@ -97,7 +98,6 @@ Packages:
 
 #+begin_src emacs-lisp
   (use-package doom-modeline
-    :straight t
     :init (doom-modeline-mode 1))
 
   (use-package doom-themes
@@ -1007,8 +1007,8 @@ File management with dired
 
 #+begin_src emacs-lisp
   (use-package dired
-    :straight (:type built-in)
-    :defer t
+    :demand t
+    :ensure nil
     :commands (dired dired-jump)
     :bind (:map dired-mode-map
                 ("H" . dired-omit-mode)
@@ -1045,6 +1045,7 @@ File management with dired
                 (diff-hl-dired-mode 1)))
 
     (use-package dired-single
+      :vc (:url "https://codeberg.org/amano.kenji/dired-single")
       :defer t)
 
     (use-package dired-ranger
@@ -1057,6 +1058,7 @@ File management with dired
       :defer t)
     )
 #+end_src
+
 * Development
 ** Git Gutter
 Highlight addition, changes or deletion of lines on the left margin of each file that's inside a git repository. This helps in quickly identifying the changes in a file.
@@ -1093,7 +1095,6 @@ This package worked best for setting all the treesitter stuff.
 
 #+begin_src emacs-lisp
   (use-package treesit-auto
-    :straight t
 ;    :defer t
     :custom
     (treesit-auto-install 'prompt)
@@ -1105,11 +1106,9 @@ This package worked best for setting all the treesitter stuff.
 This is to display any errors or warnings as popups instead of the echo area. The popups are displayed when the point is on a variable that has an error/warning. This is better than what is usually displayed in the echo area (by default) because the text in the echo area gets cut off at the end.
 Package: [[https://codeberg.org/akib/emacs-flymake-popon][flymake-popon]]
 
-#+begin_src emacs-lisp
-  (straight-use-package
-   '(flymake-popon
-     :type git
-     :repo "https://codeberg.org/akib/emacs-flymake-popon.git")
+#+begin_src emacs-lisp :tangle no
+  (use-package flymake-popon
+     :vc (:url "https://codeberg.org/akib/emacs-flymake-popon.git")
    :defer t)
 #+end_src
 
@@ -1355,7 +1354,6 @@ This needs a lot more work, but this is a good start
 Adding org-super-agenda to pimp up my agenda config:
 #+begin_src emacs-lisp
   (use-package org-super-agenda
-    :straight t
     :after org
     :defer t
     :init
@@ -1523,7 +1521,7 @@ Currently trying out this setting with fixed width /and/ variable width fonts. /
     (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
     (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
     (set-face-attribute 'org-tag nil :foreground "#5A5D67")
-    (set-face-attribute 'hl-line nil :background "#0d3b66")
+    ;;(set-face-attribute 'hl-line nil :background "#0d3b66")
     (set-face-attribute 'org-column nil :background "unspecified")
     (set-face-attribute 'org-column-title nil :background "unspecified"))
 #+end_src
@@ -1942,7 +1940,6 @@ Sets up org-roam, roam directory, few useful keybindings.
 
 #+begin_src emacs-lisp
   (use-package org-roam
-    :straight t
     :demand t
     :custom
     (org-roam-directory "~/org-mode/roam/work")
@@ -2091,8 +2088,8 @@ Package: [[https://github.com/org-roam/org-roam-ui][org-roam-ui]]
 
 #+begin_src emacs-lisp
 (use-package org-roam-ui
-  :straight
-    (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+  :vc
+    (:url "https://github.com/org-roam/org-roam-ui" :branch "main")
     :after org-roam
 ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
 ;;         a hookable mode anymore, you're advised to pick something yourself
