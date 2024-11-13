@@ -15,6 +15,7 @@ For those intending to clone this repo and use the org files into their dotfiles
 * Have a look around
 Here are some links to my configs which are written like documentation with code blocks in between.
 
-- [[./.emacs.d/PrivateConfig.org][Emacs Config]]
+- [[./.emacs.d/PostInitConfig.org][Emacs Config]]
 - [[./dot_zshrc.org][Zsh Config]]
-- [[./dot_vimrc.org][Vim Config]]
+- [[./fish/README.org][Fish Config]]
+- [[./helix/README.org][Helix Config]]
