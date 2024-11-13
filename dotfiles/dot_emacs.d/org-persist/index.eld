@@ -1,0 +1,2 @@
+;;   -*- mode: lisp-data; -*-
+((:container ((elisp org-element--headline-cache) (elisp org-element--cache) (version "2.3")) :persist-file "3c/767ce2-f496-44af-ba20-650f32b38f33" :associated (:hash "01993799ce38cc64a3be5bca3cb1dbf6" :file "/Users/rrajath/dotfiles/.emacs.d/PostInitConfig.org" :inode 469576) :expiry 30 :last-access 1731373320.895141 :last-access-hr "2024-11-11T17:02:00-0800") (:container ((index "3.2")) :persist-file "68/9da009-07a1-4941-b837-079ecb9c2a12" :associated nil :expiry never :last-access 1731373337.886417 :last-access-hr "2024-11-11T17:02:17-0800"))
