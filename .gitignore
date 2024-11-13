@@ -9,3 +9,5 @@ var
 excorporate
 straight
 eln-cache
+.emacs.d/org-persist
+.emacs.d/tree-sitter
