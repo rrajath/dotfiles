@@ -87,7 +87,8 @@ Using nerd icons package to make the modeline look pretty.
 #+begin_src emacs-lisp
   (use-package nerd-icons
   	:vc (:url "https://github.com/rainstormstudio/nerd-icons.el"))
-  (setq nerd-icons-font-family "JetBrainsMono Nerd Font")
+  (setq nerd-icons-font-family "Symbols Nerd Font Mono")
+  (setq nerd-icons-scale-factor 1.15)
 #+end_src
 ** Set up theme
 I use the Doom-One theme with a Doom modeline and also use all-the-icons for pretty icons. The following code block sets them up
