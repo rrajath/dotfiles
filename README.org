@@ -16,6 +16,6 @@ For those intending to clone this repo and use the org files into their dotfiles
 Here are some links to my configs which are written like documentation with code blocks in between.
 
 - [[./.emacs.d/PostInitConfig.org][Emacs Config]]
-- [[./dot_zshrc.org][Zsh Config]]
+- [[./zsh/README.org][Zsh Config]]
 - [[./fish/README.org][Fish Config]]
 - [[./helix/README.org][Helix Config]]
