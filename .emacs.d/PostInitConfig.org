@@ -8,7 +8,7 @@
 :TOC:      :include all :ignore this
 :END:
 * Introduction
-<Add stuff here>.
+<Add stuff here>
 * First things first
 ** Set lexical binding
 This sets lexical binding to true
