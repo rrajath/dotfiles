@@ -103,9 +103,11 @@ Package: [[https://github.com/emacsmirror/nerd-icons?tab=readme-ov-file][nerd-ic
 Using nerd icons package to make the modeline look pretty.
 #+begin_src emacs-lisp
   (use-package nerd-icons
-  	:vc (:url "https://github.com/rainstormstudio/nerd-icons.el"))
-  (setq nerd-icons-font-family "Symbols Nerd Font Mono")
-  (setq nerd-icons-scale-factor 1.15)
+    :vc (:url "https://github.com/rainstormstudio/nerd-icons.el")
+    :custom
+    (set-fontset-font t 'symbol "Symbols Nerd Font Mono" nil 'prepend)
+    (nerd-icons-font-family "Symbols Nerd Font Mono")
+    (nerd-icons-scale-factor 1.15))
 #+end_src
 ** Set up theme
 I use the Doom-One theme with a Doom modeline and also use all-the-icons for pretty icons. The following code block sets them up
@@ -116,6 +118,7 @@ Packages:
 
 #+begin_src emacs-lisp
   (use-package doom-modeline
+    :after nerd-icons
     :init (doom-modeline-mode 1)
     :custom
     (doom-modeline-height 30))
