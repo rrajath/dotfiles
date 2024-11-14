@@ -1273,7 +1273,7 @@ Set the directory for auto saving persp sessions
     (variable-pitch-mode 1)
     (auto-fill-mode 0)
     (visual-line-mode)
-    (setq org-directory "~/org-mode")
+    (setq org-directory "~/SynologyDrive/org-mode")
     (setq org-agenda-files (append (directory-files org-directory t "\\.org$") (rr/org-roam-list-notes-by-tag "project")))
     (setq org-capture-templates (rr/set-org-capture-templates))
     (setq org-todo-keywords
@@ -1968,7 +1968,7 @@ Sets up org-roam, roam directory, few useful keybindings.
   (use-package org-roam
     :demand t
     :custom
-    (org-roam-directory "~/org-mode/roam/work")
+    (org-roam-directory "~/org-mode/roam/personal")
     (org-roam-dailies-directory "journals/")
     (org-roam-completion-everywhere t)
     (org-roam-capture-templates
