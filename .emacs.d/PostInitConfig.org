@@ -360,7 +360,18 @@ Enable electric pair mode to make things easier while typing brackets, quotes, e
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-M-j") 'consult-buffer)
 #+end_src
+** Which key
+This package shows up a mini help section kinda thing at the bottom that tells what commands are available for a given prefix. Great way to learn new commands and keybindings.
+Package: [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 
+#+begin_src emacs-lisp
+  (use-package which-key
+    :defer 0
+    :diminish which-key-mode
+    :config
+    (which-key-mode)
+    (setq which-key-idle-delay 0.3))
+#+end_src
 ** Global keys
 I constantly hit =C-w= to delete words and currently it’s bound to delete region, which deletes a huge chunk of text. This keybinding will give a better experience in deleting words.
 #+begin_src emacs-lisp
