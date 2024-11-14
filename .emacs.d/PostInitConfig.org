@@ -336,7 +336,23 @@ Package: [[https://github.com/karthink/popper][popper]]
           popper-group-function #'popper-group-by-projectile)
     (popper-mode +1))
 #+end_src
+** Electric Pairs
+Enable electric pair mode to make things easier while typing brackets, quotes, etc. in order to automatically close the corresponding bracket, quote, etc.
 
+#+begin_src emacs-lisp
+  (electric-pair-mode 1)
+
+  (setq electric-pair-pairs
+        '(
+          (?\" . ?\")
+          (?\{ . ?\})
+          (?\( . ?\))
+          (?\[ . ?\])
+          (?` . ?`)))
+
+  ;; Enable electric-pair-mode in all programming modes
+  (add-hook 'prog-mode-hook 'electric-pair-mode)
+#+end_src
 * Keybindings
 ** Switch buffers easily
 =consult-buffer= lets you preview buffers as you scroll through them. It is not set to the keybinding =C-M-j= for easy access. Also, these buffers are aggregated across workspaces (or perspectives).
