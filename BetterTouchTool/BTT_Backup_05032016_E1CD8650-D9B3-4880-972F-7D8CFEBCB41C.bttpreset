@@ -182,7 +182,7 @@
     "BSTSnapAreaDefaultShowPictogram" : false,
     "BSTSnapAreaDefaultPictoDistanceFromBottom" : 0.10000000000000001
   },
-  "BTTPresetUUID" : "91D3E52D-C31D-4CF8-8121-564997D66280",
+  "BTTPresetUUID" : "03F6E8F8-4F1B-4C5C-8E6E-2CDFF013343A",
   "BTTPresetContent" : [
     {
       "BTTAppBundleIdentifier" : "com.googlecode.iterm2",
@@ -259,26 +259,6 @@
       "BTTTriggers" : [
         {
           "BTTActionCategory" : 0,
-          "BTTLastUpdatedAt" : 1731352741.8193741,
-          "BTTTriggerType" : 0,
-          "BTTTriggerClass" : "BTTTriggerTypeKeyboardShortcut",
-          "BTTUUID" : "1B5B747F-A074-46E2-BE1B-E8FE50FC1EED",
-          "BTTPredefinedActionType" : 49,
-          "BTTPredefinedActionName" : "Launch Application  or  Open File  or  Start Apple Script …",
-          "BTTLaunchPath" : "\/Applications\/Arc.app",
-          "BTTAdditionalConfiguration" : "917539",
-          "BTTKeyboardShortcutKeyboardType" : 65517,
-          "BTTTriggerOnDown" : 1,
-          "BTTLayoutIndependentChar" : "d",
-          "BTTEnabled" : 1,
-          "BTTEnabled2" : 1,
-          "BTTShortcutKeyCode" : 2,
-          "BTTShortcutModifierKeys" : 917504,
-          "BTTOrder" : 1,
-          "BTTAutoAdaptToKeyboardLayout" : 0
-        },
-        {
-          "BTTActionCategory" : 0,
           "BTTLastUpdatedAt" : 1731352741.818804,
           "BTTTriggerType" : 0,
           "BTTTriggerClass" : "BTTTriggerTypeKeyboardShortcut",
@@ -295,6 +275,26 @@
           "BTTShortcutKeyCode" : 35,
           "BTTShortcutModifierKeys" : 917504,
           "BTTOrder" : 9,
+          "BTTAutoAdaptToKeyboardLayout" : 0
+        },
+        {
+          "BTTActionCategory" : 0,
+          "BTTLastUpdatedAt" : 1731352741.8193741,
+          "BTTTriggerType" : 0,
+          "BTTTriggerClass" : "BTTTriggerTypeKeyboardShortcut",
+          "BTTUUID" : "1B5B747F-A074-46E2-BE1B-E8FE50FC1EED",
+          "BTTPredefinedActionType" : 49,
+          "BTTPredefinedActionName" : "Launch Application  or  Open File  or  Start Apple Script …",
+          "BTTLaunchPath" : "\/Applications\/Arc.app",
+          "BTTAdditionalConfiguration" : "917539",
+          "BTTKeyboardShortcutKeyboardType" : 65517,
+          "BTTTriggerOnDown" : 1,
+          "BTTLayoutIndependentChar" : "d",
+          "BTTEnabled" : 1,
+          "BTTEnabled2" : 1,
+          "BTTShortcutKeyCode" : 2,
+          "BTTShortcutModifierKeys" : 917504,
+          "BTTOrder" : 1,
           "BTTAutoAdaptToKeyboardLayout" : 0
         },
         {
@@ -320,7 +320,7 @@
         },
         {
           "BTTActionCategory" : 0,
-          "BTTLastUpdatedAt" : 1731352741.8203011,
+          "BTTLastUpdatedAt" : 1731575216.442615,
           "BTTTriggerType" : 169,
           "BTTTriggerTypeDescription" : "4 Finger Double Tap",
           "BTTTriggerClass" : "BTTTriggerTypeTouchpadAll",
@@ -351,6 +351,22 @@
           "BTTShortcutModifierKeys" : 917504,
           "BTTOrder" : 2,
           "BTTAutoAdaptToKeyboardLayout" : 0
+        },
+        {
+          "BTTActionCategory" : 0,
+          "BTTLastUpdatedAt" : 1731575216.4425979,
+          "BTTTriggerType" : 130,
+          "BTTTriggerTypeDescription" : "5 Finger Swipe Down",
+          "BTTTriggerClass" : "BTTTriggerTypeTouchpadAll",
+          "BTTUUID" : "A9220D11-C0EF-4030-BC2D-20BC4E28EF0A",
+          "BTTPredefinedActionType" : 13,
+          "BTTPredefinedActionName" : "Sleep Display",
+          "BTTEnabled" : 1,
+          "BTTEnabled2" : 1,
+          "BTTOrder" : 1,
+          "BTTIconData" : "",
+          "BTTAlternateIconData" : "",
+          "BTTGestureNotes" : "5 Finger Swipe Down"
         },
         {
           "BTTActionCategory" : 0,
@@ -414,22 +430,6 @@
         },
         {
           "BTTActionCategory" : 0,
-          "BTTLastUpdatedAt" : 1731352741.8207741,
-          "BTTTriggerType" : 130,
-          "BTTTriggerTypeDescription" : "5 Finger Swipe Down",
-          "BTTTriggerClass" : "BTTTriggerTypeTouchpadAll",
-          "BTTUUID" : "A9220D11-C0EF-4030-BC2D-20BC4E28EF0A",
-          "BTTPredefinedActionType" : 13,
-          "BTTPredefinedActionName" : "Sleep Display",
-          "BTTEnabled" : 1,
-          "BTTEnabled2" : 1,
-          "BTTOrder" : 1,
-          "BTTIconData" : "",
-          "BTTAlternateIconData" : "",
-          "BTTGestureNotes" : "5 Finger Swipe Down"
-        },
-        {
-          "BTTActionCategory" : 0,
           "BTTLastUpdatedAt" : 1731352741.8200059,
           "BTTTriggerType" : 0,
           "BTTTriggerClass" : "BTTTriggerTypeKeyboardShortcut",
@@ -450,7 +450,7 @@
         },
         {
           "BTTActionCategory" : 0,
-          "BTTLastUpdatedAt" : 1731352741.8180361,
+          "BTTLastUpdatedAt" : 1731575216.4426069,
           "BTTTriggerType" : 110,
           "BTTTriggerTypeDescriptionReadOnly" : "4 Finger Tap",
           "BTTTriggerClass" : "BTTTriggerTypeTouchpadAll",
@@ -462,7 +462,7 @@
         },
         {
           "BTTActionCategory" : 0,
-          "BTTLastUpdatedAt" : 1731357139.931293,
+          "BTTLastUpdatedAt" : 1731575216.442538,
           "BTTTriggerType" : 111,
           "BTTTriggerTypeDescription" : "5 Finger Tap",
           "BTTTriggerClass" : "BTTTriggerTypeTouchpadAll",
@@ -475,6 +475,34 @@
           "BTTIconData" : "",
           "BTTAlternateIconData" : "",
           "BTTGestureNotes" : "5 Finger Tap"
+        },
+        {
+          "BTTActionCategory" : 0,
+          "BTTLastUpdatedAt" : 1731800546.798424,
+          "BTTTriggerType" : 621,
+          "BTTTriggerTypeDescriptionReadOnly" : "Leftclick Orange Window Button",
+          "BTTTriggerClass" : "BTTTriggerTypeOtherTriggers",
+          "BTTUUID" : "4B73DE2F-6F4F-4E5F-BA3A-3A73FC308049",
+          "BTTPredefinedActionType" : 366,
+          "BTTPredefinedActionName" : "Empty Placeholder",
+          "BTTEnabled" : 1,
+          "BTTEnabled2" : 1,
+          "BTTOrder" : 0,
+          "BTTAdditionalActions" : [
+            {
+              "BTTActionCategory" : 0,
+              "BTTLastUpdatedAt" : 1731800387.2668328,
+              "BTTTriggerParentUUID" : "4B73DE2F-6F4F-4E5F-BA3A-3A73FC308049",
+              "BTTIsPureAction" : true,
+              "BTTTriggerClass" : "BTTTriggerTypeOtherTriggers",
+              "BTTUUID" : "A2F78BBD-982F-417F-952F-E17567E297F6",
+              "BTTPredefinedActionType" : 294,
+              "BTTPredefinedActionName" : "Hide App Under Cursor",
+              "BTTEnabled" : 1,
+              "BTTEnabled2" : 1,
+              "BTTOrder" : 62
+            }
+          ]
         },
         {
           "BTTActionCategory" : 0,
