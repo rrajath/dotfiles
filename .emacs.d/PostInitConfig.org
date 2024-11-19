@@ -815,6 +815,7 @@ This keymap is used for navigation. A lot of the functions here try to emulate H
       (define-key keymap (kbd "s") #'project-switch-project)
       (define-key keymap (kbd "c") #'consult-project-buffer)
       (define-key keymap (kbd "/") #'consult-ripgrep)
+      (define-key keymap (kbd "t") #'eat-project-other-window)
       keymap))
 
   ;; define an alias for your keymap
@@ -862,6 +863,7 @@ This keymap is used for navigation. A lot of the functions here try to emulate H
       (define-key keymap (kbd "k") #'magit-discard)
       (define-key keymap (kbd "f") #'free-keys)
       (define-key keymap (kbd "w") #'writegood-mode)
+      (define-key keymap (kbd "p") #'popper-toggle)
       keymap))
 
   ;; define an alias for your keymap
