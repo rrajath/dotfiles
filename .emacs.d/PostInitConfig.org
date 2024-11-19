@@ -39,6 +39,7 @@
     - [[#move-line-up][Move line up]]
   - [[#popper][Popper]]
   - [[#electric-pairs][Electric Pairs]]
+  - [[#other-minor-settings][Other minor settings]]
 - [[#keybindings][Keybindings]]
   - [[#switch-buffers-easily][Switch buffers easily]]
   - [[#which-key][Which key]]
@@ -495,6 +496,10 @@ Enable electric pair mode to make things easier while typing brackets, quotes, e
 
   ;; Enable electric-pair-mode in all programming modes
   (add-hook 'prog-mode-hook 'electric-pair-mode)
+#+end_src
+** Other minor settings
+#+begin_src emacs-lisp
+  (setq which-key-idle-delay 0.3)
 #+end_src
 * Keybindings
 ** Switch buffers easily
