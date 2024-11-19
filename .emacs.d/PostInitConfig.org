@@ -87,6 +87,7 @@
   - [[#helpful-package-for-better-documentation-formatting][Helpful package for better documentation formatting]]
   - [[#crux][Crux]]
   - [[#free-keys][Free Keys]]
+  - [[#direnv][Direnv]]
 - [[#dired][Dired]]
 - [[#development][Development]]
   - [[#git-gutter][Git Gutter]]
@@ -1197,6 +1198,16 @@ This package shows a list of unbound keys so that it’s easy to pick one while 
   (use-package free-keys
     :defer t)
 #+end_src
+** Direnv
+Package: [[https://github.com/wbolster/emacs-direnv][direnv]]
+
+#+begin_src emacs-lisp
+  (use-package direnv
+    :config
+    (direnv-mode)
+    (direnv-allow))
+#+end_src
+
 * Dired
 File management with dired
 
