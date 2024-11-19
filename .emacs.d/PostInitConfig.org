@@ -466,7 +466,6 @@ Package: [[https://github.com/karthink/popper][popper]]
 
 #+begin_src emacs-lisp
   (use-package popper
-    :after projectile
     :init
     (setq popper-reference-buffers
           '("\\*Messages\\*"
@@ -486,8 +485,7 @@ Package: [[https://github.com/karthink/popper][popper]]
             compilation-mode
             org-roam-mode
             term-mode
-            vterm-mode)
-          popper-group-function #'popper-group-by-projectile)
+            vterm-mode))
     (popper-mode +1))
 #+end_src
 ** Other minor settings
