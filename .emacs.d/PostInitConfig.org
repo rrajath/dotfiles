@@ -18,6 +18,7 @@
   - [[#set-lexical-binding][Set lexical binding]]
   - [[#startup-performance][Startup Performance]]
   - [[#keep-emacsd-clean][Keep .emacs.d clean]]
+  - [[#activate-auto-compile][Activate auto-compile]]
   - [[#use-straight-use-package-org][Use straight-use-package org]]
   - [[#set-variables][Set variables]]
 - [[#ui-configuration][UI Configuration]]
@@ -206,6 +207,19 @@ Package: [[https://github.com/emacscollective/no-littering][no-littering]]
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 #+end_src
 
+** Activate auto-compile
+The auto-compile package automates the byte-compilation of Emacs Lisp files, ensuring that your code runs more efficiently by converting it to byte-code. This process reduces the load time and execution time of your Emacs configuration and other Lisp files, leading to faster performance. Additionally, auto-compile helps maintain an up-to-date and optimized configuration by recompiling files automatically when they are saved, eliminating the need for manual compilation and minimizing potential issues caused by outdated byte-code.
+
+Package: [[https://github.com/emacscollective/auto-compile][auto-compile]]
+#+begin_src emacs-lisp
+  (use-package auto-compile
+    :demand t
+    :custom
+    (auto-compile-check-parens nil)
+    :config
+    (auto-compile-on-load-mode)
+    (auto-compile-on-save-mode))
+#+end_src
 ** Use straight-use-package org
 #+begin_src emacs-lisp
   (use-package org)
