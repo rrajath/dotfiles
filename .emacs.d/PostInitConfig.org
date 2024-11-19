@@ -1069,12 +1069,6 @@ Package: [[https://github.com/minad/vertico][vertico]]
   (define-key vertico-map "?" #'minibuffer-completion-help)
   (define-key vertico-map (kbd "M-RET") #'minibuffer-force-complete-and-exit)
   (define-key vertico-map (kbd "M-TAB") #'minibuffer-complete)
-
-  (use-package savehist
-    :custom
-    (history-length 25)
-    :init
-    (savehist-mode))
 #+end_src
 
 ** Marginalia
@@ -2367,5 +2361,5 @@ in HUGO_BASE_DIR property."
 Restore last saved persp-state
 
 #+begin_src emacs-lisp
-  (persp-state-restore persp-state-default-file)
+;  (persp-state-restore persp-state-default-file)
 #+end_src
