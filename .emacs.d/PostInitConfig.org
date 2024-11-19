@@ -39,7 +39,6 @@
     - [[#move-line-down][Move line down]]
     - [[#move-line-up][Move line up]]
   - [[#popper][Popper]]
-  - [[#electric-pairs][Electric Pairs]]
   - [[#other-minor-settings][Other minor settings]]
 - [[#keybindings][Keybindings]]
   - [[#switch-buffers-easily][Switch buffers easily]]
@@ -488,23 +487,6 @@ Package: [[https://github.com/karthink/popper][popper]]
             vterm-mode)
           popper-group-function #'popper-group-by-projectile)
     (popper-mode +1))
-#+end_src
-** Electric Pairs
-Enable electric pair mode to make things easier while typing brackets, quotes, etc. in order to automatically close the corresponding bracket, quote, etc.
-
-#+begin_src emacs-lisp
-  (electric-pair-mode 1)
-
-  (setq electric-pair-pairs
-        '(
-          (?\" . ?\")
-          (?\{ . ?\})
-          (?\( . ?\))
-          (?\[ . ?\])
-          (?` . ?`)))
-
-  ;; Enable electric-pair-mode in all programming modes
-  (add-hook 'prog-mode-hook 'electric-pair-mode)
 #+end_src
 ** Other minor settings
 #+begin_src emacs-lisp
