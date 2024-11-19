@@ -476,7 +476,6 @@ Package: [[https://github.com/karthink/popper][popper]]
             "[Oo]utput\\*$"
             "\\*Help\\*"
             "\\*helpful\\*"
-            "\\*vterm\\*"
             "\\*Excorporate\\*"
             "\\*xref\\*"
             eat-mode
@@ -484,8 +483,7 @@ Package: [[https://github.com/karthink/popper][popper]]
             helpful-mode
             compilation-mode
             org-roam-mode
-            term-mode
-            vterm-mode))
+            term-mode))
     (popper-mode +1))
 #+end_src
 ** Other minor settings
