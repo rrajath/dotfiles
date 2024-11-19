@@ -19,6 +19,7 @@
   - [[#startup-performance][Startup Performance]]
   - [[#keep-emacsd-clean][Keep .emacs.d clean]]
   - [[#use-straight-use-package-org][Use straight-use-package org]]
+  - [[#set-variables][Set variables]]
 - [[#ui-configuration][UI Configuration]]
   - [[#set-up-fonts][Set up fonts]]
   - [[#set-up-icons][Set up icons]]
@@ -208,8 +209,17 @@ Package: [[https://github.com/emacscollective/no-littering][no-littering]]
 
 ** Use straight-use-package org
 #+begin_src emacs-lisp
-(use-package org)
+  (use-package org)
 #+end_src
+** Set variables
+This section sets variables found in .envrc in order to use them later on in the config. This is useful for configs that are shared across multiple machines but have different values. For example, org-mode directory may be at different locations in two different machines. Reading the path from an envrc file makes the config cleaner and easier to maintain and all the necessary paths and values can be offloaded to a different file (envrc)
+
+#+begin_src emacs-lisp
+  (direnv-allow)
+  (setq rr-org-mode-dir (getenv "ORG_MODE_DIR"))
+  (setq rr-org-roam-dir (getenv "ORG_ROAM_DIR"))
+#+end_src
+
 * UI Configuration
 ** Set up fonts
 This font face will be used everywhere in Emacs, not just in source code
@@ -1458,7 +1468,7 @@ Set the directory for auto saving persp sessions
     (variable-pitch-mode 1)
     (auto-fill-mode 0)
     (visual-line-mode)
-    (setq org-directory "~/SynologyDrive/org-mode")
+    (setq org-directory rr-org-mode-dir)
     (setq org-agenda-files (append (directory-files org-directory t "\\.org$") (rr/org-roam-list-notes-by-tag "project")))
     (setq org-capture-templates (rr/set-org-capture-templates))
     (setq org-todo-keywords
@@ -2153,7 +2163,7 @@ Sets up org-roam, roam directory, few useful keybindings.
   (use-package org-roam
     :demand t
     :custom
-    (org-roam-directory "~/org-mode/roam/personal")
+    (org-roam-directory rr-org-roam-dir)
     (org-roam-dailies-directory "journals/")
     (org-roam-completion-everywhere t)
     (org-roam-capture-templates
