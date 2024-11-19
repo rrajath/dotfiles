@@ -310,12 +310,14 @@ Package: [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
 This removes the need to hit Save all the time.
 
 #+begin_src emacs-lisp
-  (use-package super-save
-    :defer t
-    :diminish super-save-mode
-    :config
-    (super-save-mode +1)
-    (setq super-save-auto-save-when-idle t))
+  (defun rr/auto-save-on-idle ()
+    "Auto-save current buffer if it's file-visiting and modified."
+    (when (and buffer-file-name
+               (buffer-modified-p)
+               (file-writable-p buffer-file-name))
+      (save-buffer)))
+
+  (run-with-idle-timer 3 t #'rr/auto-save-on-idle)
 
   (setq backup-directory-alist
         `((".*" . ,temporary-file-directory)))
