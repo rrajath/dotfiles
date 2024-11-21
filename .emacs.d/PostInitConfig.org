@@ -160,7 +160,7 @@ This config is built by copying parts from [[https://github.com/daviwil/dotfiles
 ** Personal Information
 It's useful to set up personal information. Some packages tend to use it.
 #+begin_src emacs-lisp
-;;; private-config.el --- DESCRIPTION -*- lexical-binding: t; -*- 
+  ;;; private-config.el --- DESCRIPTION -*- lexical-binding: t; -*- 
   (setq user-full-name "Rajath Ramakrishna"
         user-mail-address "r.rajath@pm.me")
 #+end_src
@@ -179,17 +179,17 @@ Literate config has a few benefits:
 This sets lexical binding to true
 
 #+begin_src emacs-lisp
-;;; post-init.el --- DESCRIPTION -*- no-byte-compile: t; lexical-binding: t; -*-
+  ;;; post-init.el --- DESCRIPTION -*- no-byte-compile: t; lexical-binding: t; -*-
 #+end_src
 
 ** Startup Performance
 
 #+begin_src emacs-lisp
-;  (setq gc-cons-threshold (* 50 1000 1000))
+  ;;  (setq gc-cons-threshold (* 50 1000 1000))
 
   (defun rr/display-startup-time ()
     "Displays startup time in the echo buffer and Messages buffer as
-  soon as Emacs loads."
+      soon as Emacs loads."
     (message "Emacs loaded in %s with %d garbage collections."
              (format "%.2f seconds"
                      (float-time (time-subtract after-init-time before-init-time)))
@@ -463,7 +463,7 @@ Package: [[https://github.com/Malabarba/beacon][beacon]]
     (interactive)
     (transpose-lines 1)
     (forward-line -2))
-  
+
   (global-set-key (kbd "M-<up>") 'rr/move-line-up)
 #+end_src
 ** Popper
@@ -1285,7 +1285,7 @@ This package worked best for setting all the treesitter stuff.
 
 #+begin_src emacs-lisp
   (use-package treesit-auto
-;    :defer t
+    :defer t
     :custom
     (treesit-auto-install 'prompt)
     :config
@@ -1359,12 +1359,12 @@ Make sure to define the API key from ~.envrc~
 
   ;; Perplexity offers an OpenAI compatible API
   (gptel-make-openai "Perplexity"         ;Any name you want
-                     :host "api.perplexity.ai"
-                     :key pplx-api-key
-                     :endpoint "/chat/completions"
-                     :stream t
-                     :models '(;; has many more, check perplexity.ai
-                               llama-3.1-sonar-small-128k-chat))
+    :host "api.perplexity.ai"
+    :key pplx-api-key
+    :endpoint "/chat/completions"
+    :stream t
+    :models '(;; has many more, check perplexity.ai
+              llama-3.1-sonar-small-128k-chat))
 #+end_src
 
 *** Github Copilot
