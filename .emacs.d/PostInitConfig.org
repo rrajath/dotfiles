@@ -212,7 +212,7 @@ Package: [[https://github.com/emacscollective/no-littering][no-littering]]
 
 ** Use straight-use-package org
 #+begin_src emacs-lisp
-  (use-package org)
+  (straight-use-package 'org)
 #+end_src
 ** Set variables
 This section sets variables found in .envrc in order to use them later on in the config. This is useful for configs that are shared across multiple machines but have different values. For example, org-mode directory may be at different locations in two different machines. Reading the path from an envrc file makes the config cleaner and easier to maintain and all the necessary paths and values can be offloaded to a different file (envrc)
