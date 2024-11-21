@@ -101,6 +101,10 @@
     - [[#typescript][Typescript]]
       - [[#prettier][Prettier]]
     - [[#markdown][Markdown]]
+  - [[#llm][LLM]]
+    - [[#gptel][gpt.el]]
+    - [[#github-copilot][Github Copilot]]
+    - [[#github-copilot-chat][Github Copilot Chat]]
 - [[#buffers][Buffers]]
   - [[#perspectives][Perspectives]]
     - [[#basic-setup][Basic Setup]]
@@ -217,6 +221,7 @@ This section sets variables found in .envrc in order to use them later on in the
   (direnv-allow)
   (setq rr-org-mode-dir (getenv "ORG_MODE_DIR"))
   (setq rr-org-roam-dir (getenv "ORG_ROAM_DIR"))
+  (setq pplx-api-key (getenv "PPLX_API_KEY"))
 #+end_src
 
 * UI Configuration
@@ -1340,6 +1345,52 @@ Support markdown mode to make README files and other markdown files easily reada
     :init
     (setq markdown-command "multimarkdown"))
 #+end_src
+** LLM
+*** gpt.el
+Package: [[https://github.com/karthink/gptel][gpt.el]]
+
+Make sure to define the API key from ~.envrc~
+
+#+begin_src emacs-lisp
+  (use-package gptel
+    :defer t)
+
+  ;; Perplexity offers an OpenAI compatible API
+  (gptel-make-openai "Perplexity"         ;Any name you want
+                     :host "api.perplexity.ai"
+                     :key pplx-api-key
+                     :endpoint "/chat/completions"
+                     :stream t
+                     :models '(;; has many more, check perplexity.ai
+                               llama-3.1-sonar-small-128k-chat))
+#+end_src
+
+*** Github Copilot
+Package: [[https://github.com/copilot-emacs/copilot.el][copilot]]
+You might want to disable and enable ~copilot-mode~ after you set the ~copilot-enable-predicates~ to ~nil~.
+
+#+begin_src emacs-lisp
+  (use-package copilot
+    :defer t
+    :vc (:url "https://github.com/copilot-emacs/copilot.el"
+              :rev :newest
+              :branch "main")
+    :custom
+    (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+    (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion))
+
+  (add-hook 'prog-mode-hook 'copilot-mode)
+  (setq copilot-enable-predicates nil)
+#+end_src
+
+*** Github Copilot Chat
+Package: [[https://github.com/chep/copilot-chat.el][copilot-chat]]
+
+#+begin_src emacs-lisp
+  (use-package copilot-chat
+    :defer t)
+#+end_src
+
 * Buffers
 ** Perspectives
 *** Basic Setup
