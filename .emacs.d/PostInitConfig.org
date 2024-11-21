@@ -100,6 +100,7 @@
     - [[#eglot][Eglot]]
     - [[#typescript][Typescript]]
       - [[#prettier][Prettier]]
+    - [[#markdown][Markdown]]
 - [[#buffers][Buffers]]
   - [[#perspectives][Perspectives]]
     - [[#basic-setup][Basic Setup]]
@@ -1332,7 +1333,15 @@ Package: [[https://github.com/jscheid/prettier.el][prettier]]
   (setq prettier-mode-sync-config-flag nil)
   (add-hook 'after-init-hook #'global-prettier-mode)
 #+end_src
-
+*** Markdown
+Support markdown mode to make README files and other markdown files easily readable.
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+    :ensure t
+    :mode ("README\\.md\\'" . gfm-mode)
+    :init
+    (setq markdown-command "multimarkdown"))
+#+end_src
 * Buffers
 ** Perspectives
 *** Basic Setup
