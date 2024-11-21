@@ -1293,8 +1293,8 @@ Package: [[https://codeberg.org/akib/emacs-flymake-popon][flymake-popon]]
 
 #+begin_src emacs-lisp :tangle no
   (use-package flymake-popon
-     :vc (:url "https://codeberg.org/akib/emacs-flymake-popon.git")
-   :defer t)
+    :vc (:url "https://codeberg.org/akib/emacs-flymake-popon.git")
+    :defer t)
 #+end_src
 
 *** Eglot
