@@ -1332,9 +1332,11 @@ Using the built-in eglot instead of LSP. I previously used LSP and found it to b
 Package: [[https://github.com/jscheid/prettier.el][prettier]]
 #+begin_src emacs-lisp
   (use-package prettier
-    :defer t)
-  (setq prettier-mode-sync-config-flag nil)
-  (add-hook 'after-init-hook #'global-prettier-mode)
+    :defer t
+    :hook
+    (prog-mode . prettier-mode)
+    :custom
+    (prettier-mode-sync-config-flag nil))
 #+end_src
 *** Markdown
 Support markdown mode to make README files and other markdown files easily readable.
