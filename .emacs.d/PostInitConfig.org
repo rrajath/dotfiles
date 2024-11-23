@@ -1391,7 +1391,7 @@ You might want to disable and enable ~copilot-mode~ after you set the ~copilot-e
 *** Github Copilot Chat
 Package: [[https://github.com/chep/copilot-chat.el][copilot-chat]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package copilot-chat
     :defer t)
 #+end_src
