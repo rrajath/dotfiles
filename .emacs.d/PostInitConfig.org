@@ -316,7 +316,7 @@ Package: [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
 ** Auto-saving changed files
 This removes the need to hit Save all the time.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (defun rr/auto-save-on-idle ()
     "Auto-save current buffer if it's file-visiting and modified."
     (when (and buffer-file-name
