@@ -105,6 +105,7 @@
     - [[#gptel][gpt.el]]
     - [[#github-copilot][Github Copilot]]
     - [[#github-copilot-chat][Github Copilot Chat]]
+  - [[#consult-xref][Consult Xref]]
 - [[#buffers][Buffers]]
   - [[#perspectives][Perspectives]]
     - [[#basic-setup][Basic Setup]]
@@ -1395,7 +1396,14 @@ Package: [[https://github.com/chep/copilot-chat.el][copilot-chat]]
   (use-package copilot-chat
     :defer t)
 #+end_src
-
+** Consult Xref
+#+begin_src emacs-lisp
+  (use-package consult-xref-stack
+    :defer t
+    :vc (:url "https://github.com/brett-lempereur/consult-xref-stack" :branch "main")
+    :bind
+    (("M-," . consult-xref-stack-backward)))
+#+end_src
 * Buffers
 ** Perspectives
 *** Basic Setup
