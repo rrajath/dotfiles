@@ -838,6 +838,8 @@ This keymap is used for navigation. A lot of the functions here try to emulate H
       (define-key keymap (kbd "r") #'eglot-rename)
       (define-key keymap (kbd "R") #'eglot-reconnect)
       (define-key keymap (kbd "c") #'consult-flymake)
+      (define-key keymap (kbd ">") #'diff-hl-next-hunk)
+      (define-key keymap (kbd "<") #'diff-hl-previous-hunk)
       keymap))
 
   ;; define an alias for your keymap
@@ -869,6 +871,7 @@ This keymap is used for navigation. A lot of the functions here try to emulate H
       (define-key keymap (kbd "f") #'free-keys)
       (define-key keymap (kbd "w") #'writegood-mode)
       (define-key keymap (kbd "p") #'popper-toggle)
+      (define-key keymap (kbd "l") #'consult-goto-line)
       keymap))
 
   ;; define an alias for your keymap
