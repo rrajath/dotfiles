@@ -1389,7 +1389,8 @@ You might want to disable and enable ~copilot-mode~ after you set the ~copilot-e
                 ("C-S-l" . copilot-accept-completion-by-line))
     :hook (prog-mode . copilot-mode)
     :custom
-    (copilot-enable-predicates nil))
+    (copilot-enable-predicates nil)
+    (copilot-max-char 1000000))
 #+end_src
 
 *** Github Copilot Chat
