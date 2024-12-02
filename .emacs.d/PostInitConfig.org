@@ -100,6 +100,7 @@
     - [[#eglot][Eglot]]
     - [[#typescript][Typescript]]
       - [[#prettier][Prettier]]
+      - [[#jest][Jest]]
     - [[#markdown][Markdown]]
   - [[#llm][LLM]]
     - [[#gptel][gpt.el]]
@@ -1341,6 +1342,13 @@ Package: [[https://github.com/jscheid/prettier.el][prettier]]
     (prog-mode . prettier-mode)
     :custom
     (prettier-mode-sync-config-flag nil))
+#+end_src
+**** Jest
+#+begin_src emacs-lisp
+  (use-package jest-test-mode 
+    :ensure t 
+    :commands jest-test-mode
+    :hook (typescript-ts-mode))
 #+end_src
 *** Markdown
 Support markdown mode to make README files and other markdown files easily readable.
