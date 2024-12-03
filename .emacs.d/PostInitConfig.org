@@ -103,6 +103,7 @@
       - [[#prettier][Prettier]]
       - [[#jest][Jest]]
     - [[#markdown][Markdown]]
+  - [[#rest-client][Rest Client]]
   - [[#llm][LLM]]
     - [[#gptel][gpt.el]]
     - [[#github-copilot][Github Copilot]]
@@ -1372,6 +1373,13 @@ Support markdown mode to make README files and other markdown files easily reada
     :init
     (setq markdown-command "multimarkdown"))
 #+end_src
+** Rest Client
+Package: [[https://github.com/federicotdn/verb][verb]]
+
+#+begin_src emacs-lisp
+  (use-package verb)
+#+end_src
+
 ** LLM
 *** gpt.el
 Package: [[https://github.com/karthink/gptel][gpt.el]]
@@ -1478,7 +1486,7 @@ Set the directory for auto saving persp sessions
        "* TODO %?\n%U\n %i")
       ("og" "Guitar" entry (file+olp, (rr/org-path "organize.org") "Goals" "Guitar" "Practice Log")
        "* %u\n%?")
-  		
+  	
       ("w" "Work")
       ("wt" "Work Task" entry (file+olp, (rr/org-path "work-tasks.org") "Tasks")
        "* TODO %?\n%U\n %i" :kill-buffer t)
@@ -1542,6 +1550,7 @@ Set the directory for auto saving persp sessions
     :hook (org-mode . rr/org-mode-setup)
     :config
     ;;    (rr/org-mode-setup)
+    (define-key org-mode-map (kbd "C-c C-r") verb-command-map)
     (setq org-ellipsis " ▾"
           org-hide-emphasis-markers t
           org-log-done 'time
