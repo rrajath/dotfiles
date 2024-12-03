@@ -103,6 +103,9 @@
       - [[#prettier][Prettier]]
       - [[#jest][Jest]]
     - [[#markdown][Markdown]]
+    - [[#yaml][YAML]]
+    - [[#golang][Golang]]
+    - [[#aphelia][Aphelia]]
   - [[#rest-client][Rest Client]]
   - [[#llm][LLM]]
     - [[#gptel][gpt.el]]
@@ -1373,6 +1376,24 @@ Support markdown mode to make README files and other markdown files easily reada
     :mode ("README\\.md\\'" . gfm-mode)
     :init
     (setq markdown-command "multimarkdown"))
+#+end_src
+*** YAML
+#+begin_src emacs-lisp
+  (use-package yaml-ts-mode
+    :defer t
+    :mode "\\.yaml\\'")
+#+end_src
+*** Golang
+#+begin_src emacs-lisp
+  (use-package go-ts-mode
+    :defer t
+    :mode "\\.go\\'")
+#+end_src
+*** Aphelia
+Package: [[https://github.com/radian-software/apheleia][aphelia]]
+#+begin_src emacs-lisp
+  (use-package apheleia
+    :hook (go-ts-mode . apheleia-mode))
 #+end_src
 ** Rest Client
 Package: [[https://github.com/federicotdn/verb][verb]]
