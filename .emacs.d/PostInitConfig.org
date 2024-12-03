@@ -1377,7 +1377,9 @@ Support markdown mode to make README files and other markdown files easily reada
 Package: [[https://github.com/federicotdn/verb][verb]]
 
 #+begin_src emacs-lisp
-  (use-package verb)
+  (use-package verb
+    :custom
+    (verb-auto-kill-response-buffers t))
 #+end_src
 
 ** LLM
