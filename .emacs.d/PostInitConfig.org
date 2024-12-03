@@ -92,6 +92,7 @@
 - [[#development][Development]]
   - [[#git-gutter][Git Gutter]]
   - [[#magit][Magit]]
+    - [[#forge][Forge]]
   - [[#terminal][Terminal]]
     - [[#eat][Eat]]
   - [[#languages][Languages]]
@@ -1277,6 +1278,18 @@ Package: [[https://magit.vc/][magit]]
     :custom
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 #+end_src
+
+*** Forge
+#+begin_src emacs-lisp
+  (use-package forge
+    :after magit)
+
+  (push '("github.robot.car"               ; GITHOST
+          "api.github.robot.car"           ; APIHOST
+          "github.robot.car"               ; WEBHOST and INSTANCE-ID
+          forge-github-repository)    ; CLASS
+        forge-alist)
+    #+end_src
 ** Terminal
 *** Eat
 #+begin_src emacs-lisp
