@@ -250,5 +250,12 @@ Enables starship prompt for fish
 #+begin_src shell
 #  starship init fish | source
 #+end_src
+* direnv
+Make sure to install [[https://github.com/direnv/direnv/tree/master][direnv]] first
+
+#+begin_src shell
+  direnv hook fish | source
+#+end_src
+
 * Useful Links
 - [[https://github.com/jorgebucaran/awsm.fish][GitHub - jorgebucaran/awsm.fish: A curation of prompts, plugins & other resources for Fish]]
