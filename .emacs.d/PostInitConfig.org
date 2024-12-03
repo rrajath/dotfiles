@@ -109,6 +109,7 @@
     - [[#github-copilot][Github Copilot]]
     - [[#github-copilot-chat][Github Copilot Chat]]
   - [[#consult-xref][Consult Xref]]
+  - [[#consult-project-extra][Consult Project Extra]]
 - [[#buffers][Buffers]]
   - [[#perspectives][Perspectives]]
     - [[#basic-setup][Basic Setup]]
@@ -815,7 +816,7 @@ This keymap is used for navigation. A lot of the functions here try to emulate H
 #+begin_src emacs-lisp
   (defvar meow-project-keymap
     (let ((keymap (make-keymap)))
-      (define-key keymap (kbd "f") #'project-find-file)
+      (define-key keymap (kbd "f") #'consult-project-extra-find)
       (define-key keymap (kbd "D") #'project-find-dir)
       (define-key keymap (kbd "d") #'project-dired)
       (define-key keymap (kbd "m") #'magit-project-status)
@@ -1439,6 +1440,14 @@ Package: [[https://github.com/chep/copilot-chat.el][copilot-chat]]
     :bind
     (("M-," . consult-xref-stack-backward)))
 #+end_src
+** Consult Project Extra
+Package: [[https://github.com/Qkessler/consult-project-extra][consult-project-extra]]
+
+#+begin_src emacs-lisp
+  (use-package consult-project-extra
+    :defer t)
+#+end_src
+
 * Buffers
 ** Perspectives
 *** Basic Setup
