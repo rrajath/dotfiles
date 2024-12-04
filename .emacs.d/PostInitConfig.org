@@ -1351,6 +1351,13 @@ Using the built-in eglot instead of LSP. I previously used LSP and found it to b
     (add-to-list 'eglot-server-programs
   			   '((typescript-ts-mode typescript-mode) . ("typescript-language-server" "--stdio"))))
 #+end_src
+*** JS Package Mode
+#+begin_src emacs-lisp
+  (use-package js-pkg-mode
+    :vc (:url "https://github.com/ovistoica/js-pkg-mode")
+    :hook
+    (typescript-ts-mode . js-pkg-mode))
+#+end_src
 *** Typescript
 **** Prettier
 Package: [[https://github.com/jscheid/prettier.el][prettier]]
