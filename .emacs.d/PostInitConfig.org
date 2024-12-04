@@ -505,6 +505,7 @@ Package: [[https://github.com/karthink/popper][popper]]
 ** Other minor settings
 #+begin_src emacs-lisp
   (setq which-key-idle-delay 0.3)
+  (setq which-key-max-description-length 100)
 #+end_src
 * Keybindings
 ** Switch buffers easily
