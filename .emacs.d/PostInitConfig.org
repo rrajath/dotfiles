@@ -99,6 +99,7 @@
     - [[#treesit-auto][Treesit-auto]]
     - [[#flymake-diagnostics-as-popups][Flymake diagnostics as popups]]
     - [[#eglot][Eglot]]
+    - [[#js-package-mode][JS Package Mode]]
     - [[#typescript][Typescript]]
       - [[#prettier][Prettier]]
       - [[#jest][Jest]]
@@ -517,8 +518,8 @@ I constantly hit =C-w= to delete words and currently it’s bound to delete regi
 #+begin_src emacs-lisp
   (keymap-global-set "C-w" 'backward-kill-word)
   (keymap-global-set "C-s" 'save-buffer)
-  (keymap-global-set "s-[" 'tab-next)
-  (keymap-global-set "s-]" 'tab-previous)
+  (keymap-global-set "s-[" 'tab-previous)
+  (keymap-global-set "s-]" 'tab-next)
   (keymap-global-set "s-r" 'rr/revert-buffer-no-confirm)
   (keymap-global-set "M-o" 'completion-at-point)
   (keymap-global-set "C-S-u" 'universal-argument)
