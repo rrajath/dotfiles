@@ -118,6 +118,7 @@
     - [[#basic-setup][Basic Setup]]
     - [[#ibuffer-hook][IBuffer hook]]
     - [[#saving-sessions][Saving Sessions]]
+  - [[#activities][Activities]]
 - [[#orgmode][OrgMode]]
   - [[#capture-templates][Capture Templates]]
   - [[#basic-setup][Basic setup]]
@@ -516,8 +517,8 @@ I constantly hit =C-w= to delete words and currently it’s bound to delete regi
 #+begin_src emacs-lisp
   (keymap-global-set "C-w" 'backward-kill-word)
   (keymap-global-set "C-s" 'save-buffer)
-  (keymap-global-set "s-[" 'persp-prev)
-  (keymap-global-set "s-]" 'persp-next)
+  (keymap-global-set "s-[" 'tab-next)
+  (keymap-global-set "s-]" 'tab-previous)
   (keymap-global-set "s-r" 'rr/revert-buffer-no-confirm)
   (keymap-global-set "M-o" 'completion-at-point)
   (keymap-global-set "C-S-u" 'universal-argument)
@@ -1475,7 +1476,7 @@ Package: [[https://github.com/Qkessler/consult-project-extra][consult-project-ex
 This provides multiple "workspaces" for better management of buffers.
 Package: [[https://github.com/nex3/perspective-el][perspective.el]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package perspective
     :defer t
     :bind (("C-x k" . persp-kill-buffer*))
@@ -1490,7 +1491,7 @@ Package: [[https://github.com/nex3/perspective-el][perspective.el]]
 *** IBuffer hook
 This is to display buffers under their respective perspectives
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (add-hook 'ibuffer-hook
             (lambda ()
               (persp-ibuffer-set-filter-groups)
@@ -1501,11 +1502,32 @@ This is to display buffers under their respective perspectives
 *** Saving Sessions
 Set the directory for auto saving persp sessions
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (setq persp-state-default-file (concat user-emacs-directory "var/persp-auto-save"))
   (add-hook 'kill-emacs-hook #'persp-state-save)
 #+end_src
+** Activities
+Package: [[https://github.com/alphapapa/activities.el][activities.el]]
 
+#+begin_src emacs-lisp
+  (use-package activities
+    :init
+    (activities-mode)
+    (activities-tabs-mode)
+    ;; Prevent `edebug' default bindings from interfering.
+    (setq edebug-inhibit-emacs-lisp-mode-bindings t)
+
+    :bind
+    (("C-x C-a C-n" . activities-new)
+     ("C-x C-a C-d" . activities-define)
+     ("C-x C-a C-a" . activities-resume)
+     ("C-x C-a C-s" . activities-suspend)
+     ("C-x C-a C-k" . activities-kill)
+     ("C-x C-a RET" . activities-switch)
+     ("C-x C-a b" . activities-switch-buffer)
+     ("C-x C-a g" . activities-revert)
+     ("C-x C-a l" . activities-list)))
+#+end_src
 * OrgMode
 ** Capture Templates
 
