@@ -1287,7 +1287,7 @@ Package: [[https://magit.vc/][magit]]
 #+end_src
 
 *** Forge
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package forge
     :after magit)
 
