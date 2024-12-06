@@ -877,6 +877,7 @@ This keymap is used for navigation. A lot of the functions here try to emulate H
       (define-key keymap (kbd "r") #'restart-emacs)
       (define-key keymap (kbd "h") #'meow-highlight-keymap)
       (define-key keymap (kbd "g") #'magit-status)
+      (define-key keymap (kbd "G") #'git-link)
       (define-key keymap (kbd "k") #'magit-discard)
       (define-key keymap (kbd "f") #'free-keys)
       (define-key keymap (kbd "w") #'writegood-mode)
@@ -1275,7 +1276,13 @@ Package: [[https://github.com/dgutov/diff-hl][diff-hl]]
   (diff-hl-dired-mode 1)
   (diff-hl-margin-mode 1)
 #+end_src
-
+** Git Link
+#+begin_src emacs-lisp
+  (use-package git-link
+    :defer t
+    :custom
+    (git-link-default-branch "master"))
+#+end_src
 ** Magit
 The best git client ever!
 Package: [[https://magit.vc/][magit]]
