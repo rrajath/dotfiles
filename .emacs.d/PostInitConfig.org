@@ -456,7 +456,7 @@ Found this in a [[https://www.reddit.com/r/emacs/comments/1aky57w/comment/kphrvz
 #+begin_src emacs-lisp
   (defun rr/pulse-line (_)
     (pulse-momentary-highlight-one-line (point)))
-  (setq window-selection-change-functions '(pulse-line))
+  (setq window-selection-change-functions '(rr/pulse-line))
 #+end_src
 
 ** Moving Lines
