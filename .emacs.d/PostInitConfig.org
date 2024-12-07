@@ -1427,6 +1427,7 @@ Package: [[https://github.com/federicotdn/verb][verb]]
 
 #+begin_src emacs-lisp
   (use-package verb
+    :defer t
     :custom
     (verb-auto-kill-response-buffers t))
 #+end_src
@@ -2325,7 +2326,7 @@ Sets up org-roam, roam directory, few useful keybindings.
 
 #+begin_src emacs-lisp
   (use-package org-roam
-    :demand t
+    :defer 2
     :custom
     (org-roam-directory rr-org-roam-dir)
     (org-roam-dailies-directory "journals/")

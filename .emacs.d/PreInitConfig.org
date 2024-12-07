@@ -12,6 +12,10 @@ This sets lexical binding to true
 #+begin_src emacs-lisp
 ;;; pre-init.el --- DESCRIPTION -*- no-byte-compile: t; lexical-binding: t; -*-
 #+end_src
+** Set compute statistics
+#+begin_src emacs-lisp
+  (setq use-package-compute-statistics t)
+#+end_src
 ** Use Straight Package
 
 #+begin_src emacs-lisp
