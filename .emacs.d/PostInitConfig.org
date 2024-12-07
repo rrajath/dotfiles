@@ -126,6 +126,7 @@
   - [[#org-export-git-flavored-markdown][Org Export Git Flavored Markdown]]
   - [[#org-appear][Org Appear]]
   - [[#prettier-bullets][Prettier bullets]]
+  - [[#echo-area-tooltips][Echo area tooltips]]
   - [[#visual-fill-column][Visual Fill Column]]
   - [[#agenda-configs][Agenda Configs]]
   - [[#babel-configuration][Babel Configuration]]
@@ -1694,6 +1695,20 @@ Package: [[https://github.com/sabof/org-bullets][org-bullets]]
     (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 #+end_src
 
+** Echo area tooltips
+Shows tooltips in echo area. For example, if the point is on a hyperlink, the echo area shows what that link is.
+Found it in a [[https://www.reddit.com/r/emacs/comments/o68i0v/comment/h2rizey/][reddit thread]].
+
+#+begin_src emacs-lisp
+  (defun echo-area-tooltips ()
+    "Show tooltips in the echo area automatically for current buffer."
+    (setq-local help-at-pt-display-when-idle t
+                help-at-pt-timer-delay 0)
+    (help-at-pt-cancel-timer)
+    (help-at-pt-set-timer))
+
+  (add-hook 'org-mode-hook #'echo-area-tooltips)
+#+end_src
 ** Visual Fill Column
 Make the fill column 100 characters long and enable visual-line-mode in it.
 Package: [[https://github.com/joostkremers/visual-fill-column][visual-fill-column]]
