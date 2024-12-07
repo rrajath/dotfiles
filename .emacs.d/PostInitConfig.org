@@ -34,7 +34,7 @@
   - [[#highlight-symbol][Highlight Symbol]]
   - [[#embark][Embark]]
   - [[#embrace][Embrace]]
-  - [[#beacon][Beacon]]
+  - [[#pulse-line][Pulse Line]]
   - [[#moving-lines][Moving Lines]]
     - [[#move-line-down][Move line down]]
     - [[#move-line-up][Move line up]]
@@ -450,15 +450,15 @@ Package: [[https://github.com/oantolin/embark][Embark]]
   (global-set-key (kbd "C-.") #'embrace-commander)
   (add-hook 'org-mode-hook #'embrace-org-mode-hook)
 #+end_src
-** Beacon
-Package: [[https://github.com/Malabarba/beacon][beacon]]
+** Pulse Line
+Found this in a [[https://www.reddit.com/r/emacs/comments/1aky57w/comment/kphrvz3/][reddit comment]] that does the same thing as [[https://github.com/Malabarba/beacon][beacon]]. Basically flashes the active line on window selction changes.
 
 #+begin_src emacs-lisp
-  (use-package beacon
-    :defer t
-    :init
-    (beacon-mode 1))
+  (defun rr/pulse-line (_)
+    (pulse-momentary-highlight-one-line (point)))
+  (setq window-selection-change-functions '(pulse-line))
 #+end_src
+
 ** Moving Lines
 *** Move line down
 #+begin_src emacs-lisp
