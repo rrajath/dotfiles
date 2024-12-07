@@ -1468,6 +1468,10 @@ You might want to disable and enable ~copilot-mode~ after you set the ~copilot-e
                 ("C-S-w" . copilot-accept-completion-by-word)
                 ("C-S-l" . copilot-accept-completion-by-line))
     :hook (prog-mode . copilot-mode)
+    :config
+    (add-to-list 'copilot-indentation-alist '(prog-mode 2))
+    (add-to-list 'copilot-indentation-alist '(emacs-lisp-mode 2))
+    (add-to-list 'copilot-indentation-alist '(special-mode 2))
     :custom
     (copilot-enable-predicates nil)
     (copilot-max-char 1000000))
