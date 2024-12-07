@@ -1223,11 +1223,8 @@ File management with dired
     :bind (:map dired-mode-map
                 ("H" . dired-omit-mode)
                 ("h" . dired-single-up-directory)
-                ("l" . dired-single-buffer)
-                ("s-[" . persp-prev)
-                ("s-]" . persp-next)
-                ("M-j" . persp-prev)
-                ("M-k" . persp-next))
+                ("l" . dired-single-buffer))
+
     :config
     (setq
      ;; https://github.com/d12frosted/homebrew-emacs-plus/issues/383
@@ -1267,6 +1264,8 @@ File management with dired
     (use-package diredfl
       :defer t)
     )
+
+  (define-key dired-mode-map "?" dired-mode-map)
 #+end_src
 
 * Development
