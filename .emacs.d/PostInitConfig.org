@@ -2363,21 +2363,21 @@ Sets up org-roam, roam directory, few useful keybindings.
 ** Agenda configs
 #+begin_src emacs-lisp
   (defun rr/org-roam-filter-by-tag (tag-name)
-  	(lambda (node)
-  		(member tag-name (org-roam-node-tags node))))
+    (lambda (node)
+    	(member tag-name (org-roam-node-tags node))))
 
   (defun rr/org-roam-list-notes-by-tag (tag-name)
-  	(let ((nodes (org-roam-node-list)))
-  		(mapcar #'org-roam-node-file
-  						(seq-filter
-  						 (rr/org-roam-filter-by-tag tag-name)
-  						 (org-roam-node-list)))))
+    (let ((nodes (org-roam-node-list)))
+    	(mapcar #'org-roam-node-file
+    			(seq-filter
+    			 (rr/org-roam-filter-by-tag tag-name)
+    			 (org-roam-node-list)))))
 
   (defun rr/org-roam-refresh-agenda-list ()
-  	(interactive)
-  	(setq org-agenda-files (rr/org-roam-list-notes-by-tag "project")))
+    (interactive)
+    (setq org-agenda-files (rr/org-roam-list-notes-by-tag "project")))
 
-;  (rr/org-roam-refresh-agenda-list)
+  ;;  (rr/org-roam-refresh-agenda-list)
 #+end_src
 
 ** Default Project Template
@@ -2407,8 +2407,8 @@ Sets up org-roam, roam directory, few useful keybindings.
      :templates
      '(("p" "project" plain
         (file "~/org-mode/roam/work/templates/projectNoteTemplate.org")
-    		:if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: project")
-    		:unnarrowed t))))
+    	  :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+category: ${title}\n#+filetags: project")
+    	  :unnarrowed t))))
 
   (global-set-key (kbd "C-c n p") #'rr/org-roam-find-project)
 #+end_src
@@ -2431,29 +2431,29 @@ Sets up org-roam, roam directory, few useful keybindings.
 #+end_src
 ** Automatically copy (or move) completed tasks to dailies
 #+begin_src emacs-lisp
-(defun rr/org-roam-copy-todo-to-today ()
-  (interactive)
-  (let ((org-refile-keep t) ;; Set this to nil to delete the original!
-        (org-roam-dailies-capture-templates
-          '(("t" "tasks" entry "%?"
-             :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
-        (org-after-refile-insert-hook #'save-buffer)
-        today-file
-        pos)
-    (save-window-excursion
-      (org-roam-dailies--capture (current-time) t)
-      (setq today-file (buffer-file-name))
-      (setq pos (point)))
+  (defun rr/org-roam-copy-todo-to-today ()
+    (interactive)
+    (let ((org-refile-keep t) ;; Set this to nil to delete the original!
+          (org-roam-dailies-capture-templates
+           '(("t" "tasks" entry "%?"
+              :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
+          (org-after-refile-insert-hook #'save-buffer)
+          today-file
+          pos)
+      (save-window-excursion
+        (org-roam-dailies--capture (current-time) t)
+        (setq today-file (buffer-file-name))
+        (setq pos (point)))
 
-    ;; Only refile if the target file is different than the current file
-    (unless (equal (file-truename today-file)
-                   (file-truename (buffer-file-name)))
-      (org-refile nil nil (list "Tasks" today-file nil pos)))))
+      ;; Only refile if the target file is different than the current file
+      (unless (equal (file-truename today-file)
+                     (file-truename (buffer-file-name)))
+        (org-refile nil nil (list "Tasks" today-file nil pos)))))
 
-(add-to-list 'org-after-todo-state-change-hook
-             (lambda ()
-               (when (equal org-state "DONE")
-                 (rr/org-roam-copy-todo-to-today))))
+  (add-to-list 'org-after-todo-state-change-hook
+               (lambda ()
+                 (when (equal org-state "DONE")
+                   (rr/org-roam-copy-todo-to-today))))
 #+end_src
 ** Insert new note immediately
 Without opening a new buffer while writing a note.
@@ -2471,14 +2471,14 @@ This gives a really nice UI for your org-roam database. The UI not only shows al
 Package: [[https://github.com/org-roam/org-roam-ui][org-roam-ui]]
 
 #+begin_src emacs-lisp
-(use-package org-roam-ui
-  :vc
+  (use-package org-roam-ui
+    :vc
     (:url "https://github.com/org-roam/org-roam-ui" :branch "main")
     :after org-roam
-;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-;;         a hookable mode anymore, you're advised to pick something yourself
-;;         if you don't care about startup time, use
-;;  :hook (after-init . org-roam-ui-mode)
+    ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+    ;;         a hookable mode anymore, you're advised to pick something yourself
+    ;;         if you don't care about startup time, use
+    ;;  :hook (after-init . org-roam-ui-mode)
     :config
     (setq org-roam-ui-sync-theme t
           org-roam-ui-follow t
@@ -2513,21 +2513,21 @@ This is a nice little helper function I wrote for myself to generate a filename 
   (defun rr/extract-hugo-post-file-name ()
     "Create a filename out of blog post's title.
 
-This method is expected to be executed on a TODO heading on a an
-org file containing blog posts that would be exported using
-ox-hugo. Running this interactive command would set an org
-property called EXPORT_FILE_NAME that is required by ox-hugo to
-generate a Hugo-friendly markdown file in the location specified
-in HUGO_BASE_DIR property."
+  This method is expected to be executed on a TODO heading on a an
+  org file containing blog posts that would be exported using
+  ox-hugo. Running this interactive command would set an org
+  property called EXPORT_FILE_NAME that is required by ox-hugo to
+  generate a Hugo-friendly markdown file in the location specified
+  in HUGO_BASE_DIR property."
     (interactive)
     (setq-local blog-post-title (nth 4 (org-heading-components)))
-      (let* ((file-name (replace-regexp-in-string "_+" "-" (replace-regexp-in-string "\\W" "_" (string-trim (downcase blog-post-title)))))
-             (blog-post-file-name (concat file-name ".md")))
-        (org-set-property "EXPORT_FILE_NAME" blog-post-file-name)))
+    (let* ((file-name (replace-regexp-in-string "_+" "-" (replace-regexp-in-string "\\W" "_" (string-trim (downcase blog-post-title)))))
+           (blog-post-file-name (concat file-name ".md")))
+      (org-set-property "EXPORT_FILE_NAME" blog-post-file-name)))
 #+end_src
 * After Load
 Restore last saved persp-state
 
 #+begin_src emacs-lisp
-;  (persp-state-restore persp-state-default-file)
+                                          ;  (persp-state-restore persp-state-default-file)
 #+end_src
