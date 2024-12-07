@@ -91,10 +91,12 @@
 - [[#dired][Dired]]
 - [[#development][Development]]
   - [[#git-gutter][Git Gutter]]
+  - [[#git-link][Git Link]]
   - [[#magit][Magit]]
     - [[#forge][Forge]]
   - [[#terminal][Terminal]]
     - [[#eat][Eat]]
+  - [[#colorize-output-in-compile-buffer][Colorize output in compile buffer]]
   - [[#languages][Languages]]
     - [[#treesit-auto][Treesit-auto]]
     - [[#flymake-diagnostics-as-popups][Flymake diagnostics as popups]]
@@ -1312,6 +1314,11 @@ Package: [[https://magit.vc/][magit]]
 #+begin_src emacs-lisp
   (use-package eat
     :defer t)
+#+end_src
+** Colorize output in compile buffer
+#+begin_src emacs-lisp
+  (setq inhibit-read-only t)
+  (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 #+end_src
 ** Languages
 *** Treesit-auto
