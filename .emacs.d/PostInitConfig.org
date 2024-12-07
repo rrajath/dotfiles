@@ -507,6 +507,7 @@ Package: [[https://github.com/karthink/popper][popper]]
 #+begin_src emacs-lisp
   (setq which-key-idle-delay 0.3)
   (setq which-key-max-description-length 100)
+  (global-visual-line-mode)
 #+end_src
 * Keybindings
 ** Switch buffers easily
