@@ -510,6 +510,7 @@ Package: [[https://github.com/karthink/popper][popper]]
   (setq which-key-idle-delay 0.3)
   (setq which-key-max-description-length 100)
   (global-visual-line-mode)
+  (pixel-scroll-precision-mode)
 #+end_src
 * Keybindings
 ** Switch buffers easily
