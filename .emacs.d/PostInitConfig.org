@@ -235,6 +235,7 @@ This section sets variables found in .envrc in order to use them later on in the
   (setq rr-org-mode-dir (getenv "ORG_MODE_DIR"))
   (setq rr-org-roam-dir (getenv "ORG_ROAM_DIR"))
   (setq pplx-api-key (getenv "PPLX_API_KEY"))
+  (setq initial-major-mode #'lisp-interaction-mode)
 #+end_src
 
 * UI Configuration
