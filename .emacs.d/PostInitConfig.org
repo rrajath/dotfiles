@@ -1096,7 +1096,8 @@ Package: [[https://github.com/oantolin/orderless][orderless]]
     :init
     (setq completion-styles '(orderless)
           completion-category-defaults nil
-          completion-category-overrides '((file (styles . (partial-completion))))))
+          completion-category-overrides '((file (styles . (partial-completion))
+                                                (minibuffer (initials))))))
 #+end_src
 
 ** Consult
@@ -1455,6 +1456,8 @@ Make sure to define the API key from ~.envrc~
 *** Github Copilot
 Package: [[https://github.com/copilot-emacs/copilot.el][copilot]]
 You might want to disable and enable ~copilot-mode~ after you set the ~copilot-enable-predicates~ to ~nil~.
+
+Also setting ~copilot-indentation-alist~ to 2 for different major modes to prevent copilot from showing warnings. Found this in a [[https://github.com/copilot-emacs/copilot.el/issues/312][github comment]].
 
 #+begin_src emacs-lisp
   (use-package copilot
