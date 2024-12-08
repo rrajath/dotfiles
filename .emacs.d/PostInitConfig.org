@@ -122,6 +122,7 @@
     - [[#ibuffer-hook][IBuffer hook]]
     - [[#saving-sessions][Saving Sessions]]
   - [[#activities][Activities]]
+  - [[#tab-bar-config][Tab Bar Config]]
 - [[#orgmode][OrgMode]]
   - [[#capture-templates][Capture Templates]]
   - [[#basic-setup][Basic setup]]
@@ -1561,6 +1562,24 @@ Package: [[https://github.com/alphapapa/activities.el][activities.el]]
      ("C-x C-a b" . activities-switch-buffer)
      ("C-x C-a g" . activities-revert)
      ("C-x C-a l" . activities-list)))
+#+end_src
+** Tab Bar Config
+#+begin_src emacs-lisp
+  (with-eval-after-load 'tab-bar
+    (setq tab-bar-new-tab-to 'rightmost)
+    (setq tab-bar-new-tab-choice "*scratch*")
+    ;; Appearance
+    (setq tab-bar-separator nil)
+    (setq tab-bar-close-button-show t)
+    (set-face-attribute 'tab-bar nil
+                        :height 1.0) ; background behind all tabs on the tab bar
+    (set-face-attribute 'tab-bar-tab nil
+                        :overline t) ; the selected tab
+    (set-face-attribute 'tab-bar-tab-inactive nil 
+                        :box nil) ; unselected tabs
+    (setq tab-bar-history-limit 100) ; the default is ten. Why not 1,000? LOL
+    )
+  (custom-set-variables '(tab-bar-select-tab-modifiers '(super)))
 #+end_src
 * OrgMode
 ** Capture Templates
