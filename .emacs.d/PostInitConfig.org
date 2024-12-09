@@ -1569,7 +1569,8 @@ Package: [[https://github.com/alphapapa/activities.el][activities.el]]
     (setq tab-bar-new-tab-to 'rightmost)
     (setq tab-bar-new-tab-choice "*scratch*")
     ;; Appearance
-    (setq tab-bar-separator nil)
+    (setq tab-bar-separator 'nil)
+    (setq tab-bar-format '(tab-bar-format-tabs tab-bar-separator tab-bar-format-align-right))
     (setq tab-bar-close-button-show t)
     (set-face-attribute 'tab-bar nil
                         :height 1.0) ; background behind all tabs on the tab bar
