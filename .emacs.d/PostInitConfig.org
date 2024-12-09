@@ -166,7 +166,6 @@
   - [[#ox-hugo][ox-hugo]]
   - [[#turn-on-org-hugo-auto-export-mode-when-you-visit-blogorg][Turn on org-hugo-auto-export-mode when you visit blog.org]]
   - [[#generate-a-filename-given-a-blog-post-title][Generate a filename given a blog post title]]
-- [[#after-load][After Load]]
 :END:
 
 * Introduction
@@ -2553,10 +2552,4 @@ This is a nice little helper function I wrote for myself to generate a filename 
     (let* ((file-name (replace-regexp-in-string "_+" "-" (replace-regexp-in-string "\\W" "_" (string-trim (downcase blog-post-title)))))
            (blog-post-file-name (concat file-name ".md")))
       (org-set-property "EXPORT_FILE_NAME" blog-post-file-name)))
-#+end_src
-* After Load
-Restore last saved persp-state
-
-#+begin_src emacs-lisp
-                                          ;  (persp-state-restore persp-state-default-file)
 #+end_src
