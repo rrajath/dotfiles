@@ -39,6 +39,7 @@
     - [[#move-line-down][Move line down]]
     - [[#move-line-up][Move line up]]
   - [[#popper][Popper]]
+  - [[#golden-ratio][Golden Ratio]]
   - [[#other-minor-settings][Other minor settings]]
 - [[#keybindings][Keybindings]]
   - [[#switch-buffers-easily][Switch buffers easily]]
@@ -507,6 +508,16 @@ Package: [[https://github.com/karthink/popper][popper]]
             org-roam-mode
             term-mode))
     (popper-mode +1))
+#+end_src
+** Golden Ratio
+Package: [[https://github.com/roman/golden-ratio.el][golden-ratio]]
+
+#+begin_src emacs-lisp
+  (use-package golden-ratio
+    :ensure t
+    :config
+    (golden-ratio-mode 1)
+    (setq golden-ratio-auto-scale t))
 #+end_src
 ** Other minor settings
 #+begin_src emacs-lisp
