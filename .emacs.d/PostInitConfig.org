@@ -97,6 +97,7 @@
   - [[#terminal][Terminal]]
     - [[#eat][Eat]]
   - [[#colorize-output-in-compile-buffer][Colorize output in compile buffer]]
+  - [[#increase-function-name-font-size-for-better-readability][Increase function name font size for better readability]]
   - [[#languages][Languages]]
     - [[#treesit-auto][Treesit-auto]]
     - [[#flymake-diagnostics-as-popups][Flymake diagnostics as popups]]
@@ -1322,6 +1323,15 @@ Package: [[https://magit.vc/][magit]]
   (setq inhibit-read-only t)
   (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 #+end_src
+** Increase function name font size for better readability
+Found this in a [[https://www.reddit.com/r/emacs/comments/16rbsnw/comment/k252qt9/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button][reddit comment]].
+This helps make the function names stand out a tiny bit and make them more readable/parsable.
+
+#+begin_src emacs-lisp
+  (set-face-attribute 'font-lock-function-name-face nil
+                      :height 1.1)
+#+end_src
+
 ** Languages
 *** Treesit-auto
 Package: [[https://github.com/renzmann/treesit-auto][treesit-auto]]
