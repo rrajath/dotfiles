@@ -102,6 +102,7 @@
     - [[#treesit-auto][Treesit-auto]]
     - [[#flymake-diagnostics-as-popups][Flymake diagnostics as popups]]
     - [[#eglot][Eglot]]
+    - [[#eglot-booster][Eglot Booster]]
     - [[#js-package-mode][JS Package Mode]]
     - [[#typescript][Typescript]]
       - [[#prettier][Prettier]]
@@ -1381,6 +1382,23 @@ Using the built-in eglot instead of LSP. I previously used LSP and found it to b
     (add-to-list 'eglot-server-programs
   			   '((typescript-ts-mode typescript-mode) . ("typescript-language-server" "--stdio"))))
 #+end_src
+*** Eglot Booster
+Package: [[https://github.com/jdtsmith/eglot-booster?tab=readme-ov-file][eglot-booster]]
+
+*Prerequisites*:
+- install [[https://github.com/blahgeek/emacs-lsp-booster][emacs-lsp-booster]] application by [[https://github.com/blahgeek/emacs-lsp-booster?tab=readme-ov-file#obtain-or-build-emacs-lsp-booster][building it from source]]
+- make sure to add the emacs-lsp-booster executable to ~PATH~
+  
+#+begin_src emacs-lisp
+  (use-package eglot-booster
+    :vc (:url "https://github.com/jdtsmith/eglot-booster")
+    :after eglot
+    :custom
+    (eglot-booster-no-remote-boost t)
+    :config
+    (eglot-booster-mode))
+#+end_src
+
 *** JS Package Mode
 #+begin_src emacs-lisp
   (use-package js-pkg-mode
