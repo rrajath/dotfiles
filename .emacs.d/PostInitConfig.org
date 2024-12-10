@@ -94,7 +94,6 @@
   - [[#git-gutter][Git Gutter]]
   - [[#git-link][Git Link]]
   - [[#magit][Magit]]
-    - [[#forge][Forge]]
   - [[#terminal][Terminal]]
     - [[#eat][Eat]]
   - [[#colorize-output-in-compile-buffer][Colorize output in compile buffer]]
@@ -116,8 +115,6 @@
   - [[#rest-client][Rest Client]]
   - [[#llm][LLM]]
     - [[#gptel][gpt.el]]
-    - [[#github-copilot][Github Copilot]]
-    - [[#github-copilot-chat][Github Copilot Chat]]
   - [[#consult-xref][Consult Xref]]
   - [[#consult-project-extra][Consult Project Extra]]
 - [[#buffers][Buffers]]
@@ -1314,17 +1311,6 @@ Package: [[https://magit.vc/][magit]]
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 #+end_src
 
-*** Forge
-#+begin_src emacs-lisp :tangle no
-  (use-package forge
-    :after magit)
-
-  (push '("github.robot.car"               ; GITHOST
-          "api.github.robot.car"           ; APIHOST
-          "github.robot.car"               ; WEBHOST and INSTANCE-ID
-          forge-github-repository)    ; CLASS
-        forge-alist)
-    #+end_src
 ** Terminal
 *** Eat
 #+begin_src emacs-lisp
@@ -1507,42 +1493,6 @@ Make sure to define the API key from ~.envrc~
     :stream t
     :models '(;; has many more, check perplexity.ai
               llama-3.1-sonar-small-128k-chat))
-#+end_src
-
-*** Github Copilot
-Package: [[https://github.com/copilot-emacs/copilot.el][copilot]]
-You might want to disable and enable ~copilot-mode~ after you set the ~copilot-enable-predicates~ to ~nil~.
-
-Also setting ~copilot-indentation-alist~ to 2 for different major modes to prevent copilot from showing warnings. Found this in a [[https://github.com/copilot-emacs/copilot.el/issues/312][github comment]].
-
-#+begin_src emacs-lisp
-  (use-package copilot
-    :defer t
-    :vc (:url "https://github.com/copilot-emacs/copilot.el"
-              :rev :newest
-              :branch "main")
-    :bind (:map copilot-mode-map
-                ("<tab>" . copilot-accept-completion)
-                ("C-S-n" . copilot-next-completion)
-                ("C-S-p" . copilot-previous-completion)
-                ("C-S-w" . copilot-accept-completion-by-word)
-                ("C-S-l" . copilot-accept-completion-by-line))
-    :hook (prog-mode . copilot-mode)
-    :config
-    (add-to-list 'copilot-indentation-alist '(prog-mode 2))
-    (add-to-list 'copilot-indentation-alist '(emacs-lisp-mode 2))
-    (add-to-list 'copilot-indentation-alist '(special-mode 2))
-    :custom
-    (copilot-enable-predicates nil)
-    (copilot-max-char 1000000))
-#+end_src
-
-*** Github Copilot Chat
-Package: [[https://github.com/chep/copilot-chat.el][copilot-chat]]
-
-#+begin_src emacs-lisp :tangle no
-  (use-package copilot-chat
-    :defer t)
 #+end_src
 ** Consult Xref
 #+begin_src emacs-lisp
