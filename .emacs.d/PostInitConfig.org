@@ -1335,6 +1335,8 @@ Package: [[https://magit.vc/][magit]]
 #+begin_src emacs-lisp
   (setq inhibit-read-only t)
   (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
+
+  (setq scroll-conservatively 1000)
 #+end_src
 ** Increase function name font size for better readability
 Found this in a [[https://www.reddit.com/r/emacs/comments/16rbsnw/comment/k252qt9/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button][reddit comment]].
