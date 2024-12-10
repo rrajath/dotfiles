@@ -1037,7 +1037,6 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
     (meow-goto-line-function 'consult-goto-line)
     :config
     (setq meow--kbd-delete-char "<deletechar>")
-    (meow-thing-register 'angle '(regexp "<" ">") '(regexp "<" ">"))
     (add-to-list 'meow-char-thing-table '(?a . angle))
     (meow-global-mode 1)
     (meow-setup))
