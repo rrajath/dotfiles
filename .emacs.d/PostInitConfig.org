@@ -169,6 +169,7 @@
   - [[#ox-hugo][ox-hugo]]
   - [[#turn-on-org-hugo-auto-export-mode-when-you-visit-blogorg][Turn on org-hugo-auto-export-mode when you visit blog.org]]
   - [[#generate-a-filename-given-a-blog-post-title][Generate a filename given a blog post title]]
+- [[#machine-specific-config][Machine-specific config]]
 :END:
 
 * Introduction
@@ -2591,4 +2592,13 @@ This is a nice little helper function I wrote for myself to generate a filename 
     (let* ((file-name (replace-regexp-in-string "_+" "-" (replace-regexp-in-string "\\W" "_" (string-trim (downcase blog-post-title)))))
            (blog-post-file-name (concat file-name ".md")))
       (org-set-property "EXPORT_FILE_NAME" blog-post-file-name)))
+#+end_src
+* Machine-specific config
+This helps keep certain packages separate, like having the copilot package in the additional-config.el will make it load only in the work Emacs instance since I don't need it on the personal instance.
+
+#+begin_src emacs-lisp
+  (if (file-exists-p "~/bin/additional-config.el")
+      (progn
+        (message "additional config exists")
+        (load "~/bin/additional-config.el")))
 #+end_src
