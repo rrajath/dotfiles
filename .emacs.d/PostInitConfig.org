@@ -111,6 +111,7 @@
     - [[#markdown][Markdown]]
     - [[#yaml][YAML]]
     - [[#golang][Golang]]
+      - [[#go-test][Go test]]
     - [[#aphelia][Aphelia]]
   - [[#rest-client][Rest Client]]
   - [[#llm][LLM]]
@@ -1454,11 +1455,25 @@ Support markdown mode to make README files and other markdown files easily reada
     :mode "\\.yaml\\'")
 #+end_src
 *** Golang
+
 #+begin_src emacs-lisp
   (use-package go-ts-mode
     :defer t
     :mode "\\.go\\'")
 #+end_src
+
+**** Go test
+Package: [[https://github.com/chmouel/gotest-ts.el][gotest-ts]]
+This does not correctly work right now. But I'll keep it and tinker with it.
+
+#+begin_src emacs-lisp
+  (use-package gotest-ts
+    :hook
+    (go-ts-mode . gotest-ts)
+    :bind
+    ("<f2>" . gotest-ts-run-dwim))
+#+end_src
+
 *** Aphelia
 Package: [[https://github.com/radian-software/apheleia][aphelia]]
 #+begin_src emacs-lisp
