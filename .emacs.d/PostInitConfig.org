@@ -17,6 +17,7 @@
 - [[#first-things-first][First things first]]
   - [[#set-lexical-binding][Set lexical binding]]
   - [[#startup-performance][Startup Performance]]
+  - [[#start-emacs-in-server-mode][Start emacs in server mode]]
   - [[#keep-emacsd-clean][Keep .emacs.d clean]]
   - [[#use-straight-use-package-org][Use straight-use-package org]]
   - [[#set-variables][Set variables]]
@@ -210,6 +211,12 @@ This sets lexical binding to true
                      (float-time (time-subtract after-init-time before-init-time)))
              gcs-done))
   (add-hook 'emacs-startup-hook #'rr/display-startup-time)
+#+end_src
+
+** Start emacs in server mode
+
+#+begin_src emacs-lisp
+  (server-start)
 #+end_src
 
 ** Keep .emacs.d clean
