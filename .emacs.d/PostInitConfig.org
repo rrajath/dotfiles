@@ -215,7 +215,7 @@ This sets lexical binding to true
 
 ** Start emacs in server mode
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (server-start)
 #+end_src
 
