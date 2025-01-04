@@ -518,7 +518,7 @@ Package: [[https://github.com/karthink/popper][popper]]
 ** Golden Ratio
 Package: [[https://github.com/roman/golden-ratio.el][golden-ratio]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package golden-ratio
     :ensure t
     :config
