@@ -1225,7 +1225,7 @@ This package shows a list of unbound keys so that it’s easy to pick one while 
 ** Direnv
 Package: [[https://github.com/wbolster/emacs-direnv][direnv]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package direnv
     :config
     (direnv-mode)
