@@ -1,0 +1,164 @@
+#+TITLE:      Pre Init Emacs Configuration
+#+AUTHOR:     Rajath Ramakrishna
+#+PROPERTY:   header-args:emacs-lisp :tangle ./pre-init.el
+#+STARTUP:    overview indent hidestars
+
+* Introduction
+<Add stuff here>
+* First things first
+** Set lexical binding
+This sets lexical binding to true
+
+#+begin_src emacs-lisp
+;;; pre-init.el --- DESCRIPTION -*- no-byte-compile: t; lexical-binding: t; -*-
+#+end_src
+** Set compute statistics
+#+begin_src emacs-lisp
+  (setq use-package-compute-statistics t)
+#+end_src
+** Use Straight Package
+
+#+begin_src emacs-lisp
+;; Users of Emacs versions >= 27 will want to set
+;; package-enable-at-startup to nil
+(setq package-enable-at-startup nil)
+
+;; Straight
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+#+end_src
+** Add some useful hooks
+This adds recentf, saveplace, savehist and auto-revert hooks
+
+#+begin_src emacs-lisp
+;; Auto-revert in Emacs is a feature that automatically updates the
+;; contents of a buffer to reflect changes made to the underlying file
+;; on disk.
+(add-hook 'after-init-hook #'global-auto-revert-mode)
+
+;; recentf is an Emacs package that maintains a list of recently
+;; accessed files, making it easier to reopen files you have worked on
+;; recently.
+(add-hook 'after-init-hook #'recentf-mode)
+
+;; savehist is an Emacs feature that preserves the minibuffer history between
+;; sessions. It saves the history of inputs in the minibuffer, such as commands,
+;; search strings, and other prompts, to a file. This allows users to retain
+;; their minibuffer history across Emacs restarts.
+(add-hook 'after-init-hook #'savehist-mode)
+
+;; save-place-mode enables Emacs to remember the last location within a file
+;; upon reopening. This feature is particularly beneficial for resuming work at
+;; the precise point where you previously left off.
+(add-hook 'after-init-hook #'save-place-mode)
+#+end_src
+
+** Activate Garbage Collector Magic Hack (gcmh)
+
+#+begin_src emacs-lisp
+(use-package gcmh
+  :ensure t
+  :hook (after-init . gcmh-mode)
+  :custom
+  (gcmh-idle-delay 'auto)
+  (gcmh-auto-idle-delay-factor 10)
+  (gcmh-low-cons-threshold minimal-emacs-gc-cons-threshold))
+#+end_src
+
+** Auto-compile emacs-lisp code
+
+#+begin_src emacs-lisp
+(use-package auto-compile
+  :demand t
+  :custom
+  (auto-compile-check-parens nil)
+  :config
+  (auto-compile-on-load-mode)
+  (auto-compile-on-save-mode))
+#+end_src
+
+** Set some useful defaults
+
+#+begin_src emacs-lisp
+  (setq-default delete-by-moving-to-trash t)
+  (setq-default tab-width 2)
+  (setq-default global-subword-mode 1)
+  (setq confirm-kill-emacs #'y-or-n-p)
+  (setq which-key-idle-delay 0.3)
+#+end_src
+
+** Ignore some additional files when doing completing-read
+[[https://emacs.stackexchange.com/questions/29914/how-to-ignore-certain-filename-patterns-in-find-file-counsel-find-file][Stack Exchange]] answer on the subject.
+
+#+begin_src emacs-lisp
+  (add-to-list 'completion-ignored-extensions ".DS_Store")
+#+end_src
+
+** Other basics
+
+#+begin_src emacs-lisp
+  (electric-pair-mode +1)
+  (electric-indent-mode +1)
+  (which-key-mode 1)
+#+end_src
+
+* UI Configuration
+** Make titlebar the same color as background
+I don't like Mac's default titlebar and I'd rather have the titlebar blend with the background
+
+#+begin_src emacs-lisp
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
+#+end_src
+
+** Show line and column numbers
+I want to see line numbers and column numbers in most modes execpt a few.
+
+#+begin_src emacs-lisp
+  (column-number-mode)
+  (global-display-line-numbers-mode t)
+
+  ;; disable line numbers for some modes
+  (dolist (mode '(org-mode-hook
+                  term-mode-hook
+                  vterm-mode-hook
+                  shell-mode-hook
+                  ;; treemacs-mode-hook
+                  eshell-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode 0))))
+#+end_src
+** Highlight current line
+I want to be able to easily see the line my cursor is currently on
+
+#+begin_src emacs-lisp
+  (global-hl-line-mode)
+#+end_src
+* Usability
+** Auto Scrolling
+I don’t want emacs to scroll half a page when I reach the top or bottom of the screen. Setting these variables help in scrolling lines one by one and maintain an offset of 5 lines on either ends.
+
+#+begin_src emacs-lisp
+  (setq scroll-margin 5)
+  (setq scroll-step 1)
+#+end_src
+* Keybindings
+** Make ESC work better
+Making =ESC= work like how it works in other programs - cancelling the operation
+
+#+begin_src emacs-lisp
+  ;; Making ESC key work like an ESC key by exiting/canceling stuff
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+#+end_src
