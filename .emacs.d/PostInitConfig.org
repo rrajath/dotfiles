@@ -1723,6 +1723,7 @@ Package: [[https://github.com/alphapapa/activities.el][activities.el]]
           org-agenda-include-diary t
           org-catch-invisible-edits 'smart
           org-fontify-whole-heading-line t
+          org-fontify-quote-and-verse-blocks t
           org-ctrl-k-protect-subtree t
           org-cycle-separator-lines 0
           org-refile-use-outline-path 'file
