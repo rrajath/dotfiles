@@ -113,6 +113,7 @@
     - [[#yaml][YAML]]
     - [[#golang][Golang]]
       - [[#go-test][Go test]]
+    - [[#nushell][NuShell]]
     - [[#aphelia][Aphelia]]
   - [[#rest-client][Rest Client]]
   - [[#llm][LLM]]
@@ -1492,12 +1493,19 @@ This does not correctly work right now. But I'll keep it and tinker with it.
     :bind
     ("<f2>" . gotest-ts-run-dwim))
 #+end_src
-
+*** NuShell
+#+begin_src emacs-lisp
+  (use-package nushell-mode
+    :defer t
+    :mode "\\.nu\\'")
+#+end_src
 *** Aphelia
 Package: [[https://github.com/radian-software/apheleia][aphelia]]
 #+begin_src emacs-lisp
   (use-package apheleia
-    :hook (go-ts-mode . apheleia-mode))
+    :hook (
+           (go-ts-mode . apheleia-mode)
+           (python-mode . apheleia-mode)))
 #+end_src
 ** Rest Client
 Package: [[https://github.com/federicotdn/verb][verb]]
