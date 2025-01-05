@@ -740,7 +740,8 @@ folder, otherwise delete a word"
          (shell-mode . corfu-mode)
          (eshell-mode . corfu-mode)
          (typescript-mode . corfu-mode)
-         (typescript-ts-mode . corfu-mode))
+         (typescript-ts-mode . corfu-mode)
+         (python-ts-mode . corfu-mode))
 
   ;; Recommended: Enable Corfu globally.
   ;; This is recommended since Dabbrev can be used globally (M-/).
