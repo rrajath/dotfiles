@@ -63,7 +63,11 @@
       mkDarwinApps = system: {
         "apply" = mkApp "apply" system;
         "build" = mkApp "build" system;
+        "build-work" = mkApp "build-work" system;
+        "build-personal" = mkApp "build-personal" system;
         "build-switch" = mkApp "build-switch" system;
+        "build-work-switch" = mkApp "build-work-switch" system;
+        "build-personal-switch" = mkApp "build-personal-switch" system;
         "copy-keys" = mkApp "copy-keys" system;
         "create-keys" = mkApp "create-keys" system;
         "check-keys" = mkApp "check-keys" system;
@@ -75,11 +79,32 @@
       devShells = forAllSystems devShell;
       apps = nixpkgs.lib.genAttrs linuxSystems mkLinuxApps // nixpkgs.lib.genAttrs darwinSystems mkDarwinApps;
 
-      darwinConfigurations = nixpkgs.lib.genAttrs darwinSystems (system: let
-        user = "rajath.ramakrishna";
-      in
-        darwin.lib.darwinSystem {
-          inherit system;
+      darwinConfigurations = {
+        "work" = darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          specialArgs = inputs;
+          modules = [
+            home-manager.darwinModules.home-manager
+            nix-homebrew.darwinModules.nix-homebrew
+            {
+              nix-homebrew = {
+                inherit user;
+                enable = true;
+                taps = {
+                  "homebrew/homebrew-core" = homebrew-core;
+                  "homebrew/homebrew-cask" = homebrew-cask;
+                  "homebrew/homebrew-bundle" = homebrew-bundle;
+                };
+                mutableTaps = false;
+                autoMigrate = true;
+              };
+            }
+            ./hosts/darwin
+            ./hosts/darwin/work.nix
+          ];
+        };
+        "personal" = darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
           specialArgs = inputs;
           modules = [
             home-manager.darwinModules.home-manager
@@ -99,8 +124,8 @@
             }
             ./hosts/darwin
           ];
-        }
-      );
+        };
+      };
 
       nixosConfigurations = nixpkgs.lib.genAttrs linuxSystems (system: nixpkgs.lib.nixosSystem {
         inherit system;
