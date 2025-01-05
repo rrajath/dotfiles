@@ -31,7 +31,6 @@
 
   outputs = { self, darwin, nix-homebrew, homebrew-bundle, homebrew-core, homebrew-cask, home-manager, nixpkgs, disko } @inputs:
     let
-      user = "rajath.ramakrishna";
       linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
       darwinSystems = [ "aarch64-darwin" "x86_64-darwin" ];
       forAllSystems = f: nixpkgs.lib.genAttrs (linuxSystems ++ darwinSystems) f;
@@ -82,11 +81,13 @@
       darwinConfigurations = {
         "work" = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
-          specialArgs = inputs;
+          specialArgs = inputs // {
+            user = "rajath.ramakrishna";
+          };
           modules = [
             home-manager.darwinModules.home-manager
             nix-homebrew.darwinModules.nix-homebrew
-            {
+            ({ user, ... }: {
               nix-homebrew = {
                 inherit user;
                 enable = true;
@@ -98,18 +99,20 @@
                 mutableTaps = false;
                 autoMigrate = true;
               };
-            }
+            })
             ./hosts/darwin
             ./hosts/darwin/work.nix
           ];
         };
         "personal" = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
-          specialArgs = inputs;
+          specialArgs = inputs // {
+            user = "rrajath";
+          };
           modules = [
             home-manager.darwinModules.home-manager
             nix-homebrew.darwinModules.nix-homebrew
-            {
+            ({ user, ... }: {
               nix-homebrew = {
                 inherit user;
                 enable = true;
@@ -121,7 +124,7 @@
                 mutableTaps = false;
                 autoMigrate = true;
               };
-            }
+            })
             ./hosts/darwin
           ];
         };
@@ -129,16 +132,19 @@
 
       nixosConfigurations = nixpkgs.lib.genAttrs linuxSystems (system: nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = inputs;
+        specialArgs = inputs // {
+          user = "rrajath";
+        };
         modules = [
           disko.nixosModules.disko
-          home-manager.nixosModules.home-manager {
+          home-manager.nixosModules.home-manager
+          ({ user, ... }: {
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
               users.${user} = import ./modules/nixos/home-manager.nix;
             };
-          }
+          })
           ./hosts/nixos
         ];
      });

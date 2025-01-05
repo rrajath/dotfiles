@@ -1,7 +1,6 @@
-{ config, pkgs, lib, home-manager, ... }:
+{ config, pkgs, lib, home-manager, user, ... }:
 
 let
-  user = "rajath.ramakrishna";
   # Define the content of your file as a derivation
   myEmacsLauncher = pkgs.writeScript "emacs-launcher.command" ''
     #!/bin/sh
@@ -167,7 +166,7 @@ in
             };
           };
         };
-      } // import ../shared/home-manager.nix { inherit config pkgs lib; };
+      } // import ../shared/home-manager.nix { inherit config pkgs lib user; };
 
       # Marked broken Oct 20, 2022 check later to remove this
       # https://github.com/nix-community/home-manager/issues/3344

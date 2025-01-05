@@ -1,6 +1,4 @@
-{ pkgs, home-manager, ... }:
-
-let user = "rajath.ramakrishna"; in {
+{ pkgs, home-manager, user, ... }: {
   networking.hostName = "work-macbook";
   users.users."${user}" = {
     name = "${user}";
