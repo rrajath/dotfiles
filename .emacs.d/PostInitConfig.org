@@ -975,7 +975,7 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("C-d" . meow-page-down)
      '("C-w" . backward-kill-word)
      '("RET" . +org/dwim-at-point)
-     '("TAB" . +org-cycle-only-current-subtree-h)
+     ;; '("TAB" . +org-cycle-only-current-subtree-h)
      ;; '("C-n" . rr/org-show-next-heading-tidily)
      ;; '("C-p" . rr/org-show-previous-heading-tidily)
      '("t" . org-todo)
