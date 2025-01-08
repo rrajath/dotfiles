@@ -68,19 +68,53 @@ in
           configFile.text = ''
             $env.config = {
               show_banner: false
+              buffer_editor: "hx"
             }
+      	    $env.PATH = ($env.PATH | split row (char esep) | 
+	            prepend [
+      	     	  "/nix/var/nix/profiles/default/bin"
+      		      "/Users/${user}/.nix-profile/bin"
+                  "/opt/homebrew/bin"
+                  "/Users/${user}/.local/bin"
+                  "/Users/${user}/.local"
+      		  ])
+            $env.ORG_MODE_DIR = "~/SynologyDrive/org-mode"
+            $env.ORG_ROAM_DIR = "~/org-roam"
           '';
           extraConfig = ''
             # Additional configuration that runs after the main config
+            $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
             alias ll = ls -l
-            $env.config = {
-              buffer_editor: "hx"
+            
+            def nb [] {
+              cd ~/dotfiles/nixos-config
+              nix run .#build-personal
+              cd -
+            }
+            
+            def nbs [] {
+              cd ~/dotfiles/nixos-config
+              nix run .#build-personal-switch
+              cd -
             }
           '';
         };
-        carapace.enable = true;
-        carapace.enableNushellIntegration = true;
+
+        carapace = {
+          enable = true;
+          enableNushellIntegration = true;
+	      };
         
+      	zoxide = {
+          enable = true;
+          enableNushellIntegration = true;
+	      };
+
+        atuin = {
+          enable = true;
+          enableNushellIntegration = true;
+        };
+
         starship = {
           enable = true;
           settings = {
@@ -100,7 +134,7 @@ in
             editor = {
               mouse = false;
               color-modes = true;
-              cursorline = true;
+              cursorline = false;
               idle-timeout = 40;
               auto-save = true;
               bufferline = "multiple";
