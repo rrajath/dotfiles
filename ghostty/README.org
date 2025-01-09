@@ -9,7 +9,7 @@ This is a custom config for the [[https://ghostty.org/][Ghostty terminal]]
 * Theme
 
 #+begin_src shell
-theme = catppuccin-frappe
+  theme = catppuccin-frappe
 #+end_src
 
 * Window save state
