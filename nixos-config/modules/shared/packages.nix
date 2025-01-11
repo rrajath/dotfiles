@@ -7,7 +7,6 @@ with pkgs; [
   broot
   coreutils
   helix
-  khoj
   neofetch
   nushell
   nil
@@ -16,13 +15,14 @@ with pkgs; [
   fzf
   zoxide
   carapace
+  colima
 
   # Encryption and security tools
   #  gnupg
 
 
   # Cloud-related tools and SDKs
-  docker
+#  docker
   docker-compose
 
   # Media-related packages
@@ -47,7 +47,7 @@ with pkgs; [
   #  iftop
   #  jetbrains-mono
   jq
-  #  ripgrep
+  ripgrep
   #  tree
   #  tmux
   #  unrar

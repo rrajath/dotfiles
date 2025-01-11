@@ -74,6 +74,7 @@ in
 	            prepend [
       	     	  "/nix/var/nix/profiles/default/bin"
       		      "/Users/${user}/.nix-profile/bin"
+                  "/usr/local/bin"
                   "/opt/homebrew/bin"
                   "/Users/${user}/.local/bin"
                   "/Users/${user}/.local"
