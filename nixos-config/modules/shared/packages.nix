@@ -16,9 +16,12 @@ with pkgs; [
   zoxide
   carapace
   colima
+  direnv
+  lazydocker
+  yazi
 
   # Encryption and security tools
-  #  gnupg
+  gnupg
 
 
   # Cloud-related tools and SDKs
