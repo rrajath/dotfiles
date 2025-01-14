@@ -1,4 +1,4 @@
-{ config, pkgs, lib, home-manager, user, ... }:
+{ config, pkgs, lib, home-manager, user, unstable, ... }:
 
 let
   # Define the content of your file as a derivation
@@ -47,6 +47,7 @@ in
   home-manager = {
     useGlobalPkgs = true;
     backupFileExtension = "backup";
+    extraSpecialArgs = { inherit unstable; };
     users.${user} = { pkgs, config, lib, ... }: {
       home = {
         enableNixpkgsReleaseCheck = false;
@@ -75,6 +76,7 @@ in
       	     	  "/nix/var/nix/profiles/default/bin"
       		      "/Users/${user}/.nix-profile/bin"
                   "/usr/local/bin"
+                  "~/Library/Python/3.9/bin"
                   "/opt/homebrew/bin"
                   "/Users/${user}/.local/bin"
                   "/Users/${user}/.local"
@@ -125,6 +127,12 @@ in
               error_symbol = "[➜](bold red)";
             };
           };
+        };
+
+        direnv = {
+          enable = true;
+          enableNushellIntegration = true; # see note on other shells below
+          nix-direnv.enable = true;
         };
 
         helix = {
