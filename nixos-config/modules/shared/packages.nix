@@ -19,6 +19,7 @@ with pkgs; [
   direnv
   lazydocker
   yazi
+  jujutsu
 
   # Encryption and security tools
   gnupg
