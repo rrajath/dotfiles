@@ -24,11 +24,16 @@
 
 (straight-use-package 'org)
 
-(direnv-allow)
-(setq rr-org-mode-dir (getenv "ORG_MODE_DIR"))
-(setq rr-org-roam-dir (getenv "ORG_ROAM_DIR"))
-(setq pplx-api-key (getenv "PPLX_API_KEY"))
+(setq rr-org-mode-dir "~/SynologyDrive/org-mode")
+(setq rr-org-roam-dir "~/org-roam")
 (setq initial-major-mode #'lisp-interaction-mode)
+
+(setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "~/.local/bin")))
+(add-to-list 'exec-path (expand-file-name "~/.local/bin"))
+(add-to-list 'exec-path (expand-file-name "/opt/homebrew/bin"))
+(add-to-list 'exec-path (expand-file-name "~/.nix-profile/bin"))
+(add-to-list 'exec-path (expand-file-name "~/Library/Python/3.9/bin"))
+(add-to-list 'exec-path (expand-file-name "~/bin/venv/bin"))
 
 (setq my-fixed-pitch-font "JetBrains Mono")
 (setq my-variable-pitch-font "SN Pro")
@@ -209,10 +214,38 @@
           term-mode))
   (popper-mode +1))
 
+(defun rr/lookup-password (&rest keys)
+  (let ((result (apply #'auth-source-search keys)))
+    (if result
+        (funcall (plist-get (car result) :secret))
+      nil)))
+
+(use-package ultra-scroll
+  :vc (:url "https://github.com/jdtsmith/ultra-scroll")
+  :init
+  (setq scroll-conservatively 101 ; important!
+        scroll-margin 0) 
+  :config
+  (ultra-scroll-mode 1))
+
+(use-package auto-capitalize
+  :vc (:url "https://github.com/yuutayamada/auto-capitalize-el")
+  :hook (org-mode-hook . auto-capitalize-mode)
+  :custom
+  (setq auto-capitalize-words `("I" "English"))
+  (auto-capitalize-mode 1))
+
+(use-package yasnippet
+  :defer t
+  :hook ((text-mode
+          prog-mode
+          conf-mode
+          snippet-mode) . yas-minor-mode-on)
+  )
+
 (setq which-key-idle-delay 0.3)
 (setq which-key-max-description-length 100)
 (global-visual-line-mode)
-(pixel-scroll-precision-mode)
 
 (global-set-key (kbd "C-M-j") 'consult-buffer)
 
@@ -270,6 +303,57 @@
    ((equal mark-active nil)
     (rr/copy-line))))
 
+(defun rr/ultra-scroll-up ()
+  (interactive)
+  (ultra-scroll-up (- (/ (window-pixel-height) 2) 30)))
+
+(defun rr/ultra-scroll-down ()
+  (interactive)
+  (ultra-scroll-down (- (/ (window-pixel-height) 2) 30)))
+
+(defun consult-info-emacs ()
+  "Search through Emacs info pages."
+  (interactive)
+  (consult-info "emacs" "efaq" "elisp" "cl" "compat" "eat" "corfu" "eglot" "magit"))
+
+(setq meow-org-motion-keymap (make-keymap))
+(meow-define-state org-motion
+  "Org-mode structural motion"
+  :lighter "[O]"
+  :keymap meow-org-motion-keymap)
+
+(meow-define-keys 'org-motion
+  '("<escape>" . meow-normal-mode)
+  '("i" . meow-insert-mode)
+  '("g" . meow-normal-mode)
+  '("u" .  meow-undo)
+  ;; Moving between headlines
+  '("k" .  org-previous-visible-heading)
+  '("j" .  org-next-visible-heading)
+  ;; Moving between headings at the same level
+  '("p" .  org-backward-heading-same-level)
+  '("n" .  org-forward-heading-same-level)
+  ;; Moving subtrees themselves
+  '("K" .  org-subtree-up)
+  '("J" .  org-subtree-down)
+  ;; Subtree de/promotion
+  '("L" .  org-demote-subtree)
+  '("H" .  org-promote-subtree)
+  ;; Completion-style search of headings
+  '("v" .  consult-org-heading)
+  ;; Setting subtree metadata
+  '("L" .  org-set-property)
+  '("t" .  org-todo)
+  '("D" .  org-deadline)
+  '("S" .  org-schedule)
+  '("E" .  org-set-effort)
+  ;; Block navigation
+  '("B" .  org-previous-block)
+  '("F" .  org-next-block)
+  ;; Narrowing/widening
+  '("N" .  org-narrow-to-subtree)
+  '("W" .  widen))
+
 (defvar meow-nav-keymap
   (let ((keymap (make-keymap)))
     (define-key keymap (kbd "h") #'beginning-of-line)
@@ -279,6 +363,7 @@
     (define-key keymap (kbd "s") #'back-to-indentation)
     (define-key keymap (kbd "y") #'eglot-find-typeDefinition)
     (define-key keymap (kbd "i") #'eglot-find-implementation)
+    (define-key keymap (kbd "O") #'meow-org-motion-mode)
     keymap))
 
 ;; define an alias for your keymap
@@ -527,6 +612,14 @@
    '("j" . meow-next)
    '("k" . meow-prev)
    '("<escape>" . ignore))
+  (setq meow-selection-command-fallback
+        '((meow-change . meow-change-char)
+          (meow-kill . meow-c-k)
+          ;; (meow-kill . meow-delete)
+          (meow-cancel-selection . keyboard-quit)
+          ;; (meow-cancel-selection . ignore)
+          (meow-pop-selection . meow-pop-grab)
+          (meow-beacon-change . meow-beacon-change-char)))
   (meow-leader-define-key
    ;; SPC j/k will run the original command in MOTION state.
    '("j" . "H-j")
@@ -573,12 +666,14 @@
    '(";" . meow-reverse)
    '("," . meow-inner-of-thing)
    '("." . meow-bounds-of-thing)
-   '("/" . isearch-forward)
+   '("/" . consult-line)
+   '("M-s i" . consult-info-emacs)
    '("C-;" . popper-kill-latest-popup)
-   '("C-S-s" . consult-line)
-   '("C-u" . meow-page-up)
-   '("C-d" . meow-page-down)
+   ;; '("C-S-s" . consult-line)
+   '("C-u" . rr/ultra-scroll-up)
+   '("C-d" . rr/ultra-scroll-down)
    '("C-w" . backward-kill-word)
+   '("M-s-<down>" . duplicate-dwim)
    '("RET" . +org/dwim-at-point)
    ;; '("TAB" . +org-cycle-only-current-subtree-h)
    ;; '("C-n" . rr/org-show-next-heading-tidily)
@@ -591,7 +686,7 @@
    '("b" . meow-back-word)
    '("B" . meow-back-symbol)
    '("c" . meow-change)
-   '("d" . rr/meow-delete-char-or-region)
+   '("d" . meow-delete)
    '("D" . meow-backward-delete)
    '("e" . meow-block)
    '("E" . meow-to-block)
@@ -617,10 +712,10 @@
    '("O" . meow-open-above)
    '("p" . meow-yank)
    '("P" . rr/meow-paste-before)
-   '("Q" . meow-goto-line)
+   '("Q" . avy-goto-char)
    '("r" . meow-replace)
    '("R" . meow-swap-grab)
-   '("s" . meow-kill)
+   '("s" . delete-region)
    '("T" . meow-till)
    '("u" . undo)
    '("U" . undo-redo)
@@ -633,8 +728,15 @@
    '("Y" . meow-sync-grab)
    '("z" . meow-pop-selection)
    '("'" . repeat)
+   '("<" . beginning-of-buffer)
+   '(">" . end-of-buffer)
+   '("s-<up>" . beginning-of-buffer)
+   '("s-<down>" . end-of-buffer)
    '(";" . meow-cancel-selection)
    '(":" . meow-reverse)
+   '("s-/" . comment-line)
+   '("%" . meow-query-replace)
+   '("&" . meow-query-replace-regex)
    '("<escape>" . ignore)))
 
 (use-package meow
@@ -828,11 +930,17 @@ folder, otherwise delete a word"
 
 (define-key dired-mode-map "?" dired-mode-map)
 
-(use-package diff-hl)
-(global-diff-hl-mode)
-(diff-hl-flydiff-mode 1)
-(diff-hl-dired-mode 1)
-(diff-hl-margin-mode 1)
+(use-package diff-hl
+  :demand t
+  :hook ((prog-mode . diff-hl-mode)
+         (org-mode . diff-hl-mode))
+  :custom
+  (setq
+   global-diff-hl-mode 1
+   diff-hl-flydiff-mode 1
+   diff-hl-dired-mode 1
+   diff-hl-margin-mode 1)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 
 (use-package git-link
   :defer t
@@ -856,7 +964,7 @@ folder, otherwise delete a word"
                     :height 1.1)
 
 (use-package treesit-auto
-  :defer t
+  ;; :defer t ; uncomment this if you want to run treesit-auto again
   :custom
   (treesit-auto-install 'prompt)
   :config
@@ -875,7 +983,7 @@ folder, otherwise delete a word"
   :defer t
   :hook (
          ((typescriptreact-mode typescript-ts-mode) . eglot-ensure)
-		 (go-ts-mode . eglot-ensure)
+         (go-ts-mode . eglot-ensure)
          (python-ts-mode . eglot-ensure)
          (typescriptreact-mode . flymake-popon-mode)
          )
@@ -883,7 +991,10 @@ folder, otherwise delete a word"
   (setq eglot-confirm-server-initiated-edits nil)
   (setq eglot-ignored-server-capabilities nil)
   (add-to-list 'eglot-server-programs
-			   '((typescript-ts-mode typescript-mode) . ("typescript-language-server" "--stdio"))))
+         	   '((typescript-ts-mode typescript-mode) . ("typescript-language-server" "--stdio"))
+               '((python-mode python-ts-mode) . ("pylsp"))
+               ;;                '(nix-ts-mode . ("nil"))
+               ))
 
 (use-package eglot-booster
   :vc (:url "https://github.com/jdtsmith/eglot-booster")
@@ -903,14 +1014,14 @@ folder, otherwise delete a word"
   :hook ((python-ts-mode . eglot-ensure))
   :mode (("\\.py\\'" . python-ts-mode)))
 
-;;    (setq major-mode-remap-alist
-;;        '((python-mode . python-ts-mode)))
+(use-package pyvenv
+  :defer t
+  :config
+  (pyvenv-mode 1))
 
-;; (with-eval-after-load 'eglot
-;;   (add-to-list 'eglot-server-programs
-;;                '(python-mode . ("pyright-langserver" "--stdio"))
-;;                '(python-mode . ("ruff" "server")))
-;;   (add-hook 'after-save-hook 'eglot-format))
+(add-hook 'python-ts-mode-hook
+          (lambda ()
+            (add-hook 'before-save-hook 'eglot-format nil t)))
 
 (use-package prettier
   :defer t
@@ -949,6 +1060,7 @@ folder, otherwise delete a word"
   :mode "\\.nu\\'")
 
 (use-package nix-ts-mode
+  :hook ((nix-ts-mode . eglot-ensure))
   :mode "\\.nix\\'")
 
 (use-package apheleia
@@ -961,17 +1073,15 @@ folder, otherwise delete a word"
   :custom
   (verb-auto-kill-response-buffers t))
 
-(use-package gptel
-  :defer t)
-
-;; Perplexity offers an OpenAI compatible API
-(gptel-make-openai "Perplexity"         ;Any name you want
-  :host "api.perplexity.ai"
-  :key pplx-api-key
-  :endpoint "/chat/completions"
-  :stream t
-  :models '(;; has many more, check perplexity.ai
-            llama-3.1-sonar-small-128k-chat))
+;; Install Khoj client from MELPA Stable
+(use-package khoj
+  :defer t
+  :straight (khoj :type git :host github :repo "khoj-ai/khoj" :files (:defaults "src/interface/emacs/khoj.el"))
+  :bind ("C-c s" . 'khoj)
+  :config (setq khoj-api-key (rr/lookup-password :host "khoj")
+                khoj-server-url "http://127.0.0.1:42110"
+                khoj-org-directories '(org-roam-directory org-directory)
+                khoj-org-files '((expand-file-name "journal.org" org-directory) (expand-file-name "organize.org" org-directory))))
 
 (use-package consult-xref-stack
   :defer t
@@ -981,6 +1091,12 @@ folder, otherwise delete a word"
 
 (use-package consult-project-extra
   :defer t)
+
+(use-package leetcode
+  :defer t)
+(add-hook 'leetcode-solution-mode-hook
+          (lambda() (flymake-mode 1)))
+(setq leetcode-prefer-language "python3")
 
 (use-package activities
   :init
@@ -1815,6 +1931,9 @@ in HUGO_BASE_DIR property."
   (let* ((file-name (replace-regexp-in-string "_+" "-" (replace-regexp-in-string "\\W" "_" (string-trim (downcase blog-post-title)))))
          (blog-post-file-name (concat file-name ".md")))
     (org-set-property "EXPORT_FILE_NAME" blog-post-file-name)))
+
+(use-package envrc
+  :hook (after-init . envrc-global-mode))
 
 (if (file-exists-p "~/bin/additional-config.el")
     (progn

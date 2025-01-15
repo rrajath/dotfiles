@@ -40,7 +40,10 @@
     - [[#move-line-down][Move line down]]
     - [[#move-line-up][Move line up]]
   - [[#popper][Popper]]
-  - [[#golden-ratio][Golden Ratio]]
+  - [[#auth-source][Auth Source]]
+  - [[#ultra-scroll][Ultra Scroll]]
+  - [[#auto-capitalize][Auto capitalize]]
+  - [[#yasnippet][Yasnippet]]
   - [[#other-minor-settings][Other minor settings]]
 - [[#keybindings][Keybindings]]
   - [[#switch-buffers-easily][Switch buffers easily]]
@@ -52,7 +55,10 @@
       - [[#meow-paste-before][Meow Paste before]]
       - [[#meow-delete-char-or-region][Meow delete char or region]]
       - [[#meow-save][Meow Save]]
+      - [[#scroll-half-page-updown][Scroll half page up/down]]
+      - [[#consult-info-emacs][Consult info emacs]]
     - [[#custom-keymaps][Custom Keymaps]]
+      - [[#org-speed-keys-keymap][Org Speed Keys Keymap]]
       - [[#nav-keymap][Nav Keymap]]
       - [[#persp-keymap][Persp keymap]]
       - [[#buffer-keymap][Buffer Keymap]]
@@ -119,8 +125,10 @@
   - [[#rest-client][Rest Client]]
   - [[#llm][LLM]]
     - [[#gptel][gpt.el]]
-  - [[#consult-xref][Consult Xref]]
+    - [[#khoj][khoj]]
+  - [[#consult-xref-stack][Consult Xref Stack]]
   - [[#consult-project-extra][Consult Project Extra]]
+  - [[#leetcode][Leetcode]]
 - [[#buffers][Buffers]]
   - [[#perspectives][Perspectives]]
     - [[#basic-setup][Basic Setup]]
@@ -171,6 +179,7 @@
   - [[#ox-hugo][ox-hugo]]
   - [[#turn-on-org-hugo-auto-export-mode-when-you-visit-blogorg][Turn on org-hugo-auto-export-mode when you visit blog.org]]
   - [[#generate-a-filename-given-a-blog-post-title][Generate a filename given a blog post title]]
+- [[#envrc][Envrc]]
 - [[#machine-specific-config][Machine-specific config]]
 :END:
 
@@ -243,11 +252,16 @@ Package: [[https://github.com/emacscollective/no-littering][no-littering]]
 This section sets variables found in .envrc in order to use them later on in the config. This is useful for configs that are shared across multiple machines but have different values. For example, org-mode directory may be at different locations in two different machines. Reading the path from an envrc file makes the config cleaner and easier to maintain and all the necessary paths and values can be offloaded to a different file (envrc)
 
 #+begin_src emacs-lisp
-  (direnv-allow)
-  (setq rr-org-mode-dir (getenv "ORG_MODE_DIR"))
-  (setq rr-org-roam-dir (getenv "ORG_ROAM_DIR"))
-  (setq pplx-api-key (getenv "PPLX_API_KEY"))
+  (setq rr-org-mode-dir "~/SynologyDrive/org-mode")
+  (setq rr-org-roam-dir "~/org-roam")
   (setq initial-major-mode #'lisp-interaction-mode)
+
+  (setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "~/.local/bin")))
+  (add-to-list 'exec-path (expand-file-name "~/.local/bin"))
+  (add-to-list 'exec-path (expand-file-name "/opt/homebrew/bin"))
+  (add-to-list 'exec-path (expand-file-name "~/.nix-profile/bin"))
+  (add-to-list 'exec-path (expand-file-name "~/Library/Python/3.9/bin"))
+  (add-to-list 'exec-path (expand-file-name "~/bin/venv/bin"))
 #+end_src
 
 * UI Configuration
@@ -518,23 +532,65 @@ Package: [[https://github.com/karthink/popper][popper]]
             term-mode))
     (popper-mode +1))
 #+end_src
-** Golden Ratio
-Package: [[https://github.com/roman/golden-ratio.el][golden-ratio]]
+** Auth Source
+This is a small helper function to get the value of a password or a secret from the ~.authinfo.gpg~ file. Got it from a [[https://www.youtube.com/watch?v=nZ_T7Q49B8Y&t=1220s][YouTube video]]. Make sure to add the secret to ~.authinfo.gpg~ file before accessing it.
 
-#+begin_src emacs-lisp :tangle no
-  (use-package golden-ratio
-    :ensure t
-    :config
-    (golden-ratio-mode 1)
-    (setq golden-ratio-auto-scale t))
+#+begin_src emacs-lisp
+  (defun rr/lookup-password (&rest keys)
+    (let ((result (apply #'auth-source-search keys)))
+      (if result
+          (funcall (plist-get (car result) :secret))
+        nil)))
 #+end_src
+
+** Ultra Scroll
+Package: [[https://github.com/jdtsmith/ultra-scroll][ultra-scroll]]
+This makes scrolling buttery smooth.
+
+#+begin_src emacs-lisp
+  (use-package ultra-scroll
+    :vc (:url "https://github.com/jdtsmith/ultra-scroll")
+    :init
+    (setq scroll-conservatively 101 ; important!
+          scroll-margin 0) 
+    :config
+    (ultra-scroll-mode 1))
+#+end_src
+** Auto capitalize
+Package: [[https://github.com/yuutayamada/auto-capitalize-el][auto-capitalize]]
+This package capitalizes the first word of any sentence.
+
+#+begin_src emacs-lisp
+  (use-package auto-capitalize
+    :vc (:url "https://github.com/yuutayamada/auto-capitalize-el")
+    :hook (org-mode-hook . auto-capitalize-mode)
+    :custom
+    (setq auto-capitalize-words `("I" "English"))
+    (auto-capitalize-mode 1))
+#+end_src
+
+** Yasnippet
+Package: [[https://github.com/joaotavora/yasnippet][yasnippet]]
+For some reason, I need to run ~yas-reload-all~ after emacs starts in order to use the snippets created.
+
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :defer t
+    :hook ((text-mode
+            prog-mode
+            conf-mode
+            snippet-mode) . yas-minor-mode-on)
+    )
+#+end_src
+
 ** Other minor settings
+
 #+begin_src emacs-lisp
   (setq which-key-idle-delay 0.3)
   (setq which-key-max-description-length 100)
   (global-visual-line-mode)
-  (pixel-scroll-precision-mode)
 #+end_src
+
 * Keybindings
 ** Switch buffers easily
 =consult-buffer= lets you preview buffers as you scroll through them. It is not set to the keybinding =C-M-j= for easy access. Also, these buffers are aggregated across workspaces (or perspectives).
@@ -597,6 +653,7 @@ Cuts org subtree if point is on an org heading
      ((equal mark-active nil)
       (delete-char 1))))
 #+end_src
+
 **** Meow Save
 Copies the entire line when no selection exists
 Copies region when there’s selection
@@ -621,7 +678,68 @@ Copies org subtree if point is on an org heading
      ((equal mark-active nil)
       (rr/copy-line))))
 #+end_src
+**** Scroll half page up/down
+This function scrolls half page up or down instead of a full page. It uses ultra-scroll to do this.
+
+#+begin_src emacs-lisp
+  (defun rr/ultra-scroll-up ()
+    (interactive)
+    (ultra-scroll-up (- (/ (window-pixel-height) 2) 30)))
+
+  (defun rr/ultra-scroll-down ()
+    (interactive)
+    (ultra-scroll-down (- (/ (window-pixel-height) 2) 30)))
+#+end_src
+**** Consult info emacs
+#+begin_src emacs-lisp
+  (defun consult-info-emacs ()
+    "Search through Emacs info pages."
+    (interactive)
+    (consult-info "emacs" "efaq" "elisp" "cl" "compat" "eat" "corfu" "eglot" "magit"))
+#+end_src
 *** Custom Keymaps
+**** Org Speed Keys Keymap
+Got this idea from: https://aatmunbaxi.netlify.app/comp/meow_state_org_speed
+
+#+begin_src emacs-lisp
+  (setq meow-org-motion-keymap (make-keymap))
+  (meow-define-state org-motion
+    "Org-mode structural motion"
+    :lighter "[O]"
+    :keymap meow-org-motion-keymap)
+
+  (meow-define-keys 'org-motion
+    '("<escape>" . meow-normal-mode)
+    '("i" . meow-insert-mode)
+    '("g" . meow-normal-mode)
+    '("u" .  meow-undo)
+    ;; Moving between headlines
+    '("k" .  org-previous-visible-heading)
+    '("j" .  org-next-visible-heading)
+    ;; Moving between headings at the same level
+    '("p" .  org-backward-heading-same-level)
+    '("n" .  org-forward-heading-same-level)
+    ;; Moving subtrees themselves
+    '("K" .  org-subtree-up)
+    '("J" .  org-subtree-down)
+    ;; Subtree de/promotion
+    '("L" .  org-demote-subtree)
+    '("H" .  org-promote-subtree)
+    ;; Completion-style search of headings
+    '("v" .  consult-org-heading)
+    ;; Setting subtree metadata
+    '("L" .  org-set-property)
+    '("t" .  org-todo)
+    '("D" .  org-deadline)
+    '("S" .  org-schedule)
+    '("E" .  org-set-effort)
+    ;; Block navigation
+    '("B" .  org-previous-block)
+    '("F" .  org-next-block)
+    ;; Narrowing/widening
+    '("N" .  org-narrow-to-subtree)
+    '("W" .  widen))
+#+end_src
 **** Nav Keymap
 This keymap is used for navigation. A lot of the functions here try to emulate Helix keybindings and navigation in order to make the experience more consistent.
 #+begin_src emacs-lisp
@@ -634,6 +752,7 @@ This keymap is used for navigation. A lot of the functions here try to emulate H
       (define-key keymap (kbd "s") #'back-to-indentation)
       (define-key keymap (kbd "y") #'eglot-find-typeDefinition)
       (define-key keymap (kbd "i") #'eglot-find-implementation)
+      (define-key keymap (kbd "O") #'meow-org-motion-mode)
       keymap))
 
   ;; define an alias for your keymap
@@ -925,6 +1044,14 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("j" . meow-next)
      '("k" . meow-prev)
      '("<escape>" . ignore))
+    (setq meow-selection-command-fallback
+          '((meow-change . meow-change-char)
+            (meow-kill . meow-c-k)
+            ;; (meow-kill . meow-delete)
+            (meow-cancel-selection . keyboard-quit)
+            ;; (meow-cancel-selection . ignore)
+            (meow-pop-selection . meow-pop-grab)
+            (meow-beacon-change . meow-beacon-change-char)))
     (meow-leader-define-key
      ;; SPC j/k will run the original command in MOTION state.
      '("j" . "H-j")
@@ -971,12 +1098,14 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '(";" . meow-reverse)
      '("," . meow-inner-of-thing)
      '("." . meow-bounds-of-thing)
-     '("/" . isearch-forward)
+     '("/" . consult-line)
+     '("M-s i" . consult-info-emacs)
      '("C-;" . popper-kill-latest-popup)
-     '("C-S-s" . consult-line)
-     '("C-u" . meow-page-up)
-     '("C-d" . meow-page-down)
+     ;; '("C-S-s" . consult-line)
+     '("C-u" . rr/ultra-scroll-up)
+     '("C-d" . rr/ultra-scroll-down)
      '("C-w" . backward-kill-word)
+     '("M-s-<down>" . duplicate-dwim)
      '("RET" . +org/dwim-at-point)
      ;; '("TAB" . +org-cycle-only-current-subtree-h)
      ;; '("C-n" . rr/org-show-next-heading-tidily)
@@ -989,7 +1118,7 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("b" . meow-back-word)
      '("B" . meow-back-symbol)
      '("c" . meow-change)
-     '("d" . rr/meow-delete-char-or-region)
+     '("d" . meow-delete)
      '("D" . meow-backward-delete)
      '("e" . meow-block)
      '("E" . meow-to-block)
@@ -1015,10 +1144,10 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("O" . meow-open-above)
      '("p" . meow-yank)
      '("P" . rr/meow-paste-before)
-     '("Q" . meow-goto-line)
+     '("Q" . avy-goto-char)
      '("r" . meow-replace)
      '("R" . meow-swap-grab)
-     '("s" . meow-kill)
+     '("s" . delete-region)
      '("T" . meow-till)
      '("u" . undo)
      '("U" . undo-redo)
@@ -1031,8 +1160,15 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("Y" . meow-sync-grab)
      '("z" . meow-pop-selection)
      '("'" . repeat)
+     '("<" . beginning-of-buffer)
+     '(">" . end-of-buffer)
+     '("s-<up>" . beginning-of-buffer)
+     '("s-<down>" . end-of-buffer)
      '(";" . meow-cancel-selection)
      '(":" . meow-reverse)
+     '("s-/" . comment-line)
+     '("%" . meow-query-replace)
+     '("&" . meow-query-replace-regex)
      '("<escape>" . ignore)))
 #+end_src
 *** Meow Package Setup
@@ -1298,12 +1434,19 @@ Highlight addition, changes or deletion of lines on the left margin of each file
 Package: [[https://github.com/dgutov/diff-hl][diff-hl]]
 
 #+begin_src emacs-lisp
-  (use-package diff-hl)
-  (global-diff-hl-mode)
-  (diff-hl-flydiff-mode 1)
-  (diff-hl-dired-mode 1)
-  (diff-hl-margin-mode 1)
+  (use-package diff-hl
+    :demand t
+    :hook ((prog-mode . diff-hl-mode)
+           (org-mode . diff-hl-mode))
+    :custom
+    (setq
+     global-diff-hl-mode 1
+     diff-hl-flydiff-mode 1
+     diff-hl-dired-mode 1
+     diff-hl-margin-mode 1)
+    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 #+end_src
+
 ** Git Link
 #+begin_src emacs-lisp
   (use-package git-link
@@ -1351,13 +1494,14 @@ This package worked best for setting all the treesitter stuff.
 
 #+begin_src emacs-lisp
   (use-package treesit-auto
-    :defer t
+    ;; :defer t ; uncomment this if you want to run treesit-auto again
     :custom
     (treesit-auto-install 'prompt)
     :config
     (treesit-auto-add-to-auto-mode-alist 'all)
     (global-treesit-auto-mode))
 #+end_src
+
 *** Flymake diagnostics as popups
 This is to display any errors or warnings as popups instead of the echo area. The popups are displayed when the point is on a variable that has an error/warning. This is better than what is usually displayed in the echo area (by default) because the text in the echo area gets cut off at the end.
 Package: [[https://codeberg.org/akib/emacs-flymake-popon][flymake-popon]]
@@ -1384,7 +1528,7 @@ Using the built-in eglot instead of LSP. I previously used LSP and found it to b
     :defer t
     :hook (
            ((typescriptreact-mode typescript-ts-mode) . eglot-ensure)
-  		 (go-ts-mode . eglot-ensure)
+           (go-ts-mode . eglot-ensure)
            (python-ts-mode . eglot-ensure)
            (typescriptreact-mode . flymake-popon-mode)
            )
@@ -1392,8 +1536,12 @@ Using the built-in eglot instead of LSP. I previously used LSP and found it to b
     (setq eglot-confirm-server-initiated-edits nil)
     (setq eglot-ignored-server-capabilities nil)
     (add-to-list 'eglot-server-programs
-  			   '((typescript-ts-mode typescript-mode) . ("typescript-language-server" "--stdio"))))
+           	   '((typescript-ts-mode typescript-mode) . ("typescript-language-server" "--stdio"))
+                 '((python-mode python-ts-mode) . ("pylsp"))
+                 ;;                '(nix-ts-mode . ("nil"))
+                 ))
 #+end_src
+
 *** Eglot Booster
 Package: [[https://github.com/jdtsmith/eglot-booster?tab=readme-ov-file][eglot-booster]]
 
@@ -1424,23 +1572,15 @@ Package: [[https://github.com/jdtsmith/eglot-booster?tab=readme-ov-file][eglot-b
     :ensure t
     :hook ((python-ts-mode . eglot-ensure))
     :mode (("\\.py\\'" . python-ts-mode)))
-#+end_src
 
-#+begin_src emacs-lisp :tangle no
-  (use-package python-mode
+  (use-package pyvenv
     :defer t
-    :mode "\\.py\\'")
-#+end_src
+    :config
+    (pyvenv-mode 1))
 
-#+begin_src emacs-lisp
-  ;;    (setq major-mode-remap-alist
-  ;;        '((python-mode . python-ts-mode)))
-
-  ;; (with-eval-after-load 'eglot
-  ;;   (add-to-list 'eglot-server-programs
-  ;;                '(python-mode . ("pyright-langserver" "--stdio"))
-  ;;                '(python-mode . ("ruff" "server")))
-  ;;   (add-hook 'after-save-hook 'eglot-format))
+  (add-hook 'python-ts-mode-hook
+            (lambda ()
+              (add-hook 'before-save-hook 'eglot-format nil t)))
 #+end_src
 
 *** Typescript
@@ -1504,6 +1644,7 @@ This does not correctly work right now. But I'll keep it and tinker with it.
 *** Nix
 #+begin_src emacs-lisp
   (use-package nix-ts-mode
+    :hook ((nix-ts-mode . eglot-ensure))
     :mode "\\.nix\\'")
 #+end_src
 *** Aphelia
@@ -1530,20 +1671,42 @@ Package: [[https://github.com/karthink/gptel][gpt.el]]
 
 Make sure to define the API key from ~.envrc~
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package gptel
     :defer t)
 
   ;; Perplexity offers an OpenAI compatible API
   (gptel-make-openai "Perplexity"         ;Any name you want
     :host "api.perplexity.ai"
-    :key pplx-api-key
+    :key (rr/lookup-password :host "pplx-api-key")
     :endpoint "/chat/completions"
     :stream t
     :models '(;; has many more, check perplexity.ai
               llama-3.1-sonar-small-128k-chat))
+
+  (gptel-make-ollama "Ollama"             ;Any name of your choosing
+    :host "localhost:11434"               ;Where it's running
+    :stream t                             ;Stream responses
+    :models '(llama3.2:latest))          ;List of models
 #+end_src
-** Consult Xref
+
+*** khoj
+Package: [[https://docs.khoj.dev/clients/emacs][khoj]]
+
+#+begin_src emacs-lisp
+  ;; Install Khoj client from MELPA Stable
+  (use-package khoj
+    :defer t
+    :straight (khoj :type git :host github :repo "khoj-ai/khoj" :files (:defaults "src/interface/emacs/khoj.el"))
+    :bind ("C-c s" . 'khoj)
+    :config (setq khoj-api-key (rr/lookup-password :host "khoj")
+                  khoj-server-url "http://127.0.0.1:42110"
+                  khoj-org-directories '(org-roam-directory org-directory)
+                  khoj-org-files '((expand-file-name "journal.org" org-directory) (expand-file-name "organize.org" org-directory))))
+#+end_src
+
+** Consult Xref Stack
+
 #+begin_src emacs-lisp
   (use-package consult-xref-stack
     :defer t
@@ -1551,6 +1714,7 @@ Make sure to define the API key from ~.envrc~
     :bind
     (("M-," . consult-xref-stack-backward)))
 #+end_src
+
 ** Consult Project Extra
 Package: [[https://github.com/Qkessler/consult-project-extra][consult-project-extra]]
 
@@ -1559,6 +1723,14 @@ Package: [[https://github.com/Qkessler/consult-project-extra][consult-project-ex
     :defer t)
 #+end_src
 
+** Leetcode
+#+begin_src emacs-lisp
+  (use-package leetcode
+    :defer t)
+  (add-hook 'leetcode-solution-mode-hook
+            (lambda() (flymake-mode 1)))
+  (setq leetcode-prefer-language "python3")
+#+end_src
 * Buffers
 ** Perspectives
 *** Basic Setup
@@ -1617,7 +1789,9 @@ Package: [[https://github.com/alphapapa/activities.el][activities.el]]
      ("C-x C-a g" . activities-revert)
      ("C-x C-a l" . activities-list)))
 #+end_src
+
 ** Tab Bar Config
+
 #+begin_src emacs-lisp
   (with-eval-after-load 'tab-bar
     (setq tab-bar-new-tab-to 'rightmost)
@@ -1636,6 +1810,7 @@ Package: [[https://github.com/alphapapa/activities.el][activities.el]]
     )
   (custom-set-variables '(tab-bar-select-tab-modifiers '(super)))
 #+end_src
+
 * OrgMode
 ** Capture Templates
 
@@ -2569,6 +2744,7 @@ Package: [[https://github.com/org-roam/org-roam-ui][org-roam-ui]]
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
 #+end_src
+
 * Blogging
 ** ox-hugo
 This is the emacs package I use to publish to my Hugo website using org files
@@ -2608,6 +2784,11 @@ This is a nice little helper function I wrote for myself to generate a filename 
     (let* ((file-name (replace-regexp-in-string "_+" "-" (replace-regexp-in-string "\\W" "_" (string-trim (downcase blog-post-title)))))
            (blog-post-file-name (concat file-name ".md")))
       (org-set-property "EXPORT_FILE_NAME" blog-post-file-name)))
+#+end_src
+* Envrc
+#+begin_src emacs-lisp
+  (use-package envrc
+    :hook (after-init . envrc-global-mode))
 #+end_src
 * Machine-specific config
 This helps keep certain packages separate, like having the copilot package in the additional-config.el will make it load only in the work Emacs instance since I don't need it on the personal instance.
