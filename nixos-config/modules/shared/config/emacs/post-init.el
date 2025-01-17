@@ -28,13 +28,6 @@
 (setq rr-org-roam-dir "~/org-roam")
 (setq initial-major-mode #'lisp-interaction-mode)
 
-(setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "~/.local/bin")))
-(add-to-list 'exec-path (expand-file-name "~/.local/bin"))
-(add-to-list 'exec-path (expand-file-name "/opt/homebrew/bin"))
-(add-to-list 'exec-path (expand-file-name "~/.nix-profile/bin"))
-(add-to-list 'exec-path (expand-file-name "~/Library/Python/3.9/bin"))
-(add-to-list 'exec-path (expand-file-name "~/bin/venv/bin"))
-
 (setq my-fixed-pitch-font "JetBrains Mono")
 (setq my-variable-pitch-font "SN Pro")
 
@@ -715,7 +708,7 @@
    '("Q" . avy-goto-char)
    '("r" . meow-replace)
    '("R" . meow-swap-grab)
-   '("s" . delete-region)
+   '("s" . cua-delete-region)
    '("T" . meow-till)
    '("u" . undo)
    '("U" . undo-redo)

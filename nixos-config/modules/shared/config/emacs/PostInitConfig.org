@@ -255,13 +255,6 @@ This section sets variables found in .envrc in order to use them later on in the
   (setq rr-org-mode-dir "~/SynologyDrive/org-mode")
   (setq rr-org-roam-dir "~/org-roam")
   (setq initial-major-mode #'lisp-interaction-mode)
-
-  (setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "~/.local/bin")))
-  (add-to-list 'exec-path (expand-file-name "~/.local/bin"))
-  (add-to-list 'exec-path (expand-file-name "/opt/homebrew/bin"))
-  (add-to-list 'exec-path (expand-file-name "~/.nix-profile/bin"))
-  (add-to-list 'exec-path (expand-file-name "~/Library/Python/3.9/bin"))
-  (add-to-list 'exec-path (expand-file-name "~/bin/venv/bin"))
 #+end_src
 
 * UI Configuration
@@ -1147,7 +1140,7 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("Q" . avy-goto-char)
      '("r" . meow-replace)
      '("R" . meow-swap-grab)
-     '("s" . delete-region)
+     '("s" . cua-delete-region)
      '("T" . meow-till)
      '("u" . undo)
      '("U" . undo-redo)
