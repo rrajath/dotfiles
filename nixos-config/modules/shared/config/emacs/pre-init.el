@@ -68,6 +68,11 @@
 
 (add-to-list 'completion-ignored-extensions ".DS_Store")
 
+(use-package exec-path-from-shell)
+
+(when (memq window-system '(mac ns x))
+  (exec-path-from-shell-initialize))
+
 (electric-pair-mode +1)
 (electric-indent-mode +1)
 (which-key-mode 1)
