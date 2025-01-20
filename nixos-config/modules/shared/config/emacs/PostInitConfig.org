@@ -499,6 +499,19 @@ Found this in a [[https://www.reddit.com/r/emacs/comments/1aky57w/comment/kphrvz
 
   (global-set-key (kbd "M-<up>") 'rr/move-line-up)
 #+end_src
+** Beginning of line or back to indentation
+I'd like to have a keybinding that makes my point move between the beginning of a line and the first non whitespace character. In Emacs, going to beginning of line is done by hitting ~C-a~ and going to first non-whitespace character in a line is done by hitting ~M-m~. The following function does both depending on where the point is.
+
+#+begin_src emacs-lisp
+  (defun rr/beginning-of-line ()
+    "Go to beginning of line or to first non-whitespace character
+  depending on current position of point"
+    (interactive)
+    (if (= 0 (current-column))
+        (back-to-indentation)
+      (beginning-of-line)))
+      #+end_src
+
 ** Popper
 Manage pop up windows with ease. Make specific major modes open as popups.
 Package: [[https://github.com/karthink/popper][popper]]

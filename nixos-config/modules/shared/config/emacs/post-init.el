@@ -186,6 +186,14 @@
 
 (global-set-key (kbd "M-<up>") 'rr/move-line-up)
 
+(defun rr/beginning-of-line ()
+  "Go to beginning of line or to first non-whitespace character
+depending on current position of point"
+  (interactive)
+  (if (= 0 (current-column))
+      (back-to-indentation)
+    (beginning-of-line)))
+
 (use-package popper
   :init
   (setq popper-reference-buffers
