@@ -77,7 +77,11 @@
       };
 
       finder = {
-        _FXShowPosixPathInTitle = false;
+       _FXShowPosixPathInTitle = false;
+       FXDefaultSearchScope = "SCcf";
+       FXEnableExtensionChangeWarning = false;
+       FXPreferredViewStyle = "clmv";
+       NewWindowTarget = "Home";
        ShowPathbar = true;
        ShowStatusBar = true;
       };
