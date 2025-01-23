@@ -817,8 +817,7 @@ folder, otherwise delete a word"
   :init
   (setq completion-styles '(orderless)
         completion-category-defaults nil
-        completion-category-overrides '((file (styles . (partial-completion))
-                                              (minibuffer (initials))))))
+        orderless-matching-styles '(orderless-regexp orderless-flex)))
 
 (use-package consult
   :defer t
