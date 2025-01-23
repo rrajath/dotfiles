@@ -20,6 +20,10 @@ with pkgs; [
   lazydocker
   yazi
   jujutsu
+  cargo
+  (lazyjj.overrideAttrs (_: {
+    doCheck = false;
+  }))
 
   # Encryption and security tools
   gnupg
