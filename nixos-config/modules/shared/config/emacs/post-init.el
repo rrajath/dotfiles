@@ -194,6 +194,15 @@ depending on current position of point"
       (back-to-indentation)
     (beginning-of-line)))
 
+(defun rr/delete-lines ()
+  (interactive)
+  (if (region-active-p)
+      (delete-region (region-beginning) (region-end))
+    (progn
+      (beginning-of-line)
+      (kill-line)
+      (delete-forward-char 1))))
+
 (use-package popper
   :init
   (setq popper-reference-buffers
@@ -256,6 +265,17 @@ depending on current position of point"
 (keymap-global-set "s-]" 'tab-next)
 (keymap-global-set "s-r" 'rr/revert-buffer-no-confirm)
 (keymap-global-set "M-o" 'completion-at-point)
+(keymap-global-set "M-y" 'consult-yank-pop)
+(keymap-global-set "C-a" 'rr/beginning-of-line)
+(keymap-global-set "s-d" 'rr/delete-lines)
+(keymap-global-set "C-'" 'next-window-any-frame)
+(keymap-global-set "C-u" 'rr/ultra-scroll-up)
+(keymap-global-set "C-d" 'rr/ultra-scroll-down)
+(keymap-global-set "s-/" 'comment-line)
+(keymap-global-set "s-<up>" 'beginning-of-buffer)
+(keymap-global-set "s-<down>" 'end-of-buffer)
+(keymap-global-set "C-;" 'popper-kill-latest-popup)
+(keymap-global-set "M-RET" 'org-insert-item)
 (keymap-global-set "C-S-u" 'universal-argument)
 
 (defun rr/meow-insert-at-start ()
@@ -279,9 +299,7 @@ depending on current position of point"
   (interactive)
   (cond
    ((equal mark-active t)
-    (if (org-at-heading-p)
-        (org-cut-subtree)
-      (delete-region (region-beginning) (region-end))))
+     (delete-region (region-beginning) (region-end)))
    ((equal mark-active nil)
     (delete-char 1))))
 
@@ -617,8 +635,8 @@ depending on current position of point"
         '((meow-change . meow-change-char)
           (meow-kill . meow-c-k)
           ;; (meow-kill . meow-delete)
-          (meow-cancel-selection . keyboard-quit)
-          ;; (meow-cancel-selection . ignore)
+          ;; (meow-cancel-selection . keyboard-quit)
+          (meow-cancel-selection . ignore)
           (meow-pop-selection . meow-pop-grab)
           (meow-beacon-change . meow-beacon-change-char)))
   (meow-leader-define-key
@@ -669,12 +687,6 @@ depending on current position of point"
    '("." . meow-bounds-of-thing)
    '("/" . consult-line)
    '("M-s i" . consult-info-emacs)
-   '("C-;" . popper-kill-latest-popup)
-   ;; '("C-S-s" . consult-line)
-   '("C-u" . rr/ultra-scroll-up)
-   '("C-d" . rr/ultra-scroll-down)
-   '("C-w" . backward-kill-word)
-   '("M-s-<down>" . duplicate-dwim)
    '("RET" . +org/dwim-at-point)
    ;; '("TAB" . +org-cycle-only-current-subtree-h)
    ;; '("C-n" . rr/org-show-next-heading-tidily)
@@ -687,7 +699,7 @@ depending on current position of point"
    '("b" . meow-back-word)
    '("B" . meow-back-symbol)
    '("c" . meow-change)
-   '("d" . meow-delete)
+   '("d" . rr/meow-delete-char-or-region)
    '("D" . meow-backward-delete)
    '("e" . meow-block)
    '("E" . meow-to-block)
@@ -731,14 +743,11 @@ depending on current position of point"
    '("'" . repeat)
    '("<" . beginning-of-buffer)
    '(">" . end-of-buffer)
-   '("s-<up>" . beginning-of-buffer)
-   '("s-<down>" . end-of-buffer)
    '(";" . meow-cancel-selection)
    '(":" . meow-reverse)
-   '("s-/" . comment-line)
    '("%" . meow-query-replace)
    '("&" . meow-query-replace-regex)
-   '("<escape>" . ignore)))
+   '("<escape>" . meow-cancel-selection)))
 
 (use-package meow
   :custom
