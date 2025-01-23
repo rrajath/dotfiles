@@ -253,9 +253,16 @@ depending on current position of point"
           snippet-mode) . yas-minor-mode-on)
   )
 
+(use-package cape
+  :init
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-emoji))
+
 (setq which-key-idle-delay 0.3)
 (setq which-key-max-description-length 100)
 (global-visual-line-mode)
+
+(setq electric-pair-preserve-balance nil)
 
 (global-set-key (kbd "C-M-j") 'consult-buffer)
 

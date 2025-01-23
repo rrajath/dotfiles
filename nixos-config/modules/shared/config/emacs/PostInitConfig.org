@@ -602,12 +602,32 @@ For some reason, I need to run ~yas-reload-all~ after emacs starts in order to u
     )
 #+end_src
 
+** Completion At Point Extensions
+Package: [[https://github.com/minad/cape][cape]]
+
+This adds completions to org source blocks where elisp code is written, which is a huge convenience. Also, emojis can now be search in the same way as we do in Slack - with ~:emoji-name:~ and you get a completion list. Also has file path completions.
+
+#+begin_src emacs-lisp
+  (use-package cape
+    :init
+    (add-hook 'completion-at-point-functions #'cape-file)
+    (add-hook 'completion-at-point-functions #'cape-emoji))
+#+end_src
+
 ** Other minor settings
 
 #+begin_src emacs-lisp
   (setq which-key-idle-delay 0.3)
   (setq which-key-max-description-length 100)
   (global-visual-line-mode)
+#+end_src
+
+
+The following setting prevents electric mode from generating the closing pair of brackets or quotes when it is preceeded or succeeded with text. For example, it avoids the following scenario ~""|word~ where pipe represents the cursor. It instead makes it ~"|word~
+
+[[https://www.reddit.com/r/emacs/comments/1hwf46n/comment/m63mddk][A reddit comment that suggests this]] also has code for allowing ~word|""~ which I don't really need at the moment. But in case I do in the future, I can refer to the post.
+#+begin_src emacs-lisp
+  (setq electric-pair-preserve-balance nil)
 #+end_src
 
 * Keybindings
