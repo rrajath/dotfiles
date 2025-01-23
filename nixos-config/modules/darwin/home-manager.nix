@@ -134,7 +134,21 @@ in
           enableNushellIntegration = true; # see note on other shells below
           nix-direnv.enable = true;
         };
-
+        
+        jujutsu = {
+          enable = true;
+          settings = {
+            user = {
+              name = "${user}";
+              email = "r.rajath@protonmail.com";
+            };
+            ui = {
+              editor = "hx";
+              default-command = "log";
+            };
+          };
+        };
+        
         helix = {
           enable = true;
           settings = {
