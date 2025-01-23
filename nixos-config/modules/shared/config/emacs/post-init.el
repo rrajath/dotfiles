@@ -1683,6 +1683,13 @@ If prefix ARG, copy instead of move."
                      '(("[X]" . 4) ("[-]" . 3) ("[ ]" . 2) (nil . 1))))
        4))))
 
+(add-hook 'org-mode-hook
+          (lambda ()
+            (setq-local electric-pair-inhibit-predicate
+                        `(lambda (c)
+                           (if (char-equal c ?<) t
+                             (,electric-pair-inhibit-predicate c))))))
+
 (eval-after-load 'org-list
   '(add-hook 'org-checkbox-statistics-hook (function rr/checkbox-list-complete)))
 

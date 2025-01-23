@@ -2497,6 +2497,18 @@ Taken from: https://orgmode.org/worg/org-hacks.html#org5a09194
          4))))
 #+end_src
 
+*** Do not auto-close angle bracket in org files
+When I try to insert org source blocks in org files by expanding ~<s~ or ~<el~ shortcuts, I was getting the closing angle brackets which would expand the source block, but also have the closing angle bracket at the end which I had to delete manually. The following code snippet disables the autoclose behavior for angle brackets specifically in org files.
+
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (setq-local electric-pair-inhibit-predicate
+                          `(lambda (c)
+                             (if (char-equal c ?<) t
+                               (,electric-pair-inhibit-predicate c))))))
+#+end_src
+
 *** Mark heading DONE when all checkboxes are checked
 Taken from: https://orgmode.org/worg/org-hacks.html#mark-done-when-all-checkboxes-checked
 
