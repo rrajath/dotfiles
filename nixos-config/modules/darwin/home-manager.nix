@@ -14,6 +14,10 @@ in
   #   ./dock
   #  ];
 
+  imports = [
+    ./modules
+  ];
+
   # It me
   users.users.${user} = {
     name = "${user}";
