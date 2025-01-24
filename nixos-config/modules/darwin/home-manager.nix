@@ -151,7 +151,7 @@ in
               email = "r.rajath@protonmail.com";
             };
             ui = {
-              editor = "hx";
+              editor = "emacsclient -t";
               default-command = "log";
             };
           };
