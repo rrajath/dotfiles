@@ -63,6 +63,7 @@
     - [[#custom-keymaps][Custom Keymaps]]
       - [[#org-speed-keys-keymap][Org Speed Keys Keymap]]
       - [[#nav-keymap][Nav Keymap]]
+      - [[#activities-keymap][Activities Keymap]]
       - [[#persp-keymap][Persp keymap]]
       - [[#buffer-keymap][Buffer Keymap]]
       - [[#help-keymap][Help Keymap]]
@@ -810,6 +811,26 @@ This keymap is used for navigation. A lot of the functions here try to emulate H
   ;;  (global-set-key (kbd "C-x C-w") 'nav-keymap)
   ;;                              ^ note the quote
 #+end_src
+**** Activities Keymap
+This keymap is to get to activites functions a little more easily.
+
+#+begin_src emacs-lisp
+  (defvar meow-activities-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "a") #'activities-resume)
+      (define-key keymap (kbd "b") #'activities-switch-buffer)
+      (define-key keymap (kbd "d") #'activities-define)
+      (define-key keymap (kbd "g") #'activities-revert)
+      (define-key keymap (kbd "k") #'activities-kill)
+      (define-key keymap (kbd "l") #'activities-list)
+      (define-key keymap (kbd "m") #'activities-switch)
+      (define-key keymap (kbd "n") #'activities-new)
+      (define-key keymap (kbd "s") #'activities-suspend)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-activities-keymap meow-activities-keymap)
+#+end_src
 **** Persp keymap
 #+begin_src emacs-lisp
   (defvar meow-persp-keymap
@@ -1087,6 +1108,7 @@ This keymap is used for navigation. A lot of the functions here try to emulate H
 #+end_src
 *** Meow Setup
 This has key mappings to a bunch of things. It is the main entry point to do most of the operations. Space is the leader key and I’m trying to keep it consistent with the keymap I had with General.
+
 #+begin_src emacs-lisp
   (defun meow-setup ()
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
@@ -1119,6 +1141,7 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("0" . meow-digit-argument)
      '("`" . meow-last-buffer)
      '("RET" . consult-bookmark)
+     '("a" . meow-activities-keymap)
      '("b" . meow-buffer-keymap)
      '("h" . meow-help-keymap)  
      '("s" . meow-persp-keymap)

@@ -397,6 +397,22 @@ depending on current position of point"
 ;;  (global-set-key (kbd "C-x C-w") 'nav-keymap)
 ;;                              ^ note the quote
 
+(defvar meow-activities-keymap
+  (let ((keymap (make-keymap)))
+    (define-key keymap (kbd "a") #'activities-resume)
+    (define-key keymap (kbd "b") #'activities-switch-buffer)
+    (define-key keymap (kbd "d") #'activities-define)
+    (define-key keymap (kbd "g") #'activities-revert)
+    (define-key keymap (kbd "k") #'activities-kill)
+    (define-key keymap (kbd "l") #'activities-list)
+    (define-key keymap (kbd "m") #'activities-switch)
+    (define-key keymap (kbd "n") #'activities-new)
+    (define-key keymap (kbd "s") #'activities-suspend)
+    keymap))
+
+;; define an alias for your keymap
+(defalias 'meow-activities-keymap meow-activities-keymap)
+
 (defvar meow-persp-keymap
   (let ((keymap (make-keymap)))
     (define-key keymap (kbd "s") #'persp-switch)
@@ -663,6 +679,7 @@ depending on current position of point"
    '("0" . meow-digit-argument)
    '("`" . meow-last-buffer)
    '("RET" . consult-bookmark)
+   '("a" . meow-activities-keymap)
    '("b" . meow-buffer-keymap)
    '("h" . meow-help-keymap)  
    '("s" . meow-persp-keymap)
