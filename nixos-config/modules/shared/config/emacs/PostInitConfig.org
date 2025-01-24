@@ -302,7 +302,8 @@ Using nerd icons package to make the modeline look pretty.
     (nerd-icons-scale-factor 1.15))
 #+end_src
 ** Set up theme
-I use the Doom-One theme with a Doom modeline and also use all-the-icons for pretty icons. The following code block sets them up
+The theme I use change every few months. For modeline, I use the Doom modeline theme and also use all-the-icons for pretty icons. The following code block sets them up
+
 Packages:
 - [[https://github.com/seagle0128/doom-modeline][doom-modeline]]
 - [[https://github.com/hlissner/emacs-doom-themes][doom-themes]]
@@ -315,11 +316,15 @@ Packages:
     :custom
     (doom-modeline-height 30))
 
+  (use-package catppuccin-theme)
+  (setq catppuccin-flavor 'mocha)
+  (catppuccin-reload)
+
   (use-package doom-themes
     :config
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
           doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    (load-theme 'doom-molokai t)
+    ;; (load-theme 'doom-molokai t)
 
     ;; Enable flashing mode-line on errors
     (doom-themes-visual-bell-config)
@@ -328,14 +333,8 @@ Packages:
     (doom-themes-org-config))
 
   (use-package all-the-icons)
-
-  ;; Set modeline's background to something lighter
-  (set-face-attribute 'mode-line nil
-                      :background "#2c323b")
-
-  ;; Make the titlebar on MacOS transparent
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 #+end_src
+
 ** Rainbow Delimiters
 Lisp stands for Lots of Irritating Superfluous Parentheses. Let's make them colorful at least.
 Package: [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]

@@ -66,11 +66,15 @@
   :custom
   (doom-modeline-height 30))
 
+(use-package catppuccin-theme)
+(setq catppuccin-flavor 'mocha)
+(catppuccin-reload)
+
 (use-package doom-themes
   :config
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-molokai t)
+  ;; (load-theme 'doom-molokai t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
@@ -79,13 +83,6 @@
   (doom-themes-org-config))
 
 (use-package all-the-icons)
-
-;; Set modeline's background to something lighter
-(set-face-attribute 'mode-line nil
-                    :background "#2c323b")
-
-;; Make the titlebar on MacOS transparent
-(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
 (use-package rainbow-delimiters
   :defer t
