@@ -31,6 +31,10 @@ in
     casks = pkgs.callPackage ./casks.nix { };
     # onActivation.cleanup = "uninstall";
 
+    brews = [
+      "bitwarden-cli"
+    ];
+
     # These app IDs are from using the mas CLI app
     # mas = mac app store
     # https://github.com/mas-cli/mas
