@@ -251,7 +251,8 @@ depending on current position of point"
           prog-mode
           conf-mode
           snippet-mode) . yas-minor-mode-on)
-  )
+  :config
+  (yas-reload-all))
 
 (use-package cape
   :init

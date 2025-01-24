@@ -591,7 +591,7 @@ This package capitalizes the first word of any sentence.
 
 ** Yasnippet
 Package: [[https://github.com/joaotavora/yasnippet][yasnippet]]
-For some reason, I need to run ~yas-reload-all~ after emacs starts in order to use the snippets created.
+For some reason, yasnippet doesn't load all the snippets on load. I have to  run ~yas-reload-all~ after the package loads via the ~:config~ attribute.
 
 #+begin_src emacs-lisp
   (use-package yasnippet
@@ -600,7 +600,8 @@ For some reason, I need to run ~yas-reload-all~ after emacs starts in order to u
             prog-mode
             conf-mode
             snippet-mode) . yas-minor-mode-on)
-    )
+    :config
+    (yas-reload-all))
 #+end_src
 
 ** Completion At Point Extensions
