@@ -7,6 +7,7 @@
   ];
 
   services.nix-daemon.enable = true;
+  services.emacs.enable = true;
 
   nix = {
     package = pkgs.nix;

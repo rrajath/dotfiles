@@ -84,6 +84,13 @@
 
 (use-package all-the-icons)
 
+(if (daemonp)
+  (add-hook 'after-make-frame-functions
+      (lambda (frame)
+          (select-frame frame)
+          (load-theme 'catppuccin t)))
+  (load-theme 'catppuccin t))
+
 (use-package rainbow-delimiters
   :defer t
   :hook (prog-mode . rainbow-delimiters-mode))

@@ -302,9 +302,9 @@ Using nerd icons package to make the modeline look pretty.
     (nerd-icons-scale-factor 1.15))
 #+end_src
 ** Set up theme
-The theme I use change every few months. For modeline, I use the Doom modeline theme and also use all-the-icons for pretty icons. The following code block sets them up
-
 Packages:
+
+The theme I use change every few months. For modeline, I use the Doom modeline theme and also use all-the-icons for pretty icons. The following code block sets them up
 - [[https://github.com/seagle0128/doom-modeline][doom-modeline]]
 - [[https://github.com/hlissner/emacs-doom-themes][doom-themes]]
 - [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
@@ -333,6 +333,13 @@ Packages:
     (doom-themes-org-config))
 
   (use-package all-the-icons)
+
+  (if (daemonp)
+    (add-hook 'after-make-frame-functions
+        (lambda (frame)
+            (select-frame frame)
+            (load-theme 'catppuccin t)))
+    (load-theme 'catppuccin t))
 #+end_src
 
 ** Rainbow Delimiters
