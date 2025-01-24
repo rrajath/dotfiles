@@ -74,6 +74,7 @@
         launchanim = true;
         orientation = "bottom";
         tilesize = 48;
+        expose-group-apps = true;
       };
 
       finder = {
