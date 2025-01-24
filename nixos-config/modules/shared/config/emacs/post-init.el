@@ -766,7 +766,7 @@ depending on current position of point"
    '("W" . meow-next-symbol)
    '("x" . meow-line)
    '("X" . org-capture)
-   '("y" . rr/meow-save)
+   '("y" . meow-save)
    '("Y" . meow-sync-grab)
    '("z" . meow-pop-selection)
    '("'" . repeat)

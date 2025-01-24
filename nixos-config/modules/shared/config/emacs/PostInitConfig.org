@@ -1230,7 +1230,7 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("W" . meow-next-symbol)
      '("x" . meow-line)
      '("X" . org-capture)
-     '("y" . rr/meow-save)
+     '("y" . meow-save)
      '("Y" . meow-sync-grab)
      '("z" . meow-pop-selection)
      '("'" . repeat)
