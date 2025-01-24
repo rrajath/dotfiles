@@ -1,0 +1,7 @@
+theme = catppuccin-mocha
+window-save-state = always
+background-blur-radius = 20
+background-opacity = 0.7
+keybind = global:ctrl+shift+t=toggle_quick_terminal
+# window-decoration = true
+macos-titlebar-style = tabs
