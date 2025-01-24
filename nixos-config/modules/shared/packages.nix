@@ -2,37 +2,50 @@
 
 with pkgs; [
   # General packages for development and system management
+
+  # Text and Terminal Utilities
+  tldr
+  jujutsu
+  cargo
   atuin
-  bat
-  broot
-  coreutils
-  helix
-  neofetch
-  nushell
-  nil
-  nixpkgs-fmt
-  emacs30
   fzf
   zoxide
   carapace
-  colima
   direnv
-  lazydocker
-  yazi
+  hugo
+  jq
+  ripgrep
+  
+  # GUI Apps
   alacritty
   wezterm
-  jujutsu
-  cargo
+  emacs30
+
+  # TUI Apps
+  yazi
+  helix
+  bat
+  broot
   (lazyjj.overrideAttrs (_: {
     doCheck = false;
   }))
+  
+  # Shells
+  nushell
+  fish
 
+  # Utilites
+  coreutils
+  nil
+  nixpkgs-fmt
+  
   # Encryption and security tools
   gnupg
 
 
   # Cloud-related tools and SDKs
-#  docker
+  colima
+  lazydocker
   docker-compose
 
   # Media-related packages
@@ -47,17 +60,17 @@ with pkgs; [
   #  meslo-lgs-nf
 
   # Node.js development tools
-  #  nodePackages.npm # globally install npm
-  #  nodePackages.prettier
-  #  nodejs
+  nodePackages.npm # globally install npm
+  nodePackages.prettier
+  nodejs
+  deno
 
   # Text and terminal utilities
   #  htop
   #  hunspell
   #  iftop
   #  jetbrains-mono
-  jq
-  ripgrep
+
   #  tree
   #  tmux
   #  unrar
@@ -65,6 +78,7 @@ with pkgs; [
   #  zsh-powerlevel10k
 
   # Python packages
-  #  python3
-  #  virtualenv
+  python3
+  virtualenv
+  pipx
 ]
