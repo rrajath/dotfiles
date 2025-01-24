@@ -142,9 +142,6 @@ in
               name = "${user}";
               email = "r.rajath@protonmail.com";
             };
-            snapshot = {
-              auto-track = "none()";
-            };
             ui = {
               editor = "hx";
               default-command = "log";
