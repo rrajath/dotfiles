@@ -20,7 +20,7 @@ with pkgs; [
   lazydocker
   yazi
   alacritty
-  aerospace
+  wezterm
   jujutsu
   cargo
   (lazyjj.overrideAttrs (_: {
