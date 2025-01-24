@@ -19,6 +19,8 @@ with pkgs; [
   direnv
   lazydocker
   yazi
+  alacritty
+  aerospace
   jujutsu
   cargo
   (lazyjj.overrideAttrs (_: {
