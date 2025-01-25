@@ -517,7 +517,7 @@ I'd like to have a keybinding that makes my point move between the beginning of 
     (if (= 0 (current-column))
         (back-to-indentation)
       (beginning-of-line)))
-      #+end_src
+#+end_src
 ** Delete Line or Region
 This function is meant to be bound to ~cmd+d~ in order for me to quickly delete either one line or a bunch of lines.
 

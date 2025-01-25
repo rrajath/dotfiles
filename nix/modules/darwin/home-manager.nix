@@ -98,13 +98,13 @@ in
             alias ll = ls -l
             
             def nb [] {
-              cd ~/dotfiles/nixos-config
+              cd ~/dotfiles/nix
               nix run .#build-personal
               cd -
             }
             
             def nbs [] {
-              cd ~/dotfiles/nixos-config
+              cd ~/dotfiles/nix
               nix run .#build-personal-switch
               cd -
             }
