@@ -85,10 +85,10 @@
 (use-package all-the-icons)
 
 (if (daemonp)
-  (add-hook 'after-make-frame-functions
-      (lambda (frame)
-          (select-frame frame)
-          (load-theme 'catppuccin t)))
+    (add-hook 'after-make-frame-functions
+              (lambda (frame)
+                (select-frame frame)
+                (load-theme 'catppuccin t)))
   (load-theme 'catppuccin t))
 
 (use-package rainbow-delimiters
@@ -175,20 +175,10 @@
   (pulse-momentary-highlight-one-line (point)))
 (setq window-selection-change-functions '(rr/pulse-line))
 
-(defun rr/move-line-down ()
-  (interactive)
-  (forward-line 1)
-  (transpose-lines 1)
-  (forward-line -1))
-
-(global-set-key (kbd "M-<down>") 'rr/move-line-down)
-
-(defun rr/move-line-up ()
-  (interactive)
-  (transpose-lines 1)
-  (forward-line -2))
-
-(global-set-key (kbd "M-<up>") 'rr/move-line-up)
+(use-package drag-stuff
+  :defer 2
+  :config
+  (drag-stuff-global-mode t))
 
 (defun rr/beginning-of-line ()
   "Go to beginning of line or to first non-whitespace character
@@ -286,6 +276,8 @@ depending on current position of point"
 (keymap-global-set "s-/" 'comment-line)
 (keymap-global-set "s-<up>" 'beginning-of-buffer)
 (keymap-global-set "s-<down>" 'end-of-buffer)
+(keymap-global-set "M-<up>" 'drag-stuff-up)
+(keymap-global-set "M-<down>" 'drag-stuff-down)
 (keymap-global-set "C-;" 'popper-kill-latest-popup)
 (keymap-global-set "M-RET" 'org-insert-item)
 (keymap-global-set "C-S-u" 'universal-argument)

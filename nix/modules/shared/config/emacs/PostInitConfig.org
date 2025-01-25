@@ -37,8 +37,6 @@
   - [[#embrace][Embrace]]
   - [[#pulse-line][Pulse Line]]
   - [[#moving-lines][Moving Lines]]
-    - [[#move-line-down][Move line down]]
-    - [[#move-line-up][Move line up]]
   - [[#beginning-of-line-or-back-to-indentation][Beginning of line or back to indentation]]
   - [[#delete-line-or-region][Delete Line or Region]]
   - [[#popper][Popper]]
@@ -335,10 +333,10 @@ The theme I use change every few months. For modeline, I use the Doom modeline t
   (use-package all-the-icons)
 
   (if (daemonp)
-    (add-hook 'after-make-frame-functions
-        (lambda (frame)
-            (select-frame frame)
-            (load-theme 'catppuccin t)))
+      (add-hook 'after-make-frame-functions
+                (lambda (frame)
+                  (select-frame frame)
+                  (load-theme 'catppuccin t)))
     (load-theme 'catppuccin t))
 #+end_src
 
@@ -487,25 +485,17 @@ Found this in a [[https://www.reddit.com/r/emacs/comments/1aky57w/comment/kphrvz
 #+end_src
 
 ** Moving Lines
-*** Move line down
-#+begin_src emacs-lisp
-  (defun rr/move-line-down ()
-    (interactive)
-    (forward-line 1)
-    (transpose-lines 1)
-    (forward-line -1))
+Package: [[https://github.com/rejeep/drag-stuff.el?tab=readme-ov-file][drag-stuff]]
 
-  (global-set-key (kbd "M-<down>") 'rr/move-line-down)
-#+end_src
-*** Move line up
-#+begin_src emacs-lisp
-  (defun rr/move-line-up ()
-    (interactive)
-    (transpose-lines 1)
-    (forward-line -2))
+This package helps with moving lines, words and regions up, down, left or right. Currently, only up and down movements are assigned shortcuts in the [[https://github.com/rejeep/drag-stuff.el?tab=readme-ov-file][Global keys]] section as that is what I need the most.
 
-  (global-set-key (kbd "M-<up>") 'rr/move-line-up)
+#+begin_src emacs-lisp
+  (use-package drag-stuff
+    :defer 2
+    :config
+    (drag-stuff-global-mode t))
 #+end_src
+
 ** Beginning of line or back to indentation
 I'd like to have a keybinding that makes my point move between the beginning of a line and the first non whitespace character. In Emacs, going to beginning of line is done by hitting ~C-a~ and going to first non-whitespace character in a line is done by hitting ~M-m~. The following function does both depending on where the point is.
 
@@ -646,7 +636,6 @@ The following setting prevents electric mode from generating the closing pair of
   (global-set-key (kbd "C-M-j") 'consult-buffer)
 #+end_src
 ** Global keys
-I constantly hit =C-w= to delete words and currently it’s bound to delete region, which deletes a huge chunk of text. This keybinding will give a better experience in deleting words.
 
 #+begin_src emacs-lisp
   (keymap-global-set "C-w" 'backward-kill-word)
@@ -664,6 +653,8 @@ I constantly hit =C-w= to delete words and currently it’s bound to delete regi
   (keymap-global-set "s-/" 'comment-line)
   (keymap-global-set "s-<up>" 'beginning-of-buffer)
   (keymap-global-set "s-<down>" 'end-of-buffer)
+  (keymap-global-set "M-<up>" 'drag-stuff-up)
+  (keymap-global-set "M-<down>" 'drag-stuff-down)
   (keymap-global-set "C-;" 'popper-kill-latest-popup)
   (keymap-global-set "M-RET" 'org-insert-item)
   (keymap-global-set "C-S-u" 'universal-argument)
