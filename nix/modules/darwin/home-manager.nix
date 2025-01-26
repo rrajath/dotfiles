@@ -74,6 +74,7 @@ in
         ./programs/atuin.nix
         ./programs/starship.nix
         ./programs/direnv.nix
+        (import ./programs/jujutsu.nix { inherit user; })
       ];
       programs = {
         nushell = {
@@ -120,19 +121,6 @@ in
 
 
         
-        jujutsu = {
-          enable = true;
-          settings = {
-            user = {
-              name = "${user}";
-              email = "r.rajath@protonmail.com";
-            };
-            ui = {
-              editor = "hx";
-              default-command = "log";
-            };
-          };
-        };
         
         helix = {
           enable = true;
