@@ -70,6 +70,7 @@ in
       imports = [
         ./programs/fzf.nix
         ./programs/carapace.nix
+        ./programs/zoxide.nix
         ./programs/atuin.nix
       ];
       programs = {
@@ -113,10 +114,6 @@ in
         };
 
         
-      	zoxide = {
-          enable = true;
-          enableNushellIntegration = true;
-	      };
 
 
         starship = {
