@@ -1324,19 +1324,18 @@ folder, otherwise delete a word"
                  (org-agenda-max-todos nil)))
           (todo "TODO"
                 ((org-agenda-overriding-header "Unprocessed Inbox Tasks")))))
-        ("w" "Work Tasks"
-         ((agenda "" ((org-deadline-warning-days 7))
-				  (tags-todo "+work-meeting"
-							 ((org-agenda-overriding-header "Work Tasks")))
-				  )))
-        ("%" "Appointments" agenda* "Today's appointments"
-         ((org-agenda-span 1)
-          (org-agenda-max-entries 3)))
-		("f" "Follow up"
-		 ((tags-todo "+followup"
-					 ((org-agenda-overriding-header "Follow-up Tasks")))
-		  (tags-todo "-{.*}"
-					 ((org-agenda-overriding-header "Untagged Tasks")))))
+        ("U" "Unscheduled"
+         ((agenda ""
+                  ((org-agenda-overriding-header "TODOs")
+                   ))
+          (todo "TODO"
+                ((org-agenda-overriding-header "Unscheduled")
+                 (org-agenda-skip-function
+                  (quote
+                   (org-agenda-skip-entry-if
+                    (quote scheduled)))))))
+         nil nil)
+        
 		("r" "Weekly Review"
 		 ((agenda ""
 				  ((org-agenda-overriding-header "Completed Tasks")
