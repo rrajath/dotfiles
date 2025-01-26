@@ -2,8 +2,90 @@
     "profiles": [
         {
             "complex_modifications": {
-                "parameters": { "basic.to_if_held_down_threshold_milliseconds": 150 },
+                "parameters": { "basic.to_if_held_down_threshold_milliseconds": 125 },
                 "rules": [
+                    {
+                        "description": "key combos to special characters",
+                        "enabled": false,
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "simultaneous": [
+                                        { "key_code": "d" },
+                                        { "key_code": "f" }
+                                    ],
+                                    "simultaneous_options": {
+                                        "key_down_order": "insensitive",
+                                        "key_up_order": "insensitive"
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "v",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "simultaneous": [
+                                        { "key_code": "a" },
+                                        { "key_code": "f" }
+                                    ],
+                                    "simultaneous_options": {
+                                        "key_down_order": "insensitive",
+                                        "key_up_order": "insensitive"
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "tab",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "simultaneous": [
+                                        { "key_code": "s" },
+                                        { "key_code": "d" }
+                                    ],
+                                    "simultaneous_options": {
+                                        "key_down_order": "insensitive",
+                                        "key_up_order": "insensitive"
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "c",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            },
+                            {
+                                "from": {
+                                    "simultaneous": [
+                                        { "key_code": "a" },
+                                        { "key_code": "s" }
+                                    ],
+                                    "simultaneous_options": {
+                                        "key_down_order": "insensitive",
+                                        "key_up_order": "insensitive"
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "x",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
                     {
                         "description": "Autoshift Numbers only: Post number if pressed alone, shifted number row key if held down",
                         "manipulators": [
@@ -547,7 +629,7 @@
                                     "basic.to_if_alone_timeout_milliseconds": 300,
                                     "basic.to_if_held_down_threshold_milliseconds": 0
                                 },
-                                "to_if_alone": [{ "key_code": "return_or_enter" }],
+                                "to_if_alone": [{ "key_code": "delete_or_backspace" }],
                                 "to_if_held_down": [{ "key_code": "right_command" }],
                                 "type": "basic"
                             },
