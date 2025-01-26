@@ -10,6 +10,11 @@
         editor = "hx";
         default-command = "log";
       };
+      template-aliases = {
+        "format_short_id(id)" = "id.shortest()";
+        "format_timestamp(timestamp)" = "timestamp.ago()";
+        "format_short_signature(signature)" = "signature.email().local()";
+      };
     };
   };
 }
