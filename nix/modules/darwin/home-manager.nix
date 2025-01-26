@@ -72,6 +72,7 @@ in
         ./programs/carapace.nix
         ./programs/zoxide.nix
         ./programs/atuin.nix
+        ./programs/starship.nix
       ];
       programs = {
         nushell = {
@@ -116,16 +117,6 @@ in
         
 
 
-        starship = {
-          enable = true;
-          settings = {
-            add_newline = true;
-            character = {
-              success_symbol = "[➜](bold green)";
-              error_symbol = "[➜](bold red)";
-            };
-          };
-        };
 
         direnv = {
           enable = true;
