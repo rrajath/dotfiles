@@ -151,7 +151,7 @@ in
               email = "r.rajath@protonmail.com";
             };
             ui = {
-              editor = "emacsclient -t";
+              editor = "hx";
               default-command = "log";
             };
           };
@@ -229,6 +229,12 @@ in
                 C-p = "move_line_up";
               };
             };
+          };
+          languages = {
+            language = [{
+              name = "jjdescription";
+              rulers = [];
+            }];
           };
         };
       } // import ../shared/home-manager.nix { inherit config pkgs lib user; };
