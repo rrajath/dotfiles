@@ -73,6 +73,7 @@ in
         ./programs/zoxide.nix
         ./programs/atuin.nix
         ./programs/starship.nix
+        ./programs/direnv.nix
       ];
       programs = {
         nushell = {
@@ -118,11 +119,6 @@ in
 
 
 
-        direnv = {
-          enable = true;
-          enableNushellIntegration = true; # see note on other shells below
-          nix-direnv.enable = true;
-        };
         
         jujutsu = {
           enable = true;
