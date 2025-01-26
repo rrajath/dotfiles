@@ -15,7 +15,7 @@ in
   #  ];
 
   imports = [
-    ./modules
+    ./programs
   ];
 
   # It me
