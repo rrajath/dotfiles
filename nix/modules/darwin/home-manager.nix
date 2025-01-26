@@ -69,6 +69,7 @@ in
       };
       imports = [
         ./programs/fzf.nix
+        ./programs/carapace.nix
         ./programs/atuin.nix
       ];
       programs = {
@@ -111,10 +112,6 @@ in
           '';
         };
 
-        carapace = {
-          enable = true;
-          enableNushellIntegration = true;
-	      };
         
       	zoxide = {
           enable = true;
