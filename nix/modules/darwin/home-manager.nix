@@ -69,6 +69,7 @@ in
       };
       imports = [
         ./programs/fzf.nix
+        ./programs/atuin.nix
       ];
       programs = {
         nushell = {
@@ -120,10 +121,6 @@ in
           enableNushellIntegration = true;
 	      };
 
-        atuin = {
-          enable = true;
-          enableNushellIntegration = true;
-        };
 
         starship = {
           enable = true;
