@@ -67,11 +67,10 @@ in
         ];
         stateVersion = "23.11";
       };
+      imports = [
+        ./programs/fzf.nix
+      ];
       programs = {
-        fzf = {
-          enable = true;
-        };
-
         nushell = {
           enable = true;
           configFile.text = ''
