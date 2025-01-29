@@ -33,6 +33,9 @@ in
 
     brews = [
       "bitwarden-cli"
+      "bash"
+      "coreutils"
+      "gsed"
     ];
 
     # These app IDs are from using the mas CLI app

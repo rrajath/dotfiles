@@ -15,6 +15,7 @@ with pkgs; [
   hugo
   jq
   ripgrep
+  gawk
   
   # GUI Apps
   alacritty
@@ -35,7 +36,6 @@ with pkgs; [
   fish
 
   # Utilites
-  coreutils
   nil
   nixpkgs-fmt
   
