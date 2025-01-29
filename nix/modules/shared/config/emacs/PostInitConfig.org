@@ -1344,7 +1344,10 @@ Sets up some basic hooks, keybindings, theme, etc.
     )
 #+end_src
 ** Corfu
+Package: [[https://github.com/minad/cape][corfu]]
+
 Found it here: https://gitlab.com/nathanfurnal/dotemacs/-/blob/master/init.el#L251
+
 #+begin_src emacs-lisp
   (use-package corfu
     :defer t
@@ -1385,6 +1388,7 @@ This ensures that corfu completions are enabled only in org-roam buffers and not
 #+begin_src emacs-lisp
   (defun rr/enable-corfu-in-org-roam ()
     (when (org-roam-file-p (buffer-file-name))
+      (setq-local completion-at-point-functions '(org-roam-complete-everywhere org-roam-complete-link-at-point))
       (corfu-mode 1)))
 
   (setq global-corfu-modes '((not org-mode) t))

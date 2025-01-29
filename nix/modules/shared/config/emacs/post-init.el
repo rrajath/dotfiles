@@ -885,6 +885,7 @@ folder, otherwise delete a word"
 
 (defun rr/enable-corfu-in-org-roam ()
   (when (org-roam-file-p (buffer-file-name))
+    (setq-local completion-at-point-functions '(org-roam-complete-everywhere org-roam-complete-link-at-point))
     (corfu-mode 1)))
 
 (setq global-corfu-modes '((not org-mode) t))
