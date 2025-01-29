@@ -92,6 +92,7 @@
   - [[#consult][Consult]]
     - [[#consult-package-setup][Consult package setup]]
   - [[#corfu][Corfu]]
+    - [[#enable-corfu-only-in-org-roam][Enable corfu only in org-roam]]
   - [[#kind-icon][Kind Icon]]
 - [[#utilities][Utilities]]
   - [[#helpful-package-for-better-documentation-formatting][Helpful package for better documentation formatting]]
@@ -1377,6 +1378,19 @@ Found it here: https://gitlab.com/nathanfurnal/dotemacs/-/blob/master/init.el#L2
 
   (setq tab-always-indent 'complete)
 #+end_src
+
+*** Enable corfu only in org-roam
+This ensures that corfu completions are enabled only in org-roam buffers and not in org-mode buffers. The reason for this is, I'd like to be able to get auto complete suggestions in my org-roam notes so that I can link other notes. But I don't want to word suggestions in orgmode files.
+
+#+begin_src emacs-lisp
+  (defun rr/enable-corfu-in-org-roam ()
+    (when (org-roam-file-p (buffer-file-name))
+      (corfu-mode 1)))
+
+  (setq global-corfu-modes '((not org-mode) t))
+  (add-hook 'org-mode-hook #'rr/enable-corfu-in-org-roam)
+#+end_src
+
 ** Kind Icon
 Package: [[https://github.com/jdtsmith/kind-icon][kind-icon]]
 

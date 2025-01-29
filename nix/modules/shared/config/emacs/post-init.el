@@ -883,6 +883,13 @@ folder, otherwise delete a word"
 
 (setq tab-always-indent 'complete)
 
+(defun rr/enable-corfu-in-org-roam ()
+  (when (org-roam-file-p (buffer-file-name))
+    (corfu-mode 1)))
+
+(setq global-corfu-modes '((not org-mode) t))
+(add-hook 'org-mode-hook #'rr/enable-corfu-in-org-roam)
+
 (use-package kind-icon
   :after corfu
   :custom
