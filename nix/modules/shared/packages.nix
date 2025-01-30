@@ -28,6 +28,7 @@ with pkgs; [
   helix
   bat
   broot
+  zellij
   (lazyjj.overrideAttrs (_: {
     doCheck = false;
   }))

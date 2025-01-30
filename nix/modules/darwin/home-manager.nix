@@ -81,6 +81,7 @@ in
         ./programs/starship.nix
         ./programs/direnv.nix
         ./programs/ghostty.nix
+        ./programs/zellij.nix
         (import ./programs/jujutsu.nix { inherit user; })
       ];
       programs = {
