@@ -36,6 +36,8 @@ in
       "bash"
       "coreutils"
       "gsed"
+      "pkgconf"
+      "enchant"
     ];
 
     # These app IDs are from using the mas CLI app
@@ -49,8 +51,8 @@ in
     # you may receive an error message "Redownload Unavailable with This Apple ID".
     # This message is safe to ignore. (https://github.com/dustinlyons/nixos-config/issues/83)
     masApps = {
-      "Bitwarden" = 1352778147;
-      "Perplexity" = 6714467650;
+#      "Bitwarden" = 1352778147;
+#      "Perplexity" = 6714467650;
     };
   };
 
