@@ -1,15 +1,13 @@
-{ lib, ... }:
-
-let
-  inherit (lib.generators) toKeyValue mkKeyValueDefault;
-in
-{
-  xdg.configFile."ghostty/config".text = toKeyValue { mkKeyValue = mkKeyValueDefault { } " = "; } {
-    theme = "catppuccin-mocha";
-    window-save-state = "always";
-    background-blur-radius = 20;
-    background-opacity = 0.7;
-    keybind = "global:ctrl+shift+t=toggle_quick_terminal";
-    macos-titlebar-style = "tabs";
-  };
+{ ... }: {
+  xdg.configFile."ghostty/config".text = ''
+    theme = catppuccin-mocha
+    window-save-state = always
+    background-blur-radius = 20
+    background-opacity = 0.7
+    keybind = global:ctrl+shift+t=toggle_quick_terminal
+    keybind = alt+left=unbind
+    keybind = alt+right=unbind
+    macos-titlebar-style = tabs
+    mouse-hide-while-typing = true
+  '';
 }
