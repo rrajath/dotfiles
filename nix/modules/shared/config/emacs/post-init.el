@@ -24,8 +24,8 @@
 
 (straight-use-package 'org)
 
-(setq rr-org-mode-dir "~/SynologyDrive/org-mode")
-(setq rr-org-roam-dir "~/org-roam")
+(setq rr-org-mode-dir "~/Library/CloudStorage/Dropbox/org-mode")
+(setq rr-org-roam-dir "~/Library/CloudStorage/Dropbox/org-roam")
 (setq initial-major-mode #'lisp-interaction-mode)
 
 (setq my-fixed-pitch-font "JetBrains Mono")
@@ -236,8 +236,8 @@ depending on current position of point"
   :vc (:url "https://github.com/yuutayamada/auto-capitalize-el")
   :hook (org-mode-hook . auto-capitalize-mode)
   :custom
-  (setq auto-capitalize-words `("I" "English"))
   (auto-capitalize-mode 1))
+(setq auto-capitalize-words `("I" "English" "I've" "I'll" "I'd" "I'm"))
 
 (use-package yasnippet
   :defer t
@@ -252,6 +252,14 @@ depending on current position of point"
   :init
   (add-hook 'completion-at-point-functions #'cape-file)
   (add-hook 'completion-at-point-functions #'cape-emoji))
+
+(use-package jinx
+  :custom
+  (dolist (hook '(org-mode-hook) prog-mode-hook conf-mode-hook))
+  (add-hook hook #'jinx-mode))
+
+;; Set up a global idle timer to save all org buffers when Emacs is idle for 5 seconds
+(run-with-idle-timer 5 t #'org-save-all-org-buffers)
 
 (setq which-key-idle-delay 0.3)
 (setq which-key-max-description-length 100)
@@ -281,6 +289,7 @@ depending on current position of point"
 (keymap-global-set "C-;" 'popper-kill-latest-popup)
 (keymap-global-set "M-RET" 'org-insert-item)
 (keymap-global-set "C-S-u" 'universal-argument)
+(keymap-global-set "s-t" 'activities-resume)
 
 (defun rr/meow-insert-at-start ()
   (interactive)
@@ -1420,11 +1429,23 @@ folder, otherwise delete a word"
         ("TODO" . (:foreground "#a0bc70" :weight bold))
         ("STRT" . (:foreground "#a7a2dc" :weight bold))
         ("HOLD" . (:foreground "#e6bf85" :weight bold))
-        ("CODE" . (:foreground "#e6bf85" :weight bold))
+        ("CODE" . (:foreground "#fdac37" :weight bold))
         ("FDBK" . (:foreground "#e6bf85" :weight bold))
         ("IDEA" . (:foreground "#fdac37" :weight bold))
         ("DONE" . (:foreground "#5c6267" :weight bold))
-        ("KILL" . (:foreground "#ee7570" :weight bold))))
+        ("KILL" . (:foreground "#ee7570" :weight bold))
+
+        ("REACHED-OUT" . (:foreground "#e6bf85" :weight bold))
+        ("TO-APPLY" . (:foreground "#a0bc70" :weight bold))
+        ("APPLIED" . (:foreground "#a7a2dc" :weight bold))
+        ("INFO-SCH" . (:foreground "#fdac37" :weight bold))
+        ("INTERVIEW" . (:foreground "#e6bf85" :weight bold))
+        ("AWAITING" . (:foreground "#74A8FC" :weight bold))
+        ("REJECTED" . (:foreground "#f38ba8" :weight bold))
+        ("FOLLOW-UP" . (:foreground "#fdac37" :weight bold))
+        ("ACCEPTED" . (:foreground "#5c6267" :weight bold))
+        ("ABANDONED" . (:foreground "#ee7570" :weight bold))
+        ))
 
 (set-face-attribute 'org-document-title nil :font my-variable-pitch-font :weight 'regular :height 1.5)
 
@@ -1454,6 +1475,18 @@ folder, otherwise delete a word"
   ;;(set-face-attribute 'hl-line nil :background "#0d3b66")
   (set-face-attribute 'org-column nil :background "unspecified")
   (set-face-attribute 'org-column-title nil :background "unspecified"))
+
+(add-hook 'org-mode-hook 'org-align-all-tags)
+
+(add-hook 'focus-in-hook
+          (lambda ()
+            (setq org-tags-column (- 5 (window-body-width)))
+            (org-align-all-tags)))
+
+(add-hook 'focus-out-hook
+          (lambda ()
+            (setq org-tags-column (- 5 (window-body-width)))
+            (org-align-all-tags)))
 
 (defun +org-get-todo-keywords-for (&optional keyword)
   "Returns the list of todo keywords that KEYWORD belongs to."

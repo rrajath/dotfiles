@@ -45,6 +45,8 @@
   - [[#auto-capitalize][Auto capitalize]]
   - [[#yasnippet][Yasnippet]]
   - [[#completion-at-point-extensions][Completion At Point Extensions]]
+  - [[#spell-check-with-jinx][Spell check with jinx]]
+  - [[#auto-save-org-buffers][Auto save org buffers]]
   - [[#other-minor-settings][Other minor settings]]
 - [[#keybindings][Keybindings]]
   - [[#switch-buffers-easily][Switch buffers easily]]
@@ -155,6 +157,7 @@
   - [[#generate-table-of-contents][Generate Table of Contents]]
   - [[#org-todo-keyword-faces][Org todo keyword faces]]
   - [[#org-faces][Org faces]]
+  - [[#org-align-tags][Org align tags]]
   - [[#org-behaviors][Org Behaviors]]
     - [[#org-ret-key-behavior][Org RET key behavior]]
       - [[#org-get-todo-keywords-for][Org get todo keywords for]]
@@ -249,11 +252,11 @@ Package: [[https://github.com/emacscollective/no-littering][no-littering]]
   (straight-use-package 'org)
 #+end_src
 ** Set variables
-This section sets variables found in .envrc in order to use them later on in the config. This is useful for configs that are shared across multiple machines but have different values. For example, org-mode directory may be at different locations in two different machines. Reading the path from an envrc file makes the config cleaner and easier to maintain and all the necessary paths and values can be offloaded to a different file (envrc)
+This section sets variables found in .envrc in order to use them later on in the config. This is useful for configs that are shared across multiple machines but have different values. For example, org-mode directory may be at different locations in two different machines. Reading the path from an envrc file makes the config cleaner and easier to maintain and all the necessary paths and values can be offloaded to a different file (envrc).
 
 #+begin_src emacs-lisp
-  (setq rr-org-mode-dir "~/SynologyDrive/org-mode")
-  (setq rr-org-roam-dir "~/org-roam")
+  (setq rr-org-mode-dir "~/Library/CloudStorage/Dropbox/org-mode")
+  (setq rr-org-roam-dir "~/Library/CloudStorage/Dropbox/org-roam")
   (setq initial-major-mode #'lisp-interaction-mode)
 #+end_src
 
@@ -582,8 +585,8 @@ This package capitalizes the first word of any sentence.
     :vc (:url "https://github.com/yuutayamada/auto-capitalize-el")
     :hook (org-mode-hook . auto-capitalize-mode)
     :custom
-    (setq auto-capitalize-words `("I" "English"))
     (auto-capitalize-mode 1))
+  (setq auto-capitalize-words `("I" "English" "I've" "I'll" "I'd" "I'm"))
 #+end_src
 
 ** Yasnippet
@@ -611,6 +614,22 @@ This adds completions to org source blocks where elisp code is written, which is
     :init
     (add-hook 'completion-at-point-functions #'cape-file)
     (add-hook 'completion-at-point-functions #'cape-emoji))
+#+end_src
+** Spell check with jinx
+Package: [[https://github.com/minad/jinx][jinx]]
+
+#+begin_src emacs-lisp
+  (use-package jinx
+    :custom
+    (dolist (hook '(org-mode-hook) prog-mode-hook conf-mode-hook))
+    (add-hook hook #'jinx-mode))
+#+end_src
+** Auto save org buffers
+If Emacs is idle for 5 seconds, save org buffers automatically.
+
+#+begin_src emacs-lisp
+;; Set up a global idle timer to save all org buffers when Emacs is idle for 5 seconds
+(run-with-idle-timer 5 t #'org-save-all-org-buffers)
 #+end_src
 
 ** Other minor settings
@@ -659,6 +678,7 @@ The following setting prevents electric mode from generating the closing pair of
   (keymap-global-set "C-;" 'popper-kill-latest-popup)
   (keymap-global-set "M-RET" 'org-insert-item)
   (keymap-global-set "C-S-u" 'universal-argument)
+  (keymap-global-set "s-t" 'activities-resume)
 #+end_src
 
 ** Meow
@@ -674,12 +694,14 @@ This function upon execution moves the cursor to the beginning of the line and t
 #+end_src
 **** Meow Insert at end
 This function upon execution moves the cursor to the end of the line and turns on the insert mode
+
 #+begin_src emacs-lisp
   (defun rr/meow-insert-at-end ()
     (interactive)
     (end-of-line)
     (meow-insert-mode))
 #+end_src
+
 **** Meow Paste before
 Pastes whatever is in the clipboard on the line above the cursor’s current position.
 #+begin_src emacs-lisp
@@ -2206,11 +2228,23 @@ Package: [[https://github.com/alphapapa/org-make-toc][org-make-toc]]
           ("TODO" . (:foreground "#a0bc70" :weight bold))
           ("STRT" . (:foreground "#a7a2dc" :weight bold))
           ("HOLD" . (:foreground "#e6bf85" :weight bold))
-          ("CODE" . (:foreground "#e6bf85" :weight bold))
+          ("CODE" . (:foreground "#fdac37" :weight bold))
           ("FDBK" . (:foreground "#e6bf85" :weight bold))
           ("IDEA" . (:foreground "#fdac37" :weight bold))
           ("DONE" . (:foreground "#5c6267" :weight bold))
-          ("KILL" . (:foreground "#ee7570" :weight bold))))
+          ("KILL" . (:foreground "#ee7570" :weight bold))
+
+          ("REACHED-OUT" . (:foreground "#e6bf85" :weight bold))
+          ("TO-APPLY" . (:foreground "#a0bc70" :weight bold))
+          ("APPLIED" . (:foreground "#a7a2dc" :weight bold))
+          ("INFO-SCH" . (:foreground "#fdac37" :weight bold))
+          ("INTERVIEW" . (:foreground "#e6bf85" :weight bold))
+          ("AWAITING" . (:foreground "#74A8FC" :weight bold))
+          ("REJECTED" . (:foreground "#f38ba8" :weight bold))
+          ("FOLLOW-UP" . (:foreground "#fdac37" :weight bold))
+          ("ACCEPTED" . (:foreground "#5c6267" :weight bold))
+          ("ABANDONED" . (:foreground "#ee7570" :weight bold))
+          ))
 #+end_src
 
 ** Org faces
@@ -2245,6 +2279,23 @@ Currently trying out this setting with fixed width /and/ variable width fonts. /
     ;;(set-face-attribute 'hl-line nil :background "#0d3b66")
     (set-face-attribute 'org-column nil :background "unspecified")
     (set-face-attribute 'org-column-title nil :background "unspecified"))
+#+end_src
+
+** Org align tags
+The following hook aligns all the tags in a file
+
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook 'org-align-all-tags)
+
+  (add-hook 'focus-in-hook
+            (lambda ()
+              (setq org-tags-column (- 5 (window-body-width)))
+              (org-align-all-tags)))
+
+  (add-hook 'focus-out-hook
+            (lambda ()
+              (setq org-tags-column (- 5 (window-body-width)))
+              (org-align-all-tags)))
 #+end_src
 
 ** Org Behaviors
