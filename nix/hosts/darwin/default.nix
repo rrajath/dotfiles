@@ -6,8 +6,9 @@
     ../../modules/shared
   ];
 
-  services.nix-daemon.enable = true;
+#  services.nix-daemon.enable = true;
   services.emacs.enable = true;
+  ids.gids.nixbld = 350;
 
   nix = {
     package = pkgs.nix;
@@ -18,7 +19,7 @@
     };
 
     gc = {
-      user = "root";
+#      user = "root";
       automatic = true;
       interval = { Weekday = 0; Hour = 2; Minute = 0; };
       options = "--delete-older-than 30d";
@@ -34,7 +35,8 @@
   # programs.nushell.enable = true;
   # users.defaultUserShell = pkgs.nushell;
 
-  security.pam.enableSudoTouchIdAuth = true;
+  # security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   environment.systemPackages = with pkgs; [
     emacs30
