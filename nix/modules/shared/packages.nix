@@ -16,11 +16,13 @@ with pkgs; [
   jq
   ripgrep
   gawk
+  aspell
   
   # GUI Apps
   alacritty
   wezterm
-  emacs30
+  vscode
+  postman
   aerospace
 
   # TUI Apps
@@ -38,6 +40,7 @@ with pkgs; [
   fish
 
   # Utilites
+  coreutils
   nil
   nixpkgs-fmt
   
