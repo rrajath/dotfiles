@@ -3,6 +3,10 @@ _:
 [
   # Development Tools
   "homebrew/cask/docker"
+  "ghostty"
+  "itsycal"
+  "amethyst"
+  "dropbox"
   #  "visual-studio-code"
 
   # Communication Tools

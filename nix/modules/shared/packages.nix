@@ -21,6 +21,7 @@ with pkgs; [
   alacritty
   wezterm
   emacs30
+  aerospace
 
   # TUI Apps
   yazi

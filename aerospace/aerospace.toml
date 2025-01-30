@@ -92,7 +92,7 @@ outer.right =      5
 cmd-alt-slash = 'layout tiles horizontal vertical'
 cmd-alt-comma = 'layout accordion horizontal vertical'
 
-# See: https://nikitabobko.github.io/AeroSpace/commands#focus
+# See: /commands#focus
 ctrl-alt-left = 'focus left'
 ctrl-alt-down = 'focus down'
 ctrl-alt-up = 'focus up'
@@ -207,7 +207,7 @@ if.app-id = 'com.postmanlabs.mac'
 run = "move-node-to-workspace 1"
 [[on-window-detected]]
 if.app-id = 'org.gnu.Emacs'
-run = "move-node-to-workspace 2"
+run = "move-node-to-workspace 3"
 [[on-window-detected]]
 if.app-id = 'app.zen-browser.zen'
 run = "move-node-to-workspace 2"
@@ -237,14 +237,7 @@ if.app-id = 'ai.perplexity.mac'
 run = "move-node-to-workspace 8"
 [[on-window-detected]]
 if.app-id = "com.mitchellh.ghostty"
-run = [
-  # FIX: this is a workaround for https://github.com/nikitabobko/AeroSpace/issues/68
-  # this was also observed in:
-  # - https://github.com/ghostty-org/ghostty/issues/1840
-  # - https://github.com/ghostty-org/ghostty/issues/2006
-  "layout floating",
-  "move-node-to-workspace 8",
-]
+run = ["layout floating", "move-node-to-workspace 8"]
 
 [workspace-to-monitor-force-assignment]
 1 = 'main'
