@@ -14,6 +14,7 @@
       ui = {
         editor = "hx";
         default-command = "log";
+        diff-editor = ":builtin";
       };
       git = {
         private-commits = "description(glob:'wip:*') | description(glob:'private:*')";
