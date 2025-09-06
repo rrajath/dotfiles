@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ user, config, lib, pkgs, ... }:
 {
   # Import shared modules
   imports = [
@@ -17,6 +17,9 @@
   
   # Let Home Manager install and manage itself
   programs.home-manager.enable = true;
+
+  xdg.enable = true;
+  xdg.configHome = "${config.home.homeDirectory}/.config";
   
   # Set environment variables
   home.sessionVariables = {

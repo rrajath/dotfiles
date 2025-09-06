@@ -4,9 +4,11 @@
     configFile.text = ''
     $env.config = {
       show_banner: false
-        buffer_editor: "hx"
-      }
+      buffer_editor: "hx"
+    }
+    '';
     # Environment configuration
+    envFile.text = ''
     $env.EDITOR = "hx"
     $env.PATH = ($env.PATH | split row (char esep) | 
 	    prepend [
@@ -18,10 +20,11 @@
         "/opt/homebrew/bin"
         "/Users/rrajath/.local/bin"
         "/Users/rrajath/.local"
-    ])'';
+    ])
+    $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
+    '';
     extraConfig = ''
       # Additional configuration that runs after the main config
-      $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
       alias ll = ls -l
     '';
   };
