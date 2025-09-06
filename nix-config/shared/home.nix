@@ -9,6 +9,7 @@
     ../modules/atuin.nix
     ../modules/jujutsu.nix
     ../modules/starship.nix
+    ../modules/zed-editor.nix
   ];
   
   # Home Manager needs configuration version

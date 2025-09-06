@@ -6,5 +6,6 @@ with pkgs; [
   bat
   emacs
   direnv
+  nixd
   # yazi
 ]
