@@ -12,3 +12,5 @@ eln-cache
 .emacs.d/org-persist
 .emacs.d/tree-sitter
 .emacs.d/custom.el
+
+local.nix
