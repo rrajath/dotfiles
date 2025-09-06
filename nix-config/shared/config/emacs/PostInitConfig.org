@@ -1117,6 +1117,7 @@ This keymap is to get to activites functions a little more easily.
       (define-key keymap (kbd "r") #'restart-emacs)
       (define-key keymap (kbd "h") #'meow-highlight-keymap)
       (define-key keymap (kbd "g") #'magit-status)
+      (define-key keymap (kbd "j") #'jj-log)
       (define-key keymap (kbd "G") #'git-link)
       (define-key keymap (kbd "k") #'magit-discard)
       (define-key keymap (kbd "f") #'free-keys)
