@@ -8,4 +8,20 @@ with pkgs; [
   direnv
   nixd
   # yazi
+
+  # Language servers
+  nil                    # Nix LSP
+  nodePackages.typescript-language-server
+# nodePackages.pyright   # Python LSP
+  rust-analyzer          # Rust LSP
+    
+  # Formatters
+  nixpkgs-fmt           # Nix formatter
+  black                 # Python formatter
+  nodePackages.prettier # JS/TS formatter
+    
+  # Other useful tools
+  ripgrep               # Fast grep (used by Helix)
+  fd                    # Fast find (used by Helix)
+  tree-sitter           # Syntax highlighting
 ]
