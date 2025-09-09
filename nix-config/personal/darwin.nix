@@ -8,7 +8,6 @@
   # Personal-specific Homebrew apps
   homebrew = {
     casks = [
-      # "kitty"
       # "discord"
       # Add personal apps here
     ];
