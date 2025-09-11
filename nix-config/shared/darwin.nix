@@ -34,7 +34,14 @@
   };
   
   # Enable Homebrew
-  homebrew.enable = true;
+  homebrew = {
+    enable = true;
+    onActivation = {
+      autoUpdate = true;
+      upgrade = true;
+    };
+    brews = [];
+  };
   
   # Define primary user
   system.primaryUser = user;

@@ -7,9 +7,7 @@
   
   # Personal-specific Homebrew apps
   homebrew = {
-    casks = [
-      # "discord"
-      # Add personal apps here
+    casks = pkgs.callPackage ../shared/casks.nix { } ++ [
     ];
   };
 }

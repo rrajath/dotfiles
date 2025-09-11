@@ -7,10 +7,7 @@
   
   # Work-specific Homebrew apps
   homebrew = {
-    casks = [
-      # "slack"
-      # "zoom"
-      # Add work apps here
+    casks = pkgs.callPackage ../shared/casks.nix { } ++ [
     ];
   };
 }
