@@ -9,5 +9,7 @@
   homebrew = {
     casks = pkgs.callPackage ../shared/casks.nix { } ++ [
     ];
+    brews = pkgs.callPackage ../shared/brews.nix { } ++ [
+    ];
   };
 }

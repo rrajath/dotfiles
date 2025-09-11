@@ -40,7 +40,6 @@
       autoUpdate = true;
       upgrade = true;
     };
-    brews = [];
   };
   
   # Define primary user
