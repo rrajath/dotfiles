@@ -1,5 +1,4 @@
-{ user, config, lib, pkgs, ... }:
-{
+{ ... }: {
   # Import shared modules
   imports = [
     ../modules/carapace.nix
@@ -7,6 +6,7 @@
     ../modules/helix.nix
     ../modules/nushell.nix
     ../modules/atuin.nix
+    ../modules/zoxide.nix
     ../modules/jujutsu.nix
     ../modules/starship.nix
     ../modules/zed-editor.nix

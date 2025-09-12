@@ -1,5 +1,4 @@
-{ pkgs, profile, ... }:
-{
+{ pkgs, ... }: {
   imports = [
     ../shared/home.nix
     # Work-specific modules only

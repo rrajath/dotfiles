@@ -1,5 +1,4 @@
-{ user, pkgs, ... }:
-{
+{ user, pkgs, ... }: {
   imports = [
     ../modules/macos-settings.nix
   ];
@@ -42,14 +41,16 @@
     };
   };
   
-  # Define primary user
-  system.primaryUser = user;
-  
   # TouchID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;
+
+  system = {
+    # Used for backwards compatibility
+    stateVersion = 6;
+    # Define primary user
+    primaryUser = user;
+  };
   
-  # Used for backwards compatibility
-  system.stateVersion = 6;
   
   # The platform the configuration will be used on
   nixpkgs.hostPlatform = "aarch64-darwin";

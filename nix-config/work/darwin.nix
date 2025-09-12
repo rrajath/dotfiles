@@ -1,5 +1,4 @@
-{ user, pkgs, ... }:
-{
+{ pkgs, ... }: {
   # Work-specific system packages
   environment.systemPackages = with pkgs; [
     # Add work system packages here
