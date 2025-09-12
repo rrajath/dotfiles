@@ -10,6 +10,7 @@
     ../modules/jujutsu.nix
     ../modules/starship.nix
     ../modules/zed-editor.nix
+    ../modules/zen-browser.nix
   ];
   
   # Home Manager needs configuration version
