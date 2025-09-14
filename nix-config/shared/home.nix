@@ -2,6 +2,7 @@
   # Import shared modules
   imports = [
     ../modules/carapace.nix
+    ../modules/direnv.nix
     ../modules/ghostty.nix
     ../modules/helix.nix
     ../modules/nushell.nix
