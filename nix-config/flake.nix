@@ -22,9 +22,8 @@
   outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, zen-browser }:
   let
     system = "aarch64-darwin";
-    username = "rrajath";
 
-    mkDarwinSystem = profile: nix-darwin.lib.darwinSystem {
+    mkDarwinSystem = { profile, username }: nix-darwin.lib.darwinSystem {
       inherit system;
       specialArgs = inputs // {
         user = username;
@@ -50,8 +49,14 @@
     {
 
       darwinConfigurations = {
-        personal = mkDarwinSystem "personal";
-        work = mkDarwinSystem "work";
+        personal = mkDarwinSystem {
+          profile = "personal";
+          username = "rrajath";
+          };
+        work = mkDarwinSystem {
+          profile = "work";
+          username = "rajath.ramakrishna";    
+        };
       };
     };
 }
