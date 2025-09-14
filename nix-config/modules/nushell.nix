@@ -32,11 +32,18 @@
     extraConfig = ''
       # Additional configuration that runs after the main config
       alias ll = ls -l
-      alias drp = sudo darwin-rebuild switch --flake ~/dotfiles/nix-config#personal
-      alias drw = sudo darwin-rebuild switch --flake ~/dotfiles/nix-config#work
+      
+      alias drp = if (hostname | str contains "asdf") { 
+        echo "❌ Cannot run personal config on work machine!" 
+        } else { 
+        sudo darwin-rebuild switch --flake ~/dotfiles/nix-config#personal 
+      }
 
-      # other config
-      # rm.always_trash = true;
+      alias drw = if (hostname | str contains "Rajaths-MacBook-Pro.local") { 
+        echo "❌ Cannot run work config on personal machine!" 
+      } else { 
+        sudo darwin-rebuild switch --flake ~/dotfiles/nix-config#work 
+      }
     '';
   };
 }

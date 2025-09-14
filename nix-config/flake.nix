@@ -52,10 +52,10 @@
         personal = mkDarwinSystem {
           profile = "personal";
           username = "rrajath";
-          };
+        };
         work = mkDarwinSystem {
           profile = "work";
-          username = "rajath.ramakrishna";    
+          username = "rajath.ramakrishna";
         };
       };
     };
