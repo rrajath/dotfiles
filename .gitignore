@@ -13,4 +13,3 @@ eln-cache
 .emacs.d/tree-sitter
 .emacs.d/custom.el
 
-local.nix

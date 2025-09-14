@@ -1,6 +1,7 @@
 { pkgs, ... }: {
   imports = [
     ../shared/home.nix
+    ../modules/git.nix
     # Work-specific modules only
   ];
   
