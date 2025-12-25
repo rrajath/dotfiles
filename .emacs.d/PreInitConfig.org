@@ -1,6 +1,6 @@
 #+TITLE:      Pre Init Emacs Configuration
 #+AUTHOR:     Rajath Ramakrishna
-#+PROPERTY:   header-args:emacs-lisp :tangle ./pre-init.el
+#+PROPERTY:   header-args:emacs-lisp :tangle ~/.emacs.d/pre-init.el
 #+STARTUP:    overview indent hidestars
 
 * Introduction
