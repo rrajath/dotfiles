@@ -8,6 +8,11 @@ with pkgs; [
   nixd
   cargo
   deno
+  jre8
+  eas-cli
+  hugo
+  zola
+  claude-code
 
   # TUI Apps
   jjui

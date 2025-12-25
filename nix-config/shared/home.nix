@@ -22,5 +22,6 @@
   # Set environment variables
   home.sessionVariables = {
     EDITOR = "hx";
+    JAVA_HOME = "/etc/profiles/per-user/rrajath/bin";
   };
 }

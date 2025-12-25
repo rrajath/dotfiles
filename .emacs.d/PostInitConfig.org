@@ -17,7 +17,7 @@
 - [[#first-things-first][First things first]]
   - [[#set-lexical-binding][Set lexical binding]]
   - [[#startup-performance][Startup Performance]]
-  - [[#start-emacs-in-server-mode][Start emacs in server mode]]
+  - [[#start-emacs-in-server-mode-unused][Start emacs in server mode (unused)]]
   - [[#keep-emacsd-clean][Keep .emacs.d clean]]
   - [[#use-straight-use-package-org][Use straight-use-package org]]
   - [[#set-variables][Set variables]]
@@ -174,6 +174,7 @@
     - [[#org-sort-list-by-checkbox-type][Org sort list by checkbox type]]
     - [[#do-not-auto-close-angle-bracket-in-org-files][Do not auto-close angle bracket in org files]]
     - [[#mark-heading-done-when-all-checkboxes-are-checked][Mark heading DONE when all checkboxes are checked]]
+  - [[#retro-journal][Retro Journal]]
 - [[#org-roam][Org Roam]]
   - [[#basic-setup][Basic Setup]]
   - [[#agenda-configs][Agenda configs]]
@@ -232,7 +233,7 @@ This sets lexical binding to true
   (add-hook 'emacs-startup-hook #'rr/display-startup-time)
 #+end_src
 
-** Start emacs in server mode
+** Start emacs in server mode (unused)
 
 #+begin_src emacs-lisp :tangle no
   (server-start)
@@ -1553,6 +1554,7 @@ Package: [[https://github.com/dgutov/diff-hl][diff-hl]]
 #+end_src
 
 ** Git Link
+*Package*: [[https://github.com/sshaw/git-link][git-link]]
 #+begin_src emacs-lisp
   (use-package git-link
     :defer t
@@ -1931,7 +1933,17 @@ This piece of code was [[https://www.perplexity.ai/search/i-ve-been-using-prodig
     :stop-signal 'kill
     :ready-message "Serving HTTP on"
     :kill-process-buffer-on-stop t)
-#+end_src
+
+  (prodigy-define-service
+    :name "Hugo"
+    :command "hugo"
+    :args '("serve" "-D")
+    :cwd "~/blogs/hugo/blog"
+    :stop-signal 'kill
+    :ready-message "Web Server is available at"
+    :kill-process-buffer-on-stop t
+    )
+    #+end_src
 * Buffers
 ** Perspectives
 *** Basic Setup
@@ -2722,6 +2734,19 @@ Taken from: https://orgmode.org/worg/org-hacks.html#mark-done-when-all-checkboxe
                        (equal (match-string 2) (match-string 3)))
                   (org-todo 'done)
                 (org-todo 'todo)))))))
+#+end_src
+
+** Retro Journal
+*Package*: [[https://github.com/rrajath/org-retro-journal][org-retro-journal]]
+
+#+begin_src emacs-lisp
+  (use-package org-retro-journal
+    :vc (:url "https://github.com/rrajath/org-retro-journal"
+              :branch "main")
+    :init
+    (setq org-retro-journal-file "~/Library/CloudStorage/Dropbox/org-mode/journal.org") ;; <--- REQUIRED
+    :bind
+    ("C-c r" . org-retro-journal-review))
 #+end_src
 
 * Org Roam
