@@ -3,7 +3,7 @@
 :END:
 #+TITLE:      Post Init Emacs Configuration
 #+AUTHOR:     Rajath Ramakrishna
-#+PROPERTY:   header-args:emacs-lisp :tangle ./post-init.el
+#+PROPERTY:   header-args:emacs-lisp :tangle ~/.emacs.d/post-init.el
 #+STARTUP:    overview indent hidestars
 
 * Table of Contents
@@ -37,10 +37,16 @@
   - [[#embrace][Embrace]]
   - [[#pulse-line][Pulse Line]]
   - [[#moving-lines][Moving Lines]]
-    - [[#move-line-down][Move line down]]
-    - [[#move-line-up][Move line up]]
+  - [[#beginning-of-line-or-back-to-indentation][Beginning of line or back to indentation]]
+  - [[#delete-line-or-region][Delete Line or Region]]
   - [[#popper][Popper]]
-  - [[#golden-ratio][Golden Ratio]]
+  - [[#auth-source][Auth Source]]
+  - [[#ultra-scroll][Ultra Scroll]]
+  - [[#auto-capitalize][Auto capitalize]]
+  - [[#yasnippet][Yasnippet]]
+  - [[#completion-at-point-extensions][Completion At Point Extensions]]
+  - [[#spell-check-with-jinx][Spell check with jinx]]
+  - [[#auto-save-org-buffers][Auto save org buffers]]
   - [[#other-minor-settings][Other minor settings]]
 - [[#keybindings][Keybindings]]
   - [[#switch-buffers-easily][Switch buffers easily]]
@@ -52,8 +58,12 @@
       - [[#meow-paste-before][Meow Paste before]]
       - [[#meow-delete-char-or-region][Meow delete char or region]]
       - [[#meow-save][Meow Save]]
+      - [[#scroll-half-page-updown][Scroll half page up/down]]
+      - [[#consult-info-emacs][Consult info emacs]]
     - [[#custom-keymaps][Custom Keymaps]]
+      - [[#org-speed-keys-keymap][Org Speed Keys Keymap]]
       - [[#nav-keymap][Nav Keymap]]
+      - [[#activities-keymap][Activities Keymap]]
       - [[#persp-keymap][Persp keymap]]
       - [[#buffer-keymap][Buffer Keymap]]
       - [[#help-keymap][Help Keymap]]
@@ -84,6 +94,7 @@
   - [[#consult][Consult]]
     - [[#consult-package-setup][Consult package setup]]
   - [[#corfu][Corfu]]
+    - [[#enable-corfu-only-in-org-roam][Enable corfu only in org-roam]]
   - [[#kind-icon][Kind Icon]]
 - [[#utilities][Utilities]]
   - [[#helpful-package-for-better-documentation-formatting][Helpful package for better documentation formatting]]
@@ -114,12 +125,19 @@
     - [[#golang][Golang]]
       - [[#go-test][Go test]]
     - [[#nushell][NuShell]]
+    - [[#nix][Nix]]
     - [[#aphelia][Aphelia]]
   - [[#rest-client][Rest Client]]
   - [[#llm][LLM]]
     - [[#gptel][gpt.el]]
-  - [[#consult-xref][Consult Xref]]
+    - [[#khoj][khoj]]
+  - [[#consult-xref-stack][Consult Xref Stack]]
   - [[#consult-project-extra][Consult Project Extra]]
+  - [[#leetcode][Leetcode]]
+  - [[#prodigy][Prodigy]]
+    - [[#package-install][Package install]]
+    - [[#show-status-of-each-server-on-the-modeline][Show status of each server on the modeline]]
+    - [[#define-prodigy-services][Define Prodigy Services]]
 - [[#buffers][Buffers]]
   - [[#perspectives][Perspectives]]
     - [[#basic-setup][Basic Setup]]
@@ -143,6 +161,7 @@
   - [[#generate-table-of-contents][Generate Table of Contents]]
   - [[#org-todo-keyword-faces][Org todo keyword faces]]
   - [[#org-faces][Org faces]]
+  - [[#org-align-tags][Org align tags]]
   - [[#org-behaviors][Org Behaviors]]
     - [[#org-ret-key-behavior][Org RET key behavior]]
       - [[#org-get-todo-keywords-for][Org get todo keywords for]]
@@ -150,13 +169,10 @@
     - [[#org-links-behavior][Org links behavior]]
     - [[#org-cycle-behavior][Org cycle behavior]]
       - [[#set-up-function-for-custom-cycling][Set up function for custom cycling]]
-    - [[#org-insert-behavior][Org insert behavior]]
-      - [[#insert-item][Insert item]]
-      - [[#insert-item-below][Insert item below]]
-      - [[#insert-item-above][Insert item above]]
     - [[#org-refile-to-current-file][Org refile to current file]]
     - [[#org-show-nextprev-headings-tidily][Org show next/prev headings tidily]]
     - [[#org-sort-list-by-checkbox-type][Org sort list by checkbox type]]
+    - [[#do-not-auto-close-angle-bracket-in-org-files][Do not auto-close angle bracket in org files]]
     - [[#mark-heading-done-when-all-checkboxes-are-checked][Mark heading DONE when all checkboxes are checked]]
 - [[#org-roam][Org Roam]]
   - [[#basic-setup][Basic Setup]]
@@ -170,6 +186,7 @@
   - [[#ox-hugo][ox-hugo]]
   - [[#turn-on-org-hugo-auto-export-mode-when-you-visit-blogorg][Turn on org-hugo-auto-export-mode when you visit blog.org]]
   - [[#generate-a-filename-given-a-blog-post-title][Generate a filename given a blog post title]]
+- [[#envrc][Envrc]]
 - [[#machine-specific-config][Machine-specific config]]
 :END:
 
@@ -239,13 +256,11 @@ Package: [[https://github.com/emacscollective/no-littering][no-littering]]
   (straight-use-package 'org)
 #+end_src
 ** Set variables
-This section sets variables found in .envrc in order to use them later on in the config. This is useful for configs that are shared across multiple machines but have different values. For example, org-mode directory may be at different locations in two different machines. Reading the path from an envrc file makes the config cleaner and easier to maintain and all the necessary paths and values can be offloaded to a different file (envrc)
+This section sets variables found in .envrc in order to use them later on in the config. This is useful for configs that are shared across multiple machines but have different values. For example, org-mode directory may be at different locations in two different machines. Reading the path from an envrc file makes the config cleaner and easier to maintain and all the necessary paths and values can be offloaded to a different file (envrc).
 
 #+begin_src emacs-lisp
-  (direnv-allow)
-  (setq rr-org-mode-dir (getenv "ORG_MODE_DIR"))
-  (setq rr-org-roam-dir (getenv "ORG_ROAM_DIR"))
-  (setq pplx-api-key (getenv "PPLX_API_KEY"))
+  (setq rr-org-mode-dir "~/Library/CloudStorage/Dropbox/org-mode")
+  (setq rr-org-roam-dir "~/Library/CloudStorage/Dropbox/org-roam")
   (setq initial-major-mode #'lisp-interaction-mode)
 #+end_src
 
@@ -293,8 +308,9 @@ Using nerd icons package to make the modeline look pretty.
     (nerd-icons-scale-factor 1.15))
 #+end_src
 ** Set up theme
-I use the Doom-One theme with a Doom modeline and also use all-the-icons for pretty icons. The following code block sets them up
 Packages:
+
+The theme I use change every few months. For modeline, I use the Doom modeline theme and also use all-the-icons for pretty icons. The following code block sets them up
 - [[https://github.com/seagle0128/doom-modeline][doom-modeline]]
 - [[https://github.com/hlissner/emacs-doom-themes][doom-themes]]
 - [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
@@ -306,11 +322,15 @@ Packages:
     :custom
     (doom-modeline-height 30))
 
+  (use-package catppuccin-theme)
+  (setq catppuccin-flavor 'mocha)
+  (catppuccin-reload)
+
   (use-package doom-themes
     :config
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
           doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    (load-theme 'doom-molokai t)
+    ;; (load-theme 'doom-molokai t)
 
     ;; Enable flashing mode-line on errors
     (doom-themes-visual-bell-config)
@@ -320,13 +340,14 @@ Packages:
 
   (use-package all-the-icons)
 
-  ;; Set modeline's background to something lighter
-  (set-face-attribute 'mode-line nil
-                      :background "#2c323b")
-
-  ;; Make the titlebar on MacOS transparent
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (if (daemonp)
+      (add-hook 'after-make-frame-functions
+                (lambda (frame)
+                  (select-frame frame)
+                  (load-theme 'catppuccin t)))
+    (load-theme 'catppuccin t))
 #+end_src
+
 ** Rainbow Delimiters
 Lisp stands for Lots of Irritating Superfluous Parentheses. Let's make them colorful at least.
 Package: [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
@@ -472,25 +493,43 @@ Found this in a [[https://www.reddit.com/r/emacs/comments/1aky57w/comment/kphrvz
 #+end_src
 
 ** Moving Lines
-*** Move line down
-#+begin_src emacs-lisp
-  (defun rr/move-line-down ()
-    (interactive)
-    (forward-line 1)
-    (transpose-lines 1)
-    (forward-line -1))
+Package: [[https://github.com/rejeep/drag-stuff.el?tab=readme-ov-file][drag-stuff]]
 
-  (global-set-key (kbd "M-<down>") 'rr/move-line-down)
-#+end_src
-*** Move line up
-#+begin_src emacs-lisp
-  (defun rr/move-line-up ()
-    (interactive)
-    (transpose-lines 1)
-    (forward-line -2))
+This package helps with moving lines, words and regions up, down, left or right. Currently, only up and down movements are assigned shortcuts in the [[https://github.com/rejeep/drag-stuff.el?tab=readme-ov-file][Global keys]] section as that is what I need the most.
 
-  (global-set-key (kbd "M-<up>") 'rr/move-line-up)
+#+begin_src emacs-lisp
+  (use-package drag-stuff
+    :defer 2
+    :config
+    (drag-stuff-global-mode t))
 #+end_src
+
+** Beginning of line or back to indentation
+I'd like to have a keybinding that makes my point move between the beginning of a line and the first non whitespace character. In Emacs, going to beginning of line is done by hitting ~C-a~ and going to first non-whitespace character in a line is done by hitting ~M-m~. The following function does both depending on where the point is.
+
+#+begin_src emacs-lisp
+  (defun rr/beginning-of-line ()
+    "Go to beginning of line or to first non-whitespace character
+  depending on current position of point"
+    (interactive)
+    (if (= 0 (current-column))
+        (back-to-indentation)
+      (beginning-of-line)))
+#+end_src
+** Delete Line or Region
+This function is meant to be bound to ~cmd+d~ in order for me to quickly delete either one line or a bunch of lines.
+
+#+begin_src emacs-lisp
+  (defun rr/delete-lines ()
+    (interactive)
+    (if (region-active-p)
+        (delete-region (region-beginning) (region-end))
+      (progn
+        (beginning-of-line)
+        (kill-line)
+        (delete-forward-char 1))))
+#+end_src
+
 ** Popper
 Manage pop up windows with ease. Make specific major modes open as popups.
 Package: [[https://github.com/karthink/popper][popper]]
@@ -517,23 +556,102 @@ Package: [[https://github.com/karthink/popper][popper]]
             term-mode))
     (popper-mode +1))
 #+end_src
-** Golden Ratio
-Package: [[https://github.com/roman/golden-ratio.el][golden-ratio]]
+** Auth Source
+This is a small helper function to get the value of a password or a secret from the ~.authinfo.gpg~ file. Got it from a [[https://www.youtube.com/watch?v=nZ_T7Q49B8Y&t=1220s][YouTube video]]. Make sure to add the secret to ~.authinfo.gpg~ file before accessing it.
 
-#+begin_src emacs-lisp :tangle no
-  (use-package golden-ratio
-    :ensure t
-    :config
-    (golden-ratio-mode 1)
-    (setq golden-ratio-auto-scale t))
+#+begin_src emacs-lisp
+  (defun rr/lookup-password (&rest keys)
+    (let ((result (apply #'auth-source-search keys)))
+      (if result
+          (funcall (plist-get (car result) :secret))
+        nil)))
 #+end_src
+
+** Ultra Scroll
+Package: [[https://github.com/jdtsmith/ultra-scroll][ultra-scroll]]
+This makes scrolling buttery smooth.
+
+#+begin_src emacs-lisp
+  (use-package ultra-scroll
+    :vc (:url "https://github.com/jdtsmith/ultra-scroll")
+    :init
+    (setq scroll-conservatively 101 ; important!
+          scroll-margin 0) 
+    :config
+    (ultra-scroll-mode 1))
+#+end_src
+** Auto capitalize
+Package: [[https://github.com/yuutayamada/auto-capitalize-el][auto-capitalize]]
+This package capitalizes the first word of any sentence.
+
+#+begin_src emacs-lisp
+  (use-package auto-capitalize
+    :vc (:url "https://github.com/yuutayamada/auto-capitalize-el")
+    :hook (org-mode-hook . auto-capitalize-mode)
+    :custom
+    (auto-capitalize-mode 1))
+  (setq auto-capitalize-words `("I" "English" "I've" "I'll" "I'd" "I'm"))
+#+end_src
+
+** Yasnippet
+Package: [[https://github.com/joaotavora/yasnippet][yasnippet]]
+For some reason, yasnippet doesn't load all the snippets on load. I have to  run ~yas-reload-all~ after the package loads via the ~:config~ attribute.
+
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :defer t
+    :hook ((text-mode
+            prog-mode
+            conf-mode
+            snippet-mode) . yas-minor-mode-on)
+    :config
+    (yas-reload-all))
+#+end_src
+
+** Completion At Point Extensions
+Package: [[https://github.com/minad/cape][cape]]
+
+This adds completions to org source blocks where elisp code is written, which is a huge convenience. Also, emojis can now be search in the same way as we do in Slack - with ~:emoji-name:~ and you get a completion list. Also has file path completions.
+
+#+begin_src emacs-lisp
+  (use-package cape
+    :init
+    (add-hook 'completion-at-point-functions #'cape-file)
+    (add-hook 'completion-at-point-functions #'cape-emoji))
+#+end_src
+** Spell check with jinx
+Package: [[https://github.com/minad/jinx][jinx]]
+
+#+begin_src emacs-lisp
+  (use-package jinx
+    :custom
+    (dolist (hook '(org-mode-hook) prog-mode-hook conf-mode-hook))
+    (add-hook hook #'jinx-mode))
+#+end_src
+** Auto save org buffers
+If Emacs is idle for 5 seconds, save org buffers automatically.
+
+#+begin_src emacs-lisp
+  ;; Set up a global idle timer to save all org buffers when Emacs is idle for 5 seconds
+  (run-with-idle-timer 5 t #'org-save-all-org-buffers)
+#+end_src
+
 ** Other minor settings
+
 #+begin_src emacs-lisp
   (setq which-key-idle-delay 0.3)
   (setq which-key-max-description-length 100)
   (global-visual-line-mode)
-  (pixel-scroll-precision-mode)
 #+end_src
+
+
+The following setting prevents electric mode from generating the closing pair of brackets or quotes when it is preceeded or succeeded with text. For example, it avoids the following scenario ~""|word~ where pipe represents the cursor. It instead makes it ~"|word~
+
+[[https://www.reddit.com/r/emacs/comments/1hwf46n/comment/m63mddk][A reddit comment that suggests this]] also has code for allowing ~word|""~ which I don't really need at the moment. But in case I do in the future, I can refer to the post.
+#+begin_src emacs-lisp
+  (setq electric-pair-preserve-balance nil)
+#+end_src
+
 * Keybindings
 ** Switch buffers easily
 =consult-buffer= lets you preview buffers as you scroll through them. It is not set to the keybinding =C-M-j= for easy access. Also, these buffers are aggregated across workspaces (or perspectives).
@@ -542,7 +660,7 @@ Package: [[https://github.com/roman/golden-ratio.el][golden-ratio]]
   (global-set-key (kbd "C-M-j") 'consult-buffer)
 #+end_src
 ** Global keys
-I constantly hit =C-w= to delete words and currently it’s bound to delete region, which deletes a huge chunk of text. This keybinding will give a better experience in deleting words.
+
 #+begin_src emacs-lisp
   (keymap-global-set "C-w" 'backward-kill-word)
   (keymap-global-set "C-s" 'save-buffer)
@@ -550,8 +668,23 @@ I constantly hit =C-w= to delete words and currently it’s bound to delete regi
   (keymap-global-set "s-]" 'tab-next)
   (keymap-global-set "s-r" 'rr/revert-buffer-no-confirm)
   (keymap-global-set "M-o" 'completion-at-point)
+  (keymap-global-set "M-y" 'consult-yank-pop)
+  (keymap-global-set "C-a" 'rr/beginning-of-line)
+  (keymap-global-set "s-d" 'rr/delete-lines)
+  (keymap-global-set "C-'" 'next-window-any-frame)
+  (keymap-global-set "C-u" 'rr/ultra-scroll-up)
+  (keymap-global-set "C-d" 'rr/ultra-scroll-down)
+  (keymap-global-set "s-/" 'comment-line)
+  (keymap-global-set "s-<up>" 'beginning-of-buffer)
+  (keymap-global-set "s-<down>" 'end-of-buffer)
+  (keymap-global-set "M-<up>" 'drag-stuff-up)
+  (keymap-global-set "M-<down>" 'drag-stuff-down)
+  (keymap-global-set "C-;" 'popper-kill-latest-popup)
+  (keymap-global-set "M-RET" 'org-insert-item)
   (keymap-global-set "C-S-u" 'universal-argument)
+  (keymap-global-set "s-t" 'activities-resume)
 #+end_src
+
 ** Meow
 *** Custom Functions
 This section has all the custom functions I use for Meow Mode. Most of them are written to make it work like Helix.
@@ -565,12 +698,14 @@ This function upon execution moves the cursor to the beginning of the line and t
 #+end_src
 **** Meow Insert at end
 This function upon execution moves the cursor to the end of the line and turns on the insert mode
+
 #+begin_src emacs-lisp
   (defun rr/meow-insert-at-end ()
     (interactive)
     (end-of-line)
     (meow-insert-mode))
 #+end_src
+
 **** Meow Paste before
 Pastes whatever is in the clipboard on the line above the cursor’s current position.
 #+begin_src emacs-lisp
@@ -590,12 +725,11 @@ Cuts org subtree if point is on an org heading
     (interactive)
     (cond
      ((equal mark-active t)
-      (if (org-at-heading-p)
-          (org-cut-subtree)
-        (delete-region (region-beginning) (region-end))))
+      (delete-region (region-beginning) (region-end)))
      ((equal mark-active nil)
       (delete-char 1))))
 #+end_src
+
 **** Meow Save
 Copies the entire line when no selection exists
 Copies region when there’s selection
@@ -620,7 +754,68 @@ Copies org subtree if point is on an org heading
      ((equal mark-active nil)
       (rr/copy-line))))
 #+end_src
+**** Scroll half page up/down
+This function scrolls half page up or down instead of a full page. It uses ultra-scroll to do this.
+
+#+begin_src emacs-lisp
+  (defun rr/ultra-scroll-up ()
+    (interactive)
+    (ultra-scroll-up (- (/ (window-pixel-height) 2) 30)))
+
+  (defun rr/ultra-scroll-down ()
+    (interactive)
+    (ultra-scroll-down (- (/ (window-pixel-height) 2) 30)))
+#+end_src
+**** Consult info emacs
+#+begin_src emacs-lisp
+  (defun consult-info-emacs ()
+    "Search through Emacs info pages."
+    (interactive)
+    (consult-info "emacs" "efaq" "elisp" "cl" "compat" "eat" "corfu" "eglot" "magit"))
+#+end_src
 *** Custom Keymaps
+**** Org Speed Keys Keymap
+Got this idea from: https://aatmunbaxi.netlify.app/comp/meow_state_org_speed
+
+#+begin_src emacs-lisp
+  (setq meow-org-motion-keymap (make-keymap))
+  (meow-define-state org-motion
+    "Org-mode structural motion"
+    :lighter "[O]"
+    :keymap meow-org-motion-keymap)
+
+  (meow-define-keys 'org-motion
+    '("<escape>" . meow-normal-mode)
+    '("i" . meow-insert-mode)
+    '("g" . meow-normal-mode)
+    '("u" .  meow-undo)
+    ;; Moving between headlines
+    '("k" .  org-previous-visible-heading)
+    '("j" .  org-next-visible-heading)
+    ;; Moving between headings at the same level
+    '("p" .  org-backward-heading-same-level)
+    '("n" .  org-forward-heading-same-level)
+    ;; Moving subtrees themselves
+    '("K" .  org-subtree-up)
+    '("J" .  org-subtree-down)
+    ;; Subtree de/promotion
+    '("L" .  org-demote-subtree)
+    '("H" .  org-promote-subtree)
+    ;; Completion-style search of headings
+    '("v" .  consult-org-heading)
+    ;; Setting subtree metadata
+    '("L" .  org-set-property)
+    '("t" .  org-todo)
+    '("D" .  org-deadline)
+    '("S" .  org-schedule)
+    '("E" .  org-set-effort)
+    ;; Block navigation
+    '("B" .  org-previous-block)
+    '("F" .  org-next-block)
+    ;; Narrowing/widening
+    '("N" .  org-narrow-to-subtree)
+    '("W" .  widen))
+#+end_src
 **** Nav Keymap
 This keymap is used for navigation. A lot of the functions here try to emulate Helix keybindings and navigation in order to make the experience more consistent.
 #+begin_src emacs-lisp
@@ -633,12 +828,33 @@ This keymap is used for navigation. A lot of the functions here try to emulate H
       (define-key keymap (kbd "s") #'back-to-indentation)
       (define-key keymap (kbd "y") #'eglot-find-typeDefinition)
       (define-key keymap (kbd "i") #'eglot-find-implementation)
+      (define-key keymap (kbd "O") #'meow-org-motion-mode)
       keymap))
 
   ;; define an alias for your keymap
   (defalias 'meow-nav-keymap meow-nav-keymap)
   ;;  (global-set-key (kbd "C-x C-w") 'nav-keymap)
   ;;                              ^ note the quote
+#+end_src
+**** Activities Keymap
+This keymap is to get to activites functions a little more easily.
+
+#+begin_src emacs-lisp
+  (defvar meow-activities-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "a") #'activities-resume)
+      (define-key keymap (kbd "b") #'activities-switch-buffer)
+      (define-key keymap (kbd "d") #'activities-define)
+      (define-key keymap (kbd "g") #'activities-revert)
+      (define-key keymap (kbd "k") #'activities-kill)
+      (define-key keymap (kbd "l") #'activities-list)
+      (define-key keymap (kbd "m") #'activities-switch)
+      (define-key keymap (kbd "n") #'activities-new)
+      (define-key keymap (kbd "s") #'activities-suspend)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-activities-keymap meow-activities-keymap)
 #+end_src
 **** Persp keymap
 #+begin_src emacs-lisp
@@ -917,6 +1133,7 @@ This keymap is used for navigation. A lot of the functions here try to emulate H
 #+end_src
 *** Meow Setup
 This has key mappings to a bunch of things. It is the main entry point to do most of the operations. Space is the leader key and I’m trying to keep it consistent with the keymap I had with General.
+
 #+begin_src emacs-lisp
   (defun meow-setup ()
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
@@ -924,6 +1141,14 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("j" . meow-next)
      '("k" . meow-prev)
      '("<escape>" . ignore))
+    (setq meow-selection-command-fallback
+          '((meow-change . meow-change-char)
+            (meow-kill . meow-c-k)
+            ;; (meow-kill . meow-delete)
+            ;; (meow-cancel-selection . keyboard-quit)
+            (meow-cancel-selection . ignore)
+            (meow-pop-selection . meow-pop-grab)
+            (meow-beacon-change . meow-beacon-change-char)))
     (meow-leader-define-key
      ;; SPC j/k will run the original command in MOTION state.
      '("j" . "H-j")
@@ -941,6 +1166,7 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("0" . meow-digit-argument)
      '("`" . meow-last-buffer)
      '("RET" . consult-bookmark)
+     '("a" . meow-activities-keymap)
      '("b" . meow-buffer-keymap)
      '("h" . meow-help-keymap)  
      '("s" . meow-persp-keymap)
@@ -970,12 +1196,8 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '(";" . meow-reverse)
      '("," . meow-inner-of-thing)
      '("." . meow-bounds-of-thing)
-     '("/" . isearch-forward)
-     '("C-;" . popper-kill-latest-popup)
-     '("C-S-s" . consult-line)
-     '("C-u" . meow-page-up)
-     '("C-d" . meow-page-down)
-     '("C-w" . backward-kill-word)
+     '("/" . consult-line)
+     '("M-s i" . consult-info-emacs)
      '("RET" . +org/dwim-at-point)
      ;; '("TAB" . +org-cycle-only-current-subtree-h)
      ;; '("C-n" . rr/org-show-next-heading-tidily)
@@ -1014,10 +1236,10 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("O" . meow-open-above)
      '("p" . meow-yank)
      '("P" . rr/meow-paste-before)
-     '("Q" . meow-goto-line)
+     '("Q" . avy-goto-char)
      '("r" . meow-replace)
      '("R" . meow-swap-grab)
-     '("s" . meow-kill)
+     '("s" . cua-delete-region)
      '("T" . meow-till)
      '("u" . undo)
      '("U" . undo-redo)
@@ -1026,13 +1248,17 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("W" . meow-next-symbol)
      '("x" . meow-line)
      '("X" . org-capture)
-     '("y" . rr/meow-save)
+     '("y" . meow-save)
      '("Y" . meow-sync-grab)
      '("z" . meow-pop-selection)
      '("'" . repeat)
+     '("<" . beginning-of-buffer)
+     '(">" . end-of-buffer)
      '(";" . meow-cancel-selection)
      '(":" . meow-reverse)
-     '("<escape>" . ignore)))
+     '("%" . meow-query-replace)
+     '("&" . meow-query-replace-regex)
+     '("<escape>" . meow-cancel-selection)))
 #+end_src
 *** Meow Package Setup
 #+begin_src emacs-lisp
@@ -1116,8 +1342,7 @@ Package: [[https://github.com/oantolin/orderless][orderless]]
     :init
     (setq completion-styles '(orderless)
           completion-category-defaults nil
-          completion-category-overrides '((file (styles . (partial-completion))
-                                                (minibuffer (initials))))))
+          orderless-matching-styles '(orderless-regexp orderless-flex)))
 #+end_src
 
 ** Consult
@@ -1145,7 +1370,10 @@ Sets up some basic hooks, keybindings, theme, etc.
     )
 #+end_src
 ** Corfu
+Package: [[https://github.com/minad/cape][corfu]]
+
 Found it here: https://gitlab.com/nathanfurnal/dotemacs/-/blob/master/init.el#L251
+
 #+begin_src emacs-lisp
   (use-package corfu
     :defer t
@@ -1168,7 +1396,8 @@ Found it here: https://gitlab.com/nathanfurnal/dotemacs/-/blob/master/init.el#L2
            (shell-mode . corfu-mode)
            (eshell-mode . corfu-mode)
            (typescript-mode . corfu-mode)
-           (typescript-ts-mode . corfu-mode))
+           (typescript-ts-mode . corfu-mode)
+           (python-ts-mode . corfu-mode))
 
     ;; Recommended: Enable Corfu globally.
     ;; This is recommended since Dabbrev can be used globally (M-/).
@@ -1178,6 +1407,20 @@ Found it here: https://gitlab.com/nathanfurnal/dotemacs/-/blob/master/init.el#L2
 
   (setq tab-always-indent 'complete)
 #+end_src
+
+*** Enable corfu only in org-roam
+This ensures that corfu completions are enabled only in org-roam buffers and not in org-mode buffers. The reason for this is, I'd like to be able to get auto complete suggestions in my org-roam notes so that I can link other notes. But I don't want to word suggestions in orgmode files.
+
+#+begin_src emacs-lisp
+  (defun rr/enable-corfu-in-org-roam ()
+    (when (org-roam-file-p (buffer-file-name))
+      (setq-local completion-at-point-functions '(org-roam-complete-everywhere org-roam-complete-link-at-point))
+      (corfu-mode 1)))
+
+  (setq global-corfu-modes '((not org-mode) t))
+  (add-hook 'org-mode-hook #'rr/enable-corfu-in-org-roam)
+#+end_src
+
 ** Kind Icon
 Package: [[https://github.com/jdtsmith/kind-icon][kind-icon]]
 
@@ -1250,7 +1493,7 @@ File management with dired
     :config
     (setq
      ;; https://github.com/d12frosted/homebrew-emacs-plus/issues/383
-     insert-directory-program "/opt/homebrew/bin/gls"
+     insert-directory-program (expand-file-name "/opt/homebrew/bin/gls" (getenv "HOME"))
      dired-listing-switches "-tagho --group-directories-first"
      dired-omit-files "^\\.[^.].*"
      dired-omit-verbose nil
@@ -1296,12 +1539,19 @@ Highlight addition, changes or deletion of lines on the left margin of each file
 Package: [[https://github.com/dgutov/diff-hl][diff-hl]]
 
 #+begin_src emacs-lisp
-  (use-package diff-hl)
-  (global-diff-hl-mode)
-  (diff-hl-flydiff-mode 1)
-  (diff-hl-dired-mode 1)
-  (diff-hl-margin-mode 1)
+  (use-package diff-hl
+    :demand t
+    :hook ((prog-mode . diff-hl-mode)
+           (org-mode . diff-hl-mode))
+    :custom
+    (setq
+     global-diff-hl-mode 1
+     diff-hl-flydiff-mode 1
+     diff-hl-dired-mode 1
+     diff-hl-margin-mode 1)
+    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
 #+end_src
+
 ** Git Link
 #+begin_src emacs-lisp
   (use-package git-link
@@ -1349,13 +1599,14 @@ This package worked best for setting all the treesitter stuff.
 
 #+begin_src emacs-lisp
   (use-package treesit-auto
-    :defer t
+    ;; :defer t ; uncomment this if you want to run treesit-auto again
     :custom
     (treesit-auto-install 'prompt)
     :config
     (treesit-auto-add-to-auto-mode-alist 'all)
     (global-treesit-auto-mode))
 #+end_src
+
 *** Flymake diagnostics as popups
 This is to display any errors or warnings as popups instead of the echo area. The popups are displayed when the point is on a variable that has an error/warning. This is better than what is usually displayed in the echo area (by default) because the text in the echo area gets cut off at the end.
 Package: [[https://codeberg.org/akib/emacs-flymake-popon][flymake-popon]]
@@ -1382,7 +1633,7 @@ Using the built-in eglot instead of LSP. I previously used LSP and found it to b
     :defer t
     :hook (
            ((typescriptreact-mode typescript-ts-mode) . eglot-ensure)
-  		 (go-ts-mode . eglot-ensure)
+           (go-ts-mode . eglot-ensure)
            (python-ts-mode . eglot-ensure)
            (typescriptreact-mode . flymake-popon-mode)
            )
@@ -1390,8 +1641,12 @@ Using the built-in eglot instead of LSP. I previously used LSP and found it to b
     (setq eglot-confirm-server-initiated-edits nil)
     (setq eglot-ignored-server-capabilities nil)
     (add-to-list 'eglot-server-programs
-  			   '((typescript-ts-mode typescript-mode) . ("typescript-language-server" "--stdio"))))
+           	   '((typescript-ts-mode typescript-mode) . ("typescript-language-server" "--stdio"))
+                 '((python-mode python-ts-mode) . ("pylsp"))
+                 ;;                '(nix-ts-mode . ("nil"))
+                 ))
 #+end_src
+
 *** Eglot Booster
 Package: [[https://github.com/jdtsmith/eglot-booster?tab=readme-ov-file][eglot-booster]]
 
@@ -1422,23 +1677,15 @@ Package: [[https://github.com/jdtsmith/eglot-booster?tab=readme-ov-file][eglot-b
     :ensure t
     :hook ((python-ts-mode . eglot-ensure))
     :mode (("\\.py\\'" . python-ts-mode)))
-#+end_src
 
-#+begin_src emacs-lisp :tangle no
-  (use-package python-mode
+  (use-package pyvenv
     :defer t
-    :mode "\\.py\\'")
-#+end_src
+    :config
+    (pyvenv-mode 1))
 
-#+begin_src emacs-lisp
-  ;;    (setq major-mode-remap-alist
-  ;;        '((python-mode . python-ts-mode)))
-
-  ;; (with-eval-after-load 'eglot
-  ;;   (add-to-list 'eglot-server-programs
-  ;;                '(python-mode . ("pyright-langserver" "--stdio"))
-  ;;                '(python-mode . ("ruff" "server")))
-  ;;   (add-hook 'after-save-hook 'eglot-format))
+  (add-hook 'python-ts-mode-hook
+            (lambda ()
+              (add-hook 'before-save-hook 'eglot-format nil t)))
 #+end_src
 
 *** Typescript
@@ -1499,6 +1746,12 @@ This does not correctly work right now. But I'll keep it and tinker with it.
     :defer t
     :mode "\\.nu\\'")
 #+end_src
+*** Nix
+#+begin_src emacs-lisp
+  (use-package nix-ts-mode
+    :hook ((nix-ts-mode . eglot-ensure))
+    :mode "\\.nix\\'")
+#+end_src
 *** Aphelia
 Package: [[https://github.com/radian-software/apheleia][aphelia]]
 #+begin_src emacs-lisp
@@ -1523,20 +1776,42 @@ Package: [[https://github.com/karthink/gptel][gpt.el]]
 
 Make sure to define the API key from ~.envrc~
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package gptel
     :defer t)
 
   ;; Perplexity offers an OpenAI compatible API
   (gptel-make-openai "Perplexity"         ;Any name you want
-    :host "api.perplexity.ai"
-    :key pplx-api-key
-    :endpoint "/chat/completions"
-    :stream t
-    :models '(;; has many more, check perplexity.ai
-              llama-3.1-sonar-small-128k-chat))
+                     :host "api.perplexity.ai"
+                     :key (rr/lookup-password :host "pplx-api-key")
+                     :endpoint "/chat/completions"
+                     :stream t
+                     :models '(;; has many more, check perplexity.ai
+                               llama-3.1-sonar-small-128k-chat))
+
+  (gptel-make-ollama "Ollama"             ;Any name of your choosing
+                     :host "localhost:11434"               ;Where it's running
+                     :stream t                             ;Stream responses
+                     :models '(llama3.2:latest))          ;List of models
 #+end_src
-** Consult Xref
+
+*** khoj
+Package: [[https://docs.khoj.dev/clients/emacs][khoj]]
+
+#+begin_src emacs-lisp
+  ;; Install Khoj client from MELPA Stable
+  (use-package khoj
+    :defer t
+    :straight (khoj :type git :host github :repo "khoj-ai/khoj" :files (:defaults "src/interface/emacs/khoj.el"))
+    :bind ("C-c s" . 'khoj)
+    :config (setq khoj-api-key (rr/lookup-password :host "khoj")
+                  khoj-server-url "http://127.0.0.1:42110"
+                  khoj-org-directories '(org-roam-directory org-directory)
+                  khoj-org-files '((expand-file-name "journal.org" org-directory) (expand-file-name "organize.org" org-directory))))
+#+end_src
+
+** Consult Xref Stack
+
 #+begin_src emacs-lisp
   (use-package consult-xref-stack
     :defer t
@@ -1544,6 +1819,7 @@ Make sure to define the API key from ~.envrc~
     :bind
     (("M-," . consult-xref-stack-backward)))
 #+end_src
+
 ** Consult Project Extra
 Package: [[https://github.com/Qkessler/consult-project-extra][consult-project-extra]]
 
@@ -1552,6 +1828,110 @@ Package: [[https://github.com/Qkessler/consult-project-extra][consult-project-ex
     :defer t)
 #+end_src
 
+** Leetcode
+#+begin_src emacs-lisp
+  (use-package leetcode
+    :defer t)
+  (add-hook 'leetcode-solution-mode-hook
+            (lambda() (flymake-mode 1)))
+  (setq leetcode-prefer-language "python3")
+#+end_src
+** Prodigy
+*** Package install
+*Package*: [[https://github.com/rejeep/prodigy.el][prodigy.el]]
+#+begin_src emacs-lisp
+  (use-package prodigy)
+#+end_src
+
+*** Show status of each server on the modeline
+This piece of code was [[https://www.perplexity.ai/search/i-ve-been-using-prodigy-el-to-KrpyCZz8SCKKnHnud2CWVw#4][generated by Perplexity]] using Gemini 3 Pro.
+
+#+begin_src emacs-lisp
+  ;; 1. Define a variable to hold the modeline string
+  (defvar my/prodigy-mode-line-string ""
+    "String to display in the modeline for Prodigy services.")
+  (put 'my/prodigy-mode-line-string 'risky-local-variable t)
+
+  ;; 2. Add to mode-line-misc-info (instead of global-mode-string)
+  ;;    We use `assq-delete-all` first to ensure we don't add duplicates if you re-eval.
+  (setq mode-line-misc-info
+        (append (assq-delete-all 'my/prodigy-mode-line-string mode-line-misc-info)
+                '(my/prodigy-mode-line-string)))
+
+  ;; 3. Define the function that builds the status string
+  (defun my/prodigy-get-services-string (status)
+    (let ((names '()))
+      (dolist (service prodigy-services)
+        (let ((s-status (or (plist-get service :status) 'stopped)))
+          (when (if (eq status 'stopped)
+                    (or (eq s-status 'stopped) (null (plist-get service :status)))
+                  (eq s-status status))
+            (push (plist-get service :name) names))))
+      (mapconcat #'identity (nreverse names) ", ")))
+
+  (defvar my/prodigy-mode-line-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map [mode-line mouse-1] #'prodigy)
+      (define-key map [mode-line mouse-2] #'prodigy)
+      map))
+
+  ;; 4. Define the update function (same as before)
+  (defun my/prodigy-update-mode-line (&rest _)
+    (let ((failed 0) (stopped 0) (running 0) (ready 0))
+      (dolist (service prodigy-services)
+        (let ((status (plist-get service :status)))
+          (cond
+           ((eq status 'failed)  (cl-incf failed))
+           ((eq status 'ready)   (cl-incf ready))
+           ((eq status 'running) (cl-incf running))
+           ((or (null status) (eq status 'stopped)) (cl-incf stopped)))))
+      
+      (let ((items '()))
+        (cl-flet ((make-item (count color status-label status-sym)
+                    (propertize (number-to-string count)
+                                'face `(:foreground ,color :weight bold)
+                                'help-echo (format "%s: %s" status-label (my/prodigy-get-services-string status-sym))
+                                'mouse-face 'mode-line-highlight
+                                'local-map my/prodigy-mode-line-map)))
+          
+          (when (> failed 0) (push (make-item failed "red" "Failed" 'failed) items))
+          (when (> stopped 0) (push (make-item stopped "yellow" "Stopped" 'stopped) items))
+          (when (> running 0) (push (make-item running "green" "Running" 'running) items))
+          (when (> ready 0) (push (make-item ready "#44aaff" "Ready" 'ready) items))
+          
+          (setq my/prodigy-mode-line-string
+                (if items
+                    (concat " " (mapconcat #'identity (nreverse items) " | ") " ")
+                  ""))))
+      (force-mode-line-update t)))
+
+  ;; 5. "Hook" into Prodigy's status changes
+  ;;    Prodigy doesn't have a standard hook, so we advise the status setter function.
+  (advice-add 'prodigy-set-status :after #'my/prodigy-update-mode-line)
+
+  ;; 6. Initial update (in case you eval this while services are already up)
+  (my/prodigy-update-mode-line)
+#+end_src
+*** Define Prodigy Services
+#+begin_src emacs-lisp
+  (prodigy-define-service
+    :name "Deno"
+    :command "deno"
+    :args '("task" "dev" "--allow-net")
+    :cwd "~/code/web-server"
+    :ready-message "Listening on"
+    )
+
+  (prodigy-define-service
+    :name "Python app"
+    :command "python3"
+    :args '("-m" "http.server" "6001")
+    :cwd "~/code/web-server"
+    :tags '(work)
+    :stop-signal 'kill
+    :ready-message "Serving HTTP on"
+    :kill-process-buffer-on-stop t)
+#+end_src
 * Buffers
 ** Perspectives
 *** Basic Setup
@@ -1610,7 +1990,9 @@ Package: [[https://github.com/alphapapa/activities.el][activities.el]]
      ("C-x C-a g" . activities-revert)
      ("C-x C-a l" . activities-list)))
 #+end_src
+
 ** Tab Bar Config
+
 #+begin_src emacs-lisp
   (with-eval-after-load 'tab-bar
     (setq tab-bar-new-tab-to 'rightmost)
@@ -1629,6 +2011,7 @@ Package: [[https://github.com/alphapapa/activities.el][activities.el]]
     )
   (custom-set-variables '(tab-bar-select-tab-modifiers '(super)))
 #+end_src
+
 * OrgMode
 ** Capture Templates
 
@@ -1835,19 +2218,18 @@ The following are some custom agenda commands
                    (org-agenda-max-todos nil)))
             (todo "TODO"
                   ((org-agenda-overriding-header "Unprocessed Inbox Tasks")))))
-          ("w" "Work Tasks"
-           ((agenda "" ((org-deadline-warning-days 7))
-  				  (tags-todo "+work-meeting"
-  							 ((org-agenda-overriding-header "Work Tasks")))
-  				  )))
-          ("%" "Appointments" agenda* "Today's appointments"
-           ((org-agenda-span 1)
-            (org-agenda-max-entries 3)))
-  		("f" "Follow up"
-  		 ((tags-todo "+followup"
-  					 ((org-agenda-overriding-header "Follow-up Tasks")))
-  		  (tags-todo "-{.*}"
-  					 ((org-agenda-overriding-header "Untagged Tasks")))))
+          ("U" "Unscheduled"
+           ((agenda ""
+                    ((org-agenda-overriding-header "TODOs")
+                     ))
+            (todo "TODO"
+                  ((org-agenda-overriding-header "Unscheduled")
+                   (org-agenda-skip-function
+                    (quote
+                     (org-agenda-skip-entry-if
+                      (quote scheduled)))))))
+           nil nil)
+          
   		("r" "Weekly Review"
   		 ((agenda ""
   				  ((org-agenda-overriding-header "Completed Tasks")
@@ -1946,11 +2328,23 @@ Package: [[https://github.com/alphapapa/org-make-toc][org-make-toc]]
           ("TODO" . (:foreground "#a0bc70" :weight bold))
           ("STRT" . (:foreground "#a7a2dc" :weight bold))
           ("HOLD" . (:foreground "#e6bf85" :weight bold))
-          ("CODE" . (:foreground "#e6bf85" :weight bold))
+          ("CODE" . (:foreground "#fdac37" :weight bold))
           ("FDBK" . (:foreground "#e6bf85" :weight bold))
           ("IDEA" . (:foreground "#fdac37" :weight bold))
           ("DONE" . (:foreground "#5c6267" :weight bold))
-          ("KILL" . (:foreground "#ee7570" :weight bold))))
+          ("KILL" . (:foreground "#ee7570" :weight bold))
+
+          ("REACHED-OUT" . (:foreground "#e6bf85" :weight bold))
+          ("TO-APPLY" . (:foreground "#a0bc70" :weight bold))
+          ("APPLIED" . (:foreground "#a7a2dc" :weight bold))
+          ("INFO-SCH" . (:foreground "#fdac37" :weight bold))
+          ("INTERVIEW" . (:foreground "#e6bf85" :weight bold))
+          ("AWAITING" . (:foreground "#74A8FC" :weight bold))
+          ("REJECTED" . (:foreground "#f38ba8" :weight bold))
+          ("FOLLOW-UP" . (:foreground "#fdac37" :weight bold))
+          ("ACCEPTED" . (:foreground "#5c6267" :weight bold))
+          ("ABANDONED" . (:foreground "#ee7570" :weight bold))
+          ))
 #+end_src
 
 ** Org faces
@@ -1985,6 +2379,23 @@ Currently trying out this setting with fixed width /and/ variable width fonts. /
     ;;(set-face-attribute 'hl-line nil :background "#0d3b66")
     (set-face-attribute 'org-column nil :background "unspecified")
     (set-face-attribute 'org-column-title nil :background "unspecified"))
+#+end_src
+
+** Org align tags
+The following hook aligns all the tags in a file
+
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook 'org-align-all-tags)
+
+  (add-hook 'focus-in-hook
+            (lambda ()
+              (setq org-tags-column (- 5 (window-body-width)))
+              (org-align-all-tags)))
+
+  (add-hook 'focus-out-hook
+            (lambda ()
+              (setq org-tags-column (- 5 (window-body-width)))
+              (org-align-all-tags)))
 #+end_src
 
 ** Org Behaviors
@@ -2206,99 +2617,6 @@ I want =TAB= to just open or fold the current heading. I can use =Shift+TAB= if 
             (org-cycle-internal-local)
             t)))))
 #+end_src
-
-*** Org insert behavior
-**** Insert item
-
-#+begin_src emacs-lisp
-  (defun +org--insert-item (direction)
-    (let ((context (org-element-lineage
-                    (org-element-context)
-                    '(table table-row headline inlinetask item plain-list)
-                    t)))
-      (pcase (org-element-type context)
-        ;; Add a new list item (carrying over checkboxes if necessary)
-        ((or `item `plain-list)
-         ;; Position determines where org-insert-todo-heading and org-insert-item
-         ;; insert the new list item.
-         (if (eq direction 'above)
-             (org-beginning-of-item)
-           (org-end-of-item)
-           (backward-char))
-         (org-insert-item (org-element-property :checkbox context))
-         ;; Handle edge case where current item is empty and bottom of list is
-         ;; flush against a new heading.
-         (when (and (eq direction 'below)
-                    (eq (org-element-property :contents-begin context)
-                        (org-element-property :contents-end context)))
-           (org-end-of-item)
-           (org-end-of-line)))
-
-        ;; Add a new table row
-        ((or `table `table-row)
-         (pcase direction
-           ('below (save-excursion (org-table-insert-row t))
-                   (org-table-next-row))
-           ('above (save-excursion (org-shiftmetadown))
-                   (+org/table-previous-row))))
-
-        ;; Otherwise, add a new heading, carrying over any todo state, if
-        ;; necessary.
-        (_
-         (let ((level (or (org-current-level) 1)))
-           ;; I intentionally avoid `org-insert-heading' and the like because they
-           ;; impose unpredictable whitespace rules depending on the cursor
-           ;; position. It's simpler to express this command's responsibility at a
-           ;; lower level than work around all the quirks in org's API.
-           (pcase direction
-             (`below
-              (let (org-insert-heading-respect-content)
-                (goto-char (line-end-position))
-                (org-end-of-subtree)
-                (insert "\n" (make-string level ?*) " ")))
-             (`above
-              (org-back-to-heading)
-              (insert (make-string level ?*) " ")
-              (save-excursion (insert "\n"))))
-           (when-let* ((todo-keyword (org-element-property :todo-keyword context))
-                       (todo-type    (org-element-property :todo-type context)))
-             (org-todo
-              (cond ((eq todo-type 'done)
-                     ;; Doesn't make sense to create more "DONE" headings
-                     (car (+org-get-todo-keywords-for todo-keyword)))
-                    (todo-keyword)
-                    ('todo)))))))
-
-      (when (org-invisible-p)
-        (org-show-hidden-entry))
-      (when (and (bound-and-true-p evil-local-mode)
-                 (not (evil-emacs-state-p)))
-        (evil-insert 1))))
-#+end_src
-
-**** Insert item below
-*Note*: Yet to add keybinding to this function
-
-#+begin_src emacs-lisp
-  (defun +org/insert-item-below (count)
-    "Inserts a new heading, table cell or item below the current one."
-    (interactive "p")
-    (dotimes (_ count) (+org--insert-item 'below)))
-
-  (with-eval-after-load 'org
-    (define-key org-mode-map (kbd "M-RET") '+org/insert-item-below))
-#+end_src
-
-**** Insert item above
-*Note*: Yet to add keybinding to this function
-
-#+begin_src emacs-lisp
-  (defun +org/insert-item-above (count)
-    "Inserts a new heading, table cell or item above the current one."
-    (interactive "p")
-    (dotimes (_ count) (+org--insert-item 'above)))
-#+end_src
-
 *** Org refile to current file
 Copied over from doom emacs. Helps make refiling easier when it must be done within the current file.
 
@@ -2366,6 +2684,18 @@ Taken from: https://orgmode.org/worg/org-hacks.html#org5a09194
            (cdr (assoc (match-string 3)
                        '(("[X]" . 4) ("[-]" . 3) ("[ ]" . 2) (nil . 1))))
          4))))
+#+end_src
+
+*** Do not auto-close angle bracket in org files
+When I try to insert org source blocks in org files by expanding ~<s~ or ~<el~ shortcuts, I was getting the closing angle brackets which would expand the source block, but also have the closing angle bracket at the end which I had to delete manually. The following code snippet disables the autoclose behavior for angle brackets specifically in org files.
+
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (setq-local electric-pair-inhibit-predicate
+                          `(lambda (c)
+                             (if (char-equal c ?<) t
+                               (,electric-pair-inhibit-predicate c))))))
 #+end_src
 
 *** Mark heading DONE when all checkboxes are checked
@@ -2562,6 +2892,7 @@ Package: [[https://github.com/org-roam/org-roam-ui][org-roam-ui]]
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
 #+end_src
+
 * Blogging
 ** ox-hugo
 This is the emacs package I use to publish to my Hugo website using org files
@@ -2601,6 +2932,11 @@ This is a nice little helper function I wrote for myself to generate a filename 
     (let* ((file-name (replace-regexp-in-string "_+" "-" (replace-regexp-in-string "\\W" "_" (string-trim (downcase blog-post-title)))))
            (blog-post-file-name (concat file-name ".md")))
       (org-set-property "EXPORT_FILE_NAME" blog-post-file-name)))
+#+end_src
+* Envrc
+#+begin_src emacs-lisp
+  (use-package envrc
+    :hook (after-init . envrc-global-mode))
 #+end_src
 * Machine-specific config
 This helps keep certain packages separate, like having the copilot package in the additional-config.el will make it load only in the work Emacs instance since I don't need it on the personal instance.

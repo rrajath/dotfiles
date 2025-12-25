@@ -22,8 +22,6 @@
     '';
   };
 
-  services.emacs.enable = true;
-  
   # Set Nushell as the default shell
   environment.shells = [ pkgs.nushell ];
   
@@ -34,7 +32,7 @@
   
   # Enable Homebrew
   homebrew = {
-    enable = true;
+    enable = false; # There's some issue with updating homebrew via nix on the latest MacOS 26. So, setting it to false for now
     onActivation = {
       autoUpdate = true;
       upgrade = true;

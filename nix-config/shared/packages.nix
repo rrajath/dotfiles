@@ -4,10 +4,13 @@ with pkgs; [
   # General packages for development and system management
   broot
   bat
-  emacs
   direnv
   nixd
-  # yazi
+  cargo
+  deno
+
+  # TUI Apps
+  jjui
 
   # Language servers
   nil                    # Nix LSP

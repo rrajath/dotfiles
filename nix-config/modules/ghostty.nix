@@ -1,6 +1,6 @@
 { ... }: {
   xdg.configFile."ghostty/config".text = ''
-    theme = catppuccin-mocha
+    theme = Catppuccin Mocha
     window-save-state = always
     background-blur-radius = 20
     background-opacity = 0.7
