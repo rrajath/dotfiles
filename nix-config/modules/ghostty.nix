@@ -9,5 +9,6 @@
     keybind = alt+right=unbind
     macos-titlebar-style = tabs
     mouse-hide-while-typing = true
+    shell-integration-features = ssh-terminfo,ssh-env
   '';
 }

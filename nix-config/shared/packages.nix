@@ -12,7 +12,10 @@ with pkgs; [
   eas-cli
   hugo
   zola
-  claude-code
+  bun
+  multimarkdown
+  go-grip
+  pnpm
 
   # TUI Apps
   jjui
