@@ -1,0 +1,3 @@
+#+TITLE: Claude Code configuration
+
+Copy the files in this folder and all the sub folders into ~~/.claude~ directory.
