@@ -46,6 +46,7 @@
   - [[#yasnippet][Yasnippet]]
   - [[#completion-at-point-extensions][Completion At Point Extensions]]
   - [[#spell-check-with-jinx][Spell check with jinx]]
+  - [[#markdown-rendering][Markdown rendering]]
   - [[#auto-save-org-buffers][Auto save org buffers]]
   - [[#other-minor-settings][Other minor settings]]
 - [[#keybindings][Keybindings]]
@@ -85,6 +86,7 @@
       - [[#utilities][Utilities]]
         - [[#highlight-symbol-keymap][Highlight Symbol Keymap]]
         - [[#util-keymap][Util Keymap]]
+      - [[#vulpea][Vulpea]]
     - [[#meow-setup][Meow Setup]]
     - [[#meow-package-setup][Meow Package Setup]]
 - [[#completion-frameworks][Completion Frameworks]]
@@ -101,6 +103,7 @@
   - [[#crux][Crux]]
   - [[#free-keys][Free Keys]]
   - [[#direnv][Direnv]]
+  - [[#zoxide][Zoxide]]
 - [[#dired][Dired]]
 - [[#development][Development]]
   - [[#git-gutter][Git Gutter]]
@@ -108,6 +111,7 @@
   - [[#magit][Magit]]
   - [[#terminal][Terminal]]
     - [[#eat][Eat]]
+    - [[#ghostel][Ghostel]]
   - [[#colorize-output-in-compile-buffer][Colorize output in compile buffer]]
   - [[#increase-function-name-font-size-for-better-readability][Increase function name font size for better readability]]
   - [[#languages][Languages]]
@@ -174,15 +178,20 @@
     - [[#org-sort-list-by-checkbox-type][Org sort list by checkbox type]]
     - [[#do-not-auto-close-angle-bracket-in-org-files][Do not auto-close angle bracket in org files]]
     - [[#mark-heading-done-when-all-checkboxes-are-checked][Mark heading DONE when all checkboxes are checked]]
+  - [[#org-autolist][Org Autolist]]
   - [[#retro-journal][Retro Journal]]
-- [[#org-roam][Org Roam]]
-  - [[#basic-setup][Basic Setup]]
-  - [[#agenda-configs][Agenda configs]]
-  - [[#default-project-template][Default Project Template]]
-  - [[#capture-a-task-directly-into-a-specific-project][Capture a task directly into a specific project]]
-  - [[#automatically-copy-or-move-completed-tasks-to-dailies][Automatically copy (or move) completed tasks to dailies]]
-  - [[#insert-new-note-immediately][Insert new note immediately]]
-  - [[#org-roam-ui][Org Roam UI]]
+- [[#note-taking][Note Taking]]
+  - [[#org-roam][Org Roam]]
+    - [[#basic-setup][Basic Setup]]
+    - [[#agenda-configs][Agenda configs]]
+    - [[#default-project-template][Default Project Template]]
+    - [[#capture-a-task-directly-into-a-specific-project][Capture a task directly into a specific project]]
+    - [[#automatically-copy-or-move-completed-tasks-to-dailies][Automatically copy (or move) completed tasks to dailies]]
+    - [[#insert-new-note-immediately][Insert new note immediately]]
+    - [[#org-roam-ui][Org Roam UI]]
+  - [[#vulpea][Vulpea]]
+    - [[#vulpea-ui][Vulpea UI]]
+    - [[#completion-in-vulpea-files][Completion in vulpea files]]
 - [[#blogging][Blogging]]
   - [[#ox-hugo][ox-hugo]]
   - [[#turn-on-org-hugo-auto-export-mode-when-you-visit-blogorg][Turn on org-hugo-auto-export-mode when you visit blog.org]]
@@ -260,7 +269,7 @@ Package: [[https://github.com/emacscollective/no-littering][no-littering]]
 This section sets variables found in .envrc in order to use them later on in the config. This is useful for configs that are shared across multiple machines but have different values. For example, org-mode directory may be at different locations in two different machines. Reading the path from an envrc file makes the config cleaner and easier to maintain and all the necessary paths and values can be offloaded to a different file (envrc).
 
 #+begin_src emacs-lisp
-  (setq rr-org-mode-dir "~/Library/CloudStorage/Dropbox/org-mode")
+  (setq rr-org-mode-dir "~/Sync/Grove")
   (setq rr-org-roam-dir "~/Library/CloudStorage/Dropbox/org-roam")
   (setq initial-major-mode #'lisp-interaction-mode)
 #+end_src
@@ -550,6 +559,7 @@ Package: [[https://github.com/karthink/popper][popper]]
             "\\*Excorporate\\*"
             "\\*xref\\*"
             eat-mode
+            ghostel-mode
             help-mode
             helpful-mode
             compilation-mode
@@ -591,7 +601,7 @@ This package capitalizes the first word of any sentence.
     :hook (org-mode-hook . auto-capitalize-mode)
     :custom
     (auto-capitalize-mode 1))
-  (setq auto-capitalize-words `("I" "English" "I've" "I'll" "I'd" "I'm"))
+  (setq auto-capitalize-words `("I" "English" "I've" "I'll" "I'd" "I'm" "Kafka"))
 #+end_src
 
 ** Yasnippet
@@ -629,12 +639,24 @@ Package: [[https://github.com/minad/jinx][jinx]]
     (dolist (hook '(org-mode-hook) prog-mode-hook conf-mode-hook))
     (add-hook hook #'jinx-mode))
 #+end_src
+** Markdown rendering
+*Package*: [[https://github.com/seagle0128/grip-mode][grip-mode]]
+
+*Note*: This needs [[https://github.com/joeyespo/grip][grip]] as a prerequisite. Install it using ~pip install grip~. Or use [[https://github.com/chrishrb/go-grip][go-grip]]
+
+#+begin_src emacs-lisp
+  (use-package grip-mode
+    :ensure t
+    :config (setq grip-command 'auto) ;; auto, grip, go-grip or mdopen
+    :bind (:map markdown-mode-command-map
+                ("g" . grip-mode)))
+#+end_src
 ** Auto save org buffers
 If Emacs is idle for 5 seconds, save org buffers automatically.
 
 #+begin_src emacs-lisp
   ;; Set up a global idle timer to save all org buffers when Emacs is idle for 5 seconds
-  (run-with-idle-timer 5 t #'org-save-all-org-buffers)
+  ;; (run-with-idle-timer 5 t #'org-save-all-org-buffers)
 #+end_src
 
 ** Other minor settings
@@ -644,7 +666,6 @@ If Emacs is idle for 5 seconds, save org buffers automatically.
   (setq which-key-max-description-length 100)
   (global-visual-line-mode)
 #+end_src
-
 
 The following setting prevents electric mode from generating the closing pair of brackets or quotes when it is preceeded or succeeded with text. For example, it avoids the following scenario ~""|word~ where pipe represents the cursor. It instead makes it ~"|word~
 
@@ -1126,11 +1147,24 @@ This keymap is to get to activites functions a little more easily.
       (define-key keymap (kbd "f") #'free-keys)
       (define-key keymap (kbd "w") #'writegood-mode)
       (define-key keymap (kbd "p") #'popper-toggle)
+      (define-key keymap (kbd "P") #'prodigy)
       (define-key keymap (kbd "l") #'consult-goto-line)
       keymap))
 
   ;; define an alias for your keymap
   (defalias 'meow-util-keymap meow-util-keymap)
+#+end_src
+**** Vulpea
+#+begin_src emacs-lisp
+  (defvar meow-vulpea-keymap
+    (let ((keymap (make-keymap)))
+      (define-key keymap (kbd "i") #'vulpea-insert)
+      (define-key keymap (kbd "n") #'vulpea-find)
+      (define-key keymap (kbd "t") #'vulpea-ui-sidebar-toggle)
+      keymap))
+
+  ;; define an alias for your keymap
+  (defalias 'meow-vulpea-keymap meow-vulpea-keymap)
 #+end_src
 *** Meow Setup
 This has key mappings to a bunch of things. It is the main entry point to do most of the operations. Space is the leader key and I’m trying to keep it consistent with the keymap I had with General.
@@ -1177,6 +1211,7 @@ This has key mappings to a bunch of things. It is the main entry point to do mos
      '("l" . meow-eglot-keymap)
      '("p" . meow-project-keymap)
      '("u" . meow-util-keymap)
+     '("v" . meow-vulpea-keymap)
      '("w" . meow-window-keymap)
      '("o" . meow-org-keymap)
      '("/" . meow-keypad-describe-key)
@@ -1392,6 +1427,8 @@ Found it here: https://gitlab.com/nathanfurnal/dotemacs/-/blob/master/init.el#L2
     (corfu-echo-documentation nil) ;; Disable documentation in the echo area
     (corfu-scroll-margin 5)        ;; Use scroll margin
 
+    :bind(:map corfu-map
+               ("RET" . nil))
     ;; Enable Corfu only for certain modes.
     :hook ((prog-mode . corfu-mode)
            (shell-mode . corfu-mode)
@@ -1412,7 +1449,7 @@ Found it here: https://gitlab.com/nathanfurnal/dotemacs/-/blob/master/init.el#L2
 *** Enable corfu only in org-roam
 This ensures that corfu completions are enabled only in org-roam buffers and not in org-mode buffers. The reason for this is, I'd like to be able to get auto complete suggestions in my org-roam notes so that I can link other notes. But I don't want to word suggestions in orgmode files.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (defun rr/enable-corfu-in-org-roam ()
     (when (org-roam-file-p (buffer-file-name))
       (setq-local completion-at-point-functions '(org-roam-complete-everywhere org-roam-complete-link-at-point))
@@ -1477,7 +1514,15 @@ Package: [[https://github.com/wbolster/emacs-direnv][direnv]]
     (direnv-mode)
     (direnv-allow))
 #+end_src
+** Zoxide
+Package: zoxide.el
 
+#+begin_src emacs-lisp
+  (use-package zoxide
+    :defer t
+    :hook
+    (find-file-hook . zoxide-add))
+#+end_src
 * Dired
 File management with dired
 
@@ -1532,6 +1577,10 @@ File management with dired
     )
 
   (define-key dired-mode-map "?" dired-mode-map)
+
+  (defun dired-jump-with-zoxide (&optional other-window)
+    (interactive "P")
+    (zoxide-open-with nil (lambda (file) (dired-jump other-window file)) t))
 #+end_src
 
 * Development
@@ -1571,12 +1620,40 @@ Package: [[https://magit.vc/][magit]]
     :custom
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 #+end_src
-
 ** Terminal
 *** Eat
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package eat
     :defer t)
+#+end_src
+*** Ghostel
+*Package*: [[https://github.com/dakra/ghostel][ghostel]]
+
+#+begin_src emacs-lisp
+  (use-package ghostel
+    :defer t
+    :bind (("C-x m" . ghostel)
+           :map ghostel-semi-char-mode-map
+           ("C-s"  . consult-line)
+           ("C-k"  . rr/ghostel-send-C-k-and-kill)
+           ;; ;; I'm used to go up/down the shell history with M-n/p from eshell
+           ;; ;; Simulate this behavior in ghostel by sending C-p and C-n
+           ("M-p" . (lambda () (interactive) (ghostel-send-key "p" "ctrl")))
+           ("M-n" . (lambda () (interactive) (ghostel-send-key "n" "ctrl")))
+           :map project-prefix-map
+           ("m" . ghostel-project)
+           ("M" . ghostel-project-list-buffers))
+    :config
+    (defun rr/ghostel-send-C-k-and-kill ()
+      "Send `C-k' to ghostel.
+  Like normal Emacs `C-k'.  Kill to end of line and put content in kill-ring."
+      (interactive)
+      (kill-ring-save (point) (line-end-position))
+      (ghostel-send-key "k" "ctrl"))
+
+    (add-to-list 'project-switch-commands '(ghostel-project "Ghostel") t)
+    (add-to-list 'project-switch-commands '(ghostel-project-list-buffers "Ghostel buffers") t)
+    (add-to-list 'ghostel-eval-cmds '("magit-status-setup-buffer" magit-status-setup-buffer)))
 #+end_src
 ** Colorize output in compile buffer
 #+begin_src emacs-lisp
@@ -1943,6 +2020,26 @@ This piece of code was [[https://www.perplexity.ai/search/i-ve-been-using-prodig
     :ready-message "Web Server is available at"
     :kill-process-buffer-on-stop t
     )
+
+  (prodigy-define-service
+    :name "Quartz"
+    :command "npx"
+    :args '("quartz" "build" "--serve")
+    :cwd "~/kb-wiki"
+    :stop-signal 'kill
+    :ready-message "Started a Quartz server listening at http://localhost:8080"
+    :kill-process-buffer-on-stop t
+    )
+
+  (prodigy-define-service
+    :name "Nexus"
+    :command "bun"
+    :args '("dev")
+    :cwd "~/code/nexus"
+    :stop-signal 'kill
+    :ready-message "Job Tracker server running on"
+    :kill-process-buffer-on-stop t
+    )
     #+end_src
 * Buffers
 ** Perspectives
@@ -2088,7 +2185,8 @@ Package: [[https://github.com/alphapapa/activities.el][activities.el]]
     (auto-fill-mode 0)
     (visual-line-mode)
     (setq org-directory rr-org-mode-dir)
-    (setq org-agenda-files (append (directory-files org-directory t "\\.org$") (rr/org-roam-list-notes-by-tag "project")))
+;;    (setq org-agenda-files (append (directory-files org-directory t "\\.org$") (rr/org-roam-list-notes-by-tag "project")))
+    (setq org-agenda-files (append (directory-files org-directory t "\\.org$")))
     (setq org-capture-templates (rr/set-org-capture-templates))
     (setq org-todo-keywords
           '((sequence "TODO(t)" "STRT(s)" "WAIT(w)" "HOLD(h)" "IDEA(i)" "CODE(c)" "FDBK(f)" "|" "DONE(d!)" "KILL(k!)")
@@ -2736,6 +2834,13 @@ Taken from: https://orgmode.org/worg/org-hacks.html#mark-done-when-all-checkboxe
                 (org-todo 'todo)))))))
 #+end_src
 
+** Org Autolist
+*Package*: [[https://github.com/calvinwyoung/org-autolist][org-autolist]]
+
+#+begin_src emacs-lisp
+  (use-package org-autolist
+    :hook (org-mode . org-autolist-mode))
+#+end_src
 ** Retro Journal
 *Package*: [[https://github.com/rrajath/org-retro-journal][org-retro-journal]]
 
@@ -2749,12 +2854,13 @@ Taken from: https://orgmode.org/worg/org-hacks.html#mark-done-when-all-checkboxe
     ("C-c r" . org-retro-journal-review))
 #+end_src
 
-* Org Roam
+* Note Taking
+** Org Roam
 Zettelkasten-style note taking
-** Basic Setup
+*** Basic Setup
 Sets up org-roam, roam directory, few useful keybindings.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package org-roam
     :defer 2
     :custom
@@ -2792,8 +2898,8 @@ Sets up org-roam, roam directory, few useful keybindings.
     (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
     (org-roam-setup))
 #+end_src
-** Agenda configs
-#+begin_src emacs-lisp
+*** Agenda configs
+#+begin_src emacs-lisp :tangle no
   (defun rr/org-roam-filter-by-tag (tag-name)
     (lambda (node)
     	(member tag-name (org-roam-node-tags node))))
@@ -2812,8 +2918,8 @@ Sets up org-roam, roam directory, few useful keybindings.
   ;;  (rr/org-roam-refresh-agenda-list)
 #+end_src
 
-** Default Project Template
-#+begin_src emacs-lisp
+*** Default Project Template
+#+begin_src emacs-lisp :tangle no
   (defun rr/org-roam-project-finalize-hook ()
     "Adds the captured project file to `org-agenda-files' if the
     capture was not aborted."
@@ -2844,8 +2950,8 @@ Sets up org-roam, roam directory, few useful keybindings.
 
   (global-set-key (kbd "C-c n p") #'rr/org-roam-find-project)
 #+end_src
-** Capture a task directly into a specific project
-#+begin_src emacs-lisp
+*** Capture a task directly into a specific project
+#+begin_src emacs-lisp :tangle no
   (defun rr/org-roam-capture-task ()
     (interactive)
     ;; Add the project file to the agenda after capture is finished
@@ -2861,8 +2967,8 @@ Sets up org-roam, roam directory, few useful keybindings.
                                                             ("Tasks"))))))
   (global-set-key (kbd "C-c n t") #'rr/org-roam-capture-task)
 #+end_src
-** Automatically copy (or move) completed tasks to dailies
-#+begin_src emacs-lisp
+*** Automatically copy (or move) completed tasks to dailies
+#+begin_src emacs-lisp :tangle no
   (defun rr/org-roam-copy-todo-to-today ()
     (interactive)
     (let ((org-refile-keep t) ;; Set this to nil to delete the original!
@@ -2887,10 +2993,10 @@ Sets up org-roam, roam directory, few useful keybindings.
                  (when (equal org-state "DONE")
                    (rr/org-roam-copy-todo-to-today))))
 #+end_src
-** Insert new note immediately
+*** Insert new note immediately
 Without opening a new buffer while writing a note.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (defun org-roam-node-insert-immediate (arg &rest args)
     (interactive "P")
     (let ((args (cons arg args))
@@ -2898,11 +3004,11 @@ Without opening a new buffer while writing a note.
       (apply #'org-roam-node-insert args)))
 #+end_src
 
-** Org Roam UI
+*** Org Roam UI
 This gives a really nice UI for your org-roam database. The UI not only shows all the nodes in a graph view, but also the contents of all the notes, the backlinks, filtering and several other customizations. It's great to capture all the notes via org-roam and view them using org-roam-ui.
 Package: [[https://github.com/org-roam/org-roam-ui][org-roam-ui]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package org-roam-ui
     :vc
     (:url "https://github.com/org-roam/org-roam-ui" :branch "main")
@@ -2916,6 +3022,33 @@ Package: [[https://github.com/org-roam/org-roam-ui][org-roam-ui]]
           org-roam-ui-follow t
           org-roam-ui-update-on-save t
           org-roam-ui-open-on-start t))
+#+end_src
+** Vulpea
+*Package*: [[https://github.com/d12frosted/vulpea][vulpea]]
+
+#+begin_src emacs-lisp
+  (use-package vulpea
+    :defer t
+    :init
+    (setq vulpea-db-sync-directories (list rr-org-roam-dir))
+    :config
+    (vulpea-db-autosync-mode +1))
+#+end_src
+*** Vulpea UI
+*Package*: [[https://github.com/d12frosted/vulpea-ui][vulpea-ui]]
+
+#+begin_src emacs-lisp
+  (use-package vulpea-ui)
+#+end_src
+*** Completion in vulpea files
+This is a custom function written in a separate file and stored in the ~dotfiles/.emacs.d~ folder. This file was generated by Claude: https://claude.ai/share/20736755-d4c3-4f65-a0b5-e4da7ae6de8b
+
+#+begin_src emacs-lisp
+  (if (file-exists-p "~/.emacs.d/vulpea-capf.el")
+      (progn
+        (message "loading vulpea completion")
+        (load "~/.emacs.d/vulpea-capf.el"))
+    (message "vulpea-capf.el does not exist"))
 #+end_src
 
 * Blogging
