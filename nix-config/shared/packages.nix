@@ -16,6 +16,8 @@ with pkgs; [
   multimarkdown
   go-grip
   pnpm
+  syncthing-macos
+  go
 
   # TUI Apps
   jjui

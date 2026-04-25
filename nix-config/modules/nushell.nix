@@ -26,6 +26,9 @@
           "/opt/homebrew/bin"
           "/Users/rrajath/.local/bin"
           "/Users/rrajath/.local"
+          "/Users/rrajath/bin/venv/bin"
+          "/Users/rrajath/go/bin"
+          "/Users/rrajath/.cargo/bin"
     ])
     $env.JAVA_HOME = "/opt/homebrew/Cellar/openjdk@21/21.0.10/"
     $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional

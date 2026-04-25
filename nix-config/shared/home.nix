@@ -9,6 +9,9 @@
     ../modules/atuin.nix
     ../modules/zoxide.nix
     ../modules/jujutsu.nix
+    ../modules/jjui.nix
+    ../modules/herdr.nix
+    ../modules/claude-code.nix
     ../modules/starship.nix
     ../modules/zed-editor.nix
   ];
