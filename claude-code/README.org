@@ -1,3 +1,27 @@
 #+TITLE: Claude Code configuration
 
-Copy the files in this folder and all the sub folders into ~~/.claude~ directory.
+Running darwin rebuild should copy the necessary files to ~~/.claude~ directory. But the following configurations need to be copied to ~~/.claude/settings.json~. The reason is that Claude sometimes updates ~settings.json~ with attributes and we don't want them to get overwritten.
+
+* Restricting Permissions
+Adding the following to the ~permissions~ block in ~settings.json~ will ensure Claude will never load the files mentioned in this block into context.
+
+#+begin_src json
+  {
+    "permissions": {
+      "defaultMode": "auto",
+      "deny": ["Read(node_modules/**)", "Read(dist/**)", "Read(*.lock)"]
+    }
+  }
+#+end_src
+
+* Default subagent and tool search
+Use Haiku as the default subagent (unless specified otherwise) for lowering costs and token usage. Also enable tool search so that tool definitions would only load on demand.
+
+#+begin_src json
+  {
+    "env": {
+      "CLAUDE_CODE_SUBAGENT_MODEL": "haiku",
+      "ENABLE_TOOL_SEARCH": "true"
+    }
+  }
+#+end_src
