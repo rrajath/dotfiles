@@ -2860,7 +2860,7 @@ Zettelkasten-style note taking
 *** Basic Setup
 Sets up org-roam, roam directory, few useful keybindings.
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package org-roam
     :defer 2
     :custom
@@ -2899,7 +2899,7 @@ Sets up org-roam, roam directory, few useful keybindings.
     (org-roam-setup))
 #+end_src
 *** Agenda configs
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (defun rr/org-roam-filter-by-tag (tag-name)
     (lambda (node)
     	(member tag-name (org-roam-node-tags node))))
@@ -2919,7 +2919,7 @@ Sets up org-roam, roam directory, few useful keybindings.
 #+end_src
 
 *** Default Project Template
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (defun rr/org-roam-project-finalize-hook ()
     "Adds the captured project file to `org-agenda-files' if the
     capture was not aborted."
@@ -2951,7 +2951,7 @@ Sets up org-roam, roam directory, few useful keybindings.
   (global-set-key (kbd "C-c n p") #'rr/org-roam-find-project)
 #+end_src
 *** Capture a task directly into a specific project
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (defun rr/org-roam-capture-task ()
     (interactive)
     ;; Add the project file to the agenda after capture is finished
@@ -2968,7 +2968,7 @@ Sets up org-roam, roam directory, few useful keybindings.
   (global-set-key (kbd "C-c n t") #'rr/org-roam-capture-task)
 #+end_src
 *** Automatically copy (or move) completed tasks to dailies
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (defun rr/org-roam-copy-todo-to-today ()
     (interactive)
     (let ((org-refile-keep t) ;; Set this to nil to delete the original!
@@ -2996,7 +2996,7 @@ Sets up org-roam, roam directory, few useful keybindings.
 *** Insert new note immediately
 Without opening a new buffer while writing a note.
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (defun org-roam-node-insert-immediate (arg &rest args)
     (interactive "P")
     (let ((args (cons arg args))
@@ -3008,7 +3008,7 @@ Without opening a new buffer while writing a note.
 This gives a really nice UI for your org-roam database. The UI not only shows all the nodes in a graph view, but also the contents of all the notes, the backlinks, filtering and several other customizations. It's great to capture all the notes via org-roam and view them using org-roam-ui.
 Package: [[https://github.com/org-roam/org-roam-ui][org-roam-ui]]
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package org-roam-ui
     :vc
     (:url "https://github.com/org-roam/org-roam-ui" :branch "main")
@@ -3026,7 +3026,7 @@ Package: [[https://github.com/org-roam/org-roam-ui][org-roam-ui]]
 ** Vulpea
 *Package*: [[https://github.com/d12frosted/vulpea][vulpea]]
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package vulpea
     :defer t
     :init
