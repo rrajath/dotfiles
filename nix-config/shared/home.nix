@@ -14,6 +14,7 @@
     ../modules/claude-code.nix
     ../modules/starship.nix
     ../modules/zed-editor.nix
+    ../modules/karabiner.nix
   ];
   
   # Home Manager needs configuration version
