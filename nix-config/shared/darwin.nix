@@ -32,10 +32,11 @@
   
   # Enable Homebrew
   homebrew = {
-    enable = false; # There's some issue with updating homebrew via nix on the latest MacOS 26. So, setting it to false for now
+    enable = true; # There's some issue with updating homebrew via nix on the latest MacOS 26. So, setting it to false for now
     onActivation = {
-      autoUpdate = true;
-      upgrade = true;
+      autoUpdate = false;
+      upgrade = false;
+      cleanup = "none";
     };
   };
   
