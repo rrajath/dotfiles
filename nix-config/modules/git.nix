@@ -9,11 +9,11 @@
       ".zed"
       ".settings"
     ];
-    userName = "Rajath Ramakrishna";
     lfs = {
       enable = true;
     };
-    extraConfig = {
+    settings = {
+      user.name = "Rajath Ramakrishna";
       core.editor = "hx";
       push.autoSetupRemote = true;
       pull.rebase = true;

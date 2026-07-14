@@ -18,20 +18,21 @@ with pkgs; [
   pnpm
   syncthing-macos
   go
+  claude-usage-tracker
 
   # TUI Apps
   jjui
 
   # Language servers
   nil                    # Nix LSP
-  nodePackages.typescript-language-server
+  typescript-language-server
 # nodePackages.pyright   # Python LSP
   rust-analyzer          # Rust LSP
     
   # Formatters
   nixpkgs-fmt           # Nix formatter
   black                 # Python formatter
-  nodePackages.prettier # JS/TS formatter
+  prettier # JS/TS formatter
     
   # Other useful tools
   ripgrep               # Fast grep (used by Helix)

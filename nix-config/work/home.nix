@@ -12,7 +12,7 @@
   
   # Work-specific program configurations
   programs.git = {
-    userEmail = "work@company.com";
+    settings.user.email = "work@company.com";
     # other work git settings
     # Include dotfiles-specific config when in dotfiles directory
     includeIf."gitdir:~/dotfiles/" = {

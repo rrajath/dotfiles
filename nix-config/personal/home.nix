@@ -11,6 +11,6 @@
 
   # Personal-specific program configurations
   programs.git = {
-    userEmail = "r.rajath@protonmail.com";
+    settings.user.email = "r.rajath@protonmail.com";
   };
 }
