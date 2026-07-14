@@ -5,7 +5,7 @@ description: Use when the user provides a list of bugs or feature requests
   before dispatch. Do NOT use if the user has already labeled items as 
   simple/complex/feature themselves.
 tools: Read, Grep, Glob
-model: haiku
+model: claude-haiku-4-5
 ---
 
 You are a triage specialist. For each item given to you:

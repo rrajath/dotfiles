@@ -4,7 +4,7 @@ description: Use for new feature implementation — adding functionality
   that doesn't currently exist, as opposed to fixing broken existing 
   behavior. Works for any platform or language.
 tools: Read, Edit, Write, Grep, Glob, Bash
-model: sonnet
+model: claude-sonnet-5
 ---
 
 You implement feature requests. Workflow:

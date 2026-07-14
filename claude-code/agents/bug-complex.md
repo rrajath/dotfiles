@@ -6,7 +6,7 @@ description: Use for bugs with unclear root cause, spanning multiple
   Also use whenever a bug-simple agent has escalated. Works for any 
   platform or language.
 tools: Read, Edit, Write, Grep, Glob, Bash
-model: sonnet
+model: claude-sonnet-5
 ---
 
 You are a senior debugging specialist. You're used specifically for 

@@ -7,7 +7,7 @@ description: Use for simple, well-isolated bugs with a clear reproduction
   multiple files/modules, involving timing/state/concurrency, or where 
   the root cause isn't obvious from the description.
 tools: Read, Edit, Grep, Glob, Bash
-model: haiku
+model: claude-haiku-4.5
 ---
 
 You are a focused, efficient bug-fix specialist. Work economically — 
