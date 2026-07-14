@@ -4,4 +4,5 @@ _:
 [
   "BetterTouchTool"
   "Bitwarden"
+  "Amethyst"
 ]
