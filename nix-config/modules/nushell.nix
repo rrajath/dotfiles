@@ -16,19 +16,16 @@
     # Environment configuration
     envFile.text = ''
     $env.EDITOR = "hx"
-    $env.PATH = ($env.PATH | split row (char esep) | 
+    $env.PATH = ($env.PATH | split row (char esep) |
 	    prepend [
-	      "/etc/profiles/per-user/rrajath/bin"
+	      "/etc/profiles/per-user/${user}/bin"
           "/nix/var/nix/profiles/default/bin"
-          "/Users/rrajath/.nix-profile/bin"
+          "${config.home.homeDirectory}/.nix-profile/bin"
           "/usr/local/bin"
-          "~/Library/Python/3.9/bin"
           "/opt/homebrew/bin"
-          "/Users/rrajath/.local/bin"
-          "/Users/rrajath/.local"
-          "/Users/rrajath/bin/venv/bin"
-          "/Users/rrajath/go/bin"
-          "/Users/rrajath/.cargo/bin"
+          "${config.home.homeDirectory}/.local/bin"
+          "${config.home.homeDirectory}/go/bin"
+          "${config.home.homeDirectory}/.cargo/bin"
     ])
     $env.JAVA_HOME = "${pkgs.jdk21.home}"
     $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
