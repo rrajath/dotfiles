@@ -4,6 +4,28 @@
 
 ---
 
+## STATUS UPDATE — 2026-07-19
+
+The consolidation was executed as a series of atomic jj commits. **Done:**
+
+1. **personal/work split removed** (no nix at work) — flat `nix-config/` (`flake.nix`, `darwin.nix`, `home.nix`, `brews.nix`, `casks.nix`, `modules/`); single darwinConfiguration `default`; `drp` simplified, `drw` gone. `shared/packages.nix` dup folded into `modules/packages.nix` (§4.1).
+2. **Full Homebrew inventory declared** (§5.2) — 16 casks (canonical names; `docker`/`tigervnc-viewer` were renames, not dupes — §4.16 resolved), formula leaves declared minus emacs-plus orphans; brew `prettier`/`typescript-language-server` uninstalled (§4.5); tap `devenjarvis/tap` declared.
+3. **Dead modules resolved** (§3B) — amethyst wired via mkOutOfStoreSymlink (live plist matched repo yml), `modules/default.nix` deleted, karabiner already wired and now active (no drift — live was identical to repo).
+4. **JAVA_HOME fixed** (§4.7) — nix `jdk21` only; `JAVA_HOME = ${pkgs.jdk21.home}` everywhere; `jre8` + brew `openjdk@17`/`@21` removed.
+5. **nushell de-hardcoded** (§4.14) — user/homeDirectory parameterized, stale PATH entries dropped.
+6. **atuin settings captured** (§3C) — `enter_accept`, `sync.records` in `programs.atuin.settings`.
+7. **Home strays removed** — `~/.config/nushell` decoy (§4.15), zellij backups, karabiner backup dirs. (`~/.zshrc`/`.zshenv` kept: forge manages a block; contains a plaintext API key to rotate/relocate.)
+8. **README.org rewritten** (§5.6). Stale report items: no `.DS_Store` was tracked (§4.12) and the old `nix/` deletion was already committed (§4.11) by the time work started.
+
+**Remaining, deferred by choice** — tracked in `docs/`:
+- `docs/REPO_CLEANUP.md` — delete category D legacy dirs, move category E exports to `archive/`
+- `docs/EMACS.md` — emacs-plus binary is broken (missing libjpeg, pre-existing) + the §5.4 config-sync plan
+- `docs/BREW_TO_NIX.md` — migrate nixpkgs-available formulas out of brew (§5.2.3)
+
+Delete this file once the `docs/` backlog is empty.
+
+---
+
 ## TL;DR
 
 This repo contains **four generations** of config management stacked on top of each other. Only one of them — `nix-config/` — is actually live. Nothing in your `$HOME` points at the top-level app directories anymore: every active config is either a home-manager symlink into the nix store, a Homebrew install, or an unmanaged plain file.

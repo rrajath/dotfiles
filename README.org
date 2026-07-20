@@ -2,20 +2,34 @@
 #+AUTHOR:  Rajath Ramakrishna
 #+STARTUP: hidestars indent
 
-* Introduction
-This repository contains dotfiles for all my applications - emacs, vim, zshrc, etc.
+* What this is
+A nix-first macOS setup. Everything that is live on this machine is declared in [[./nix-config/][nix-config/]] — a [[https://github.com/LnL7/nix-darwin][nix-darwin]] + [[https://github.com/nix-community/home-manager][home-manager]] flake with a single configuration (=default=) for user =rrajath=. There are no install scripts, no stow, no hand-symlinking: applying the flake is the only mechanism.
 
-I use the [[https://en.wikipedia.org/wiki/Literate_programming][literate programming]] paradigm to manage my dotfiles in a way that it encapsulates both code and documentation in the same file. People reading this config, or even my future self can pull out parts of the config as needed and apply it to theirs. This repository is organized in terms of several README files. Each README file will be for a specific app.
+Apply changes with:
 
-The config files will be in .org format which GitHub natively supports and renders like how it renders Markdown. Each file will contain pre-requisites that must be installed before continuing to copy the configs. This is to make sure that the right tools/applications are installed beforehand.
+#+begin_src sh
+sudo darwin-rebuild switch --flake ~/dotfiles/nix-config#default
+#+end_src
 
-* Pre-requisites
-For those intending to clone this repo and use the org files into their dotfiles, there is one pre-requisite which is Emacs. After installing it, the org-mode files can be tangled (using =org-babel-tangle= command) after specifying the tangle location at the top of each org file.
+(aliased to =drp= in nushell).
 
-* Have a look around
-Here are some links to my configs which are written like documentation with code blocks in between.
+* Layout
+- =nix-config/= — the flake
+  - =flake.nix= — inputs and the one darwin configuration
+  - =darwin.nix= — system level: nix settings, shell, TouchID sudo, Homebrew
+  - =home.nix= — home-manager entry; imports every module
+  - =brews.nix= / =casks.nix= — the *complete* declared Homebrew inventory
+  - =modules/= — one file per app (nushell, helix, ghostty, git, jujutsu, atuin, karabiner, amethyst, claude-code, …); =packages.nix= is the nix package list
+- Top-level source dirs referenced by modules: =claude-code/=, =karabiner/=, =amethyst/=
+- =.emacs.d/= — literate emacs config (org files tangle to =.el=); managed *outside* home-manager. See [[./docs/EMACS.md][docs/EMACS.md]] for its current state.
+- =docs/= — active backlog: [[./docs/BREW_TO_NIX.md][brew→nix migration]], [[./docs/REPO_CLEANUP.md][deferred repo cleanup]], [[./docs/EMACS.md][emacs]]
+- Everything else at the top level is legacy from earlier generations of this repo, pending deletion/archival per [[./docs/REPO_CLEANUP.md][docs/REPO_CLEANUP.md]]. History: [[./CONSOLIDATION.md][CONSOLIDATION.md]].
 
-- [[./.emacs.d/PostInitConfig.org][Emacs Config]]
-- [[./zsh/README.org][Zsh Config]]
-- [[./fish/README.org][Fish Config]]
-- [[./helix/README.org][Helix Config]]
+* Conventions
+- App config lives *either* inline in its nix module (default; rebuild to apply) *or* in a top-level dir wired via =mkOutOfStoreSymlink= — used when the app rewrites its own config or it churns often (karabiner, amethyst). Never both.
+- Homebrew is declared but never self-updating: =onActivation.autoUpdate/upgrade = false=, =cleanup = "none"=. Activation only installs/uninstalls from the lists; run =brew update= manually.
+- CLI tools prefer nixpkgs (=modules/packages.nix=); brew keeps casks, =mas=, and the genuinely brew-only.
+- Version control is [[https://github.com/jj-vcs/jj][jujutsu]] (colocated with git).
+
+* Emacs
+The one literate-programming survivor: =.emacs.d/PreInitConfig.org= and =PostInitConfig.org= tangle (=org-babel-tangle=) to the =.el= files emacs loads. Tangled output is gitignored by design; the org files are the source of truth.
