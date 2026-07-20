@@ -1,5 +1,6 @@
 { pkgs, ... }: {
   imports = [
+    ./modules/amethyst.nix
     ./modules/atuin.nix
     ./modules/carapace.nix
     ./modules/claude-code.nix
