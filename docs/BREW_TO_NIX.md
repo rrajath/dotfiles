@@ -29,7 +29,7 @@ Migration recipe per formula: add to `modules/packages.nix` → `drp` → verify
 |---|---|
 | mas | Mac App Store CLI — brew is the practical channel on macOS |
 | n | Node version manager; imperative by design. Migrating means switching to nix-managed node versions instead — a workflow change, not a package swap |
-| openjdk@17, openjdk@21 | Keep until the JAVA_HOME consolidation (change #3): plan is one nix JDK + `JAVA_HOME` derived from the package, then drop both brew JDKs |
+| ~~openjdk@17, openjdk@21~~ | **Done**: replaced by nix `jdk21` with `JAVA_HOME = "${pkgs.jdk21.home}"`; both brew JDKs uninstalled |
 
 ## Already handled in change #2
 

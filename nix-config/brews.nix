@@ -17,7 +17,5 @@
   "mas"
   "n"
   "opencode"
-  "openjdk@17"
-  "openjdk@21"
   "tmux"
 ]

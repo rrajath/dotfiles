@@ -8,7 +8,7 @@ with pkgs; [
   nixd
   cargo
   deno
-  jre8
+  jdk21
   eas-cli
   hugo
   zola

@@ -29,7 +29,7 @@
   # Set environment variables
   home.sessionVariables = {
     EDITOR = "hx";
-    JAVA_HOME = "/etc/profiles/per-user/rrajath/bin";
+    JAVA_HOME = "${pkgs.jdk21.home}";
   };
 
   programs.git = {
