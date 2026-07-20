@@ -40,10 +40,11 @@
       upgrade = false;
       cleanup = "none";
     };
-    casks = import ./casks.nix;
-    brews = import ./brews.nix ++ [
-      "openjdk@17"
+    taps = [
+      "devenjarvis/tap" # lathe
     ];
+    casks = import ./casks.nix;
+    brews = import ./brews.nix;
   };
 
   # TouchID for sudo

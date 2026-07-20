@@ -1,6 +1,21 @@
-# Homebrew casks
+# Homebrew casks — full inventory of installed GUI apps (canonical token names).
+# Note: the old 'docker' and 'tigervnc-viewer' installs are just pre-rename
+# aliases of docker-desktop and tigervnc — not separate apps.
 [
-  "BetterTouchTool"
-  "Bitwarden"
-  "Amethyst"
+  "amethyst"
+  "bettertouchtool"
+  "bitwarden"
+  "docker-desktop"
+  "dropbox"
+  "font-hack-nerd-font"
+  "ghostty"
+  "itsycal"
+  "jordanbaird-ice"
+  "kap"
+  "kitty"
+  "lathe" # from devenjarvis/tap
+  "thaw"
+  "tigervnc"
+  "vnc-viewer"
+  "wezterm@nightly"
 ]
