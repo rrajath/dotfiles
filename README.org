@@ -3,7 +3,7 @@
 #+STARTUP: hidestars indent
 
 * What this is
-A nix-first macOS setup. Everything that is live on this machine is declared in [[./nix-config/][nix-config/]] — a [[https://github.com/LnL7/nix-darwin][nix-darwin]] + [[https://github.com/nix-community/home-manager][home-manager]] flake with a single configuration (=default=) for user =rrajath=. There are no install scripts, no stow, no hand-symlinking: applying the flake is the only mechanism.
+A nix-first macOS setup. Everything that is live on this machine is declared in [[./nix-config/][nix-config/]] - a [[https://github.com/LnL7/nix-darwin][nix-darwin]] + [[https://github.com/nix-community/home-manager][home-manager]] flake with a single configuration (=default=) for user =rrajath=. There are no install scripts, no stow, no hand-symlinking: applying the flake is the only mechanism.
 
 Apply changes with:
 
