@@ -1,0 +1,4 @@
+# Homebrew formulas
+[
+  "coreutils"
+]

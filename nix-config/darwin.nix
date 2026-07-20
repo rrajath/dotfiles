@@ -1,8 +1,8 @@
 { user, pkgs, ... }: {
   imports = [
-    ../modules/macos-settings.nix
+    ./modules/macos-settings.nix
   ];
-  
+
   nix = {
     package = pkgs.nix;
     settings = {
@@ -24,22 +24,28 @@
 
   # Set Nushell as the default shell
   environment.shells = [ pkgs.nushell ];
-  
+
   # Configure the default shell for the user
   users.users.${user} = {
     shell = pkgs.nushell;
   };
-  
-  # Enable Homebrew
+
+  # Homebrew: activation only installs/uninstalls from the lists below.
+  # autoUpdate/upgrade stay off because brew update during activation hangs on macOS 26;
+  # run brew update/upgrade manually when needed.
   homebrew = {
-    enable = true; # There's some issue with updating homebrew via nix on the latest MacOS 26. So, setting it to false for now
+    enable = true;
     onActivation = {
       autoUpdate = false;
       upgrade = false;
       cleanup = "none";
     };
+    casks = import ./casks.nix;
+    brews = import ./brews.nix ++ [
+      "openjdk@17"
+    ];
   };
-  
+
   # TouchID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;
 
@@ -49,8 +55,7 @@
     # Define primary user
     primaryUser = user;
   };
-  
-  
+
   # The platform the configuration will be used on
   nixpkgs.hostPlatform = "aarch64-darwin";
   nixpkgs.config.allowUnfree = true;

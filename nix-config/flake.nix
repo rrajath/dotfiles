@@ -16,43 +16,27 @@
   outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager }:
   let
     system = "aarch64-darwin";
-
-    mkDarwinSystem = { profile, username }: nix-darwin.lib.darwinSystem {
+    user = "rrajath";
+  in
+  {
+    darwinConfigurations.default = nix-darwin.lib.darwinSystem {
       inherit system;
-      specialArgs = inputs // {
-        user = username;
-        inherit profile;
-      };
+      specialArgs = inputs // { inherit user; };
 
       modules = [
-        ./shared/darwin.nix
-        ./${profile}/darwin.nix
+        ./darwin.nix
         home-manager.darwinModules.home-manager
         {
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.${username} = import ./${profile}/home.nix;
-            extraSpecialArgs = { inherit profile inputs; };
+            users.${user} = import ./home.nix;
+            extraSpecialArgs = { inherit inputs user; };
             backupFileExtension = "bak";
           };
-          users.users.${username}.home = "/Users/${username}";
+          users.users.${user}.home = "/Users/${user}";
         }
       ];
     };
-  in
-    {
-
-      darwinConfigurations = {
-        personal = mkDarwinSystem {
-          profile = "personal";
-          username = "rrajath";
-        };
-        work = mkDarwinSystem {
-          profile = "work";
-          username = "rajath.ramakrishna";
-        };
-      };
-    };
+  };
 }
-
