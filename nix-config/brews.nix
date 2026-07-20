@@ -18,4 +18,5 @@
   "n"
   "opencode"
   "tmux"
+  "emacs-plus@30"
 ]
