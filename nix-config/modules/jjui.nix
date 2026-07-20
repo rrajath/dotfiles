@@ -1,6 +1,16 @@
 { ... }: {
   xdg.configFile."jjui/config.toml".text = ''
-    [custom_commands]
-    "tug" = { key = ["T"], args = ["tug"] }
+    [[actions]]
+    name = "tug"
+    lua = ''''
+    jj_async("tug")
+    revisions.refresh()
+    ''''
+
+    [[bindings]]
+    action = "tug"
+    key = "T"
+    scope = "revisions"
+    desc = "tug"
   '';
 }
