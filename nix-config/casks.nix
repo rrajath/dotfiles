@@ -12,7 +12,6 @@
   "itsycal"
   "jordanbaird-ice"
   "kap"
-  "kitty"
   "lathe" # from devenjarvis/tap
   "thaw"
   "tigervnc"
