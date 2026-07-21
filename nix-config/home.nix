@@ -14,6 +14,7 @@
     ./modules/karabiner.nix
     ./modules/nushell.nix
     ./modules/starship.nix
+    ./modules/vim.nix
     ./modules/zed-editor.nix
     ./modules/zoxide.nix
   ];
