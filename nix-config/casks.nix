@@ -7,6 +7,7 @@
   "bitwarden"
   "docker-desktop"
   "dropbox"
+  "fluidvoice"
   "font-hack-nerd-font"
   "ghostty"
   "itsycal"
@@ -16,5 +17,4 @@
   "thaw"
   "tigervnc"
   "vnc-viewer"
-  "wezterm@nightly"
 ]
