@@ -59,7 +59,7 @@ This is needed for some programs to work
 ** Git Settings
 The following git settings are recommended:
 #+begin_src bash
-git config --global user.email rajath.ramakrishna@getcruise.com
+git config --global user.email r.rajath@protonmail.com
 git config --global user.name "Rajath Ramakrishna"
 git config --global pull.rebase true
 git config --global rerere.enabled true
