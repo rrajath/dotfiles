@@ -31,5 +31,38 @@ sudo darwin-rebuild switch --flake ~/dotfiles/nix-config#default
 - CLI tools prefer nixpkgs (=modules/packages.nix=); brew keeps casks, =mas=, and the genuinely brew-only.
 - Version control is [[https://github.com/jj-vcs/jj][jujutsu]] (colocated with git).
 
+* nix-config Modules
+Each app gets its own module in =modules/=, imported by either =home.nix= (user-level) or =darwin.nix= (system-level). A module either declares its config inline via a Home Manager =programs.*= option (rebuild to apply) or points =xdg.configFile=/=home.file= at a top-level source dir with =mkOutOfStoreSymlink= (edits apply live, no rebuild) -  see Conventions above. What follows is every file in =modules/=: active ones wired into =home.nix=/=darwin.nix=, and inactive ones that aren't.
+
+** Active modules
+- =amethyst.nix= - out-of-store symlink of =amethyst/amethyst.yml= into =~/.config/amethyst/=; the tiling window manager's config lives outside nix so edits apply without a rebuild.
+- =atuin.nix= - shell history sync with Nushell integration; up-arrow search disabled, enter-to-accept, sync of history records enabled.
+- =carapace.nix= - multi-shell completion engine, Nushell integration only.
+- =claude-code.nix= - symlinks =CLAUDE.md=, =.claudeignore=, and =agents/= from top-level =claude-code/= into =~/.claude= via =home.file= (not =xdg.configFile=, since Claude Code reads =$HOME= directly, not =$XDG_CONFIG_HOME=).
+- =direnv.nix= - direnv with =nix-direnv= caching and Nushell integration.
+- =ghostty.nix= - the active terminal: raw config text, Catppuccin Mocha theme, background blur (radius 20, full opacity), global quick-terminal toggle (=ctrl+shift+t=), =alt+left/right= unbound, tabs-style titlebar, mouse-hide-while-typing, SSH shell-integration features.
+- =git.nix= - LFS enabled, ignores editor/tooling cruft (=*.swp=, =.direnv=, =.zed=, …), =core.editor = hx=, =pull.rebase= + =rebase.autoStash/updateRefs=, =rerere.enabled= (remembers conflict resolutions).
+- =helix.nix= - the =$EDITOR= throughout: =base16_transparent= theme, mouse disabled, auto-save on, multi-buffer bufferline, custom cursor shapes per mode, hidden files shown in the picker, LSP messages + indent guides on, heavily remapped normal/insert keys (Emacs-style =C-a/e/n/p=, space-leader commands).
+- =herdr.nix= - raw config text: catppuccin theme, =ctrl+,= key prefix, toast notifications bottom-right.
+- =jjui.nix= - raw config text adding a custom =tug= action bound to =T= in the jj TUI.
+- =jujutsu.nix= - installs the =jujutsu= package; configures user identity, =hx= as diff/commit editor, a =tug= bookmark-move alias, and template aliases for short IDs, relative timestamps, and local-part-only email in signatures.
+- =karabiner.nix= - out-of-store symlink only; the actual remap rules live in top-level =karabiner/=, not this file.
+- =macos-settings.nix= - system-level (imported by =darwin.nix=, not =home.nix=): Dock autohide/no-bounce/48px tiles, Finder column view with path/status bars, fast key repeat, trackpad tap-to-click plus three/four-finger gestures, font smoothing disabled.
+- =nushell.nix= - the default shell: banner hidden, =hx= as =$EDITOR=/buffer editor, fuzzy completions, trash-on-rm, =PATH= prepends for nix/homebrew/cargo/go, and the =drp= alias for =darwin-rebuild switch=.
+- =packages.nix= - not an app module; the flat Home Manager package list (dev tools, formatters, language servers, plus the brew→nix migrated tools tracked in =docs/BREW_TO_NIX.md=).
+- =starship.nix= - prompt config with two custom jj-aware segments: a change-stat summary and a formatted =jj log= one-liner for the current commit, both gated on being inside a =.jj= repo.
+- =vim.nix= - number/undofile/dark background via =programs.vim= (replaces the old amix/vimrc + vim-plug setup); leader-key save/quit maps and cursor-shape escape sequences in =extraConfig=.
+- =zed-editor.nix= - Helix keybinding emulation enabled, system-following theme (One Light/One Dark), =nix=/=deno=/=typescript= extensions.
+- =zoxide.nix= - smarter =cd=, Nushell integration only.
+
+** Inactive modules
+Present in =modules/= but not imported by =home.nix= or =darwin.nix= — leftovers from an earlier terminal/shell exploration phase, superseded by =ghostty= + =nushell=, and not applied by =darwin-rebuild=: =aerospace.nix=, =alacritty.nix=, =fish.nix=, =kitty.nix=, =wezterm.nix=, =zsh.nix=.
+
+* Also in this repo
+Beyond =nix-config/=, =.emacs.d/=, and the source dirs already listed under Layout, the repo root carries a few other things:
+- Planning/history docs: =docs/BREW_TO_NIX.md= (brew→nix migration tracking), =docs/REPO_CLEANUP.md= (deferred cleanup plan - its list of legacy shell/terminal dirs to delete is partly stale, since most of those are already gone, converted into the now-inactive modules listed above; only =doom_yasnippets.org= from that original list still exists), =docs/EMACS.md= (an emacs-plus build issue plus a plan to bring =.emacs.d/= under home-manager), and root-level =CONSOLIDATION.md= (a point-in-time consolidation audit, self-marked for deletion once the =docs/= backlog clears).
+- Legacy app-settings exports and Doom-Emacs-era leftovers, none referenced by =nix-config=: =Alfred/=, =Apps=, =BetterTouchTool/=, =BrowserExtensions/=, =Firefox/=, =iTerm2/=, =JetBrains/=, =MacSetup/=, =VSCode/=, =doom_yasnippets.org=. Candidates for a future =archive/= dir per =docs/REPO_CLEANUP.md=.
+- Tooling/session state: =.claude/= (local Claude Code session settings for this repo, distinct from the home-manager-managed =claude-code/=), =.serena/= (gitignored MCP tool cache), =.jj/= (jujutsu VCS state, colocated with git).
+
 * Emacs
 The one literate-programming survivor: =.emacs.d/PreInitConfig.org= and =PostInitConfig.org= tangle (=org-babel-tangle=) to the =.el= files emacs loads. Tangled output is gitignored by design; the org files are the source of truth.

@@ -6,6 +6,8 @@
 /eln-cache/
 /elpa/
 /straight/
+/backup/
+/org-persist/
 /pre-init.el
 /post-init.el
 /pre-early-init.el
@@ -16,3 +18,4 @@
 /history
 /recentf
 /saveplace
+.DS_Store

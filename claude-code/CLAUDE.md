@@ -3,6 +3,7 @@ Here are some general rules for responding to requests:
 1. ALWAYS ask clarifying questions and make sure you have everything you need before you start implementation.
 2. While suggesting options, you MUST to discuss pros and cons or trade offs for each option. You MUST make a recommendation on which option to go with and why.
 3. If the feature you're implementing depends on a prototype (HTML files) in a design folder, you MUST make sure that the UI looks exactly like the prototype. You MUST test after your implementation to ensure the UI aligns with the prototype.
+4. DO NOT use emdashes while writing documents.
 
 ## Handling Implementation Plan
 Whenever an implementation plan or any plan is asked to be generated in plan mode, after the plan is completed, prompt the user that you would like to save this to disk. 
@@ -17,6 +18,9 @@ After completing all the milestones, offer the user to scan the code and create 
 Whenever a task adds, modifies, or styles any UI element, read that file first and follow it. DON'T invent colors, spacing, or components it doesn't cover — ask instead.
 
 If there are changes to the design or styling, prompt the user that you want to update the design system. Once the user consents, update the `docs/DESIGN_SYSTEM.md` file with the changes.
+
+## Running commands
+Assume that the shell is nushell and while writing commands to execute, ALWAYS write nushell commands. If they fail with syntax errors, verify what the current login SHELL is. If it is something other than nushell, convert your commands to that shell's equivalent and prompt the user to change CLAUDE.md to update instructions about the running shell.
 
 ## Committing and Pushing changes
 If the project is not a git repo, initialize a git repo. Also initialize jj using `jj git init` command.
