@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>REPO_CLEANUP.html</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+</head>
+
+<body>
+
+<h1 id="deferredrepocleanup">Deferred repo cleanup</h1>
+
+<p><em>Recorded 2026&#8211;07&#8211;19 during the consolidation work. These two steps from <code>CONSOLIDATION.md</code> (§6 phases 6) were explicitly deferred — pick them up whenever.</em></p>
+
+<h2 id="1.deletesupersededlegacydirsdeferred3g">1. Delete superseded legacy dirs (deferred 3g)</h2>
+
+<p>All dormant — no symlink or tool reads them; every live config moved into <code>nix-config/</code> modules. Git history preserves everything after deletion.</p>
+
+<pre><code>aerospace/  alacritty/  fish/  vim/  wezterm/  zsh/  doom_yasnippets.org  kitty/
+</code></pre>
+
+<ul>
+<li><code>kitty/</code> contains only a themes clone + literate README, no personal config. The kitty <strong>cask</strong> stays installed and declared in <code>casks.nix</code> regardless.</li>
+<li>Superseded by: amethyst (aerospace), ghostty (alacritty/wezterm/kitty), nushell (fish/zsh), helix (vim).</li>
+</ul>
+
+<p>Already done on the home-dir side (2026&#8211;07&#8211;19): removed <code>~/.config/nushell</code> decoy stub, <code>~/.config/zellij</code> backups, <code>~/.config/karabiner.backup*</code>/<code>.bak</code> dirs.</p>
+
+<p><strong>Intentionally untouched:</strong> <code>~/.zshrc</code> and <code>~/.zshenv</code> — forge manages a block in <code>.zshrc</code>, and it contains a plaintext Anthropic API key (flagged for rotation / relocation to a proper secret store; don&#8217;t delete these files without handling that).</p>
+
+<h2 id="2.moveapp-settingsexportsintoarchivedeferred3h">2. Move app-settings exports into <code>archive/</code> (deferred 3h)</h2>
+
+<p>Pure <code>git mv</code> — these are exports/notes, not tangle sources; nothing reads them:</p>
+
+<pre><code>Alfred/  Apps/  BetterTouchTool/  brew/  BrowserExtensions/  Firefox/
+iTerm2/  JetBrains/  MacSetup/  sublime/  VSCode/
+</code></pre>
+
+<p><code>BetterTouchTool/</code> is the only recent export (2026) — it&#8217;s the only BTT backup, keep it wherever it lands.</p>
+
+</body>
+</html>
