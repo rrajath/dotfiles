@@ -20,6 +20,14 @@ with pkgs; [
   go
   claude-usage-tracker
 
+  # Migrated from Homebrew (see docs/BREW_TO_NIX.md)
+  eza
+  ffmpeg
+  bitwarden-cli
+  cmake
+  fontforge
+  git-filter-repo
+
   # TUI Apps
   jjui
 
