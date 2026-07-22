@@ -13,6 +13,13 @@
         "com.apple.mouse.tapBehavior" = 1;
         "com.apple.sound.beep.volume" = 0.0;
         "com.apple.sound.beep.feedback" = 0;
+
+        # Trackpad tracking speed: 0 (slowest) to 3 (fastest, undocumented by Apple).
+        "com.apple.trackpad.scaling" = 3.0;
+
+        # Uncheck "Use font smoothing when available". Largely vestigial on
+        # modern macOS (subpixel AA was removed system-wide around Mojave).
+        AppleFontSmoothing = 0;
       };
 
       dock = {
@@ -24,6 +31,10 @@
         tilesize = 48;
         expose-group-apps = true;
         mru-spaces = false;
+
+        # Gate flags for TrackpadFourFingerVertSwipeGesture below.
+        showMissionControlGestureEnabled = true;
+        showAppExposeGestureEnabled = true;
       };
 
       finder = {
@@ -39,6 +50,19 @@
       trackpad = {
         Clicking = true;
         TrackpadThreeFingerDrag = true;
+
+        # Swipe left/right with four fingers between Spaces/full-screen apps.
+        TrackpadFourFingerHorizSwipeGesture = 2;
+        # Swipe down for Mission Control, up for App Exposé (four fingers).
+        TrackpadFourFingerVertSwipeGesture = 2;
+      };
+
+      # Options without a structured nix-darwin option go here as raw
+      # domain/key plist writes.
+      CustomUserPreferences = {
+        "com.apple.dock" = {
+          no-bouncing = true;
+        };
       };
     };
   };
